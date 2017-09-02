@@ -15,9 +15,14 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.confirmed.find_by_email(user_params[:email])
+    @user_not_confirmed = User.find_by_email(user_params[:email])
     if @user and @user.authenticate(params[:user][:password])
       login_as @user
       redirect_to successful_sign_in_path, notice: t(:sign_in_successful)
+    elsif @user_not_confirmed and @user_not_confirmed.confirmed_at.nil?
+      @user = User.new
+      flash[:alert] = 'Please confirm your email to proceed - If you haven\'t recieved an email click "I have registered but not received my confirmation instructions"'
+      render action: 'new'
     else
       @user = User.new
       flash[:alert] = t(:error_signing_in)
