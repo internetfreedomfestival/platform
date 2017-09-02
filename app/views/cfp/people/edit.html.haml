@@ -3,7 +3,7 @@
     %h1{:style => "text-align: center"}=t("cfp.personal_details_headline")
   .row
     .span16
-      -if @person.email.nil? || @person.public_name == @person.email || @person.public_name.nil?
+      -if !@person.valid? || @person.public_name == @person.email
         %h2{:style => "color: red; text-align: center"}=t("cfp.personal_details_minimum")
   .row
     .span16
