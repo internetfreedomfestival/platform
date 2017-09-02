@@ -60,6 +60,7 @@ en:
     person_updated_notice: "Profile was successfully updated."
     personal_details_description: "Please fill out the following form to let us (and, if your submissions are selected, the conference participants) know you a little better."
     personal_details_headline: "Personal details - Let us know about you"
+    personal_details_minimum: "You're almost there! We just need you to fill out the required fields (*) below and you'll have access to schedules, events, and the ability to apply to be a Presenter. You'll also be able to apply for the Diversity Inclusion Fund."
     personal_details_later: "Note that you can fill out the bare minimum now and always come back later to add more details."
     phone_numbers: "Phone numbers"
     problem_sending_password_reset_instructions: "Could not send password reset instructions. Please make sure you entered the correct email address."
