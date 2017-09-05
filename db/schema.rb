@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227232916) do
+ActiveRecord::Schema.define(version: 20170905163202) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -278,23 +278,33 @@ ActiveRecord::Schema.define(version: 20161227232916) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string   "first_name",          limit: 255, default: ""
-    t.string   "last_name",           limit: 255, default: ""
-    t.string   "public_name",         limit: 255,                 null: false
-    t.string   "email",               limit: 255,                 null: false
-    t.boolean  "email_public",                    default: true
-    t.string   "gender",              limit: 255
-    t.string   "avatar_file_name",    limit: 255
-    t.string   "avatar_content_type", limit: 255
+    t.string   "first_name",               limit: 255, default: ""
+    t.string   "last_name",                limit: 255, default: ""
+    t.string   "public_name",              limit: 255,                 null: false
+    t.string   "email",                    limit: 255,                 null: false
+    t.boolean  "email_public",                         default: true
+    t.string   "gender",                   limit: 255
+    t.string   "avatar_file_name",         limit: 255
+    t.string   "avatar_content_type",      limit: 255
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.text     "abstract"
     t.text     "description"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.integer  "user_id"
     t.text     "note"
-    t.boolean  "include_in_mailings",             default: false, null: false
+    t.boolean  "include_in_mailings",                  default: false, null: false
+    t.text     "pgp_key"
+    t.string   "country_of_origin"
+    t.string   "professional_background"
+    t.text     "other_background"
+    t.string   "organization"
+    t.string   "project"
+    t.string   "title"
+    t.string   "iff_before"
+    t.boolean  "invitation_to_mattermost",             default: false, null: false
+    t.boolean  "interested_in_volunteer",              default: false, null: false
   end
 
   add_index "people", ["email"], name: "index_people_on_email"
