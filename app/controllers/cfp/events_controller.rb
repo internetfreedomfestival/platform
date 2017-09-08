@@ -25,6 +25,11 @@ class Cfp::EventsController < ApplicationController
 
   # GET /cfp/events/new
   def new
+    person = Person.find_by(user_id: current_user.id)
+    if !person.valid?
+      flash[:alert]
+      return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
+    end
     authorize! :submit, Event
     @event = Event.new(time_slots: @conference.default_timeslots)
     @event.recording_license = @conference.default_recording_license

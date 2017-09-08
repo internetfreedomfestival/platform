@@ -50,7 +50,8 @@ SimpleForm.setup do |config|
     #
     # b.use :full_error, wrap_with: { tag: :span, class: :error }
   end
-
+  # To resolve undefined method "country select" error for country of origin requirement for people model
+  # ###################config.input_mappings = { :country_of_origin => :string }
   # The default wrapper to be used by the FormBuilder.
   config.default_wrapper = :default
 

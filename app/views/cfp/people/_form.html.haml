@@ -19,11 +19,11 @@
     = dynamic_association :im_accounts, t("cfp.im_accounts"), f
   %fieldset.inputs
     %legend= t("cfp.bio")
-    = f.input :professional_background, :collection => ["Policy/Advocacy", "Software Development", "Communications", "Journalism and Media", "Security Training", "Design", "Frontline Activism", "Research/Academia"], as: :check_boxes, error: " "
+    = f.input :professional_background, :collection => ["Policy/Advocacy", "Software Development", "Communications", "Journalism and Media", "Security Training", "Design", "Frontline Activism", "Research/Academia"], as: :radio_buttons, error: " "
     = f.input :other_background
     = f.input :project
     = f.input :title
-    = f.input :iff_before, label: "Have you ever attended the IFF before?", collection: ["Not yet!", "2015", "2016", "2017"], as: :check_boxes, error: " "
+    = f.input :iff_before, label: "Have you ever attended the IFF before?", :collection => ["Not yet!", "2015", "2016", "2017"], as: :radio_buttons, error: ""
     = f.input :interested_in_volunteer, as: :radio_buttons
     = f.input :abstract, input_html: {rows: 4}, hint: t("cfp.abstract_hint")
     = f.input :description, hint: t("cfp.description_hint")

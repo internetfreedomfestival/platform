@@ -10,6 +10,7 @@ class UserMailer < ActionMailer::Base
   def confirmation_instructions(user, conference = nil)
     @user = user
     @conference = conference
+    # I18n.t('Account Activation')
     mail to: @user.email, subject: I18n.t('mailers.user_mailer.confirmation_instructions')
   end
 
