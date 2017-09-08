@@ -4,24 +4,21 @@
       - unless @conference.in_the_past
         - unless cfp_hard_deadline_over?
           = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
-        - if @person.availabilities_in(@conference).count == 0
-          = action_button "", t("cfp.edit_availability"), new_cfp_person_availability_path
-        - else
-          = action_button "", t("cfp.edit_availability"), edit_cfp_person_availability_path
+        
       = action_button "", t("cfp.edit_profile"), edit_cfp_person_path
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
-    %h1=t("cfp.welcome")
+    %h1{:style => "text-align: center;"}=t("cfp.welcome" " to I F F 2018")
   .row
     .span8
-      %p=t("cfp.thanks_for_interest", title: @conference.title)
+      %h3{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
+      <br /><br />
+      %h5{:style => "text-align: center;"}=t("cfp.thanks_for_interest", title: @conference.title)
       - if cfp_hard_deadline_over?
         %p=t("cfp.hard_deadline_over")
       - elsif @person.events_in(@conference).size > 0 and not @conference.in_the_past
         - if @person.availabilities_in(@conference).count == 0
-          %p=t("cfp.specify_availability")
-          = action_button "success", t("cfp.edit_availability"), new_cfp_person_availability_path
           .clear
-        %p=t("cfp.input_appreciation")
+        %p{:style => "text-align: center;"}=t("cfp.input_appreciation")
         = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past

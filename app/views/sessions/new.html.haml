@@ -18,6 +18,18 @@
         %h2=t("cfp.forgot_password_headline")
         %p=t("cfp.forgot_password_description")
         = action_button "", t("cfp.forgot_password_button"), new_cfp_user_password_path
+  .row
+    .span8
+      %h2 Don't have an account yet?
+      %h4 Sign up here
+      = simple_form_for(@user, url: cfp_user_path) do |f|
+        %fieldset.inputs
+          = f.input :email
+          = f.input :password
+          = f.input :password_confirmation
+        .actions
+          = f.button :submit, t("cfp.sign_up"), class: 'primary'
+          = link_to t("cfp.back"), new_cfp_session_path, class: "btn"
   - if @conference
     .row
       .span10.offset6
