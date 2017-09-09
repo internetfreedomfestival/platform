@@ -1,32 +1,39 @@
 = simple_form_for(@person, url: cfp_person_path, html: {multipart: true}) do |f|
   %fieldset.inputs
-    %legend Basic
-    = f.input :first_name
-    = f.input :last_name
-    = f.input :public_name, hint: t("cfp.public_name_hint")
-    = f.input :gender, collection: translated_options(Person::GENDERS)
-    = f.input :country_of_origin, hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
-    = image_input_box(f.object.avatar)
-    = f.input :avatar, hint: t("cfp.avatar_hint")
-    = dynamic_association :languages, t("cfp.languages_spoken"), f
+    .row
+      .span8{style: 'background-color: #fffff1'}
+        %legend Required
+        <br />
+        = f.input :email, hint: t("cfp.email_hint")
+        = f.input :public_name, hint: t("cfp.public_name_hint")
+        = f.input :country_of_origin, hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
+        = f.input :professional_background, :collection => ["Policy/Advocacy", "Software Development", "Communications", "Journalism and Media", "Security Training", "Design", "Frontline Activism", "Research/Academia"], as: :radio_buttons, error: " "
+        = f.input :iff_before, label: "Have you ever attended the IFF before?", :collection => ["Not yet!", "2015", "2016", "2017"], as: :radio_buttons, error: ""
+      .span8
+        %legend Basic
+        <br />
+        = f.input :first_name
+        = f.input :last_name
+        = f.input :gender, collection: translated_options(Person::GENDERS)
+        = image_input_box(f.object.avatar)
+        = f.input :avatar, hint: t("cfp.avatar_hint")
+        = dynamic_association :languages, t("cfp.languages_spoken"), f
+  <hr />
+  %fieldset.inputs
+    %legend= t("cfp.bio")
+    = f.input :other_background
+    = f.input :project
+    = f.input :title
+    = f.input :interested_in_volunteer, as: :radio_buttons
+    / = f.input :abstract, input_html: {rows: 4}, hint: t("cfp.abstract_hint")
+    / = f.input :description, hint: t("cfp.description_hint")
+    = dynamic_association :links, t("cfp.links"), f
   %fieldset.inputs
     %legend= t("cfp.contact_data")
-    = f.input :email, hint: t("cfp.email_hint")
     = f.input :email_public, as: :inline_boolean, hint: t("cfp.email_public_hint")
     = f.input :include_in_mailings, as: :inline_boolean, hint: t("Want to be included in our mailing list?")
     = f.input :invitation_to_mattermost, as: :inline_boolean, hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
     = dynamic_association :phone_numbers, t("cfp.phone_numbers"), f
     = dynamic_association :im_accounts, t("cfp.im_accounts"), f
-  %fieldset.inputs
-    %legend= t("cfp.bio")
-    = f.input :professional_background, :collection => ["Policy/Advocacy", "Software Development", "Communications", "Journalism and Media", "Security Training", "Design", "Frontline Activism", "Research/Academia"], as: :radio_buttons, error: " "
-    = f.input :other_background
-    = f.input :project
-    = f.input :title
-    = f.input :iff_before, label: "Have you ever attended the IFF before?", :collection => ["Not yet!", "2015", "2016", "2017"], as: :radio_buttons, error: ""
-    = f.input :interested_in_volunteer, as: :radio_buttons
-    = f.input :abstract, input_html: {rows: 4}, hint: t("cfp.abstract_hint")
-    = f.input :description, hint: t("cfp.description_hint")
-    = dynamic_association :links, t("cfp.links"), f
   .actions
     = f.button :submit, class: 'primary'
