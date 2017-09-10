@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905163202) do
+ActiveRecord::Schema.define(version: 20170910170236) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -202,6 +202,11 @@ ActiveRecord::Schema.define(version: 20170905163202) do
     t.text     "target_audience_experience"
     t.text     "target_audience_experience_text"
     t.text     "tech_rider"
+    t.text     "other_presenters"
+    t.text     "desired_outcome"
+    t.string   "theme"
+    t.integer  "skill_level"
+    t.boolean  "travel_assistance"
   end
 
   add_index "events", ["conference_id"], name: "index_events_on_conference_id"

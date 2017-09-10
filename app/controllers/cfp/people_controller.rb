@@ -66,7 +66,7 @@ class Cfp::PeopleController < ApplicationController
 
   def person_params
     params.require(:person).permit(
-      :first_name, :last_name, :public_name, :email, :email_public, :gender, :avatar, :abstract, :description, :include_in_mailings, :include_in_mailings, :pgp_key, :country_of_origin, :professional_background, :other_background, :organization, :project, :title, :iff_before, :invitation_to_mattermost, :interested_in_volunteer,
+      :first_name, :last_name, :public_name, :email, :email_public, :gender, :avatar, :abstract, :description, :include_in_mailings, :include_in_mailings, :pgp_key, :country_of_origin, :other_background, :organization, :project, :title, :invitation_to_mattermost, :interested_in_volunteer, { iff_before: [] }, { professional_background: [] },
       im_accounts_attributes: %i(id im_type im_address _destroy),
       languages_attributes: %i(id code _destroy),
       links_attributes: %i(id title url _destroy),
