@@ -7,7 +7,7 @@
         
       = action_button "", t("cfp.edit_profile"), edit_cfp_person_path
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
-    %h1{:style => "text-align: center;"}=t("cfp.welcome" " to I F F 2018")
+    %h1{:style => "text-align: center;"} Welcome to the IFF 2018
   .row
     .span8
       %h3{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
@@ -19,6 +19,7 @@
         - if @person.availabilities_in(@conference).count == 0
           .clear
         %p{:style => "text-align: center;"}=t("cfp.input_appreciation")
+        <br />
         = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past

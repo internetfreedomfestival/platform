@@ -20,8 +20,10 @@
           %td
             %b= number_with_precision event.average_feedback, precision: 2
           %td
-            - if event.event_feedbacks_count
+            - if event.event_feedbacks_count > 2
               s<sub>N-1</sub> = #{event.feedback_standard_deviation} n = #{event.event_feedbacks_count}
+            - else 
+              No Feedback
         %td
           = link_to t("edit"), edit_cfp_event_path(event), class: "btn small"
           - if @conference.event_state_visible

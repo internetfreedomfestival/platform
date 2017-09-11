@@ -22,6 +22,7 @@
           .span8
             <hr />
             = f.input :country_of_origin, hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
+        = f.button :submit, class: 'primary'
       .span8
         %legend Basic
         <br />
@@ -30,24 +31,13 @@
         = f.input :gender, collection: translated_options(Person::GENDERS)
         = image_input_box(f.object.avatar)
         = f.input :avatar, hint: t("cfp.avatar_hint")
-        = dynamic_association :languages, t("cfp.languages_spoken"), f
-  <hr />
-  %fieldset.inputs
-    %legend= t("cfp.bio")
-    = f.input :other_background
-    = f.input :project
-    = f.input :title
-    = f.input :interested_in_volunteer, as: :radio_buttons
-    / = f.input :abstract, input_html: {rows: 4}, hint: t("cfp.abstract_hint")
-    / = f.input :description, hint: t("cfp.description_hint")
-    = dynamic_association :links, t("cfp.links"), f
-  <hr />
-  %fieldset.inputs
-    %legend= t("cfp.contact_data")
-    = f.input :email_public, as: :inline_boolean, hint: t("cfp.email_public_hint")
-    = f.input :include_in_mailings, as: :inline_boolean, hint: t("Want to be included in our mailing list?")
-    = f.input :invitation_to_mattermost, as: :inline_boolean, hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
-    = dynamic_association :phone_numbers, t("cfp.phone_numbers"), f
-    = dynamic_association :im_accounts, t("cfp.im_accounts"), f
-  .actions
-    = f.button :submit, class: 'primary'
+        = f.input :project
+        = f.input :title
+        = f.input :organization
+        = f.input :other_background, :as => :text, input_html: { :style=> 'width: 100%;', :rows => 4}
+        = f.input :interested_in_volunteer, as: :radio_buttons, label: "Interested in Volunteering?"
+        = f.input :pgp_key, :as => :text, input_html: { :style=> 'width: 100%;', :rows => 4}
+        = f.input :email_public, as: :inline_boolean, hint: t("cfp.email_public_hint")
+        = f.input :include_in_mailings, as: :inline_boolean, hint: t("Want to be included in our mailing list? You don’t want to miss important updates!")
+        = f.input :invitation_to_mattermost, as: :inline_boolean, hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
+        = f.button :submit, class: 'primary'
