@@ -4,6 +4,8 @@
       .span8{style: 'background-color: #fffff1'}
         %legend Required
         <br />
+        %h5{style: "text-align: center"} ***Please note that the public name and email must be different!***
+        <br />
         = f.input :email, hint: t("cfp.email_hint")
         = f.input :public_name, hint: t("cfp.public_name_hint")
         .row

@@ -10,9 +10,8 @@
     %h1{:style => "text-align: center;"} Welcome to the IFF 2018
   .row
     .span8
-      %h3{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
-      <br /><br />
-      %h5{:style => "text-align: center;"}=t("cfp.thanks_for_interest", title: @conference.title)
+      %h4{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
+      <br />
       - if cfp_hard_deadline_over?
         %p=t("cfp.hard_deadline_over")
       - elsif @person.events_in(@conference).size > 0 and not @conference.in_the_past
@@ -23,11 +22,13 @@
         = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past
-          %p=t("cfp.take_time_to_submit")
-          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+          %p{style: "text-align: center"}=t("cfp.not_forget_personal_details")
         .clear
-        %p=t("cfp.not_forget_personal_details")
-        = action_button "success", t("cfp.edit_profile"), edit_cfp_person_path
+        <br />
+        .row
+          .offset1
+            = action_button "success", t("cfp.edit_profile"), edit_cfp_person_path
+            = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8
       %h2=t("cfp.information_headline")
       - unless @conference.call_for_participation.info_url.blank?
