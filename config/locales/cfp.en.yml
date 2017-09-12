@@ -54,7 +54,7 @@ en:
     login_existing_headline: "Log in with an existing account"
     looking_for_login_form: "Suchen Sie den Login für Vortragende?"
     no_confirmation_token: "Your confirmation key is not valid. Please check your event status in the call for papers interface."
-    not_forget_personal_details: "And do not forget to fill out your personal details if you have not done so already. Please remember that you can always go back and edit your profile using the button in the right sidebar."
+    not_forget_personal_details: "*** Before you can submit an event, see schedules, or sign up for the festival you must fill out your personal profile. Click 'edit your personal profile' and add your required info. ***"
     password_hint: "leave blank if you don't want to change it"
     password_updated: "Successfully updated your password."
     person_created_notice: "Profile was successfully created."

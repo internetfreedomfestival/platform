@@ -31,7 +31,7 @@ class Cfp::EventsController < ApplicationController
     end
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
-    if !person.valid?
+    if auth_person_for_new_event?(person)
       flash[:alert]
       return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
     end
@@ -124,5 +124,9 @@ class Cfp::EventsController < ApplicationController
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
+  end
+
+  def auth_person_for_new_event?(person)
+    !person.valid? || person.professional_background == [""] || person.iff_before == [""] || person.country_of_origin.nil?
   end
 end
