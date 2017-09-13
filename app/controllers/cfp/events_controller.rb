@@ -86,6 +86,20 @@ class Cfp::EventsController < ApplicationController
     end
   end
 
+  # Delete /cfp/events/1
+  def destroy
+    authorize! :submit, Event
+    event = current_user.person.events.readonly(false).find(params[:id])
+
+    respond_to do |format|
+      if event.delete
+        format.html { redirect_to(cfp_person_path, notice: "Your event: '#{event.title}' has been deleted") }
+      else
+        format.html { render action: 'edit' }
+      end
+    end
+  end
+
   def withdraw
     authorize! :submit, Event
     @event = current_user.person.events.find(params[:id], readonly: false)
