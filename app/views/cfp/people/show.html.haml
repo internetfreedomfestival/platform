@@ -9,8 +9,15 @@
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
     %h1{:style => "text-align: center;"} Welcome to the IFF 2018
   .row
-    .span8
+    .span8{style: "background-color: #92ebe6"}
+      %h1{style: "text-align: center"}=t("cfp.call_for_participation_headline")
       %h4{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
+      <br />
+      - unless @conference.call_for_participation.info_url.blank?
+        %p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
+      %p{style: "text-align: center"}
+        =t("cfp.deadline_description")
+        %b= l(@conference.call_for_participation.end_date)
       <br />
       - if cfp_hard_deadline_over?
         %p=t("cfp.hard_deadline_over")
@@ -19,7 +26,9 @@
           .clear
         %p{:style => "text-align: center;"}=t("cfp.input_appreciation")
         <br />
-        = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
+        .row
+          .offset2
+            = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past
           %p{style: "text-align: center"}=t("cfp.not_forget_personal_details")
@@ -29,18 +38,16 @@
           .offset1
             = action_button "success", t("cfp.edit_profile"), edit_cfp_person_path
             = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
-    .span8
-      %h2=t("cfp.information_headline")
-      - unless @conference.call_for_participation.info_url.blank?
-        %p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
-      %p
-        =t("cfp.deadline_description")
-        %b= l(@conference.call_for_participation.end_date)
+    .span8{style: "background-color: #ffd350"}
+      %h1{style: "text-align: center"}=t("cfp.diversity_inclusion_headline")
+      %h4{style: "text-align: center"}=t("cfp.diversity_info")
+    .span8{style: "background-color: #f3d5d5"}
       - unless @conference.call_for_participation.contact_email.blank?
-        %h2=t("cfp.contact_headline")
-        %p=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
+        %h1{style: "text-align: center"}=t("cfp.contact_headline")
+        %p{{style: "text-align: center"}}=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
   .row
     .span16
       - if @person.events_in(@conference).size > 0
+        <br />
         %h3=t("cfp.events_submitted")
         = render "table", collection: @person.events_as_presenter_in(@conference)
