@@ -25,6 +25,7 @@ class Cfp::EventsController < ApplicationController
 
   # GET /cfp/events/new
   def new
+    @new = true
     @public_names = []
     Person.all.each do |person|
       @public_names << person.public_name
@@ -46,6 +47,7 @@ class Cfp::EventsController < ApplicationController
 
   # GET /cfp/events/1/edit
   def edit
+    @edit = true
     @public_names = []
     Person.all.each do |person|
       @public_names << person.public_name
