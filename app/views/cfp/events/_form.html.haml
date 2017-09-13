@@ -15,10 +15,6 @@
       .span8
         %p{style: "margin-left: 60px"} Travel Assistance
         = f.collection_radio_buttons :travel_assistance, [[true, "Yes"], [false, "No"]], :first, :last
-      .span8
-        %p{style: "margin-top: 6em, margin-left: -30px"}  You can upload a logo of your organization/project:
-        = image_input_box(f.object.logo)
-        = f.input :logo
     / = f.input :subtitle
   / %fieldset.inputs
   /   %legend= t("cfp.detailed_description")
@@ -26,5 +22,9 @@
   /   = f.input :submission_note, hint: t("cfp.submission_note_hint")
   /   = dynamic_association :links, t("cfp.links"), f
   /   = dynamic_association :event_attachments, t("cfp.uploaded_files"), f
-  .actions
-    = f.button :submit, class: 'primary'
+  - if @new
+    .actions
+      = f.button :submit, class: 'primary', value: "Create Proposal"
+  -if @edit
+    .actions
+      = f.button :submit, class: 'primary', value: "Update Proposal"
