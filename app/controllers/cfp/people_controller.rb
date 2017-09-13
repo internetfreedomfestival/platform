@@ -51,6 +51,10 @@ class Cfp::PeopleController < ApplicationController
 
   def update
     @person = current_user.person
+    if person_invalid_for_update
+      flash[:alert] = "You must fill out all the required fields!"
+      return redirect_to action: :edit
+    end
     respond_to do |format|
       if @person.update_attributes(person_params)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.person_updated_notice')) }
@@ -72,5 +76,11 @@ class Cfp::PeopleController < ApplicationController
       links_attributes: %i(id title url _destroy),
       phone_numbers_attributes: %i(id phone_type phone_number _destroy),
     )
+  end
+
+  def person_invalid_for_update
+    if person_params[:email].nil? || person_params[:email] == person_params[:public_name] || person_params[:professional_background].length < 2 || person_params[:professional_background].nil? || person_params[:country_of_origin].nil? || person_params[:iff_before].length < 2 || person_params[:iff_before].nil?
+      return true
+    end
   end
 end
