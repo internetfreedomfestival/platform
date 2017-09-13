@@ -34,7 +34,7 @@ class Event < ActiveRecord::Base
 
   validates_attachment_content_type :logo, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
-  validates :title, :time_slots, :description, :target_audience_experience, :desired_outcome, :event_type, :language, :skill_level, presence: true
+  validates :title, :time_slots, :description, :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, presence: true
 
   after_save :update_conflicts
 
