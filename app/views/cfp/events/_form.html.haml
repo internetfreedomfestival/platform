@@ -8,7 +8,7 @@
     = f.input :target_audience_experience, label: "Target Audience", hint: t("Who is this session for? / Who is your target audience?")
     = f.input :desired_outcome, label: "Desired Outcome", hint: t("What outcomes would you like your session to have?")
     = f.input :language, as: :language_select, only: @conference.language_codes, include_blank: true
-    = f.input :skill_level, hint: "How technically difficult is your presentation? 1 being very easy to understand, 10 requiring a deep level of understanding about the topic", collection: 1..10, error: " "
+    = f.input :skill_level, hint: "How technically difficult is your presentation? 1 being very easy to understand, 10 requiring a deep level of understanding about the topic", collection: ["Beginner", "Intermediate", "Advanced"], error: " "
     = f.input :event_type, collection: translated_options(Event::TYPES)
     = f.input :time_slots, as: :select, collection: timeslots, hint: t("cfp.event_time_slots_hint")
     .row

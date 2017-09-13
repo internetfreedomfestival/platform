@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170910170236) do
+ActiveRecord::Schema.define(version: 20170913220012) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20170910170236) do
     t.text     "other_presenters"
     t.text     "desired_outcome"
     t.string   "theme"
-    t.integer  "skill_level"
+    t.string   "skill_level"
     t.boolean  "travel_assistance"
   end
 
