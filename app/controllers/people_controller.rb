@@ -114,7 +114,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     authorize! :manage, @person
-
+   
     respond_to do |format|
       if @person.update_attributes(person_params)
         format.html { redirect_to(@person, notice: 'Person was successfully updated.') }

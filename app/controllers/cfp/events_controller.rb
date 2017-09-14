@@ -25,6 +25,17 @@ class Cfp::EventsController < ApplicationController
 
   # GET /cfp/events/new
   def new
+    @new = true
+    @public_names = []
+    Person.all.each do |person|
+      @public_names << person.public_name
+    end
+    @users = User.all
+    person = Person.find_by(user_id: current_user.id)
+    if auth_person_for_new_event?(person)
+      flash[:alert]
+      return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
+    end
     authorize! :submit, Event
     @event = Event.new(time_slots: @conference.default_timeslots)
     @event.recording_license = @conference.default_recording_license
@@ -36,6 +47,11 @@ class Cfp::EventsController < ApplicationController
 
   # GET /cfp/events/1/edit
   def edit
+    @edit = true
+    @public_names = []
+    Person.all.each do |person|
+      @public_names << person.public_name
+    end
     authorize! :submit, Event
     @event = current_user.person.events.find(params[:id])
   end
@@ -66,6 +82,20 @@ class Cfp::EventsController < ApplicationController
     respond_to do |format|
       if @event.update_attributes(event_params)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
+      else
+        format.html { render action: 'edit' }
+      end
+    end
+  end
+
+  # Delete /cfp/events/1
+  def destroy
+    authorize! :submit, Event
+    event = current_user.person.events.readonly(false).find(params[:id])
+
+    respond_to do |format|
+      if event.delete
+        format.html { redirect_to(cfp_person_path, notice: "Your proposal: '#{event.title}' has been deleted") }
       else
         format.html { render action: 'edit' }
       end
@@ -106,9 +136,13 @@ class Cfp::EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider,
+      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience,:desired_outcome, :skill_level,:travel_assistance, :other_presenters, :track,
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
+  end
+
+  def auth_person_for_new_event?(person)
+    !person.valid? || person.professional_background == [""] || person.iff_before == [""] || person.country_of_origin.nil?
   end
 end
