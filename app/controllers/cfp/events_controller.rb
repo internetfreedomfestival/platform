@@ -33,7 +33,7 @@ class Cfp::EventsController < ApplicationController
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
     if auth_person_for_new_event?(person)
-      flash[:alert]
+      flash[:alert] = "You must first fill out all required fields of your personal profile."
       return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
     end
     authorize! :submit, Event
@@ -68,6 +68,8 @@ class Cfp::EventsController < ApplicationController
       if @event.save
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
+        flash[:alert] = "You must fill out all the required fields!"
+        @new = true
         format.html { render action: 'new' }
       end
     end
@@ -83,6 +85,8 @@ class Cfp::EventsController < ApplicationController
       if @event.update_attributes(event_params)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
+        flash[:alert] = "You must fill out all the required fields!"
+        @edit = true
         format.html { render action: 'edit' }
       end
     end
