@@ -1,6 +1,10 @@
 %section
   .page-header
-    %h1=t("cfp.personal_details_headline")
+    %h1{:style => "text-align: center"}=t("cfp.personal_details_headline")
+  .row
+    .span16
+      -if @person.public_name == @person.email
+        %h3{:style => "color: red; text-align: center"}=t("cfp.personal_details_minimum")
   .row
     .span16
       %p=t("cfp.personal_details_description")
