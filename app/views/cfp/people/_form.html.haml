@@ -28,7 +28,7 @@
             = f.input :title
             <hr />
             %label *Have you attended the IFF before?
-            = f.collection_check_boxes :iff_before, [["Not yet!", "Not yet!"], ["2015", "2015"], ["2016", "2016"], ["2017", "2017"]], :first, :last
+            = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["Not yet!", "Not yet!"]], :first, :last
             <br />
             / = f.input :iff_before, label: "Have you ever attended the IFF before?", :collection => ["Not yet!", "2015", "2016", "2017"], as: :check_boxes, error: ""
           .span16  
