@@ -12,7 +12,6 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
-
 gem 'mysql2', group: :mysql
 gem 'pg', group: :postgresql
 gem 'sqlite3', group: :sqlite3
@@ -43,6 +42,7 @@ gem 'acts_as_commentable'
 gem 'bcrypt'
 gem 'cancancan'
 gem 'cocoon'
+gem 'devise'
 gem 'dotenv-rails'
 gem 'haml'
 gem 'localized_language_select', github: 'frab/localized_language_select', branch: 'master'

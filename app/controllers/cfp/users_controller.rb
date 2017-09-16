@@ -9,7 +9,7 @@ class Cfp::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.person = Person.new(email: @user.email, public_name: @user.email)
+    @user.person = Person.new(email: @user.email, public_name: "Enter a public name here")
     @conference = Conference.find_by_acronym(params[:conference_acronym])
 
     if @user.save
