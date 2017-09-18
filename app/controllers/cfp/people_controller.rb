@@ -70,7 +70,7 @@ class Cfp::PeopleController < ApplicationController
 
   def person_params
     params.require(:person).permit(
-      :first_name, :last_name, :public_name, :email, :email_public, :gender, :avatar, :abstract, :description, :include_in_mailings, :include_in_mailings, :pgp_key, :country_of_origin, :other_background, :organization, :project, :title, :invitation_to_mattermost, :interested_in_volunteer, { iff_before: [] }, { professional_background: [] },
+      :first_name, :last_name, :public_name, :email, :email_public, :gender, :avatar, :abstract, :description, :include_in_mailings, :include_in_mailings, :pgp_key, :country_of_origin, :other_background, :organization, :project, :title, :invitation_to_mattermost, :iff_goals, :challenges, :other_resources, :interested_in_volunteer, { iff_before: [] }, { professional_background: [] },
       im_accounts_attributes: %i(id im_type im_address _destroy),
       languages_attributes: %i(id code _destroy),
       links_attributes: %i(id title url _destroy),
@@ -79,7 +79,7 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def person_invalid_for_update
-    if person_params[:email].nil? || person_params[:email] == person_params[:public_name] || person_params[:professional_background].length < 2 || person_params[:professional_background].nil? || person_params[:country_of_origin].nil? || person_params[:iff_before].length < 2 || person_params[:iff_before].nil?
+    if person_params[:email].nil? || person_params[:email] == person_params[:public_name] || person_params[:professional_background].length < 2 || person_params[:professional_background].nil? || person_params[:country_of_origin].nil? || person_params[:iff_before].length < 2 || person_params[:iff_before].nil? || person_params[:gender].nil?
       return true
     end
   end
