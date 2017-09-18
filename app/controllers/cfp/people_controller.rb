@@ -79,7 +79,7 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def person_invalid_for_update
-    if person_params[:email].nil? || person_params[:email] == person_params[:public_name] || person_params[:professional_background].length < 2 || person_params[:professional_background].nil? || person_params[:country_of_origin].nil? || person_params[:iff_before].length < 2 || person_params[:iff_before].nil?
+    if person_params[:email].nil? || person_params[:email] == person_params[:public_name] || person_params[:professional_background].length < 2 || person_params[:professional_background].nil? || person_params[:country_of_origin].nil? || person_params[:iff_before].length < 2 || person_params[:iff_before].nil? || person_params[:gender].nil?
       return true
     end
   end
