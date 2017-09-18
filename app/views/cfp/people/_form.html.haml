@@ -6,36 +6,56 @@
         <br />
         %h5{style: "text-align: center"} ***Please note that the public name and email must be different!***
         <br />
-        = f.input :email, hint: t("cfp.email_hint")
-        = f.input :public_name, hint: t("cfp.public_name_hint")
-        = f.input :pgp_key, :as => :text, input_html: { :style=> 'width: 90%;', :rows => 4}
-        = f.input :first_name
-        = f.input :last_name
+        = f.input :email, label: "Contact Email", hint: t("cfp.email_hint")
+        = f.input :public_name, label: "Public Display Name", hint: t("cfp.public_name_hint")
+        = f.input :first_name, label: "First Name"
+        = f.input :last_name, label: "Last Name"
+        = f.input :pgp_key, label: "PGP Key", as: :string 
         = f.input :gender, collection: translated_options(Person::GENDERS)
-        = f.input :country_of_origin, hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
+        = f.input :country_of_origin, label: "Country of Origin", hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
         .row
           .span16
             <hr />
             %label *Professional Background
-            = f.collection_check_boxes :professional_background, [["Policy/Advocacy","Policy/Advocacy"],["Software Development","Software Development"],["Communications","Communications"],["Journalism and Media","Journalism and Media"],["Security Training","Security Training"],["Design","Design"],["Frontline Activism","Frontline Activism"],["Research/Academia","Research/Academia"]], :first, :last 
+            = f.collection_check_boxes :professional_background, [["Policy/Advocacy","Policy/Advocacy"],["Software Development","Software Development"],["Communications", "Communications"],["Journalism/Media", "Journalism/Media"],["Security Training","Security Training"],["Design","Design"],["Frontline Activism","Frontline Activism"],["Research/Academia","Research/Academia"]], :first, :last
             / = f.input :professional_background, :collection => ["Policy/Advocacy", "Software Development", "Communications", "Journalism and Media", "Security Training", "Design", "Frontline Activism", "Research/Academia"], as: :radio_buttons, error: " "
         .row
           .span16
             <hr />
-            = f.input :other_background, :as => :text, input_html: { :style=> 'width: 90%;', :rows => 4}
+            = f.input :other_background, as: :string
             = f.input :organization
             = f.input :project
             = f.input :title
             <hr />
             %label *Have you attended the IFF before?
-            = f.collection_check_boxes :iff_before, [["Not yet!", "Not yet!"], ["2015", "2015"], ["2016", "2016"], ["2017", "2017"]], :first, :last
-            <br />
+            = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["Not yet!", "Not yet!"]], :first, :last
             / = f.input :iff_before, label: "Have you ever attended the IFF before?", :collection => ["Not yet!", "2015", "2016", "2017"], as: :check_boxes, error: ""
+        .row
+          .span16
+            <hr />
+            %p What are your goals for the 2018 IFF? What would you like to achieve?
+            = f.input :iff_goals, label: false
+            <hr />
+            %p What upcoming challenges and/or obstacles do you see either in your region or worldwide 
+            %p in regards to Internet Freedom that you think the community should be aware of?
+            = f.input :challenges, label: false
+            <hr />
+            %p What resources or tools do you think that the IF community should be aware of? 
+            = f.input :other_resources, label: false
           .span16  
             <hr />
-            = f.input :include_in_mailings, as: :inline_boolean, hint: t("Want to be included in our mailing list? You don’t want to miss important updates!")
-            = f.input :invitation_to_mattermost, as: :inline_boolean, hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
-            = f.input :interested_in_volunteer, as: :radio_buttons, label: "Interested in Volunteering?"
+            %p Would you like to subscribe to the IFF Mailing List? You don’t want to miss important updates!
+            = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last
+        .row
+          .span16
+            <hr />    
+            = f.input :invitation_to_mattermost, as: :inline_boolean, label: "Invitation to Mattermost", hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
+        .row
+          .span16
+            <hr />
+            %p Would you like to find out more about volunteering opportunities? 
+            %p The best way to connect with other participants!
+            = f.collection_radio_buttons :interested_in_volunteer, [[true, "Yes, tell me more"], [false, "No, thank you"]], :first, :last
         .row
           .span16
             <hr />
