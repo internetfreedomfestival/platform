@@ -14,7 +14,7 @@
         = f.input :gender, collection: translated_options(Person::GENDERS)
         = f.input :country_of_origin, label: "Country of Origin", hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
         .row
-          .span16
+          .span8
             <hr />
             %label *Professional Background
             = f.collection_check_boxes :professional_background, [["Policy/Advocacy","Policy/Advocacy"],["Software Development","Software Development"],["Communications", "Communications"],["Journalism/Media", "Journalism/Media"],["Security Training","Security Training"],["Design","Design"],["Frontline Activism","Frontline Activism"],["Research/Academia","Research/Academia"]], :first, :last

@@ -1,7 +1,7 @@
 = simple_form_for([:cfp, @event], html: {multipart: true}) do |f|
   %fieldset.inputs
     %legend= t("cfp.basic_information")
-    = f.input :title, hint: t("What is the title of your presentation?")
+    = f.input :title, label: "Session Title", hint: t("What is the title of your presentation?")
     = f.input :other_presenters, collection: @public_names, as: :select, hint: t("Is there someone else who is going to presenting with you? Find them by their public name.")
     = f.association :track, label: "Theme", collection: @conference.tracks
     = f.input :description, hint: t("Describe what your presentation will be about.")
@@ -10,7 +10,7 @@
     = f.input :language, as: :language_select, only: @conference.language_codes, include_blank: true
     = f.input :skill_level, hint: "How technically difficult is your presentation? 1 being very easy to understand, 10 requiring a deep level of understanding about the topic", collection: ["Beginner", "Intermediate", "Advanced"], error: " "
     = f.input :event_type, collection: translated_options(Event::TYPES)
-    = f.input :time_slots, as: :select, collection: timeslots, hint: t("cfp.event_time_slots_hint")
+    /= f.input :time_slots, collection: [[4, "1 Hour"],[ 8, "2 Hours"]], :first, :last
     .row
       .span8
         %p{style: "margin-left: 60px"} Travel Assistance
