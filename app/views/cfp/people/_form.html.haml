@@ -29,17 +29,27 @@
             <hr />
             %label *Have you attended the IFF before?
             = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["Not yet!", "Not yet!"]], :first, :last
-            <br />
             / = f.input :iff_before, label: "Have you ever attended the IFF before?", :collection => ["Not yet!", "2015", "2016", "2017"], as: :check_boxes, error: ""
+        .row
+          .span16
+            <hr />
+            %p What are your goals for the 2018 IFF? What would you like to achieve?
+            = f.input :iff_goals, label: false
+            <hr />
+            %p What upcoming challenges and/or obstacles do you see either in your region or worldwide 
+            %p in regards to Internet Freedom that you think the community should be aware of?
+            = f.input :challenges, label: false
+            <hr />
+            %p What resources or tools do you think that the IF community should be aware of? 
+            = f.input :other_resources, label: false
           .span16  
             <hr />
-            %p Would you like to subscribe to the IFF Mailing List? 
-            %p You don’t want to miss important updates!
+            %p Would you like to subscribe to the IFF Mailing List? You don’t want to miss important updates!
             = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last
         .row
           .span16
             <hr />    
-            = f.input :invitation_to_mattermost, as: :inline_boolean, hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
+            = f.input :invitation_to_mattermost, as: :inline_boolean, label: "Invitation to Mattermost", hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
         .row
           .span16
             <hr />
