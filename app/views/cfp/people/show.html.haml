@@ -36,8 +36,11 @@
         <br />
         .row
           .offset1
-            = action_button "success", t("cfp.register"), edit_cfp_person_path
-            = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+            - if @not_registered  
+              = action_button "success", t("cfp.register"), edit_cfp_person_path
+              = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+            - else
+              = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8
       %h1{style: "text-align: center"}=t("cfp.diversity_inclusion_headline")
       %h4{style: "text-align: center"}=t("cfp.diversity_info")
