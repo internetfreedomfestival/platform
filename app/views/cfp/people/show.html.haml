@@ -9,7 +9,7 @@
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
     %h1{:style => "text-align: center;"} Welcome to the IFF 2018
   .row
-    .span8{style: "background-color: #92ebe6"}
+    .span8
       %h1{style: "text-align: center"}=t("cfp.call_for_participation_headline")
       %h4{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
       <br />
@@ -36,12 +36,12 @@
         <br />
         .row
           .offset1
-            = action_button "success", t("cfp.edit_profile"), edit_cfp_person_path
+            = action_button "success", t("cfp.register"), edit_cfp_person_path
             = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
-    .span8{style: "background-color: #ffd350"}
+    .span8
       %h1{style: "text-align: center"}=t("cfp.diversity_inclusion_headline")
       %h4{style: "text-align: center"}=t("cfp.diversity_info")
-    .span8{style: "background-color: #f3d5d5"}
+    .span8
       - unless @conference.call_for_participation.contact_email.blank?
         %h1{style: "text-align: center"}=t("cfp.contact_headline")
         %p{{style: "text-align: center"}}=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
