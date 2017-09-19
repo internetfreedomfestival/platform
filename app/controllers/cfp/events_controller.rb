@@ -26,9 +26,9 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/new
   def new
     @new = true
-    @public_names = []
+    @public_names = ""
     Person.all.each do |person|
-      @public_names << person.public_name
+      @public_names += person.public_name + ", "
     end
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
@@ -48,9 +48,9 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/1/edit
   def edit
     @edit = true
-    @public_names = []
+    @public_names = ""
     Person.all.each do |person|
-      @public_names << person.public_name
+      @public_names += person.public_name + ", "
     end
     authorize! :submit, Event
     @event = current_user.person.events.find(params[:id])
