@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918180347) do
+ActiveRecord::Schema.define(version: 20170919221520) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20170918180347) do
     t.string   "theme"
     t.string   "skill_level"
     t.boolean  "travel_assistance"
+    t.string   "iff_before"
   end
 
   add_index "events", ["conference_id"], name: "index_events_on_conference_id"

@@ -140,7 +140,7 @@ class Cfp::EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience,:desired_outcome, :skill_level,:travel_assistance, :other_presenters, :track,
+      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, { iff_before: [] }, :track,
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
