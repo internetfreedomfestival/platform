@@ -26,9 +26,9 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/new
   def new
     @new = true
-    @public_names = []
+    @public_names = ""
     Person.all.each do |person|
-      @public_names << person.public_name
+      @public_names += person.public_name + ", "
     end
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
@@ -48,9 +48,9 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/1/edit
   def edit
     @edit = true
-    @public_names = []
+    @public_names = ""
     Person.all.each do |person|
-      @public_names << person.public_name
+      @public_names += person.public_name + ", "
     end
     authorize! :submit, Event
     @event = current_user.person.events.find(params[:id])
@@ -140,7 +140,7 @@ class Cfp::EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience,:desired_outcome, :skill_level,:travel_assistance, :other_presenters, :track,
+      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, { iff_before: [] }, :track,
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
