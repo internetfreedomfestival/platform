@@ -1,8 +1,16 @@
 %section
   .page-header
-    %h1 Sign in
+    %h1 Welcome to the IFF Community Platform
+    %h5 We’re happy to see you here! You must sign up to the platform to before you are able to take advantage of the following features:
+    %ul
+      %li Register to attend the IFF
+      %li Submit session proposals to the IFF
+      %li Apply to the Diversity and Inclusion Fund to receive travel support for the IFF
+      %li See the full program and schedule
+      %li Leave your session comments and feedback
   .row
     .span8
+      %h1 Sign in
       = render "shared/flash", flash: flash
       = simple_form_for @user, url: session_path do |f|
         %fieldset.inputs

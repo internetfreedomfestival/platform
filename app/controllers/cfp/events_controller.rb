@@ -33,7 +33,6 @@ class Cfp::EventsController < ApplicationController
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
     if auth_person_for_new_event?(person)
-      flash[:alert] = "You must first fill out all required fields of your personal profile."
       return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
     end
     authorize! :submit, Event
