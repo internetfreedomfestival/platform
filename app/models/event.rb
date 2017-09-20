@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
 
   before_create :generate_guid
 
-  TYPES = ["Workshop", "Conversation", "Panel discussion", "Training", "Other"].freeze
+  TYPES = ["On the Frontlines", "Making Better Tech", "Training and Best Practices", "Internet Freedom: Present and Future", "Healthier Networks and Organizations", "Advocacy, Policy and Research", "Journalism, Media and Communications"].freeze
   ACCEPTED = %w(accepting unconfirmed confirmed scheduled).freeze
 
   has_one :ticket, as: :object, dependent: :destroy
