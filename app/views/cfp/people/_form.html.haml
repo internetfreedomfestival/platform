@@ -45,18 +45,22 @@
           .span16  
             <hr />
             %p Would you like to subscribe to the IFF Mailing List? You don’t want to miss important updates!
-            = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last
+            = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last, checked: true
         .row
           .span16
             <hr />    
-            = f.input :invitation_to_mattermost, as: :inline_boolean, label: "Invitation to Mattermost", hint: "Mattermost provides a real-time chat service where you can talk to other participants of IFF."
+            %p Invitation to Mattermost: Mattermost provides a real-time chat service where you can talk to other participants of IFF.
+            = f.collection_radio_buttons :invitation_to_mattermost, [[true, "Yes, please"], [false, "No, thank you"]], :first, :last, checked: true
         .row
           .span16
             <hr />
             %p Would you like to find out more about volunteering opportunities? 
             %p The best way to connect with other participants!
-            = f.collection_radio_buttons :interested_in_volunteer, [[true, "Yes, tell me more"], [false, "No, thank you"]], :first, :last
+            = f.collection_radio_buttons :interested_in_volunteer, [[true, "Yes, tell me more"], [false, "No, thank you"]], :first, :last, checked: true
         .row
           .span16
             <hr />
-        = f.button :submit, class: 'primary'
+        -if @first_time     
+          = f.button :submit, class: 'primary', value: "Submit Registration"
+        -else 
+          = f.button :submit, class: 'primary', value: "Edit Registration Info"
