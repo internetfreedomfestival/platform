@@ -4,6 +4,8 @@
 .env.production
 .ruby-version
 config/database.yml
+config/secrets.yml
+config/secrets.yml~
 db/*.sqlite3
 log/*.log
 tmp/*
