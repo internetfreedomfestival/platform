@@ -16,7 +16,6 @@ class Cfp::PeopleController < ApplicationController
 
   def new
     @person = Person.new(email: current_user.email)
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render xml: @person }
@@ -25,6 +24,9 @@ class Cfp::PeopleController < ApplicationController
 
   def edit
     @person = current_user.person
+    if @person.public_name == 'Enter a public name here'
+      @first_time = true
+    end
     if @person.nil?
       flash[:alert] = 'Not a valid person'
       return redirect_to action: :index

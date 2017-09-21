@@ -1,4 +1,71 @@
 = simple_form_for([:cfp, @event], html: {multipart: true}) do |f|
+  %h3 Please, read the following instructions thoroughly before submitting your proposal.
+  <hr />
+  %h3 1. As a presenter, you should:
+  .row
+    .span4
+      %p Trigger a conversation over a particular topic that will continue outside of the session
+    .span4
+      %p Be inclusive and foster new connections between participants
+    .span4
+      %p Respect diversity of opinion, experience and background. Please review our <a href="https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct">Code of Conduct</a>
+    .span4
+      %p Design your session to fit under one of the IFF’s Themes
+  <br />
+  .row
+    .span4
+      %p Avoid using a projector or technical equipment
+    .span4
+      %p Limit your session time to between 1 and 2 hours
+    .span4
+      %p Invite different organizations or projects to collaborate on the session with you
+  <hr />
+  %h3 2. Choose one of the 2018 IFF themes for your session
+  .row
+    .span4
+      %h5 **On the Frontlines**
+      %p This theme creates a space for individuals on the frontlines, with two specific goals in mind: providing them with the skills and knowledge they need to stay safe online, and an opportunity to share regional experiences about current and upcoming surveillance and censorship challenges.
+    .span4
+      %h5 **Making Better Tech**
+      %p The Making Better Tech theme is a space for the technologists that are driving the next generation of security and privacy tools. The theme is geared towards sharing knowledge on improving existing tools, supporting the collaborative development of solutions to real-world technical problems, collectively tackle known obstacles and help the community strategize on how to work better, together.
+    .span4
+      %h5 **Training and Best Practices**
+      %p The Training and Best Practices theme creates a space for trainers, practitioners, researchers and techies working with risk management, digital security, and holistic privacy human-centered capacity building. From sharing effective tools and customized teaching practices and solutions, to addressing shared challenges and strengthening community support and fostering feedback exchange with tool developers.
+    .span4
+      %h5 **Internet Freedom: 
+      %h5 Present and Future**
+      %p  How should the future of the Internet Freedom space look? How can we get there from here? The Internet Freedom: Past, Present and Future theme provides the community with an opportunity to collectively create a vision and roadmap future opportunities, and tackle some of overarching issues and concerns.
+  .row
+    <br />
+    .span4
+      %h5 **Healthier Networks and Organizations**
+      %p The Healthier Networks and Organizations theme provides a space to tackle common problems that prevent entities in the Internet Freedom space from better serving their constituents. In addition, common good projects or FLOSS tools needing help with their strategy can opt to present their project and receive collaborative feedback and recommendations from IFF participants.
+    .span4
+      %h5 **Advocacy, Policy and Research**
+      %p Only through collaboration can we achieve social and political change. The Advocacy, Policy and Research theme addresses how the Internet Freedom communities can facilitate civic engagement and collective action for better policies worldwide, and how actors from other fields can take an active part in the conversation.
+    .span4
+      %h5 **Journalism, Media and Communications**
+      %p The Journalism, Media and Communications theme creates a space for journalists, media organizations, designers and communications professionals to better assess the risks and threats to their work in an increasingly hostile global environment.
+  <hr />
+  %h3 3. Session Formats
+  .row
+    .span4
+      %h5 Conversation
+      %p Share your experience and ideas and invite reflection
+    .span4
+      %h5 Workshop
+      %p A practical, hands-on oriented session.
+    .span4
+      %h5 Training
+      %p Teach something to the attendees
+    .span4
+      %h5 Panel Discussion 
+      %p Several speakers sharing their point of view around one topic
+  .row
+    .span4 
+      %h5 Other
+      %p You can also create your own formats, as long as they fit within the allocated times and spaces.
+  <hr />
   %fieldset.inputs
     %legend= t("cfp.basic_information")
     = f.input :title, label: "Session Title", hint: t("What is the title of your presentation?")
@@ -6,9 +73,9 @@
     %p{style: "margin-left: 30px;"} (Here's a list of our registered public names you can add)
     = @public_names
     <hr />
-    = f.input :event_type, label: "Session Format", collection: translated_options(Event::TYPES)
+    = f.input :event_type, label: "Theme", collection: translated_options(Event::TYPES), hint: "Please choose a theme to submit your session under"
     = f.input :language, as: :language_select, only: @conference.language_codes, include_blank: true
-    = f.association :track, label: "Theme", collection: @conference.tracks, hint: "Please choose a theme to submit your session under"
+    = f.association :track, label: "Session Format", collection: @conference.tracks
     = f.input :skill_level, collection: ["Beginner", "Intermediate", "Advanced"], error: " "
     .row
       %p{style: "margin-left: 3em"} Preferred Session Time
@@ -25,10 +92,6 @@
         <hr />
         %label *Have you presented at IFF before?
         = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["Not yet!", "Not yet!"]], :first, :last
-    .row
-      .span8
-        <hr />
-        = f.input :travel_assistance, as: :inline_boolean, label: "Would you like to apply for travel assistance?"
 
         /%p{style: "margin-left: 60px"} Would you like to apply for travel assistance?
         /= f.collection_radio_buttons :travel_assistance, [[true, "Yes"], [false, "No"]], :first, :last
