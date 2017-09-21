@@ -28,7 +28,7 @@ class Cfp::EventsController < ApplicationController
     @new = true
     @public_names = ""
     Person.all.each do |person|
-      @public_names += person.public_name + ", "
+      @public_names += person.public_name + ", " unless person.public_name == "Enter a public name here"
     end
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
@@ -57,6 +57,12 @@ class Cfp::EventsController < ApplicationController
 
   # POST /cfp/events
   def create
+    # Removes extra spaces saved by params 
+    years_only = []
+    params[:event][:iff_before].each do |year|
+      years_only << year unless year == ""
+    end
+
     authorize! :submit, Event
     @event = Event.new(event_params.merge(recording_license: @conference.default_recording_license))
     @event.conference = @conference
@@ -65,6 +71,7 @@ class Cfp::EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
+        @event.update(iff_before: years_only)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
@@ -80,8 +87,12 @@ class Cfp::EventsController < ApplicationController
     @event = current_user.person.events.readonly(false).find(params[:id])
     @event.recording_license = @event.conference.default_recording_license unless @event.recording_license
 
+    # Removes extra spaces saved by params and does not update for [""] params 
+    years_only = keep_old_iff_before_if_blank
+
     respond_to do |format|
       if @event.update_attributes(event_params)
+        @event.update(iff_before: years_only)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
@@ -147,5 +158,17 @@ class Cfp::EventsController < ApplicationController
 
   def auth_person_for_new_event?(person)
     !person.valid? || person.professional_background == [""] || person.iff_before == [""] || person.country_of_origin.nil?
+  end
+
+  def keep_old_iff_before_if_blank
+    years_only = []
+    if params[:event][:iff_before] == [""]
+      years_only = @event.iff_before
+    else
+      params[:event][:iff_before].each do |year|
+        years_only << year unless year == ""
+      end
+    end
+    years_only
   end
 end
