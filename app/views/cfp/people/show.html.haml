@@ -5,19 +5,20 @@
         - unless cfp_hard_deadline_over?
           = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
         
-      = action_button "", t("cfp.edit_profile"), edit_cfp_person_path
+      = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
-    %h1{:style => "text-align: center;"} Welcome to the IFF 2018
+    %h1 Welcome to the IFF 2018
   .row
     .span8
-      %h1{style: "text-align: center"}=t("cfp.call_for_participation_headline")
-      %h4{:style => "text-align: center;"}=t("cfp.want_to_submit_an_event")
+      %h1{style: "text-align: center"}=t("cfp.call_for_proposal_headline")
+      %h4{:style => "text-align: center;"}=t("cfp.call_for_prop_info")
       <br />
       - unless @conference.call_for_participation.info_url.blank?
         %p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
       %p{style: "text-align: center"}
         =t("cfp.deadline_description")
-        %b= l(@conference.call_for_participation.end_date)
+        %b October 31st, 2017
+        /%b= l(@conference.call_for_participation.end_date)
       <br />
       - if cfp_hard_deadline_over?
         %p=t("cfp.hard_deadline_over")
@@ -31,7 +32,7 @@
             = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past
-          %p{style: "text-align: center"}=t("cfp.not_forget_personal_details")
+          /%p{style: "text-align: center"}=t("cfp.not_forget_personal_details")
         .clear
         <br />
         .row
@@ -42,12 +43,39 @@
             - else
               = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8
-      %h1{style: "text-align: center"}=t("cfp.diversity_inclusion_headline")
-      %h4{style: "text-align: center"}=t("cfp.diversity_info")
+      %h1{style: "text-align: center"}=t("cfp.contact_headline")
+      %h5{style: "text-align: center"}=t("cfp.contact_mattermost")
+      %h5{style: "text-align: center"} <a href="https://community.internetfreedomfestival.org/signup_user_complete/?id=ae9acd5b24f12ad51e158db0cddd97d0">Join the IFF Mattermost</a>
+      %h5{style: "text-align: center"} Follow the IFF on Twitter to be on top of all things IFF!
+      %h5{style: "text-align: center"} <a href="http://twitter.com/internetff/">Follow @InternetFF</a>
+      %h5{style: "text-align: center"} Subscribe to the IFF Weekly Mailing List to get general news and updates, community stories, upcoming events and new job opportunities, all conveniently summarized and sent to your inbox once a week!
+      %h5{style: "text-align: center"} <a href="https://lists.ghserv.net/mailman/listinfo/festival">Subscribe</a> 
+  .row
     .span8
-      - unless @conference.call_for_participation.contact_email.blank?
-        %h1{style: "text-align: center"}=t("cfp.contact_headline")
-        %p{{style: "text-align: center"}}=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
+      <br />
+      <hr />         
+      %h1{style: "text-align: center"}=t("cfp.diversity_inclusion_headline")
+      %h4{style: "text-align: center"}=t("cfp.dif_mission")
+      %h5{style: "text-align: center"}=t("cfp.diversity_info") 
+    .span8
+      <br />
+      <hr />  
+      %h1{style: "text-align: center"} IFF Wiki
+      %h5{style: "text-align: center"} The IFF Wiki is the central information hub for the IFF. You will find useful tips about our host city of Valencia including where to stay, transportation options, restaurants and more!
+      %h5{style: "text-align: center"} <a href="https://internetfreedomfestival.org/wiki/index.php/Main_Page">Check out the IFF Wiki</a>
+    .span8
+      <br />
+      <hr />
+      %h1{style: "text-align: center"} Respect and Collaboration 
+      %p{style: "text-align: center"} The IFF is designed to improve collaboration among very diverse communities, and is committed to providing a safe, welcoming and fun environment for everybody.
+      %p{style: "text-align: center"} We encourage all participants to approach the event with open and positive attitudes, to engage constructively with others, and take the time to celebrate the passion and accomplishments of fellows attendees.
+      %h5{style: "text-align: center"} <a href="https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct">Please Review our Code of Conduct</a>
+    .span8
+      <br />
+      <hr />
+      %h1{style: "text-align: center"} Contact
+      %h5{{style: "text-align: center"}}=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
+      %h5{style: "text-align: center"} <a href="https://pgp.mit.edu/pks/lookup?op=get&search=0xF60A89AD6FF97A2F">Public PGP Key</a>
   .row
     .span16
       - if @person.events_in(@conference).size > 0
