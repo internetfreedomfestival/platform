@@ -24,23 +24,22 @@
         - if @person.availabilities_in(@conference).count == 0
           .clear
         %p=t("cfp.input_appreciation")
-        .row{style: "padding: 13px"}
-          = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
+        /.row{style: "padding: 13px"}
+        = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past
           /%p=t("cfp.not_forget_personal_details")
         .clear
         <br />
-        .row
-          - if @not_registered  
-            = action_button "success", t("cfp.register"), edit_cfp_person_path
-            = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
-          - else
-            = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+        - if @not_registered  
+          = action_button "success", t("cfp.register"), edit_cfp_person_path
+          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+        - else
+          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"}=t("cfp.contact_headline")
       %p=t("cfp.contact_mattermost")
-      = action_button "success", t("Join the IFF Mattermost"), "https://community.internetfreedomfestival.org/signup_user_complete/?id=ae9acd5b24f12ad51e158db0cddd97d0"
+      = action_button "success", "Join the IFF Mattermost", "https://community.internetfreedomfestival.org/signup_user_complete/?id=ae9acd5b24f12ad51e158db0cddd97d0"
       %p{style: "margin-top: 20px"} Follow the IFF on Twitter to be on top of all things IFF!
       = action_button "success", "Follow @InternetFF", "http://twitter.com/internetff/"
       %p{style: "margin-top: 20px"} Subscribe to the IFF Weekly Mailing List to get general news and updates, community stories, upcoming events and new job opportunities, all conveniently summarized and sent to your inbox once a week!
