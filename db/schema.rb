@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170920205455) do
+ActiveRecord::Schema.define(version: 20170922212459) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -314,6 +314,8 @@ ActiveRecord::Schema.define(version: 20170920205455) do
     t.text     "iff_goals"
     t.text     "challenges"
     t.text     "other_resources"
+    t.boolean  "already_mailing"
+    t.boolean  "already_mattermost"
   end
 
   add_index "people", ["email"], name: "index_people_on_email"
