@@ -48,9 +48,17 @@
             = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last, checked: true
         .row
           .span16
+            <br /><br />
+            = f.input :already_mailing, as: :boolean, boolean_style: :inline, label: "I'm already subscribed to the IFF Mailing List."
+        .row
+          .span16
             <hr />    
             %p Invitation to Mattermost: Mattermost provides a real-time chat service where you can talk to other participants of IFF.
             = f.collection_radio_buttons :invitation_to_mattermost, [[true, "Yes, please"], [false, "No, thank you"]], :first, :last, checked: true
+        .row
+          .span16
+            <br /><br />
+            = f.input :already_mattermost, as: :boolean, boolean_style: :inline, label: "I'm already a member of the IFF Mattermost?"
         .row
           .span16
             <hr />
