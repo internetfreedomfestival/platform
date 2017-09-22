@@ -85,8 +85,8 @@
     .row
       .span16
         <hr />
-        %label *Have you presented at IFF before?
-        = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["Not yet!", "Not yet!"]], :first, :last
+        %label Have you presented at IFF before?
+        = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"]], :first, :last
 
         /%p{style: "margin-left: 60px"} Would you like to apply for travel assistance?
         /= f.collection_radio_buttons :travel_assistance, [[true, "Yes"], [false, "No"]], :first, :last
