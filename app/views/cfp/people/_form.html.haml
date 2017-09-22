@@ -10,7 +10,7 @@
         = f.input :public_name, label: "Public Display Name", hint: t("cfp.public_name_hint")
         = f.input :first_name, label: "First Name"
         = f.input :last_name, label: "Last Name"
-        = f.input :pgp_key, label: "PGP Key", as: :string 
+        = f.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f" 
         = f.input :gender, collection: translated_options(Person::GENDERS)
         = f.input :country_of_origin, label: "Country of Origin", hint: "Where are you from?", collection: translated_options(Person::COUNTRIES), error: " "
         .row
