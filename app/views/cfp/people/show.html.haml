@@ -9,6 +9,9 @@
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
     %h2 Welcome to the IFF 2018
   .row
+    - if @not_registered == false
+      .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
+        %p{style: "color: white; padding: 6px"} You are registered to attend the 2018 Internet Freedom Festival.
     .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"}=t("cfp.call_for_proposal_headline")
       %p=t("cfp.call_for_prop_info")
