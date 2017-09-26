@@ -32,6 +32,7 @@
             = f.input :email
             = f.input :password
             = f.input :password_confirmation
+            %p{style: "font-size: 15px; font-weight: bold;"} Please contact us if you don’t receive a confirmation email within 10 minutes after signing up! And don’t forget to check your spam folder ;)
           .actions
             = f.button :submit, t("cfp.sign_up"), class: 'primary'
             = link_to t("cfp.back"), new_cfp_session_path, class: "btn"
