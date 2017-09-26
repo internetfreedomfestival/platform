@@ -53,6 +53,16 @@ class Cfp::PeopleController < ApplicationController
 
   def update
     @person = current_user.person
+   # validates that public name hasn't already been taken
+    pub_name = person_params[:public_name]
+    if pub_name == "Enter a public name here"
+      flash[:danger] = "This public name has already been taken!"
+      return redirect_to action: :edit
+    elsif pub_name != @person.public_name && Person.where(public_name: pub_name).count > 0
+      flash[:danger] = "This public name has already been taken!"
+      return redirect_to action: :edit
+    end
+    
     if person_invalid_for_update
       flash[:alert] = "You must fill out all the required fields!"
       return redirect_to action: :edit
