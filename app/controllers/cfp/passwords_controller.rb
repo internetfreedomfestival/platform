@@ -14,8 +14,7 @@ class Cfp::PasswordsController < ApplicationController
     if @user and @user.send_password_reset_instructions(@conference)
       redirect_to new_cfp_session_path, notice: t(:"cfp.sent_password_reset_instructions")
     else
-      flash[:alert] = t(:"cfp.problem_sending_password_reset_instructions")
-      redirect_to new_cfp_user_password_path
+      redirect_to new_cfp_session_path, notice: t(:"cfp.sent_password_reset_instructions")
     end
   end
 

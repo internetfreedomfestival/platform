@@ -13,7 +13,7 @@ class Cfp::ConfirmationsController < ApplicationController
     if @user and @user.send_confirmation_instructions(@conference)
       redirect_to new_cfp_session_path, notice: t(:"cfp.confirmation_instructions_sent")
     else
-      redirect_to new_cfp_user_confirmation_path, flash: { error: t(:"cfp.error_sending_confirmation_instructions") }
+      redirect_to new_cfp_session_path, notice: t(:"cfp.confirmation_instructions_sent")
     end
   end
 
