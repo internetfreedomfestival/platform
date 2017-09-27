@@ -188,6 +188,26 @@ class Person < ActiveRecord::Base
     MergePersons.new(keep_last_updated).combine!(self, doppelgaenger)
   end
 
+  def mattermost_status
+    if self.already_mattermost == true
+      return "Already Subscribed"
+    elsif self.invitation_to_mattermost == true
+      return "Yes"
+    else
+      "No"
+    end
+  end
+
+  def mailing_list_status
+    if self.already_mailing == true
+      return "Already Subscribed"
+    elsif self.include_in_mailings == true
+      return "Yes"
+    else
+      "No"
+    end
+  end
+
   private
 
   def nilify_empty
