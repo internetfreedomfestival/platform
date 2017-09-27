@@ -7,6 +7,9 @@
         %th= sort_link @search, :last_name, term: params[:term]
         %th= sort_link @search, :public_name, term: params[:term]
         %th= sort_link @search, :email, term: params[:term]
+        %th= sort_link @search, :mattermost, term: params[:term]
+        %th= sort_link @search, :mailing_list, term: params[:term]
+        %th= sort_link @search, :organization, term: params[:term]
         - if @conference.ticket_server_enabled?
           %th Ticket
         %th
@@ -15,17 +18,24 @@
         %th Last name
         %th Public name
         %th Email
+        %th Mattermost
+        %th Mailing List
         - if @conference.ticket_server_enabled?
           %th Ticket
       %th.last
   %tbody
     - collection.each do |person|
       %tr
-        %td= image_box person.avatar, :small
+        /%td= image_box person.avatar, :small
+        %td 
         %td= link_to person.first_name, person
         %td= link_to person.last_name, person
         %td= link_to person.public_name, person
         %td= link_to person.email, person
+        %td= person.mattermost_status
+        %td= person.mailing_list_status
+        %td= person.organization
+
         - if @conference.ticket_server_enabled?
           %td
             - if person.remote_ticket?
@@ -36,10 +46,10 @@
         %td.buttons
           = action_button "small", 'Show', person
           - if can? :manage, person
-            = action_button "small", 'Edit', edit_person_path(person)
+            /= action_button "small", 'Edit', edit_person_path(person)
             - if can? :crud, person.user or can? :administrate, User
               - if person.user.nil?
-                = action_button "small", 'User', new_person_user_path(person)
+                /= action_button "small", 'User', new_person_user_path(person)
               - else
-                = action_button "small", 'User', edit_person_user_path(person)
-            = action_button "small danger", 'Destroy', person, confirm: 'Are you sure?', method: :delete
+                /= action_button "small", 'User', edit_person_user_path(person)
+            = action_button "small danger", 'Destroy', person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}
