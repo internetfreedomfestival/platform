@@ -8,4 +8,9 @@
     %li.active= link_to "All people", all_people_path
     %li= link_to "Speakers", speakers_people_path
     %li= link_to "This conference", people_path
+  .pull-right
+    - if can? :administrate, Person
+      = link_to "Download CSV of All People", all_people_path(format: "csv")
+      <br />
+      = link_to "Download XLS of All People", all_people_path(format: "xls")
   = render 'shared/search_and_table', collection: @people
