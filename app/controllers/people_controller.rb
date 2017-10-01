@@ -28,6 +28,10 @@ class PeopleController < ApplicationController
         @people = Person.speaking_at(@conference).accessible_by(current_ability)
         render text: @people.map(&:email).join("\n")
       end
+      result = search Person.involved_in(@conference), params
+      @people = result.paginate page: page_param
+      format.csv  { send_data @people.to_csv, filename: "speakers-#{Date.today}.csv" }
+      format.xls { send_data @people.to_csv(col_sep: "\t") }
     end
   end
 
@@ -50,7 +54,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @people.to_csv, filename: "people-#{Date.today}.csv" }
+      format.csv  { send_data @people.to_csv, filename: "volunteers-#{Date.today}.csv" }
       format.xls { send_data @people.to_csv(col_sep: "\t") }
     end
   end
