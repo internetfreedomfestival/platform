@@ -208,6 +208,18 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.to_csv(options = {})
+    attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources include_in_mailings already_mailing invitation_to_mattermost already_mattermost interested_in_volunteer}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |person|
+        csv << attributes.map{ |attr| person.send(attr) }
+      end
+    end
+  end
+
   private
 
   def nilify_empty
