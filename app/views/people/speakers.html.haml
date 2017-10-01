@@ -12,4 +12,9 @@
     %li= link_to "Volunteers", volunteers_people_path
     %li= link_to "This conference", people_path
   %h4 There are #{@people.count} total people who have submitted an event for the IFF 2018
+  .pull-right
+    - if can? :administrate, Person
+      = link_to "Download CSV of People who Submitted an Event", speakers_people_path(format: "csv")
+      <br />
+      = link_to "Download XLS of People who Submitted an Event", speakers_people_path(format: "xls")
   = render 'shared/search_and_table', collection: @people
