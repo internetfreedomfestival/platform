@@ -6,6 +6,9 @@
     - if collection.empty?
       %p Sorry, but your search yielded no results.
     - else
+      = actions_bar do
+        = will_paginate collection
       = render 'table', collection: collection
       = actions_bar do
         = will_paginate collection
+

@@ -94,6 +94,7 @@ Frab::Application.routes.draw do
           get :all
           get :feedbacks
           get :speakers
+          get :volunteers
         end
       end
 

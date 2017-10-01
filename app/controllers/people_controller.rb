@@ -41,6 +41,18 @@ class PeopleController < ApplicationController
       format.csv  { send_data @people.to_csv, filename: "people-#{Date.today}.csv" }
       format.xls { send_data @people.to_csv(col_sep: "\t") }
     end
+  end  
+
+  def volunteers
+    authorize! :administrate, Person
+    result = Person.where(interested_in_volunteer: true)
+    @people = result.paginate page: page_param
+
+    respond_to do |format|
+      format.html
+      format.csv  { send_data @people.to_csv, filename: "people-#{Date.today}.csv" }
+      format.xls { send_data @people.to_csv(col_sep: "\t") }
+    end
   end
 
   # GET /people/1
