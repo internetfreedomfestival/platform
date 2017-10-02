@@ -7,6 +7,7 @@ class Cfp::PeopleController < ApplicationController
   def show
     @person = current_user.person
     @person.public_name == "Enter a public name here" ? @not_registered = true : @not_registered =false
+    @person.events.count > 0 ? @no_events = false : @no_events = true
     return redirect_to action: 'new' unless @person
     if @person.public_name == current_user.email
       flash[:alert] = 'Your email address is not a valid public name, please change it.'

@@ -59,6 +59,8 @@
       %h2{style: "margin-bottom: 10px"}=t("cfp.diversity_inclusion_headline")
       %p=t("cfp.dif_mission")
       %p=t("cfp.diversity_info") 
+      - if @no_events == false
+        = action_button "success", "Apply for the DIF", '#'
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"} IFF Wiki
       %p The IFF Wiki is the central information hub for the IFF. You will find useful tips about our host city of Valencia including where to stay, transportation options, restaurants and more!
