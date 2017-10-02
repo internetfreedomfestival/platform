@@ -30,8 +30,10 @@ class PeopleController < ApplicationController
       end
       result = search Person.involved_in(@conference), params
       @people = result.paginate page: page_param
-      format.csv  { send_data @people.to_csv, filename: "speakers-#{Date.today}.csv" }
-      format.xls { send_data @people.to_csv(col_sep: "\t") }
+      @csv_people = result
+      
+      format.csv  { send_data @csv_people.to_csv, filename: "speakers-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
 
@@ -39,11 +41,12 @@ class PeopleController < ApplicationController
     authorize! :administrate, Person
     result = search Person, params
     @people = result.paginate page: page_param
+    @csv_people = result
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @people.to_csv, filename: "people-#{Date.today}.csv" }
-      format.xls { send_data @people.to_csv(col_sep: "\t") }
+      format.csv  { send_data @csv_people.to_csv, filename: "people-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end  
 
@@ -51,11 +54,12 @@ class PeopleController < ApplicationController
     authorize! :administrate, Person
     result = Person.where(interested_in_volunteer: true)
     @people = result.paginate page: page_param
+    @csv_people = result
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @people.to_csv, filename: "volunteers-#{Date.today}.csv" }
-      format.xls { send_data @people.to_csv(col_sep: "\t") }
+      format.csv  { send_data @csv_people.to_csv, filename: "volunteers-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
 

@@ -13,7 +13,12 @@
       .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
         %p{style: "color: white; padding: 6px"} You are registered to attend the 2018 Internet Freedom Festival.
     .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
-      %h2{style: "margin-bottom: 10px"}=t("cfp.call_for_proposal_headline")
+      %h2{style: "margin-bottom: 10px"} Register to Attend the 2018 IFF!  
+      - if @not_registered
+        = action_button "success", "Register Now", edit_cfp_person_path
+      - else
+        %p You are registered to attend the 2018 Internet Freedom Festival!
+      %h2{style: "margin-bottom: 10px; margin-top: 10px"}=t("cfp.call_for_proposal_headline")
       %p=t("cfp.call_for_prop_info")
       - unless @conference.call_for_participation.info_url.blank?
         %p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
