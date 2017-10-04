@@ -1,0 +1,2 @@
+class DifsController < ApplicationController
+end

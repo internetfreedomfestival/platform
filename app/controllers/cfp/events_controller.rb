@@ -109,6 +109,9 @@ class Cfp::EventsController < ApplicationController
 
     respond_to do |format|
       if event.delete
+        if current_user.person.events.empty? && current_user.person.dif
+          current_user.person.dif.delete
+        end
         format.html { redirect_to(cfp_person_path, notice: "Your proposal: '#{event.title}' has been deleted") }
       else
         format.html { render action: 'edit' }

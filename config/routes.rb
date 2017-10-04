@@ -55,6 +55,7 @@ Frab::Application.routes.draw do
         get '/not_existing' => 'welcome#not_existing', as: 'not_existing'
 
         root to: 'people#show'
+        resource :dif
       end # namespace :cfp
 
       get '/recent_changes' => 'recent_changes#index', as: 'recent_changes'
@@ -95,6 +96,7 @@ Frab::Application.routes.draw do
           get :feedbacks
           get :speakers
           get :volunteers
+          get :dif
         end
       end
 
@@ -136,6 +138,7 @@ Frab::Application.routes.draw do
           put :send_mail
         end
       end
+
     end # scope path: "/:conference_acronym"
 
     get '/:conference_acronym' => 'home#index', as: 'conference_home'

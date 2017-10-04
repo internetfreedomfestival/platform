@@ -48,6 +48,19 @@ class PeopleController < ApplicationController
       format.csv  { send_data @csv_people.to_csv, filename: "people-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
+  end
+
+  def dif
+    authorize! :administrate, Person
+    result = Person.joins(:dif)
+    @people = result.paginate page: page_param
+    @csv_people = result
+
+    respond_to do |format|
+      format.html
+      format.csv  { send_data @csv_people.to_csv, filename: "dif-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }    
+    end
   end  
 
   def volunteers
