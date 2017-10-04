@@ -18,7 +18,7 @@ class Cfp::DifsController < ApplicationController
       elsif @dif.save
         format.html { redirect_to(cfp_person_path, notice: t('cfp.dif_created')) }
       else
-        flash[:alert] = "You must fill out all the reuired fields"
+        flash[:alert] = "You must fill out all the required fields"
         format.html { render action: 'new' }
       end
     end
