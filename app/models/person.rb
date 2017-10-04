@@ -14,6 +14,7 @@ class Person < ActiveRecord::Base
   has_many :expenses, dependent: :destroy
   has_many :transport_needs, dependent: :destroy
   has_one :ticket, as: :object, dependent: :destroy
+  has_one :dif, dependent: :destroy
 
   accepts_nested_attributes_for :availabilities, reject_if: :all_blank
   accepts_nested_attributes_for :im_accounts, reject_if: :all_blank, allow_destroy: true
@@ -219,6 +220,18 @@ class Person < ActiveRecord::Base
       end
     end
   end
+
+  # def self.dif_to_csv(options = {})
+  #   attributes = %w{id email public_name willing_to_facilitate travel_support past_travel_assistance}
+
+  #   CSV.generate(headers: true) do |csv|
+  #     csv << attributes
+
+  #     all.each do |person|
+  #       csv << attributes.map{ |attr| person.send(attr) }
+  #     end
+  #   end
+  # end
 
   private
 

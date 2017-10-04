@@ -39,11 +39,7 @@
           /%p=t("cfp.not_forget_personal_details")
         .clear
         <br />
-        - if @not_registered  
-          = action_button "success", t("cfp.register"), edit_cfp_person_path
-          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
-        - else
-          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+        = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"}=t("cfp.contact_headline")
       %p=t("cfp.contact_mattermost")
@@ -57,11 +53,17 @@
   .row
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}        
       %h2{style: "margin-bottom: 10px"}=t("cfp.diversity_inclusion_headline")
-      %p=t("cfp.dif_mission")
       %p=t("cfp.diversity_info") 
       - if @no_events == false
-        = action_button "success", "Apply for the DIF", '#'
-    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
+        - if @no_dif
+          = action_button "success", "Apply Now", new_cfp_dif_path
+          %p{style: "margin-bottom: 19px"}
+        - else
+          = action_button "success", "Edit your Application", edit_cfp_dif_path
+          %p{style: "margin-bottom: 19px"}
+      - else 
+        %p=t("cfp.dif_submit_events")
+    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px; height: 155px"}
       %h2{style: "margin-bottom: 10px"} IFF Wiki
       %p The IFF Wiki is the central information hub for the IFF. You will find useful tips about our host city of Valencia including where to stay, transportation options, restaurants and more!
       = action_button "success", "Check out the IFF Wiki", "https://internetfreedomfestival.org/wiki/index.php/Main_Page", target: :blank

@@ -55,6 +55,8 @@ class Ability
       # everything from guest
       can :submit, Event
 
+      can :submit, Dif
+
       can :crud, Person, id: @user.person.id
 
       can :crud, User, id: @user.id
