@@ -1,13 +1,14 @@
 = simple_form_for(@person, url: cfp_person_path, html: {multipart: true}) do |f|
   %fieldset.inputs
     .row
-      .span16{style: 'background-color: #fffff1'}
+      .span16
         %h2 Register to Attend the 2018 IFF
         <br />
-        %h5{style: "text-align: center"} ***Please note that the public name and email must be different!***
-        <br />
         = f.input :email, label: "Contact Email", hint: t("cfp.email_hint")
-        = f.input :public_name, label: "Public Display Name", hint: t("cfp.public_name_hint")
+        %h5{style: ""} ***Please update your public name to be different than your email***
+        .span16{style: "background-color: #fbd38a; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px"}
+          = f.input :public_name, label: "Public Display Name"
+          %b=t("cfp.public_name_hint")
         = f.input :first_name, label: "First Name"
         = f.input :last_name, label: "Last Name"
         = f.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f" 
