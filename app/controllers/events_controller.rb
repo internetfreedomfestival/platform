@@ -103,6 +103,8 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     authorize! :read, @event
+    event_person = EventPerson.find_by(event_id: @event.id)
+    @submitter = Person.find_by(id: event_person.person_id)
 
     clean_events_attributes
     respond_to do |format|
