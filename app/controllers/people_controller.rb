@@ -7,13 +7,15 @@ class PeopleController < ApplicationController
   # GET /people.xml
   def index
     authorize! :administrate, Person
-    @people = search Person.involved_in(@conference), params
+    return redirect_to all_people_path
+    
+    # @people = search Person.involved_in(@conference), params
 
-    respond_to do |format|
-      format.html { @people = @people.paginate page: page_param }
-      format.xml  { render xml: @people }
-      format.json { render json: @people }
-    end
+    # respond_to do |format|
+    #   format.html { @people = @people.paginate page: page_param }
+    #   format.xml  { render xml: @people }
+    #   format.json { render json: @people }
+    # end
   end
 
   def speakers
@@ -166,7 +168,7 @@ class PeopleController < ApplicationController
     @person.destroy
 
     respond_to do |format|
-      format.html { redirect_to(people_url) }
+      format.html { redirect_to(all_people_path) }
     end
   end
 
