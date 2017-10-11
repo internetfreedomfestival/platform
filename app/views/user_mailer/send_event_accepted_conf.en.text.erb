@@ -1,0 +1,17 @@
+Hello <%= @person.public_name %>!
+
+Your event '<%= @event.title %>' was accepted to be presented at the <%= @conference.title %>!
+
+
+We just wanted to make sure you still want to present at this event. Follow the link below to your user page and click the "Confirm Event" button next to your event. 
+
+<%= cfp_user_confirmation_url(locale: I18n.locale, confirmation_token: @user.confirmation_token, conference_acronym: Conference.current.acronym) %>
+
+Testing: Try this one too! (this doesn't have the confirmation token attached)
+<%= cfp_person_url(locale: I18n.locale, confirmation_token: @user.confirmation_token, conference_acronym: Conference.current.acronym) %>
+
+Thanks for choosing to present at the IFF 2018!
+
+
+Lots of love,
+The IFF Team

@@ -102,6 +102,19 @@ class Cfp::EventsController < ApplicationController
     end
   end
 
+  def update_state
+    authorize! :submit, Event
+    @event = current_user.person.events.find(params[:id])
+    respond_to do |format|
+      if @event.update(state: "confirmed")
+        format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
+      else
+        flash[:alert] = "An error occured, please contact the IFF staff."
+        format.html { render action: 'show' }
+      end
+    end
+  end
+
   # Delete /cfp/events/1
   def destroy
     authorize! :submit, Event

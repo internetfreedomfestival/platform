@@ -9,7 +9,6 @@ class EventsController < ApplicationController
     authorize! :read, Event
 
     @events = search @conference.events.includes(:track), params
-
     clean_events_attributes
     respond_to do |format|
       format.html {
@@ -169,7 +168,6 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
     authorize! :update, @event
-
     respond_to do |format|
       if @event.update_attributes(event_params)
         format.html { redirect_to(@event, notice: 'Event was successfully updated.') }
@@ -205,7 +203,34 @@ class EventsController < ApplicationController
     rescue => ex
       return redirect_to(@event, alert: "Cannot update state: #{ex}.")
     end
+    redirect_to @event, notice: 'Event was successfully updated.'
+  end
 
+    # Send email to user if their event is accepted by admin
+    def update_state_with_email
+    @event = Event.find(params[:id])
+    authorize! :update, @event
+
+      @user = current_user
+      # 
+      send_event_accepted_confirmation(@user, @event, @conference)
+    if params[:send_mail]
+
+      # If integrated mailing is used, take care that a notification text is present.
+      if @event.conference.notifications.empty?
+        return redirect_to edit_conference_path, alert: 'No notification text present. Please change the default text for your needs, before accepting/ rejecting events.'
+      end
+
+      return redirect_to(@event, alert: 'Cannot send mails: Please specify an email address for this conference.') unless @conference.email
+
+      return redirect_to(@event, alert: 'Cannot send mails: Not all speakers have email addresses.') unless @event.speakers.all?(&:email)
+    end
+
+    begin
+      @event.send(:"#{params[:transition]}!", send_mail: params[:send_mail], coordinator: current_user.person)
+    rescue => ex
+      return redirect_to(@event, alert: "Cannot update state: #{ex}.")
+    end
     redirect_to @event, notice: 'Event was successfully updated.'
   end
 
@@ -289,5 +314,10 @@ class EventsController < ApplicationController
       links_attributes: %i(id title url _destroy),
       event_people_attributes: %i(id person_id event_role role_state notification_subject notification_body _destroy)
     )
+  end
+
+  # Trying to send email to user for accepted event notification
+  def send_event_accepted_confirmation(user, event, conference)
+    UserMailer.send_event_accepted_conf(user, event, conference).deliver_now
   end
 end

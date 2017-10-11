@@ -6,11 +6,12 @@
         %th= sort_link @search, :title, 'Title', term: params[:term]
         - if @conference.ticket_server_enabled?
           %th= sort_link @search, :ticket_id, 'Ticket', term: params[:term]
-        %th= sort_link @search, :track_name, 'Track', term: params[:term]
-        %th= sort_link @search, :event_type, 'Type', term: params[:term]
+        %th= sort_link @search, :other_presenters, 'Other Presenters', term: params[:term]
+        %th= sort_link @search, :track_name, 'Format', term: params[:term]
+        %th= sort_link @search, :event_type, 'Theme', term: params[:term]
         - if can? :crud, Event
           %th= sort_link @search, :state, 'State', term: params[:term]
-        %th= sort_link @search, :created_at, term: params[:term]
+        /%th= sort_link @search, :created_at, term: params[:term]
       - else
         %th Title
         - if @conference.ticket_server_enabled?
@@ -24,7 +25,8 @@
   %tbody
     - collection.each do |event|
       %tr
-        %td= link_to (image_box event.logo, :small), event
+        %td
+          /= link_to (image_box event.logo, :small), event
         %td
           = link_to event.title, event
           %p.small
@@ -38,13 +40,15 @@
                 = event.ticket.remote_ticket_id
               -else
                 = link_to event.ticket.remote_ticket_id, get_ticket_view_url( event.ticket.remote_ticket_id ), target: "_blank"
+        %td= event.other_presenters
         %td= link_to_unless (params[:track_name].present? or event.track.nil?), event.track.try(:name), url_for(params.merge({:track_name => event.track.try(:name)}))
         %td= link_to_unless params[:event_type].present?, event.event_type, url_for(params.merge({:event_type => event.event_type}))
         - if can? :crud, Event
           %td= link_to_unless params[:event_state].present?, event.state, url_for(params.merge({:event_state => event.state}))
-        %td= l(event.created_at.to_date)
+        
+        /%td= l(event.created_at.to_date)
         %td.buttons
           = action_button "small", 'Show', event
           - if can? :crud, event
             = action_button "small", 'Edit', edit_event_path(event)
-            = action_button "small danger", 'Destroy', event, confirm: 'Are you sure?', method: :delete
+            = action_button "small danger", 'Destroy', event, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this event? This will be final!"}

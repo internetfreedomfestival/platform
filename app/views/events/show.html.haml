@@ -11,6 +11,8 @@
             = action_button "danger", "Reject event", update_state_event_path(@event, transition: :reject, send_mail: true), method: :put, confirm: "Are you sure?", hint: "Reject this event. The speaker(s) will be notified of the rejection via email."
         - if @event.transition_possible? :accept
           = action_button "success", "Accept event (no email)", update_state_event_path(@event, transition: :accept), method: :put, hint: "Accept this event without sending an automated email."
+        - if @event.transition_possible? :accept
+          = action_button "success", "Accept event (Email)", update_state_with_email_event_path(@event, transition: :accept), method: :put, hint: "Accept this event and send an automated email."
         - if @event.transition_possible? :reject
           = action_button "danger", "Reject event (no email)", update_state_event_path(@event, transition: :reject), method: :put, confirm: "Are you sure?", hint: "Reject this event without sending an automated email."
         - if @event.transition_possible? :confirm
@@ -37,14 +39,18 @@
     .span6
       %h2= t(:basic_information)
       %p
-        %b= Event.human_attribute_name(:subtitle) + ':'
-        = @event.subtitle
-      %p
         %b= Event.human_attribute_name(:track) + ':'
         = @event.track_name
       %p
-        %b= Event.human_attribute_name(:event_type) + ':'
-        = @event.event_type
+        %b= "Other Presenters:"
+        = @event.other_presenters
+      %p
+        %b= "Theme:"
+        = @event.event_type       
+      %p
+        %b Format:
+        = @event.track      
+      
       - if can? :crud, Event
         %p
           %b= Event.human_attribute_name(:state) + ':'
@@ -58,16 +64,30 @@
             = link_to @event.ticket.remote_ticket_id, get_ticket_view_url( @event.ticket.remote_ticket_id ), target: "_blank"
       %p
         %b Language:
-        = @event.language
+        = @event.language 
       %p
-        %b Public:
-        = check_box_tag :public, @event.public, @event.public, disabled: true
+        %b Skill Level:
+        = @event.skill_level
+      %p
+        %b Event Duration in Hours:
+        = @event.time_slots / 4
+      %p
+        %b Presented IFF Before?:
+        = @event.iff_before
       %p
         %b Average audience feedback:
         = number_with_precision @event.average_feedback, precision: 1
     .span6
       %h2= EventPerson.model_name.human(count: 2)
       %p= @event.speakers.map{ |p| link_to p.public_name, p}.join(", ").html_safe
+      %h2 Description:
+      = simple_format @event.description
+      %p
+        %b Target Audience:
+        = @event.target_audience_experience
+      %p
+        %b Desired Outcome:
+        = @event.desired_outcome
       %h2 Scheduling
       %p
         %b Time slots:
@@ -85,17 +105,22 @@
     .span4
       = image_box @event.logo, :large
   .row
-    .span16
-      %h2 Content
+    - if @submitter.dif
+      .span6
+        %h2 DIF
+        %b Status: 
+        = @submitter.dif.status
+        %br/
+        %b Type of Travel Support Requested: 
+        = @submitter.dif.travel_support      
+        %br/
+        %b Received travel assistance in the past?: 
+        = @submitter.dif.past_travel_assistance
+        %br/
+        %b Willing to Fascilitate?
+        = @submitter.dif.willing_to_facilitate
   .row
-    .span6
-      %p
-        %b Abstract:
-        = simple_format @event.abstract
     .span10
-      %p
-        %b Description:
-        = simple_format @event.description
       %p
         - if @event.links.any?
           %b Links:
@@ -113,32 +138,21 @@
     .span16
       %h2 Notes
   .row
+    .span8
+      %p
+        %b Submission Notes(user and admin):
+        = @event.submission_note
+      %p
+        %b Public:
+        = check_box_tag :public, @event.public, @event.public, disabled: true
+      %p
+        %b Abstract:
+        = simple_format @event.abstract
+      %p
+        %b= Event.human_attribute_name(:tech_rider) + ':'
+        = @event.tech_rider
     - if can? :crud, @event
       .span8
         %p
           %b Notes(admin):
           = @event.note
-    .span8
-      %p
-        %b Submission Notes(user and admin):
-        = @event.submission_note
-  .row
-    .span8
-      %p
-        %b= Event.human_attribute_name(:tech_rider) + ':'
-        = @event.tech_rider
-  .row
-    - if @submitter.dif
-      .span6
-        %h2 DIF
-        %b Status: 
-        = @submitter.dif.status
-        %br/
-        %b Type of Travel Support Requested: 
-        = @submitter.dif.travel_support      
-        %br/
-        %b Received travel assistance in the past?: 
-        = @submitter.dif.past_travel_assistance
-        %br/
-        %b Willing to Fascilitate?
-        = @submitter.dif.willing_to_facilitate

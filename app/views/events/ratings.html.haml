@@ -39,6 +39,8 @@
           = @events_no_review
     .row
       .span16
+        = actions_bar do
+          = will_paginate @events
         %table.zebra-striped
           %thead
             %tr
