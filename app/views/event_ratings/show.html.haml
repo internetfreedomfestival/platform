@@ -10,10 +10,7 @@
     %li= link_to "People", people_event_path(@event)
     %li.active= link_to "Ratings", event_event_rating_path(@event)
     %li= link_to "Feedback", event_event_feedbacks_path(@event)
-  .row
-    .span16
-      %small= link_to "Toggle Description >>", "#", data: { function: 'toggle', args: { target: '#full_description' } }
-  #full_description{style: "display:none;"}
+  #full_description
     .row
       .span16
         %p
@@ -26,61 +23,89 @@
             %tbody
               - @event.speakers.each do |person|
                 %tr
-                  %td= image_box person.avatar, :small
                   %td= link_to person.full_name, person
                   %td
-                    %b Average feedback as speaker:
-                    - if average_feedback = person.average_feedback_as_speaker
-                      = sprintf("%.2f / 5.0", average_feedback)
-                    - else
-                      no data
+                    / %b Average feedback as speaker:
+                    / - if average_feedback = person.average_feedback_as_speaker
+                    /   = sprintf("%.2f / 5.0", average_feedback)
+                    / - else
+                    /   no data
     .row
-      .span3
+      .span4
         %p
-          %b Track:
-          = @event.track.try(:name)
-      .span3
+          %b Title:
+          = @event.title        
         %p
-          %b Type:
+          %b Other Presenters:
+          = @event.other_presenters
+        %p
+          %b Theme:
           = @event.event_type
-      .span3
+        %p
+          %b Format:
+          = @event.track.try(:name)
+      .span4
         %p
           %b Language:
           = @event.language
-    .row
-      .span6
         %p
-          %b Abstract:
-          %br/
-          = simple_format @event.abstract
-        - if @event.links
-          %p
-            %b Links:
-            %br/
-            - @event.links.each do |link|
-              = link_to link.title, link.url
-              %br/
-        - unless @event.event_attachments.is_public.empty?
-          %p
-            %b #{t('publich.schedule.files')}:
-            %br/
-            - @event.event_attachments.is_public.each do |attachment|
-              = link_to attachment.link_title, attachment.attachment.url
-              %br/
-      .span10
+          %b Skill Level:
+          = @event.skill_level
         %p
-          %b Description:
-          %br/
-          = simple_format @event.description
+          %b Event Duration in Hours:
+          = @event.time_slots / 4
+      .span8
+        %h3 Description:
+        = simple_format @event.description
+      .span8
+        %p
+          %b Target Audience:
+          = @event.target_audience_experience
+        %p
+          %b Desired Outcome:
+          = @event.desired_outcome 
+        %p
+          %b Presented at IFF Before?:
+          = @event.iff_before      
+    / .row
+    /   .span6
+    /     %p
+    /       %b Abstract:
+    /       %br/
+    /       = simple_format @event.abstract
+    /     - if @event.links
+    /       %p
+    /         %b Links:
+    /         %br/
+    /         - @event.links.each do |link|
+    /           = link_to link.title, link.url
+    /           %br/
+    /     - unless @event.event_attachments.is_public.empty?
+    /       %p
+    /         %b #{t('publich.schedule.files')}:
+    /         %br/
+    /         - @event.event_attachments.is_public.each do |attachment|
+    /           = link_to attachment.link_title, attachment.attachment.url
+    /           %br/
   .row
     .span16
       %h2 My rating
+      %h4 When rating a session, please always consider:
+      %ul
+        %li Does it adhere to the presentation guidelines?
+        %li Does it adequately address the theme it’s submitted under?
+        %li Are the purpose and desired outcome clearly defined?
+        %li Is it inclusive and accessible to many?
+        %li Are the proposed length and format reasonable?
+        %li Does it demonstrate and support collaboration and coordination?
+        %li Is it interesting?
+  
       = simple_form_for @rating, url: event_event_rating_path do |f|
         %fieldset.inputs
           = f.input :rating, as: :rating
           = f.input :comment, input_html: {rows: 3}
         .actions
-          = f.button :submit, class: 'primary'
+          = f.button :submit, class: 'success'
   .row
     .span16
       %h2 All ratings
@@ -107,7 +132,7 @@
                 - if can? :manage, event_rating
                   - event_rating.person = Person.new if event_rating.person.nil?
                   %tr
-                    %td=image_box event_rating.person.avatar, :small
+                    %td
                     %td=event_rating.person.full_name
                     %td
                       = raty_for("event_rating_#{event_rating.id}", event_rating.rating)

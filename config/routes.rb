@@ -43,11 +43,12 @@ Frab::Application.routes.draw do
         end
 
         get '/events/:id/confirm/:token' => 'events#confirm', as: 'event_confirm_by_token'
-
+        get '/events/:id/update_state' => 'events#update_state', as: 'update_state_cfp_event_path'
         resources :events do
           member do
             put :withdraw
             put :confirm
+            put :update_state
           end
         end
 
@@ -115,6 +116,7 @@ Frab::Application.routes.draw do
           get :edit_people
           get :ticket
           put :update_state
+          put :update_state_with_email
           post :custom_notification
         end
         resource :event_rating
