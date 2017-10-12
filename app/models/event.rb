@@ -327,6 +327,18 @@ class Event < ActiveRecord::Base
     possible
   end
 
+  def self.to_csv(options = {})
+    attributes = %w{id title state language description theme skill_level other_presenters iff_before time_slots}
+    
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |event|
+        csv << attributes.map{ |attr| event.send(attr) }
+      end
+    end
+  end
+
   private
 
   def generate_guid
