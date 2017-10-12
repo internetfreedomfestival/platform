@@ -103,8 +103,8 @@
       -if @event.conference != @conference
         %b Conference:
         = @event.conference.acronym
-    .span4
-      = image_box @event.logo, :large
+    / .span4
+    /   = image_box @event.logo, :large
   .row
     - if @submitter.dif
       .span6
