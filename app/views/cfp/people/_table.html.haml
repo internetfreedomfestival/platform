@@ -32,7 +32,7 @@
             = action_button "success", "Confirm", update_state_cfp_event_path(event)
           - if @conference.event_state_visible
             - if event.state == "unconfirmed"
-              = link_to t("cfp.confirm"), confirm_cfp_event_path(event), method: :put, class: "btn success small"
+              = link_to "Confirm", confirm_cfp_event_path(event), method: :put, class: "btn success medium"
             - if event.transition_possible? :withdrawn and event.start_time and event.start_time > Time.now
               = link_to t("cfp.withdraw"), withdraw_cfp_event_path(event), method: :put, confirm: t("cfp.withdrawal_confirmation"), class: "btn danger small"
       - if @conference.feedback_enabled
