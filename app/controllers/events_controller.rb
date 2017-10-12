@@ -207,32 +207,32 @@ class EventsController < ApplicationController
   end
 
     # Send email to user if their event is accepted by admin
-    def update_state_with_email
-    @event = Event.find(params[:id])
-    authorize! :update, @event
+  #   def update_state_with_email
+  #   @event = Event.find(params[:id])
+  #   authorize! :update, @event
 
-      @user = current_user
-      # 
-      send_event_accepted_confirmation(@user, @event, @conference)
-    if params[:send_mail]
+  #     @user = current_user
+  #     # 
+  #     send_event_accepted_confirmation(@user, @event, @conference)
+  #   if params[:send_mail]
 
-      # If integrated mailing is used, take care that a notification text is present.
-      if @event.conference.notifications.empty?
-        return redirect_to edit_conference_path, alert: 'No notification text present. Please change the default text for your needs, before accepting/ rejecting events.'
-      end
+  #     # If integrated mailing is used, take care that a notification text is present.
+  #     if @event.conference.notifications.empty?
+  #       return redirect_to edit_conference_path, alert: 'No notification text present. Please change the default text for your needs, before accepting/ rejecting events.'
+  #     end
 
-      return redirect_to(@event, alert: 'Cannot send mails: Please specify an email address for this conference.') unless @conference.email
+  #     return redirect_to(@event, alert: 'Cannot send mails: Please specify an email address for this conference.') unless @conference.email
 
-      return redirect_to(@event, alert: 'Cannot send mails: Not all speakers have email addresses.') unless @event.speakers.all?(&:email)
-    end
+  #     return redirect_to(@event, alert: 'Cannot send mails: Not all speakers have email addresses.') unless @event.speakers.all?(&:email)
+  #   end
 
-    begin
-      @event.send(:"#{params[:transition]}!", send_mail: params[:send_mail], coordinator: current_user.person)
-    rescue => ex
-      return redirect_to(@event, alert: "Cannot update state: #{ex}.")
-    end
-    redirect_to @event, notice: 'Event was successfully updated.'
-  end
+  #   begin
+  #     @event.send(:"#{params[:transition]}!", send_mail: params[:send_mail], coordinator: current_user.person)
+  #   rescue => ex
+  #     return redirect_to(@event, alert: "Cannot update state: #{ex}.")
+  #   end
+  #   redirect_to @event, notice: 'Event was successfully updated.'
+  # end
 
   # add custom notifications to all the event's speakers
   # POST /events/2/custom_notification
