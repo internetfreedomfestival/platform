@@ -167,9 +167,9 @@
     - else 
       - person.iff_before.each do |year|
         - @iff_before[year] += 1
-    - if person.events && person.professional_background.class == String
+    - if !person.events.empty? && person.professional_background.class == String
       - @event_people_proffesions[person.professional_background] += 1
-    - elsif person.events 
+    - elsif !person.events.empty?
       -person.professional_background.each do |prof|
         - @event_people_proffesions[prof] += 1  
     - if person.events
