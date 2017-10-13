@@ -53,7 +53,6 @@ module ConferenceStatistics
       k = 'unknown' if k.nil?
       result << { label: k, data: v }
     end
-
     result
   end
 

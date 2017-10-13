@@ -33,7 +33,7 @@ class StatisticsController < ApplicationController
   def gender_breakdown
     authorize! :read, @conference
     result = @conference.gender_breakdown(params[:accepted_only])
-
+   
     respond_to do |format|
       format.json { render json: result.to_json }
     end
