@@ -218,13 +218,6 @@
           %p
             %b= key + ":" unless key == ""
             = value unless key == ""
-    .span8
-      %h2 Countries of Origin
-      %p
-        - @countries.each do |key, value|
-          %p
-            %b= key + ":"
-            = value
       <hr /> 
       %h2 Events
       %h4 By Format
@@ -250,10 +243,13 @@
         %p 
           %b= key + ":"
           = value
-
-
-          
-
+    .span8
+      %h2 Countries of Origin
+      %p
+        - @countries.each do |key, value|
+          %p
+            %b= key + ":"
+            = value
 
 
 :coffeescript
