@@ -83,6 +83,9 @@ class PeopleController < ApplicationController
   def show
     @person = Person.find(params[:id])
     authorize! :read, @person
+    
+    @user = User.find(@person.user_id)
+    ConferenceUser.exists?(user_id: @user.id) ? @is_fellow = ConferenceUser.find_by(user_id: @user.id) : @is_fellow = false
     @current_events = @person.events_as_presenter_in(@conference)
     @other_events = @person.events_as_presenter_not_in(@conference)
     clean_events_attributes
@@ -169,6 +172,20 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(all_people_path) }
+    end
+  end
+
+  def make_fellow
+    @person = Person.find_by(id: params[:format])
+    @conference = Conference.find_by(acronym: params[:conference_acronym])
+    authorize! :manage, @person
+    @user = User.find(@person.user_id)
+    @user.update(role: "crew")
+    con_user = ConferenceUser.new(conference_id: @conference.id, user_id: @person.user_id, role: "reviewer")
+    if con_user.save
+      redirect_to(person_path(@person.id), notice: 'Person was successfully updated to Fellow.')
+    else
+      redirect_to(person_path(@person.id), notice: 'Unsuccessful update!')
     end
   end
 

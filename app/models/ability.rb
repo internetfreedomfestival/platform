@@ -108,12 +108,12 @@ class Ability
       # reviews events prior to conference schedule release
       # everything from submitter
       # edit own event rating
-      can :read, CallForParticipation
+      # can :read, CallForParticipation
       can [:read, :read_nested_conference], Conference
 
       can :read, Event, conference_id: @conference.id
       can :crud, EventRating, person_id: @user.person.id
-      can :read, EventRating
+      can :manage, EventRating
       can :read, Person
 
     end
