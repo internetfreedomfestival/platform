@@ -7,7 +7,7 @@ class EventsController < ApplicationController
   # GET /events.xml
   def index
     authorize! :read, Event
-
+    @person = current_user.person
     @events = search @conference.events.includes(:track), params
     clean_events_attributes
     respond_to do |format|
@@ -64,7 +64,7 @@ class EventsController < ApplicationController
   # show event ratings
   def ratings
     authorize! :create, EventRating
-
+    
     result = search @conference.events, params
     @events = result.paginate page: page_param
     clean_events_attributes

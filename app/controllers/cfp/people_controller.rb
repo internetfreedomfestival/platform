@@ -9,7 +9,8 @@ class Cfp::PeopleController < ApplicationController
     @person.public_name == "Enter a public name here" ? @not_registered = true : @not_registered =false
     @person.events.count > 0 ? @no_events = false : @no_events = true
     @person.dif.nil? ? @no_dif = true : @no_dif = false
-
+    ConferenceUser.exists?(user_id: current_user.id) ? @is_fellow = true : @is_fellow = false
+    
     return redirect_to action: 'new' unless @person
     if @person.public_name == current_user.email
       flash[:alert] = 'Your email address is not a valid public name, please change it.'

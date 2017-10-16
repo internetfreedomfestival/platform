@@ -89,6 +89,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
   end
+  
 
   private
 
