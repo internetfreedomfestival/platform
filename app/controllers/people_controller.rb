@@ -83,9 +83,11 @@ class PeopleController < ApplicationController
   def show
     @person = Person.find(params[:id])
     authorize! :read, @person
+    @years_presented = person_presented_before?
     
     @user = User.find(@person.user_id)
     ConferenceUser.exists?(user_id: @user.id) ? @is_fellow = ConferenceUser.find_by(user_id: @user.id) : @is_fellow = false
+    
     @current_events = @person.events_as_presenter_in(@conference)
     @other_events = @person.events_as_presenter_not_in(@conference)
     clean_events_attributes
@@ -235,4 +237,23 @@ class PeopleController < ApplicationController
       ticket_attributes: %i(id remote_ticket_id)
     )
   end
+
+  def person_presented_before?
+    previous_events = []
+    years_presented = []
+    unless @person.events.empty?
+      @person.events.each do |event|
+        previous_events << event.iff_before
+      end
+    end
+    unless previous_events.empty?
+      previous_events.each do |event|
+        if event.include?("2015") || event.include?("2016") || event.include?("2017")
+          years_presented << event
+        end
+      end
+    end
+    years_presented
+  end
+
 end

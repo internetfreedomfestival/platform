@@ -8,7 +8,7 @@
       = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
     %h2 Welcome to the IFF 2018
-    - if @is_fellow
+    - if @is_fellow || current_user.role == "admin"
       .pull-right
         = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
   .row

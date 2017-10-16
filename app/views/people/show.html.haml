@@ -41,6 +41,12 @@
         %b Attending:
         This hasn't been created yet
       %p
+        %b Attended Iff Before:
+        = @person.iff_before
+      %p
+        %b Presented at Iff Before:
+        = @years_presented
+      %p
         %b DIF Status:
         - if @person.dif
           = @person.dif.status

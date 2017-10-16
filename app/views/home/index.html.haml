@@ -114,14 +114,19 @@
           |
           = link_to "Accepted only", "#", id: "gender_accepted_events_only"
         .row
-          
-
           - @event_people = []
           - @people_from_events = []
+          - @presented_before = 0
+          - @first_presentation = 0
 
           - @conference.events.each do |event|
             - @event_people << EventPerson.find_by(event_id: event.id)
-          
+            - if event.iff_before
+              - if event.iff_before.include?("2015") || event.iff_before.include?("2016") || event.iff_before.include?("2017")
+                - @presented_before += 1
+              - else @first_presentation += 1
+            - else
+              - @first_presentation += 1          
           - @event_people.each do |ep|
             - unless ep.nil?
               - @people_from_events << Person.find_by(id: ep.person_id)
@@ -158,7 +163,7 @@
       - @volunteers << person
     - if person.country_of_origin.nil?
       - @countries["Not_Yet_Selected"] += 1
-    -else @countries[person.country_of_origin] += 1
+    - else @countries[person.country_of_origin] += 1
     - if person.professional_background.class == String
       - @prof_back[person.professional_background] += 1
     - else 
@@ -245,6 +250,15 @@
         %p 
           %b= key + ":"
           = value
+      %h4 Presenters
+      %p
+        %b Already Presented:
+        = @presented_before
+      %p
+        %b 1st Time Presenters:
+        = @first_presentation
+
+
     .span8
       %h2 Countries of Origin
       %p
