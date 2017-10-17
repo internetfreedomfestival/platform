@@ -36,6 +36,19 @@ class EventRatingsController < ApplicationController
     end
   end
 
+  def destroy
+    @rating = EventRating.find(params[:event_rating_id])
+    authorize! :delete, @rating
+    
+    if @rating.delete
+      flash[:alert] = 'You deleted your review'
+      redirect_to event_event_rating_path
+    else
+      flash[:alert] = "You're event was NOT deleted"
+      redirect_to event_event_rating_path(@event)
+    end
+  end
+
   protected
 
   def setup_batch_reviews_next_event
