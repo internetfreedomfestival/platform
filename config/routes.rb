@@ -84,6 +84,7 @@ Frab::Application.routes.draw do
         post :send_notification
       end
       get '/conferences/default_notifications' => 'conferences#default_notifications', as: 'conferences_default_notifications'
+      get '/statistics/all_stats' => 'statistics#all_stats', as: 'statistics_all_stats'
 
       resource :call_for_participation
 
