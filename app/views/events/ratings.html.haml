@@ -69,7 +69,7 @@
                 %td
                   - if event.average_rating
                     = raty_for("event_rating_#{event.id}", event.average_rating)
-                %td= event.event_ratings_count
+                %td= event.event_ratings.count
                 %td
                   = link_to 'Show Ratings', event_event_rating_path(event), class: "btn small"
         = actions_bar do
