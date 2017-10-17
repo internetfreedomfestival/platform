@@ -235,18 +235,6 @@ class Person < ActiveRecord::Base
     end
   end
 
-  # def self.dif_to_csv(options = {})
-  #   attributes = %w{id email public_name willing_to_facilitate travel_support past_travel_assistance}
-
-  #   CSV.generate(headers: true) do |csv|
-  #     csv << attributes
-
-  #     all.each do |person|
-  #       csv << attributes.map{ |attr| person.send(attr) }
-  #     end
-  #   end
-  # end
-
   private
 
   def nilify_empty
