@@ -98,6 +98,8 @@
           = f.input :rating, as: :rating
           = f.input :comment, input_html: {rows: 3}
         .actions
+          - if @previous_event
+            = action_button "primary", "Previous Event", event_event_rating_path(@previous_event), hint: "Go back to the previous event rating."
           = f.button :submit, "Submit Event Rating", class: 'success'
           - if @next_event
             = action_button "primary", "Rate Next Event", event_event_rating_path(@next_event), hint: "Proceed to rate the next event."

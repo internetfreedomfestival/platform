@@ -7,6 +7,7 @@ class EventRatingsController < ApplicationController
     authorize! :read, EventRating
     @rating = @event.event_ratings.find_by_person_id(current_user.person.id) || EventRating.new
     setup_batch_reviews_next_event
+    setup_batch_reviews_previous_event
   end
 
   def create
@@ -57,7 +58,17 @@ class EventRatingsController < ApplicationController
     return unless current_index
     return if session[:review_ids].last == @event.id
     @next_event = Event.find(session[:review_ids][current_index + 1])
+  end  
+
+  def setup_batch_reviews_previous_event
+    return unless session[:review_ids]
+    current_index = session[:review_ids].index(@event.id)
+    return unless current_index
+    return if session[:review_ids].first == @event.id
+    @previous_event = Event.find(session[:review_ids][current_index - 1])
   end
+
+
 
   def new_event_rating
     rating = EventRating.new(event_rating_params)
