@@ -6,6 +6,8 @@
           %h3 Already a Fellow
         - else  
           = action_button "success", "Make this person a Fellow", make_fellow_people_path(@person), title: "This will make this person a fellow."
+        - if @user.confirmed_at.nil?
+          = action_button "success", "Confirm User", confirm_user_people_path(@person)
       - if can? :crud, @person
         = action_button "primary", "Edit person", edit_person_path(@person), title: "Edit this person's data."
       - if can? :administrate, Person
