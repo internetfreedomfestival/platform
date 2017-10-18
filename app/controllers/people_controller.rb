@@ -191,6 +191,18 @@ class PeopleController < ApplicationController
     end
   end
 
+  def confirm_user
+    @person = Person.find_by(id: params[:format])
+    authorize! :manage, @person
+    @user = User.find(@person.user_id)
+    
+    if @user.update(confirmed_at: Time.new)
+      redirect_to(person_path(@person.id), notice: 'User profile has been confirmed.')
+    else
+      redirect_to(person_path(@person.id), notice: 'User profile WAS NOT confirmed.')
+    end
+  end
+
   private
 
   def restrict_people

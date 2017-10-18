@@ -100,6 +100,7 @@ Frab::Application.routes.draw do
           get :volunteers
           get :dif
           get :make_fellow
+          get :confirm_user
         end
       end
 
