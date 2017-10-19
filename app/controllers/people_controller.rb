@@ -39,6 +39,27 @@ class PeopleController < ApplicationController
     end
   end
 
+  def confirmed_speakers
+    authorize! :administrate, Person
+
+    respond_to do |format|
+      format.html do
+        result = search Person.confirmed(@conference), params
+        @people = result.paginate page: page_param
+      end
+      format.text do
+        @people = Person.confirmed(@conference).accessible_by(current_ability)
+        render text: @people.map(&:email).join("\n")
+      end
+      result = search Person.confirmed(@conference), params
+      @people = result.paginate page: page_param
+      @csv_people = result
+      
+      format.csv  { send_data @csv_people.to_csv, filename: "speakers-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
+    end
+  end
+
   def all
     authorize! :administrate, Person
     result = search Person, params

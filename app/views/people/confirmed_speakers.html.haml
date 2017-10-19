@@ -9,13 +9,13 @@
     %li= link_to "Speakers", speakers_people_path
     %li= link_to "Attendees", '#'
     %li= link_to "DIF", dif_people_path
-    %li.active= link_to "Volunteers", volunteers_people_path
-    %li= link_to "Confirmed Speakers", confirmed_speakers_people_path
+    %li= link_to "Volunteers", volunteers_people_path
+    %li.active= link_to "Confirmed Speakers", confirmed_speakers_people_path
     /%li= link_to "This conference", people_path
-  %h4 There are #{@people.count} people interested in volunteering for the IFF 2018
+  %h4 There are #{@people.count} total people with confirmed events for the IFF 2018
   .pull-right
     - if can? :administrate, Person
-      = link_to "Download CSV of People Interested in Volunteering", volunteers_people_path(format: "csv")
+      = link_to "Download CSV of All Confirmed Event People", confirmed_speakers_people_path(format: "csv")
       <br />
-      = link_to "Download XLS of People Interested in Volunteering", volunteers_people_path(format: "xls")
+      = link_to "Download XLS of All Confirmed Event People", confirmed_speakers_people_path(format: "xls")
   = render 'shared/search_and_table', collection: @people
