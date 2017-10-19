@@ -99,6 +99,7 @@ Frab::Application.routes.draw do
           get :speakers
           get :volunteers
           get :dif
+          get :confirmed_speakers
           get :make_fellow
           get :confirm_user
         end
