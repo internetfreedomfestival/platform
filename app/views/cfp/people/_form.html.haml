@@ -15,9 +15,9 @@
         = f.input :last_name, label: "Last Name"
         = f.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f" 
         .span16{style: "background-color: #fbd38a; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px"}
-          = f.input :gender, collection: translated_options(Person::GENDERS)
+          = f.input :gender, collection: translated_options(Person::GENDERS), label: "* Gender"
         .span16{style: "background-color: #fbd38a; padding-top: 5px; padding-bottom: 5px; margin-bottom: 10px"}  
-          = f.input :country_of_origin, label: "Country of Origin", collection: translated_options(Person::COUNTRIES), error: " "
+          = f.input :country_of_origin, label: "* Country of Origin", collection: translated_options(Person::COUNTRIES), error: " "
           %b Where are you from?
         = f.input :twitter, label: "Twitter Handle"
         = f.input :personal_website, label: "Personal Website"
@@ -52,23 +52,33 @@
             <hr />
             %p What resources or tools do you think that the IFF community should be aware of? 
             = f.input :other_resources, label: false
-          .span16  
+        /   .span16  
+        /     <hr />
+        /     %p Would you like to subscribe to the IFF Mailing List? You don’t want to miss important updates!
+        /     = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last, checked: true
+        / .row
+        /   .span16
+        /     <br /><br />
+        /     = f.input :already_mailing, as: :boolean, boolean_style: :inline, label: "I'm already subscribed to the IFF Mailing List."
+        / .row
+        /   .span16
+        /     <hr />    
+        /     %p Invitation to Mattermost: Mattermost provides a real-time chat service where you can talk to other participants of IFF.
+        /     = f.collection_radio_buttons :invitation_to_mattermost, [[true, "Yes, please"], [false, "No, thank you"]], :first, :last, checked: true
+        / .row
+        /   .span16
+        /     <br /><br />
+        /     = f.input :already_mattermost, as: :boolean, boolean_style: :inline, label: "I'm already a member of the IFF Mattermost?"
+        .row
+          .span16
             <hr />
             %p Would you like to subscribe to the IFF Mailing List? You don’t want to miss important updates!
-            = f.collection_radio_buttons :include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thank you"]], :first, :last, checked: true
+            = f.input :complete_mailing, label: "Invitation to Mailing?", collection: ["Yes", "No", "Already Subscribed"], error: " "
         .row
           .span16
-            <br /><br />
-            = f.input :already_mailing, as: :boolean, boolean_style: :inline, label: "I'm already subscribed to the IFF Mailing List."
-        .row
-          .span16
-            <hr />    
-            %p Invitation to Mattermost: Mattermost provides a real-time chat service where you can talk to other participants of IFF.
-            = f.collection_radio_buttons :invitation_to_mattermost, [[true, "Yes, please"], [false, "No, thank you"]], :first, :last, checked: true
-        .row
-          .span16
-            <br /><br />
-            = f.input :already_mattermost, as: :boolean, boolean_style: :inline, label: "I'm already a member of the IFF Mattermost?"
+            <hr />
+            %p Mattermost provides a real-time chat service where you can talk to other participants of IFF.
+            = f.input :complete_mattermost, label: "Invitation to Mattermost?", collection: ["Yes", "No", "Already Subscribed"], error: " "
         .row
           .span16
             <hr />
