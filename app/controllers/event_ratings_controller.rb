@@ -40,8 +40,9 @@ class EventRatingsController < ApplicationController
   def destroy
     @rating = EventRating.find(params[:event_rating_id])
     authorize! :delete, @rating
-    
+    @event = Event.find_by(id: params[:event_id])
     if @rating.delete
+      @event.recalculate_average_rating!
       flash[:alert] = 'You deleted your review'
       redirect_to event_event_rating_path
     else
