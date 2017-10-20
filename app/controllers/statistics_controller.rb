@@ -51,6 +51,7 @@ class StatisticsController < ApplicationController
     prof_back = Hash.new(0)
     user_iff_before = Hash.new(0)
     person_countries = Hash.new(0)
+    event_countries = Hash.new(0)
     event_formats = Hash.new(0)
     event_person_prof = Hash.new(0)
     presented_before = Hash.new(0)
@@ -93,11 +94,9 @@ class StatisticsController < ApplicationController
           event_person_prof[prof] += 1
         end
       end
-      # unless person.events.empty?
-      #   person.events.each do |event|
-      #     event_gender[person.gender + ":"] += 1
-      #   end
-      # end
+      if !person.events.empty?
+        event_countries[person.country_of_origin] += 1
+      end
     end
 
     @events.each do |event|
@@ -166,6 +165,10 @@ class StatisticsController < ApplicationController
     @all_stats["Events By State"] = "Totals"
     event_states.each do |state, count|
       @all_stats[state] = count
+    end
+    @all_stats["Events By Country"] = "Totals"
+    event_countries.each do |country, count|
+      @all_stats[country + ":"] = count
     end
 
     respond_to do |format|

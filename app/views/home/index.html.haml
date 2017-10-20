@@ -116,6 +116,7 @@
         .row
           - @event_people = []
           - @people_from_events = []
+          - @event_countries = Hash.new(0)
           - @presented_before = 0
           - @first_presentation = 0
 
@@ -129,8 +130,9 @@
               - @first_presentation += 1          
           - @event_people.each do |ep|
             - unless ep.nil?
+              - person = Person.find_by(id: ep.person.id)
               - @people_from_events << Person.find_by(id: ep.person_id)
-          
+              - @event_countries[person.country_of_origin] += 1
           - @event_people_genders = Hash.new(0)
           - @people_from_events.each do |person|
             - @event_people_genders[person.gender] += 1
@@ -257,6 +259,11 @@
       %p
         %b 1st Time Presenters:
         = @first_presentation
+      %h4 Events By Country:
+      - @event_countries.each do |country, count|
+        %p
+          %b= country + ":"
+          = count
 
 
     .span8
