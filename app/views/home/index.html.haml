@@ -231,11 +231,19 @@
       %h2 Events
       %h4 By Format
       - @formats = Hash.new(0)
+      - @themes = Hash.new(0)
       - @conference.events.each do |event|
         - if event.track
           - @formats[event.track.name] += 1 
+        - @themes[event.event_type] += 1
       %p
         - @formats.each do |key, value|
+          %p
+            %b= key
+            = value
+      %h4 Events by Theme
+      %p
+        - @themes.each do |key, value|
           %p
             %b= key
             = value

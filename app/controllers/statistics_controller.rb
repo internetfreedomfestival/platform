@@ -53,6 +53,7 @@ class StatisticsController < ApplicationController
     person_countries = Hash.new(0)
     event_countries = Hash.new(0)
     event_formats = Hash.new(0)
+    event_themes = Hash.new(0)
     event_person_prof = Hash.new(0)
     presented_before = Hash.new(0)
     event_languages = Hash.new(0)
@@ -103,6 +104,9 @@ class StatisticsController < ApplicationController
       if event.track 
         event_formats[event.track.name] += 1
       end
+      
+      event_themes[event.event_type] += 1
+
       if event.iff_before
         if event.iff_before.include?("2015") || event.iff_before.include?("2016") || event.iff_before.include?("2017")
           presented_before["Already Presented"] += 1
@@ -146,6 +150,12 @@ class StatisticsController < ApplicationController
     event_formats.each do |format, count|
       @all_stats[format] = count
     end
+
+    @all_stats["By Theme"] = "Totals"
+    event_themes.each do |theme, count|
+      @all_stats[theme] = count
+    end
+
     @all_stats["By Professional Background of Presenter"] = "Totals"
     event_person_prof.each do |prof, count|
       @all_stats[prof + ":"] = count
