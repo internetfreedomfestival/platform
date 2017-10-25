@@ -16,6 +16,7 @@
       = f.collection_radio_buttons :willing_to_facilitate, [[true, "Yes"], [false, "No"]], :first, :last
   .row
     <hr />
+    %p{style: "font-size: 16px; color: #f74c33; margin-left: 20px"} Please Note: The Diversity and Inclusion Fund <strong>can only support 1 speaker per session</strong>. Duplicate sessions <strong>won’t be considered for funding</strong>.
     .span1{style: "margin-top: 30px"}
     - if @edit
       = f.button :submit, class: 'primary', value: "Edit your Application"
