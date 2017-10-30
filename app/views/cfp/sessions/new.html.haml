@@ -1,4 +1,7 @@
 %section
+  - if @open_schedule
+    .pull-right
+      =link_to "See our the upcoming schedule", public_schedule_index_path  
   .page-header
     =image_tag "iff-logos.png", :style => "max-width: 24em; margin-bottom: 25px"
     %h1 Welcome to the IFF Community Platform
