@@ -92,7 +92,8 @@ class Public::ScheduleController < ApplicationController
     @events = {}
     @skip_row = {}
     all_rooms.each do |room|
-      events = room.events.confirmed.no_conflicts.is_public.scheduled_on(@day).order(:start_time).to_a
+      events = room.events.confirmed.is_public.scheduled_on(@day).order(:start_time).to_a
+      # Removed .no_conlicts from the above string to escape "Person availabilities model"
       next if events.empty?
       @events[room] = events
       @skip_row[room] = 0
