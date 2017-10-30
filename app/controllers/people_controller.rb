@@ -212,6 +212,18 @@ class PeopleController < ApplicationController
     end
   end
 
+  def allow_late_submissions
+    @person = Person.find_by(id: params[:format])
+    @conference = Conference.find_by(acronym: params[:conference_acronym])
+    authorize! :manage, @person
+    @user = User.find(@person.user_id)
+    if @person.update(late_event_submit: true)
+      redirect_to(person_path(@person.id), notice: 'Person was successfully updated to allow for late event submissions.')
+    else
+      redirect_to(person_path(@person.id), notice: 'Unsuccessful update!')
+    end
+  end
+
   def confirm_user
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
