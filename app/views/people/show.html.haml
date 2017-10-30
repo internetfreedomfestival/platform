@@ -6,6 +6,8 @@
           %h3 Already a Fellow
         - else  
           = action_button "success", "Make this person a Fellow", make_fellow_people_path(@person), title: "This will make this person a fellow."
+        - if @person.late_event_submit == false
+          = action_button "success", "Allow Late Event Submission", allow_late_submissions_people_path(@person), title: "This will allow this person to submit events after the deadline."
         - if @user.confirmed_at.nil?
           = action_button "success", "Confirm User", confirm_user_people_path(@person)
       - if can? :crud, @person
@@ -69,6 +71,10 @@
           Already in Mattermost
         - else     
           = @person.invitation_to_mattermost
+      %p
+        %b Allowed to submit events late:
+        = @person.late_event_submit
+
   .row
     .span10
       %h2 Bio

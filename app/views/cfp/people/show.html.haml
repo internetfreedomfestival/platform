@@ -4,7 +4,8 @@
       - unless @conference.in_the_past
         - unless cfp_hard_deadline_over?
           = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
-        
+        - if @person.late_event_submit
+          = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
       = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
