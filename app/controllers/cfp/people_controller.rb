@@ -82,6 +82,17 @@ class Cfp::PeopleController < ApplicationController
     end
   end
 
+  def cancel_attendance
+    @person = current_user.person
+    if @person.update(attendance_status: "canceled")
+      flash[:alert] = "You have canceled your attendance."
+      return redirect_to action: :show
+    else
+      flash[:alert] = "There was an error cancelling your attendance. Please contact the IFF team."
+      return redirect_to action: :show      
+    end
+  end
+
   private
 
   def person_params

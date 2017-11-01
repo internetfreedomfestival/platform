@@ -14,21 +14,39 @@
       .pull-right
         = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
   .row
-    - if @not_registered == false
+    - if @not_registered == false && @person.attendance_status == "pending attendance"
       .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
         %p{style: "color: white; padding: 6px"} You are registered to attend the 2018 Internet Freedom Festival.
+    - if @not_registered == false && @person.attendance_status == "waitlist"
+      .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
+        %p{style: "color: white; padding: 6px"} You are registered for the 2018 IFF Waitlist. 
     .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
-      %h2{style: "margin-bottom: 10px"} Register to Attend the 2018 IFF!  
-      - if @not_registered
-        = action_button "success", "Register Now", edit_cfp_person_path
-      - else
-        %p You are registered to attend the 2018 Internet Freedom Festival!
+      /%h2{style: "margin-bottom: 10px"} Register to Attend the 2018 IFF!  
+      - if @not_registered && @person.attendance_status == "pending attendance"
+        %b{style: "color: orange; font-size: 16px;"} You need to complete the registration form to attend the 2018 Internet Freedom Festival.
+        <br />
+        <br />
+        = action_button "primary", "Register Now", edit_cfp_person_path
+      - elsif @not_registered == false && @person.attendance_status == "pending attendance"
+        %b{style: "color: #009e1e; font-size: 16px;"} You are registered to attend the 2018 Internet Freedom Festival.
+        <br />
+        <br />
+        %p Can't make it? Please click on the button below and let someone else attend!
+        = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
+      - elsif @person.attendance_status == "canceled"
+        %b{style: "color: orange; font-size: 16px;"} You canceled your attendance to the IFF 2018.
+      - elsif @person.attendance_status == "waitlist"
+        %b{style: "color: orange; font-size: 16px"} Ops! We’re at capacity!
+        <br />
+        <br />
+        - if @not_registered
+          %p Join the waitlist and we will contact you when more spots open.
+          = action_button "primary", "Register for the Waitlist", edit_cfp_person_path
       %h2{style: "margin-bottom: 10px; margin-top: 10px"}=t("cfp.call_for_proposal_headline")
       - if !@person.late_event_submit
-        %p 
-          =t("cfp.events_closed_info") 
-          %b October 31st, 2017.   
-        %b Thank you all for the amazing ideas and sessions!     
+        %b Thank you all for the amazing ideas and sessions!
+        <br /><br />
+        %p The 2018 IFF Call for Proposals closed on <strong>October 31st, 2017.</strong> We will be getting back to you by late November, early December, 2017.
       - else
         %p=t("cfp.input_appreciation")
         = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
