@@ -35,6 +35,9 @@ class Cfp::EventsController < ApplicationController
     if auth_person_for_new_event?(person)
       return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
     end
+    if person.late_event_submit == false
+      return redirect_to cfp_person_path, flash: { error: t('cfp.events_closed') }
+    end
     authorize! :submit, Event
     @event = Event.new(time_slots: @conference.default_timeslots)
     @event.recording_license = @conference.default_recording_license

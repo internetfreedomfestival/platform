@@ -55,6 +55,7 @@ en:
     event_time_slots_hint: "Length of your event in hours and minutes. For regular talks etc. just use the default."
     event_updated_notice: "Your proposal was successfully updated."
     event_withdrawn_notice: "Your submission has been withdrawn."
+    events_closed: "The deadline for event submission is over."
     events_submitted: "Proposals you've already submitted:"
     forgot_password_button: "Request a new password"
     forgot_password_description: "Been here before, but don't remember your password? We know how it is, so please feel free to"
