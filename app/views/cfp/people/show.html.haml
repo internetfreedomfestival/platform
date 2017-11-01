@@ -24,27 +24,33 @@
       - else
         %p You are registered to attend the 2018 Internet Freedom Festival!
       %h2{style: "margin-bottom: 10px; margin-top: 10px"}=t("cfp.call_for_proposal_headline")
-      %p=t("cfp.call_for_prop_info")
-      - unless @conference.call_for_participation.info_url.blank?
-        %p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
-      %p
-        =t("cfp.deadline_description")
-        %b October 31st, 2017
-        /%b= l(@conference.call_for_participation.end_date)
+      - if !@person.late_event_submit
+        %p 
+          =t("cfp.events_closed_info") 
+          %b October 31st, 2017.   
+        %b Thank you all for the amazing ideas and sessions!     
+      - else
+        %p=t("cfp.input_appreciation")
+        = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
+      //%p=t("cfp.call_for_prop_info")
+      //- unless @conference.call_for_participation.info_url.blank?
+      //%p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
+      / %p
+      /   =t("cfp.deadline_description")
+      /   %b October 31st, 2017
+      /%b= l(@conference.call_for_participation.end_date)
       - if cfp_hard_deadline_over?
         %p=t("cfp.hard_deadline_over")
       - elsif @person.events_in(@conference).size > 0 and not @conference.in_the_past
         - if @person.availabilities_in(@conference).count == 0
           .clear
-        %p=t("cfp.input_appreciation")
-        /.row{style: "padding: 13px"}
-        = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
       - else
         - unless @conference.in_the_past
           /%p=t("cfp.not_forget_personal_details")
         .clear
         <br />
-        = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
+        - if @person.late_event_submit
+          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"}=t("cfp.contact_headline")
       %p=t("cfp.contact_mattermost")
