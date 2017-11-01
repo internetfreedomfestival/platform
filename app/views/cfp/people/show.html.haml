@@ -49,7 +49,7 @@
         %p The 2018 IFF Call for Proposals closed on <strong>October 31st, 2017.</strong> We will be getting back to you by late November, early December, 2017.
       - else
         %p=t("cfp.input_appreciation")
-        = action_button "success", t("cfp.submit_another_event"), new_cfp_event_path
+        = action_button "success", "Submit a New Proposal", new_cfp_event_path
       //%p=t("cfp.call_for_prop_info")
       //- unless @conference.call_for_participation.info_url.blank?
       //%p=t("cfp.info_url_description_html", link: link_to(@conference.call_for_participation.info_url, @conference.call_for_participation.info_url))
@@ -65,10 +65,6 @@
       - else
         - unless @conference.in_the_past
           /%p=t("cfp.not_forget_personal_details")
-        .clear
-        <br />
-        - if @person.late_event_submit
-          = action_button "success", t("cfp.submit_new_event"), new_cfp_event_path
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"}=t("cfp.contact_headline")
       %p=t("cfp.contact_mattermost")
