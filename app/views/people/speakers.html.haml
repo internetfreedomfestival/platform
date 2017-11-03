@@ -13,7 +13,7 @@
     %li= link_to "Confirmed Speakers", confirmed_speakers_people_path
     %li= link_to "Waitlist", waitlisted_people_path
     %li= link_to "Canceled", canceled_people_path
-  %h4 There are #{@people.count} total people who have submitted an event for the IFF 2018
+  %h4 There are #{@people.count} total people who have submitted an event for the IFF 2018.
   .pull-right
     - if can? :administrate, Person
       = link_to "Download CSV of People who Submitted an Event", speakers_people_path(format: "csv")
