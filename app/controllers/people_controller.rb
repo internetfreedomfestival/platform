@@ -109,6 +109,18 @@ class PeopleController < ApplicationController
       format.csv  { send_data @csv_people.to_csv, filename: "Waitlist-#{Date.today}.csv" }
     end
   end
+
+  def canceled
+    authorize! :administrate, Person
+    result = Person.where(attendance_status: "canceled")
+    @people = result.paginate page: page_param
+    @csv_people = result
+    respond_to do |format|
+      format.html
+      format.csv  { send_data @csv_people.to_csv, filename: "canceled-#{Date.today}.csv" }
+    end
+  end
+
   # GET /people/1
   # GET /people/1.xml
   def show
