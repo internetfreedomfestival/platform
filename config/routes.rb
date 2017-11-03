@@ -104,6 +104,7 @@ Frab::Application.routes.draw do
           get :make_fellow
           get :allow_late_submissions
           get :confirm_user
+          get :waitlisted
         end
       end
 
