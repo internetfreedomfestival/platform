@@ -238,7 +238,8 @@ class PeopleController < ApplicationController
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
     if @person.update(attendance_status: "pending attendance")
-      redirect_to(waitlisted_people_path, notice: 'Person was successfully invited, attencdance status is now pending attendance.')
+      SelectionNotification.invite_notification(@person).deliver_now
+      redirect_to(waitlisted_people_path, notice: 'Person was successfully invited, attendance status is now: pending attendance.')
     else 
       redirect_to(waitlisted_people_path, notice: 'There was an error inviting the person. Check to see if they have fully registered.')
     end
