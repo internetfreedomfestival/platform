@@ -7,5 +7,7 @@
     = f.input "reject_subject",   label: 'Reject subject'
     = f.input "reject_body",      label: 'Reject body', as: :text
     = f.input "schedule_subject", label: 'Schedule subject'
-    = f.input "schedule_body",    label: 'Schedule body', as: :text
+    = f.input "schedule_body",    label: 'Schedule body', as: :text    
+    /= f.input "waitlist_subject", label: 'Waitlist subject'
+    /= f.input "waitlist_body",    label: 'Waitlist body', as: :text
     = remove_association_link :notification, f

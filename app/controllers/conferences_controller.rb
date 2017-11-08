@@ -141,7 +141,7 @@ class ConferencesController < ApplicationController
       :title, :transport_needs_enabled,
       languages_attributes: %i(language_id code _destroy id),
       ticket_server_attributes: %i(url user password queue _destroy id),
-      notifications_attributes: %i(id locale accept_subject accept_body reject_subject reject_body schedule_subject schedule_body _destroy)
+      notifications_attributes: %i(id locale accept_subject accept_body reject_subject reject_body schedule_subject schedule_body waitlist_subject waitlist_body _destroy)
     ]
   end
 

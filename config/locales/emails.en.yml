@@ -57,3 +57,16 @@ en:
         See you at %{conference}
 
         The %{conference} team
+    waitlist:
+      subject: "You have been accepted to join the IFF"
+      greeting: "Dear %{forename},"
+      info:  |
+        We're glad to inform you that you have been selected from the waitlist
+        to attend the %{conference}! Just remember that there will be one remaining 
+        confirmation before the event starts to ensure you can attend.
+      goodbye:  |
+        Looking forward to seeing you at %{conference}!
+
+        Lot's of Love,
+
+        The %{conerence} team
