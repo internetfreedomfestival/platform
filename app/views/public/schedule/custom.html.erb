@@ -1,0 +1,86 @@
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <% @all_days.each do |day| %>
+        <button class="btn btn-grp-lrg"><%= link_to "#{day.start_date.strftime("%A")}", public_custom_path(day: "#{day.id}") %></button>
+
+        <%= button_to "#{day.start_date.strftime("%A")}", {:controller => "public/schedule", :action => "custom"}, params: {day: "#{day.id}"}, :method=>"get"%>
+      <% end %>
+    </div>
+
+    
+
+<div class="container">
+  <h2>Basic Modal Example</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+
+<!--     <div class="row">
+      <% @days.each do |day| %>
+        <div>
+          <h3><%= day.start_date.strftime("%A") %></h3>
+          <% @days_events.each do |event| %>
+            <div style="background-color: grey">
+              <h3>Title: <%= event.title %></h3>
+              <div class="row">
+                <div class="col-md-2"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
+                <div class="col-md-2"><p><%= event.room %></p></div>
+                <div class="col-md-4"><p>Description: <%= event.description %></p></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div> -->
+
+    <div class="row">
+      <% @themed_days.each do |theme, events| %>
+        <div>
+          <h3><%= theme %></h3>
+          <% @themed_days[theme].each do |event| %>
+            <div style="background-color: grey">
+              <h3>Title: <%= event.title %></h3>
+              <div class="row">
+                <div class="col-md-2"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
+                <div class="col-md-2"><p><%= event.room %></p></div>
+                <div class="col-md-4"><p>Description: <%= event.description %></p></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+
+  </div>
+</body>
