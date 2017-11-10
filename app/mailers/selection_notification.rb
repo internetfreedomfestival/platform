@@ -14,4 +14,17 @@ class SelectionNotification < ActionMailer::Base
       title: conference.title
     )
   end
+  def invite_notification(person)
+    @locale = :en
+    @body = I18n.t('emails.waitlist.body')
+    conference = Conference.find(1)
+
+    mail(
+      reply_to: conference.email,
+      to: person.email,
+      subject: I18n.t('emails.waitlist.subject'),
+      locale: @locale,
+      title: conference.title
+    )
+  end
 end

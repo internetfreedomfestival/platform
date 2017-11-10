@@ -57,3 +57,15 @@ en:
         See you at %{conference}
 
         The %{conference} team
+    waitlist:
+      subject: "Rejoice! You're attending IFF"
+      body:  |
+        Dear friend,
+        
+        We’re glad to inform you that you have been moved from the waitlist 
+        to the attendee list to join us at the Internet Freedom Festival 2018. 
+        If you can no longer attend, please let us know immediately so we can 
+        transfer your spot to somebody else.
+
+        Looking forward to seeing you in Valencia!
+        The IFF Team

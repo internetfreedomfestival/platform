@@ -19,6 +19,10 @@ class Public::ScheduleController < ApplicationController
       format.css
     end
   end
+  
+  def custom
+    
+  end
 
   def day
     @day_index = params[:day].to_i

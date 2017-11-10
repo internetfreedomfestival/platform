@@ -49,6 +49,12 @@
         %p
           %b Event Duration in Hours:
           = @event.time_slots / 4
+        %p
+          %b DIF Status:
+          - if @event.speakers.first.dif.nil?
+            %p No DIF Application
+          - else
+            = @event.speakers.first.dif.status
         %h3 Description:
         = simple_format @event.description
         %p
