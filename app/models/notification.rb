@@ -8,8 +8,6 @@ class Notification < ActiveRecord::Base
   validates :accept_body,    presence: true
   validates :schedule_subject, presence: true
   validates :schedule_body,  presence: true
-  validates :waitlist_subject, presence: true
-  validates :waitlist_body, presence: true
   validate :uniq_locale
   # TODO
   # validate :locale_is_valid
@@ -57,12 +55,6 @@ BODY
 #{I18n.t('emails.event_schedule.goodbye')}
 BODY
 
-    self.waitlist_subject = I18n.t('emails.waitlist.subject')
-    self.waitlist_body = <<-BODY
-#{I18n.t('emails.waitlist.greeting')}
-#{I18n.t('emails.waitlist.info')}
-#{I18n.t('emails.waitlist.goodbye')}
-BODY
   end
 
   private
