@@ -328,14 +328,49 @@ class Event < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
-    attributes = %w{id title state language description theme skill_level other_presenters iff_before time_slots}
+    attributes = %w{id title state language description theme skill_level other_presenters iff_before time_slot dif}
     
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
       all.each do |event|
-        csv << attributes.map{ |attr| event.send(attr) }
+        csv << attributes.map do |attribute|
+          if attribute == "theme"
+            event.send("event_type")
+          else
+            event.send(attribute)
+          end
+        end
       end
+    end
+  end
+
+  def time_slot
+    plural_time_slot(time_slots)
+  end
+
+  def plural_time_slot(slots)
+    if slots / 4 == 1
+      return "#{slots / 4} hour"
+    else
+      return "#{slots / 4} hours"
+    end
+  end
+
+  def dif
+    has_dif(id)
+  end
+
+  def has_dif(event_id)
+    e_p = EventPerson.find_by(event_id: event_id)
+    if e_p
+      if Person.find(e_p.person.id).dif.nil?
+        return false
+      else
+        return true
+      end
+    else
+      false
     end
   end
 
