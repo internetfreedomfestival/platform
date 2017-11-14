@@ -2,108 +2,83 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .day_button {
+      padding: 10px;
+      background-color: #d9d9d9;
+      justify-content: column;
+    }
+    .flex_buttons{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .flex > div {
+      flex: 1 1 auto;
+      width: 30px; /* To make the transition work nicely. (Transitions to/from
+                      "width:auto" are buggy in Gecko and Webkit, at least.
+                      See http://bugzil.la/731886 for more info.) */
+      transition: width 0.7s ease-out;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="row">
+    <div class="row flex_buttons">
       <% @all_days.each do |day| %>
-        <button class="btn btn-grp-lrg"><%= link_to "#{day.start_date.strftime("%A")}", public_custom_path(day: "#{day.id}") %></button>
-
-        <%= button_to "#{day.start_date.strftime("%A")}", {:controller => "public/schedule", :action => "custom"}, params: {day: "#{day.id}"}, :method=>"get"%>
-      <% end %>
-    </div>
-
-    
-
-<div>   <!-- Modal Starts -->
-  <h2>Basic Modal Example</h2>
-  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</div>  <!-- Modal Ends -->
-
-
-<!--     <div class="row">
-      <% @days.each do |day| %>
         <div>
-          <h3><%= day.start_date.strftime("%A") %></h3>
-          <% @days_events.each do |event| %>
-            <div style="background-color: grey">
-              <h3>Title: <%= event.title %></h3>
-              <div class="row">
-                <div class="col-md-2"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
-                <div class="col-md-2"><p><%= event.room %></p></div>
-                <div class="col-md-4"><p>Description: <%= event.description %></p></div>
-              </div>
-            </div>
-          <% end %>
+          <%= button_to "#{day.start_date.strftime("%A")}", {:controller => "public/schedule", :action => "custom"}, params: {day: "#{day.id}"}, :method=>"get", :class=>"day_button" %>
+        </div>
+        <div style="width: 15px">
         </div>
       <% end %>
-    </div> -->
+    </div>
+
 
     <div class="row">
+      <hr>
+      <div>
+        <h3><%= @days[0].start_date.strftime("%A") %>: <%= @days[0].start_date.strftime("%B %e, %Y") %></h3>
+      </div>
+      <hr>
       <% @themed_days.each do |theme, events| %>
-        <div>
-          <h3><%= theme %></h3>
-          <% @themed_days[theme].each do |event| %>
-            <div style="background-color: grey">
-              <h3>Title: <%= event.title %></h3>
-              <div class="row">
+        <div style="border-bottom: solid; border-width: 3px">
+          <h1><%= theme %></h1>
+          <% @themed_days[theme].each do |event| %>     
+            <div class="row" style="background-color: #d9d9d9; margin-bottom: 20px; margin-left: 25px; padding: 10px">
+              <div class="span4 proj-div" data-toggle="modal" data-target="#Modal<%= event.id %>">
+                <h3>Title: <%= event.title %></h3>
                 <div class="col-md-2"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
-                <div class="col-md-2"><p><%= event.room %></p></div>
-                <div class="col-md-4"><p>Description: <%= event.description %></p></div>
-                <div>   <!-- Modal Starts -->
-                  <!-- Trigger the modal with a button -->
-                  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal<%= event.id %>">Open Modal</button>
+                <div class="col-md-2"><p>Room: <%= event.room.name %></p></div>
+                <div class="col-md-4"><p>Description: <%= event.description.truncate(100) %></p></div>
+              </div>
+            </div>
 
-                  <!-- Modal -->
-                  <div class="modal fade" id="myModal<%= event.id %>" role="dialog">
-                    <div class="modal-dialog">
-                    
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Modal Header</h4>
-                        </div>
-                        <div class="modal-body">
-                          <p><%= event.description %></p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                    </div>
+            <div id="Modal<%= event.id %>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+             <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
+                    <h4 class="modal-title" id="myModalLabel"><%= event.title %></h4>
                   </div>
-                </div>  <!-- Modal Ends -->
+                  <div class="modal-body">
+                    <div class="row"> 
+                      <div class="col-md-6"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
+                      <div class="col-md-6"><p>Room: <%= event.room.name %></p></div>
+                    </div>
+                    <div><p>Description: <%= event.description %></p></div>
+                  </div>
+                  <div class="modal-footer" style="clear: both">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
               </div>
             </div>
           <% end %>
         </div>
       <% end %>
     </div>
-
-
   </div>
 </body>
