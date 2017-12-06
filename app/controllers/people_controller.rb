@@ -269,6 +269,15 @@ class PeopleController < ApplicationController
     end
   end
 
+  def cancel_attendance
+    @person = Person.find_by(id: params[:format])
+    if @person.update(attendance_status: "canceled")
+      return redirect_to(person_path(@person.id), notice: 'You canceled their attendance.')
+    else
+      return redirect_to(person_path(@person.id), notice: 'There was an error cancelling their attendance.')
+    end
+  end
+
   private
 
   def restrict_people
