@@ -21,7 +21,33 @@ class Public::ScheduleController < ApplicationController
   end
   
   def custom
-    
+    @all_days = @conference.days
+    @themes = Event::TYPES
+    # Select first day if no button clicked
+    if params.keys.include?("day")
+      @day_index = params[:day].to_i
+      @days = @conference.days.where(id: params[:day])
+    else
+      @days = @conference.days.where(id: 1)
+      @day_index = 1
+    end
+
+    setup_day_ivars
+
+    @days_events = []
+    # Get Events for the day
+    @events.each do |rooms, events|
+      events.each do |event|
+        @days_events << event
+      end
+    end
+    # Sort events/day BY start time
+    @days_events.sort! {|a,b| a.start_time <=> b.start_time}
+    # Sort events/day/start time BY theme
+    @themed_days = Hash.new([])
+    @days_events.each do |event|
+      @themed_days[event.event_type] += [event]
+    end
   end
 
   def day
