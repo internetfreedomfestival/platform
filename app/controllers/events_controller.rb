@@ -204,6 +204,11 @@ class EventsController < ApplicationController
     rescue => ex
       return redirect_to(@event, alert: "Cannot update state: #{ex}.")
     end
+    
+    if params[:transition] == "confirm"
+      @event.update!(etherpad_url: "pad.internetfreedomfestival.org/p/#{@event.id}")
+    end
+
     redirect_to @event, notice: 'Event was successfully updated.'
   end
 

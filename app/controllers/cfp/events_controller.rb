@@ -145,7 +145,6 @@ class Cfp::EventsController < ApplicationController
   def confirm
     if params[:token]
       event_person = EventPerson.find_by_confirmation_token(params[:token])
-
       # Catch undefined method `person' for nil:NilClass exception if no confirmation token is found.
       if event_person.nil?
         return redirect_to cfp_root_path, flash: { error: t('cfp.no_confirmation_token') }
@@ -157,7 +156,10 @@ class Cfp::EventsController < ApplicationController
       fail 'Unauthenticated' unless current_user
       event_people = current_user.person.event_people.where(event_id: params[:id])
     end
-    event_people.each(&:confirm!)
+    if event_people.each(&:confirm!)
+      event = Event.find(params[:id])
+      event.update(etherpad_url: "pad.internetfreedomfestival.org/p/#{event.id}")
+    end
     if current_user
       redirect_to cfp_person_path, notice: t('cfp.thanks_for_confirmation')
     else
