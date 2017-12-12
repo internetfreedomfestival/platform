@@ -328,7 +328,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
-    attributes = %w{id title state language description theme skill_level other_presenters iff_before time_slot dif}
+    attributes = %w{id title state language description theme skill_level presenter other_presenters iff_before time_slot dif average_rating comments}
     
     CSV.generate(headers: true) do |csv|
       csv << attributes
@@ -342,6 +342,34 @@ class Event < ActiveRecord::Base
           end
         end
       end
+    end
+  end
+
+  def comments
+    get_comments(id)
+  end
+
+  def get_comments(event_id)
+    comments = []
+    event_ratings = EventRating.where(event_id: event_id)
+    event_ratings.each do |event_rating|
+      comments << event_rating.comment
+    end
+    comments
+  end
+
+
+  def presenter
+    main_presenter(id)
+  end
+
+  def main_presenter(event_id)
+    event_presenter = EventPerson.find_by(event_id: event_id)
+    if event_presenter
+      event_person = Person.find(event_presenter.person_id)
+      return event_person.public_name
+    else
+      return "Original Submitter Inactive"
     end
   end
 
