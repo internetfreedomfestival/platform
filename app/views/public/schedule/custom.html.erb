@@ -40,6 +40,21 @@
       <% end %>
     </div>
 
+  <!-- Testing Testing -->
+    <div>
+      <% @events_by_day_time.each do |time, events| %>
+        <div>
+          <h3><%= time.strftime("%a %I:%M%p") %></h3>
+          <% @events_by_day_time[time].each do |event| %>
+            <p><%= event.title %></p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+
+
+  <!-- Testing Testing -->
 
     <div class="row">
       <hr>

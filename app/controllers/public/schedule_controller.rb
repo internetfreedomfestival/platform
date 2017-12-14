@@ -48,6 +48,12 @@ class Public::ScheduleController < ApplicationController
     @days_events.each do |event|
       @themed_days[event.event_type] += [event]
     end
+
+    # arrange days by time
+    @events_by_day_time = Hash.new { |k,v| k[v] = [] }
+    @days_events.each do |event|
+      @events_by_day_time[event.start_time].push(event)
+    end
   end
 
   def day
