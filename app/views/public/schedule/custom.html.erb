@@ -25,6 +25,13 @@
       display: none;
     }
 
+    .event_block{
+      background-color: #fde1d4;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+    }
+    
   </style>
 </head>
 
@@ -45,19 +52,43 @@
       <% @events_by_day_time.each do |time, events| %>
         <div>
           <h3><%= time.strftime("%a %I:%M%p") %></h3>
+          <!-- If there is only one event for a time slot do not slice -->
           <% if @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <div class="row">
-                <div class="col-md-12">
-                  <p>Title: <%= event.title %></p>
+                <div class="col-md-6" style="background-color: #fde1d4">
+                  <div class="row">
+                    <div class="col-md-3">Title: <%= event.title %></div>
+                    <div class="col-md-3">Time: <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                    <div class="col-md-2">Language: <%= event.language.upcase %></div>
+                    <div class="col-md-2">Format: <%= event.event_type %></div>
+                    <div class="col-md-2">Room: <%= event.room.name %></div>
+                  </div>
                 </div>
               </div>
             <% end %>
           <% else %>          
+          <!-- If there are more than one event for a time slot, slice for 2 column effect -->
             <% @events_by_day_time[time].each_slice(2) do |events| %>
               <div class="row">
-                <div class="col-md-6"><p>Title: <%= events[0].title %></p></div>
-                <div class="col-md-6"><p>Title: <%= events[1].title %></p></div>
+                <div class="col-md-6" style="background-color: #fde1d4">
+                  <div class="row">
+                    <div class="col-md-3">Title: <%= events[0].title %></div>
+                    <div class="col-md-3">Time: <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                    <div class="col-md-2">Language: <%= events[0].language.upcase %></div>
+                    <div class="col-md-2">Format: <%= events[0].event_type %></div>
+                    <div class="col-md-2">Room: <%= events[0].room.name %></div>
+                  </div>
+                </div>
+                <div class="col-md-6" style="background-color: #fde1d4">
+                  <div class="row">
+                    <div class="col-md-3">Title: <%= events[1].title %></div>
+                    <div class="col-md-3">Time: <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                    <div class="col-md-2">Language: <%= events[1].language.upcase %></div>
+                    <div class="col-md-2">Format: <%= events[1].event_type %></div>
+                    <div class="col-md-2">Room: <%= events[1].room.name %></div>
+                  </div>
+                </div>
             </div>
             <% end %>
           <% end %>
