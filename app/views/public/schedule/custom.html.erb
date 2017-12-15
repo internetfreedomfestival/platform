@@ -31,7 +31,7 @@
       margin-left: 25px;
       padding: 30px;
     }
-    
+
   </style>
 </head>
 
@@ -53,7 +53,9 @@
         <div>
           <h3><%= time.strftime("%a %I:%M%p") %></h3>
           <!-- If there is only one event for a time slot do not slice -->
-          <% if @events_by_day_time[time].length == 1 %>
+          <% if @events_by_day_time[time].length < 1 %>
+            <div>There are no events for this day</div>
+          <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <div class="row">
                 <div class="col-md-6" style="background-color: #fde1d4">
