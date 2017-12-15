@@ -45,8 +45,21 @@
       <% @events_by_day_time.each do |time, events| %>
         <div>
           <h3><%= time.strftime("%a %I:%M%p") %></h3>
-          <% @events_by_day_time[time].each do |event| %>
-            <p><%= event.title %></p>
+          <% if @events_by_day_time[time].length == 1 %>
+            <% @events_by_day_time[time].each do |event| %>
+              <div class="row">
+                <div class="col-md-12">
+                  <p>Title: <%= event.title %></p>
+                </div>
+              </div>
+            <% end %>
+          <% else %>          
+            <% @events_by_day_time[time].each_slice(2) do |events| %>
+              <div class="row">
+                <div class="col-md-6"><p>Title: <%= events[0].title %></p></div>
+                <div class="col-md-6"><p>Title: <%= events[1].title %></p></div>
+            </div>
+            <% end %>
           <% end %>
         </div>
       <% end %>
