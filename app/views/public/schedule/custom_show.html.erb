@@ -1,0 +1,83 @@
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <style>
+  
+    #navigation{
+      display: none;
+    }
+    body{
+      font: normal 12px roboto, verdana, sans-serif;
+    }
+  
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <h1><%= @event.title %></h1>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <p>Time: <%= @event.start_time.strftime("%I:%M %p") %></p>
+      </div>
+      <div class="col-md-2">
+        <p>Room: <%= @event.room.name %></p>
+      </div>
+      <div class="col-md-2">
+        <p>Skill Level: <%= @event.skill_level %></p>
+      </div>
+      <div class="col-md-2">
+        <p>Language: <%= @event.language %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <p>Duration: <%= @event.time_slots / 4 %> hour(s)</p>
+      </div>      
+      <div class="col-md-6">
+        <p>Format: <%= @event.event_type %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>Other Presenters: <%= @event.other_presenters %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="col-md-12">
+          <p>Description: <%= @event.description %></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <p>Target Audience: <%= @event.target_audience_experience %></p>
+      </div>
+      <div class="col-md-6">
+        <p>Desired Outcome: <%= @event.desired_outcome %></p>
+      </div>
+    </div>  
+    <div class="row">
+      <div class="col-md-12">
+        <p>Etherpad_url: <%= @event.etherpad_url %></p>
+      </div>
+    </div>
+  </div>
+</body>
+<!-- Title
+Time
+Room
+Theme
+Other Presenters
+Language
+Format
+Skill Level
+Session Duration
+Description
+Target Audience
+Desired Outcome
+Notes (figuring how we want to display this now)
+pad.internetfreedomfestival.org/p/IDNUMBER
+ -->

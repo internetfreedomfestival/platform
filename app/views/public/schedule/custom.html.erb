@@ -1,8 +1,11 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
+
+    body{
+      font: normal 12px roboto, verdana, sans-serif;
+    }
+
     .day_button {
       padding: 10px;
       background-color: #d9d9d9;
@@ -30,6 +33,19 @@
       margin-bottom: 20px;
       margin-left: 25px;
       padding: 30px;
+      margin-right: 0px;
+      border-left: 5px solid #f74c33;
+      /*cursor: pointer;*/
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+
+    .time_slot_header{
+      border-bottom: 1px dashed #f74c33;
+      padding-bottom: 8px;
+      padding-left: 5px;
+      color: #f74c33;
     }
 
   </style>
@@ -51,7 +67,7 @@
     <div>
       <% @events_by_day_time.each do |time, events| %>
         <div>
-          <h3><%= time.strftime("%a %I:%M%p") %></h3>
+          <h5 class="time_slot_header"><%= time.strftime("%A, %l:%M %p") %></h5>
           <!-- If there is no items or nil show no events div -->
           <% if @events_by_day_time[time].length < 1 || @events_by_day_time[time].nil? %>
             <div>There are no events for this day</div>
@@ -59,41 +75,54 @@
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <div class="row">
-                <div class="col-md-6" style="background-color: #fde1d4">
-                  <div class="row">
-                    <div class="col-md-3">Title: <%= event.title %></div>
-                    <div class="col-md-3">Time: <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                    <div class="col-md-2">Language: <%= event.language.upcase %></div>
-                    <div class="col-md-2">Format: <%= event.event_type %></div>
-                    <div class="col-md-2">Room: <%= event.room.name %></div>
+                <!-- using an anchor tag... but hard coded beginging url is undesirable -->
+                <a href="/en/iff-2018/public/schedule/custom/<%= event.id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit">
+                  <div class="col-md-5 event_block">
+                    <div class="row">
+                      <h5><%= event.title %></h5>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">[x] <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                      <div class="col-md-2">[x] <%= event.language.upcase %></div>
+                      <div class="col-md-4">[x] <%= event.event_type %></div>
+                      <div class="col-md-3">[x] <%= event.room.name %></div>
+                    </div>
                   </div>
-                </div>
+                </a>
               </div>
             <% end %>
           <% else %>          
           <!-- If there are more than one event for a time slot, slice for 2 column effect -->
             <% @events_by_day_time[time].each_slice(2) do |events| %>
               <div class="row">
-                <div class="col-md-6" style="background-color: #fde1d4">
-                  <div class="row">
-                    <div class="col-md-3">Title: <%= events[0].title %></div>
-                    <div class="col-md-3">Time: <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                    <div class="col-md-2">Language: <%= events[0].language.upcase %></div>
-                    <div class="col-md-2">Format: <%= events[0].event_type %></div>
-                    <div class="col-md-2">Room: <%= events[0].room.name %></div>
-                  </div>
-                </div>
-                <!-- Make sure there is a second event -->
-                <% if events[1] %>
-                  <div class="col-md-6" style="background-color: #fde1d4">
+                <a href="/en/iff-2018/public/schedule/custom/<%= events[0].id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit">
+                  <div class="col-md-5 event_block">
                     <div class="row">
-                      <div class="col-md-3">Title: <%= events[1].title %></div>
-                      <div class="col-md-3">Time: <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                      <div class="col-md-2">Language: <%= events[1].language.upcase %></div>
-                      <div class="col-md-2">Format: <%= events[1].event_type %></div>
-                      <div class="col-md-2">Room: <%= events[1].room.name %></div>
+                        <h5><%= events[0].title %></h5>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">[x] <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                      <div class="col-md-2">[x] <%= events[0].language.upcase %></div>
+                      <div class="col-md-4">[x] <%= events[0].event_type %></div>
+                      <div class="col-md-3">[x] <%= events[0].room.name %></div>
                     </div>
                   </div>
+                </a>
+                <!-- Make sure there is a second event -->
+                <% if events[1] %>
+                  <a href="/en/iff-2018/public/schedule/custom/<%= events[1].id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit">
+                    <div class="col-md-5 event_block">
+                      <div class="row">
+                        <h5> <%= events[1].title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3">[x] <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-2">[x] <%= events[1].language.upcase %></div>
+                        <div class="col-md-4">[x] <%= events[1].event_type %></div>
+                        <div class="col-md-3">[x] <%= events[1].room.name %></div>
+                      </div>
+                    </div>
+                  </a>
                 <% end %>
             </div>
             <% end %>
@@ -101,53 +130,5 @@
         </div>
       <% end %>
     </div>
-
-
-
-  <!-- Testing Testing -->
-
-    <div class="row">
-      <hr>
-      <div>
-        <h3><%= @days[0].start_date.strftime("%A") %>: <%= @days[0].start_date.strftime("%B %e, %Y") %></h3>
-      </div>
-      <hr>
-      <% @themed_days.each do |theme, events| %>
-        <div style="border-bottom: solid; border-width: 3px">
-          <h1><%= theme %></h1>
-          <% @themed_days[theme].each do |event| %>     
-            <div class="row" style="background-color: #d9d9d9; margin-bottom: 20px; margin-left: 25px; padding: 10px">
-              <div class="span4 proj-div" data-toggle="modal" data-target="#Modal<%= event.id %>">
-                <h3>Title: <%= event.title %></h3>
-                <div class="col-md-2"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
-                <div class="col-md-2"><p>Room: <%= event.room.name %></p></div>
-                <div class="col-md-4"><p>Description: <%= event.description.truncate(100) %></p></div>
-              </div>
-            </div>
-
-            <div id="Modal<%= event.id %>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-             <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;  </button>
-                    <h4 class="modal-title" id="myModalLabel"><%= event.title %></h4>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row"> 
-                      <div class="col-md-6"><p>Time: <%= event.start_time.strftime("%l:%M%p") %></p></div>
-                      <div class="col-md-6"><p>Room: <%= event.room.name %></p></div>
-                    </div>
-                    <div><p>Description: <%= event.description %></p></div>
-                  </div>
-                  <div class="modal-footer" style="clear: both">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  </div><!-- Ends container div -->
 </body>
