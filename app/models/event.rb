@@ -328,14 +328,77 @@ class Event < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
-    attributes = %w{id title state language description theme skill_level other_presenters iff_before time_slots}
+    attributes = %w{id title state language description theme skill_level presenter other_presenters iff_before time_slot dif average_rating comments}
     
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
       all.each do |event|
-        csv << attributes.map{ |attr| event.send(attr) }
+        csv << attributes.map do |attribute|
+          if attribute == "theme"
+            event.send("event_type")
+          else
+            event.send(attribute)
+          end
+        end
       end
+    end
+  end
+
+  def comments
+    get_comments(id)
+  end
+
+  def get_comments(event_id)
+    comments = []
+    event_ratings = EventRating.where(event_id: event_id)
+    event_ratings.each do |event_rating|
+      comments << event_rating.comment
+    end
+    comments
+  end
+
+
+  def presenter
+    main_presenter(id)
+  end
+
+  def main_presenter(event_id)
+    event_presenter = EventPerson.find_by(event_id: event_id)
+    if event_presenter
+      event_person = Person.find(event_presenter.person_id)
+      return event_person.public_name
+    else
+      return "Original Submitter Inactive"
+    end
+  end
+
+  def time_slot
+    plural_time_slot(time_slots)
+  end
+
+  def plural_time_slot(slots)
+    if slots / 4 == 1
+      return "#{slots / 4} hour"
+    else
+      return "#{slots / 4} hours"
+    end
+  end
+
+  def dif
+    has_dif(id)
+  end
+
+  def has_dif(event_id)
+    e_p = EventPerson.find_by(event_id: event_id)
+    if e_p
+      if Person.find(e_p.person.id).dif.nil?
+        return false
+      else
+        return true
+      end
+    else
+      false
     end
   end
 

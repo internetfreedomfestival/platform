@@ -234,6 +234,17 @@ class PeopleController < ApplicationController
     end
   end
 
+  def invite
+    @person = Person.find_by(id: params[:format])
+    authorize! :manage, @person
+    if @person.update(attendance_status: "pending attendance")
+      SelectionNotification.invite_notification(@person).deliver_now
+      redirect_to(waitlisted_people_path, notice: 'Person was successfully invited, attendance status is now: pending attendance.')
+    else 
+      redirect_to(waitlisted_people_path, notice: 'There was an error inviting the person. Check to see if they have fully registered.')
+    end
+  end
+
   def allow_late_submissions
     @person = Person.find_by(id: params[:format])
     @conference = Conference.find_by(acronym: params[:conference_acronym])
@@ -255,6 +266,15 @@ class PeopleController < ApplicationController
       redirect_to(person_path(@person.id), notice: 'User profile has been confirmed.')
     else
       redirect_to(person_path(@person.id), notice: 'User profile WAS NOT confirmed.')
+    end
+  end
+
+  def cancel_attendance
+    @person = Person.find_by(id: params[:format])
+    if @person.update(attendance_status: "canceled")
+      return redirect_to(person_path(@person.id), notice: 'You canceled their attendance.')
+    else
+      return redirect_to(person_path(@person.id), notice: 'There was an error cancelling their attendance.')
     end
   end
 

@@ -7,8 +7,6 @@
         %th= sort_link @search, :last_name, term: params[:term]
         %th= sort_link @search, :public_name, term: params[:term]
         %th= sort_link @search, :email, term: params[:term]
-        %th= sort_link @search, :mattermost, term: params[:term]
-        %th= sort_link @search, :mailing_list, term: params[:term]
         %th= sort_link @search, :organization, term: params[:term]
         - if @conference.ticket_server_enabled?
           %th Ticket
@@ -18,8 +16,6 @@
         %th Last name
         %th Public name
         %th Email
-        %th Mattermost
-        %th Mailing List
         - if @conference.ticket_server_enabled?
           %th Ticket
       %th.last
@@ -32,8 +28,6 @@
         %td= link_to person.last_name, person
         %td= link_to person.public_name, person
         %td= link_to person.email, person
-        %td= person.complete_mattermost
-        %td= person.complete_mailing
         %td= person.organization
 
         - if @conference.ticket_server_enabled?
@@ -44,12 +38,8 @@
               -else
                 = link_to person.ticket.remote_ticket_id, get_ticket_view_url(person.ticket.remote_ticket_id ), target: "_blank"
         %td.buttons
-          = action_button "small", 'Show', person
           - if can? :manage, person
-            /= action_button "small", 'Edit', edit_person_path(person)
-            - if can? :crud, person.user or can? :administrate, User
-              - if person.user.nil?
-                /= action_button "small", 'User', new_person_user_path(person)
-              - else
-                /= action_button "small", 'User', edit_person_user_path(person)
+            - if person.attendance_status == "waitlist"
+              = action_button "small success", 'Invite', invite_people_path(person), method: :get
+            = action_button "small", 'Show', person
             = action_button "small danger", 'Destroy', person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}
