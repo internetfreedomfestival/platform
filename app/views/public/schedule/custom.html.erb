@@ -52,9 +52,10 @@
       <% @events_by_day_time.each do |time, events| %>
         <div>
           <h3><%= time.strftime("%a %I:%M%p") %></h3>
-          <!-- If there is only one event for a time slot do not slice -->
+          <!-- If there is no items or nil show no events div -->
           <% if @events_by_day_time[time].length < 1 || @events_by_day_time[time].nil? %>
             <div>There are no events for this day</div>
+          <!-- If there is only one event for a time slot do not slice -->
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <div class="row">
@@ -82,15 +83,18 @@
                     <div class="col-md-2">Room: <%= events[0].room.name %></div>
                   </div>
                 </div>
-                <div class="col-md-6" style="background-color: #fde1d4">
-                  <div class="row">
-                    <div class="col-md-3">Title: <%= events[1].title %></div>
-                    <div class="col-md-3">Time: <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                    <div class="col-md-2">Language: <%= events[1].language.upcase %></div>
-                    <div class="col-md-2">Format: <%= events[1].event_type %></div>
-                    <div class="col-md-2">Room: <%= events[1].room.name %></div>
+                <!-- Make sure there is a second event -->
+                <% if events[1] %>
+                  <div class="col-md-6" style="background-color: #fde1d4">
+                    <div class="row">
+                      <div class="col-md-3">Title: <%= events[1].title %></div>
+                      <div class="col-md-3">Time: <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                      <div class="col-md-2">Language: <%= events[1].language.upcase %></div>
+                      <div class="col-md-2">Format: <%= events[1].event_type %></div>
+                      <div class="col-md-2">Room: <%= events[1].room.name %></div>
+                    </div>
                   </div>
-                </div>
+                <% end %>
             </div>
             <% end %>
           <% end %>
