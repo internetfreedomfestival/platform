@@ -19,6 +19,7 @@ Frab::Application.routes.draw do
         get '/schedule' => 'schedule#index', as: 'schedule_index'
         get '/schedule/style' => 'schedule#style', as: 'schedule_style'
         get '/schedule/custom' => 'schedule#custom', as: 'custom'
+        get '/schedule/custom/:id' => 'schedule#custom_show', as: 'custom_show'
         get '/schedule/:day' => 'schedule#day', as: 'schedule'
         get '/events' => 'schedule#events', as: 'events'
         get '/events/:id' => 'schedule#event', as: 'event'

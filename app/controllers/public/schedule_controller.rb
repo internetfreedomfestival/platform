@@ -56,6 +56,13 @@ class Public::ScheduleController < ApplicationController
     end
   end
 
+  def custom_show
+    @event = Event.find(params[:id])
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def day
     @day_index = params[:day].to_i
     if @day_index < 1 || @day_index > @conference.days.count
