@@ -58,7 +58,6 @@ class Public::ScheduleController < ApplicationController
 
   def custom_show
     @event = Event.find(params[:id])
-    render 'custom_show.html.erb'
   end
 
   def day
