@@ -48,6 +48,17 @@
       color: #f74c33;
     }
 
+    .no_link_effect{
+      height: 100%; 
+      width: 100%; 
+      display: block; 
+      text-decoration: inherit; 
+      color: inherit
+    }
+    .no_link_effect:hover{
+      color: inherit;
+    }
+
   </style>
 </head>
 
@@ -110,7 +121,8 @@
                 </a>
                 <!-- Make sure there is a second event -->
                 <% if events[1] %>
-                  <a href="/en/iff-2018/public/schedule/custom/<%= events[1].id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit">
+                  <!-- <a href="/en/iff-2018/public/schedule/custom_show/<%= events[1].id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit"> -->
+                  <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                     <div class="col-md-5 event_block">
                       <div class="row">
                         <h5> <%= events[1].title %></h5>
@@ -122,7 +134,8 @@
                         <div class="col-md-3">[x] <%= events[1].room.name %></div>
                       </div>
                     </div>
-                  </a>
+                  <% end %>
+                  <!-- </a> -->
                 <% end %>
             </div>
             <% end %>
