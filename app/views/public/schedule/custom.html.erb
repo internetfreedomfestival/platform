@@ -86,8 +86,7 @@
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <div class="row">
-                <!-- using an anchor tag... but hard coded beginging url is undesirable -->
-                <a href="/en/iff-2018/public/schedule/custom/<%= event.id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit">
+                <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                   <div class="col-md-5 event_block">
                     <div class="row">
                       <h5><%= event.title %></h5>
@@ -99,14 +98,14 @@
                       <div class="col-md-3">[x] <%= event.room.name %></div>
                     </div>
                   </div>
-                </a>
+                <% end %>
               </div>
             <% end %>
           <% else %>          
           <!-- If there are more than one event for a time slot, slice for 2 column effect -->
             <% @events_by_day_time[time].each_slice(2) do |events| %>
               <div class="row">
-                <a href="/en/iff-2018/public/schedule/custom/<%= events[0].id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit">
+                <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
                   <div class="col-md-5 event_block">
                     <div class="row">
                         <h5><%= events[0].title %></h5>
@@ -118,10 +117,9 @@
                       <div class="col-md-3">[x] <%= events[0].room.name %></div>
                     </div>
                   </div>
-                </a>
+                <% end %>
                 <!-- Make sure there is a second event -->
                 <% if events[1] %>
-                  <!-- <a href="/en/iff-2018/public/schedule/custom_show/<%= events[1].id %>" style="height: 100%; width: 100%; display: block; text-decoration: inherit; color: inherit"> -->
                   <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                     <div class="col-md-5 event_block">
                       <div class="row">
