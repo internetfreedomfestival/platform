@@ -93,8 +93,8 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3">[x] <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                      <div class="col-md-2">[x] <%= event.language.upcase %></div>
-                      <div class="col-md-4">[x] <%= event.event_type %></div>
+                      <div class="col-md-2">[x] <%= event.language.upcase if event.language %></div>
+                      <div class="col-md-4">[x] <%= event.event_type if event.event_type %></div>
                       <div class="col-md-3">[x] <%= event.room.name %></div>
                     </div>
                   </div>
@@ -112,8 +112,8 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3">[x] <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                      <div class="col-md-2">[x] <%= events[0].language.upcase %></div>
-                      <div class="col-md-4">[x] <%= events[0].event_type %></div>
+                      <div class="col-md-2">[x] <%= events[0].language.upcase if events[0].language %></div>
+                      <div class="col-md-4">[x] <%= events[0].event_type if events[0].event_type %></div>
                       <div class="col-md-3">[x] <%= events[0].room.name %></div>
                     </div>
                   </div>
@@ -127,8 +127,8 @@
                       </div>
                       <div class="row">
                         <div class="col-md-3">[x] <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-2">[x] <%= events[1].language.upcase %></div>
-                        <div class="col-md-4">[x] <%= events[1].event_type %></div>
+                        <div class="col-md-2">[x] <%= events[1].language.upcase if events[1].language %></div>
+                        <div class="col-md-4">[x] <%= events[1].event_type if events[1].event_type %></div>
                         <div class="col-md-3">[x] <%= events[1].room.name %></div>
                       </div>
                     </div>
