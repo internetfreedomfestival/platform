@@ -34,7 +34,13 @@ class Event < ActiveRecord::Base
 
   validates_attachment_content_type :logo, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
-  validates :title, :time_slots, :description, :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level, presence: true
+  validates :title, :time_slots, :description, presence: true
+
+  
+  # These presence validations are commented out for now to allow Admin to add social and special events with only required info. 
+  # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
+  # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level, 
+
 
   after_save :update_conflicts
 

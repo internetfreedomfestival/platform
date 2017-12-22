@@ -60,11 +60,12 @@ class Cfp::EventsController < ApplicationController
 
   # POST /cfp/events
   def create
+
     # Removes extra spaces saved by params 
-    years_only = []
-    params[:event][:iff_before].each do |year|
-      years_only << year unless year == ""
-    end
+    # years_only = []
+    # params[:event][:iff_before].each do |year|
+      # years_only << year unless year == ""
+    # end
 
     authorize! :submit, Event
     @event = Event.new(event_params.merge(recording_license: @conference.default_recording_license))
@@ -74,7 +75,7 @@ class Cfp::EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        @event.update(iff_before: years_only)
+        # @event.update(iff_before: years_only)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
@@ -91,11 +92,11 @@ class Cfp::EventsController < ApplicationController
     @event.recording_license = @event.conference.default_recording_license unless @event.recording_license
 
     # Removes extra spaces saved by params and does not update for [""] params 
-    years_only = keep_old_iff_before_if_blank
+    # years_only = keep_old_iff_before_if_blank
 
     respond_to do |format|
       if @event.update_attributes(event_params)
-        @event.update(iff_before: years_only)
+        # @event.update(iff_before: years_only)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
@@ -171,7 +172,7 @@ class Cfp::EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, { iff_before: [] }, :track,
+      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, :public_type, { iff_before: [] }, :track,
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
