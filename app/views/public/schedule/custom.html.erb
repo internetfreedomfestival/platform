@@ -35,7 +35,46 @@
       padding: 30px;
       margin-right: 0px;
       border-left: 5px solid #f74c33;
-      /*cursor: pointer;*/
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+
+    .special_event_block{
+      background-color: #f74c33;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+/*      border-bottom: 17px dashed white;
+      border-right: 10px dashed white;*/
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+
+    .social_event_block{
+      background-color: #1ba5ab;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+/*      border-top: 17px dashed white;
+      border-right: 10px dashed white;*/
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+    
+    .meditation_event_block{
+      background-color: #1ba5ab;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      color: white;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
@@ -57,6 +96,12 @@
     }
     .no_link_effect:hover{
       color: inherit;
+    }
+
+    .col-md-5 {
+        width: 41.66666667%;
+        margin-bottom: 8px;
+        font-size: 12px;
     }
 
   </style>
@@ -82,56 +127,153 @@
           <!-- If there is no items or nil show no events div -->
           <% if @events_by_day_time[time].length < 1 || @events_by_day_time[time].nil? %>
             <div>There are no events for this day</div>
+        
           <!-- If there is only one event for a time slot do not slice -->
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <div class="row">
                 <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
-                  <div class="col-md-5 event_block">
-                    <div class="row">
-                      <h5><%= event.title %></h5>
+                  <% if event.public_type.nil? %><!-- NOT special, social, or meditation-->
+                    <div class="col-md-5 event_block">
+                      <div class="row">
+                        <h5><%= event.title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= event.language.upcase if event.language %></div>
+                        <div class="col-md-5">XX<%= event.event_type if event.event_type %></div>
+                        <div class="col-md-5">XX<%= event.room.name %></div>
+                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-3">[x] <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                      <div class="col-md-2">[x] <%= event.language.upcase if event.language %></div>
-                      <div class="col-md-4">[x] <%= event.event_type if event.event_type %></div>
-                      <div class="col-md-3">[x] <%= event.room.name %></div>
+                  <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                    <div class="col-md-12 special_event_block">
+                      <div class="row">
+                        <h5><%= event.title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= event.room.name %></div>
+                      </div>
                     </div>
-                  </div>
+                  <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
+                    <div class="col-md-12 social_event_block">
+                      <div class="row">
+                        <h5><%= event.title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= event.room.name %></div>
+                      </div>
+                    </div>
+                  <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
+                    <div class="col-md-12 meditation_event_block">
+                      <div class="row">
+                        <h5><%= event.title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= event.room.name %></div>
+                      </div>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
             <% end %>
-          <% else %>          
-          <!-- If there are more than one event for a time slot, slice for 2 column effect -->
+          <% else %><!-- If there are more than one event for a time slot, slice for 2 column effect -->
             <% @events_by_day_time[time].each_slice(2) do |events| %>
               <div class="row">
                 <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
-                  <div class="col-md-5 event_block">
-                    <div class="row">
-                        <h5><%= events[0].title %></h5>
+                  <% if events[0].public_type.nil? %><!-- NOT social, special, meditation -->
+                    <div class="col-md-5 event_block">
+                      <div class="row">
+                          <h5><%= events[0].title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= events[0].language.upcase if events[0].language %></div>
+                        <div class="col-md-5">XX<%= events[0].event_type if events[0].event_type %></div>
+                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-3">[x] <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                      <div class="col-md-2">[x] <%= events[0].language.upcase if events[0].language %></div>
-                      <div class="col-md-4">[x] <%= events[0].event_type if events[0].event_type %></div>
-                      <div class="col-md-3">[x] <%= events[0].room.name %></div>
+                  <% elsif events[0].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                    <div class="col-md-5 special_event_block">
+                      <div class="row">
+                          <h5><%= events[0].title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                      </div>
                     </div>
-                  </div>
+                  <% elsif events[0].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+                    <div class="col-md-5 social_event_block">
+                      <div class="row">
+                          <h5><%= events[0].title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                      </div>
+                    </div>
+                  <% elsif events[0].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
+                    <div class="col-md-12 meditation_event_block">
+                      <div class="row">
+                          <h5><%= events[0].title %></h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                      </div>
+                    </div>
+                  <% end %>
                 <% end %>
+
                 <!-- Make sure there is a second event -->
                 <% if events[1] %>
                   <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
-                    <div class="col-md-5 event_block">
-                      <div class="row">
-                        <h5> <%= events[1].title %></h5>
+                    <% if events[1].public_type.nil? %><!-- NOT social, special, meditation -->
+                      <div class="col-md-5 event_block">
+                        <div class="row">
+                          <h5> <%= events[1].title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-5">XX<%= events[1].language.upcase if events[1].language %></div>
+                          <div class="col-md-5">XX<%= events[1].event_type if events[1].event_type %></div>
+                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                        </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-3">[x] <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-2">[x] <%= events[1].language.upcase if events[1].language %></div>
-                        <div class="col-md-4">[x] <%= events[1].event_type if events[1].event_type %></div>
-                        <div class="col-md-3">[x] <%= events[1].room.name %></div>
+                    <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->                      
+                      <div class="col-md-5 special_event_block">
+                        <div class="row">
+                          <h5> <%= events[1].title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                        </div>
                       </div>
-                    </div>
+                    <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+                      <div class="col-md-5 social_event_block">
+                        <div class="row">
+                          <h5> <%= events[1].title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                        </div>
+                      </div>
+                    <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
+                      <div class="col-md-5 meditation_event_block">
+                        <div class="row">
+                          <h5> <%= events[1].title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                        </div>
+                      </div>
+                    <% end %>
                   <% end %>
                   <!-- </a> -->
                 <% end %>
