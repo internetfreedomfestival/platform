@@ -2,68 +2,77 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <style>
   
-    #navigation{
+    #navigation, #header{
       display: none;
     }
     body{
       font: normal 12px roboto, verdana, sans-serif;
     }
-  
+    .page_color{
+      background-color: #fde1d4;
+    }
+
+    #header_container{
+      background-color: black; 
+      padding: 20px;
+    }
+    #main_header{
+      font-size: 25px;
+      font-family: roboto slab;
+      color: white;
+    }
+    #header_logo{
+      max-height: 100%;
+      max-width: 100%;
+    }
+
+    .session_title{
+      font-family: roboto slab;
+      margin-bottom: 25px;
+      color: #f74c33;
+    }
+
+    .session_info{
+      margin: 6px 0px 10px;
+      border-bottom: 1px solid #f74c33;
+      padding-bottom: 10px;
+    }
   </style>
 
 </head>
 <body>
-  <div class="container">
-    <div class="row">
-      <h1><%= @event.title %></h1>
-    </div>
-    <div class="row">
-      <div class="col-md-2">
-        <p>Time: <%= @event.start_time.strftime("%I:%M %p") %></p>
+  <div class="container page_color">
+    <div class="row" id="header_container">
+      <div class="col-md-4">
+        <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
       </div>
-      <div class="col-md-2">
-        <p>Room: <%= @event.room.name %></p>
-      </div>
-      <div class="col-md-2">
-        <p>Skill Level: <%= @event.skill_level %></p>
-      </div>
-      <div class="col-md-2">
-        <p>Language: <%= @event.language %></p>
+      <div class="col-md-8">
+        <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
       </div>
     </div>
+
     <div class="row">
-      <div class="col-md-2">
-        <p>Duration: <%= @event.time_slots / 4 %> hour(s)</p>
-      </div>      
-      <div class="col-md-6">
-        <p>Format: <%= @event.event_type %></p>
-      </div>
+      <h1 class="session_title"><%= @event.title %></h1>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <p>Other Presenters: <%= @event.other_presenters %></p>
-      </div>
+
+    <div class="session_info" class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M %p") %>
     </div>
-    <div class="row">
-      <div>
-        <div class="col-md-12">
-          <p>Description: <%= @event.description %></p>
-        </div>
-      </div>
+    <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <p>Target Audience: <%= @event.target_audience_experience %></p>
-      </div>
-      <div class="col-md-6">
-        <p>Desired Outcome: <%= @event.desired_outcome %></p>
-      </div>
-    </div>  
-    <div class="row">
-      <div class="col-md-12">
-        <p>Etherpad_url: <%= @event.etherpad_url %></p>
-      </div>
+    <div class="session_info"><strong>Skill Level:</strong> <%= @event.skill_level %>
     </div>
+    <div class="session_info"><strong>Language:</strong> <%= @event.language %>
+    </div>
+    <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>      
+    <div class="session_info"><strong>Format:</strong> <%= @event.event_type %></div>
+    <div class="session_info"><strong>Other Presenters:</strong> <%= @event.other_presenters %></div>
+    <div><strong>Description:</strong></div>
+    <div class="session_info"><%= @event.description %></div>
+    <div><strong>Target Audience:</strong></div>
+    <div class="session_info"><%= @event.target_audience_experience %></div>
+    <div><strong>Desired Outcome:</strong></div> 
+    <div class="session_info"><%= @event.desired_outcome %></div>
+    <div class="session_info"><strong>Etherpad_url:</strong> <a href="http://<%= @event.etherpad_url %>" target="_blank"><%= @event.etherpad_url %></a></div>
   </div>
 </body>
 <!-- Title

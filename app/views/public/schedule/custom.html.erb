@@ -1,16 +1,12 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
 
     body{
       font: normal 12px roboto, verdana, sans-serif;
     }
 
-    .day_button {
-      padding: 10px;
-      background-color: #d9d9d9;
-      justify-content: column;
-    }
     .flex_buttons{
       display: flex;
       flex-direction: row;
@@ -24,11 +20,37 @@
                       See http://bugzil.la/731886 for more info.) */
       transition: width 0.7s ease-out;
     }
-    #navigation{
+    #navigation, #header{
       display: none;
     }
 
-    .event_block{
+    #header_container{
+      background-color: black; 
+      padding: 20px;
+    }
+    #main_header{
+      font-size: 25px;
+      font-family: roboto slab;
+      color: white;
+    }
+    #header_logo{
+      max-height: 100%;
+      max-width: 100%;
+    }
+
+    .day_button{
+      padding: 15px 35px;
+      background-color: #f74c33;
+      font-size: 16px;
+      border: 0px;
+      color: white;
+    }
+
+    .top_border{
+      margin-top: 20px;
+      border-top: 3px solid #f74c33;
+    }
+/*    .event_block{
       background-color: #fde1d4;
       margin-bottom: 20px;
       margin-left: 25px;
@@ -38,7 +60,30 @@
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
+    }*/
+    .event_block {
+      background-color: #fde1d4;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      border-left: 5px solid #f74c33;
+      cursor: pointer;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      height: 160px;
+      transition-property: border;
+      transition: 0.2s;
+      border-right: 0px dashed white;
     }
+
+    .event_block:hover {
+      border-left: 25px solid #f74c33;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      background-color: #ffeee6;
+    }
+
 
     .special_event_block{
       background-color: #f74c33;
@@ -54,6 +99,10 @@
       border-radius: 2px;
     }
 
+    .special_event_block:hover{
+      background-color: #f74c33cc
+    }
+
     .social_event_block{
       background-color: #1ba5ab;
       margin-bottom: 20px;
@@ -66,6 +115,10 @@
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
+    }
+
+    .social_event_block:hover{
+      background-color: #1ba5abcc;
     }
     
     .meditation_event_block{
@@ -80,11 +133,23 @@
       border-radius: 2px;
     }
 
+    .meditation_event_block:hover{
+      background-color: #1ba5abcc;
+    }
+
     .time_slot_header{
-      border-bottom: 1px dashed #f74c33;
+      border-bottom: 1px dotted #f74c33;
       padding-bottom: 8px;
-      padding-left: 5px;
       color: #f74c33;
+    }
+
+    .session_titles{
+      font-size: 19px;
+      font-family: roboto slab;
+      font-weight: 400;
+      margin-top: 0px;
+      margin-bottom: 15px;
+      text-decoration: inherit;
     }
 
     .no_link_effect{
@@ -98,7 +163,7 @@
       color: inherit;
     }
 
-    .col-md-5 {
+    .session_info {
         width: 41.66666667%;
         margin-bottom: 8px;
         font-size: 12px;
@@ -109,6 +174,14 @@
 
 <body>
   <div class="container">
+    <div class="row" id="header_container">
+      <div class="col-md-4">
+        <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
+      </div>
+      <div class="col-md-8">
+        <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
+      </div>
+    </div>
     <div class="row flex_buttons">
       <% @all_days.each do |day| %>
         <div>
@@ -120,10 +193,10 @@
     </div>
 
   <!-- Testing Testing -->
-    <div>
+    <div class="top_border">
       <% @events_by_day_time.each do |time, events| %>
         <div>
-          <h5 class="time_slot_header"><%= time.strftime("%A, %l:%M %p") %></h5>
+          <h5 class="time_slot_header"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %></h5>
           <!-- If there is no items or nil show no events div -->
           <% if @events_by_day_time[time].length < 1 || @events_by_day_time[time].nil? %>
             <div>There are no events for this day</div>
@@ -136,43 +209,43 @@
                   <% if event.public_type.nil? %><!-- NOT special, social, or meditation-->
                     <div class="col-md-5 event_block">
                       <div class="row">
-                        <h5><%= event.title %></h5>
+                        <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= event.language.upcase if event.language %></div>
-                        <div class="col-md-5">XX<%= event.event_type if event.event_type %></div>
-                        <div class="col-md-5">XX<%= event.room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= event.language.upcase if event.language %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%= event.event_type if event.event_type %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
                     <div class="col-md-12 special_event_block">
                       <div class="row">
-                        <h5><%= event.title %></h5>
+                        <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= event.room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
                     <div class="col-md-12 social_event_block">
                       <div class="row">
-                        <h5><%= event.title %></h5>
+                        <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= event.room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
                     <div class="col-md-12 meditation_event_block">
                       <div class="row">
-                        <h5><%= event.title %></h5>
+                        <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= event.room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% end %>
@@ -186,43 +259,43 @@
                   <% if events[0].public_type.nil? %><!-- NOT social, special, meditation -->
                     <div class="col-md-5 event_block">
                       <div class="row">
-                          <h5><%= events[0].title %></h5>
+                          <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= events[0].language.upcase if events[0].language %></div>
-                        <div class="col-md-5">XX<%= events[0].event_type if events[0].event_type %></div>
-                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= events[0].language.upcase if events[0].language %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%= events[0].event_type if events[0].event_type %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% elsif events[0].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
                     <div class="col-md-5 special_event_block">
                       <div class="row">
-                          <h5><%= events[0].title %></h5>
+                          <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% elsif events[0].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
                     <div class="col-md-5 social_event_block">
                       <div class="row">
-                          <h5><%= events[0].title %></h5>
+                          <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% elsif events[0].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
                     <div class="col-md-12 meditation_event_block">
                       <div class="row">
-                          <h5><%= events[0].title %></h5>
+                          <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-5">XX<%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-5">XX<%= events[0].room.name %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% end %>
@@ -234,43 +307,43 @@
                     <% if events[1].public_type.nil? %><!-- NOT social, special, meditation -->
                       <div class="col-md-5 event_block">
                         <div class="row">
-                          <h5> <%= events[1].title %></h5>
+                          <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                          <div class="col-md-5">XX<%= events[1].language.upcase if events[1].language %></div>
-                          <div class="col-md-5">XX<%= events[1].event_type if events[1].event_type %></div>
-                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= events[1].language.upcase if events[1].language %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%= events[1].event_type if events[1].event_type %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
                     <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->                      
                       <div class="col-md-5 special_event_block">
                         <div class="row">
-                          <h5> <%= events[1].title %></h5>
+                          <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
                     <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
                       <div class="col-md-5 social_event_block">
                         <div class="row">
-                          <h5> <%= events[1].title %></h5>
+                          <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
                     <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
                       <div class="col-md-5 meditation_event_block">
                         <div class="row">
-                          <h5> <%= events[1].title %></h5>
+                          <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-5">XX<%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
-                          <div class="col-md-5">XX<%= events[1].room.name %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
                     <% end %>
