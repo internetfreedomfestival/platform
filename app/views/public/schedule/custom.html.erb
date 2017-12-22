@@ -2,6 +2,10 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
+    #main-content{
+      border-width: 0px;
+      margin: 0;
+    }
 
     body{
       font: normal 12px roboto, verdana, sans-serif;
@@ -32,10 +36,12 @@
       font-size: 25px;
       font-family: roboto slab;
       color: white;
+      margin:0;
+      margin-top:5px;
+      font-weight: 300;
     }
     #header_logo{
-      max-height: 100%;
-      max-width: 100%;
+      max-width: 200px;
     }
 
     .day_button{
@@ -44,7 +50,15 @@
       font-size: 16px;
       border: 0px;
       color: white;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
     }
+    .day_button:hover {
+      background-color: #f74c33cc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
 
     .top_border{
       margin-top: 20px;
@@ -141,6 +155,7 @@
       border-bottom: 1px dotted #f74c33;
       padding-bottom: 8px;
       color: #f74c33;
+      font-size: 16px;
     }
 
     .session_titles{
@@ -164,16 +179,57 @@
     }
 
     .session_info {
-        width: 41.66666667%;
-        margin-bottom: 8px;
-        font-size: 12px;
+      width: 41.66666667%;
+      margin-bottom: 8px;
+      font-size: 12px;
+      padding-left: 10px !important;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+    }
+
+    @media only screen and (max-width: 414px) {
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
     }
 
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <div id="banner">
     <div class="row" id="header_container">
       <div class="col-md-4">
         <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
@@ -182,6 +238,8 @@
         <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
       </div>
     </div>
+  </div>
+  <div class="container">
     <div class="row flex_buttons">
       <% @all_days.each do |day| %>
         <div>
@@ -224,8 +282,8 @@
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
@@ -234,8 +292,8 @@
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
@@ -244,8 +302,8 @@
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% end %>
@@ -294,8 +352,8 @@
                           <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% end %>

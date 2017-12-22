@@ -6,9 +6,11 @@
       display: none;
     }
     body{
-      font: normal 12px roboto, verdana, sans-serif;
+      font: normal 14px roboto, verdana, sans-serif;
     }
-    .page_color{
+    #main-content{
+      border-width: 0px;
+      margin: 0;
       background-color: #fde1d4;
     }
 
@@ -37,11 +39,69 @@
       border-bottom: 1px solid #f74c33;
       padding-bottom: 10px;
     }
+
+    .back_button{
+      padding: 10px;
+      font-size: 14px;
+      color: white;
+      background-color: #f74c33;
+      width: 150px;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
+    .back_button:hover{
+      background-color: #f74c33cc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      text-decoration: inherit;
+      color: white;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+    }
+
+    @media only screen and (max-width: 414px) {
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+    }
   </style>
 
 </head>
 <body>
-  <div class="container page_color">
+  <div id="banner">
     <div class="row" id="header_container">
       <div class="col-md-4">
         <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
@@ -50,18 +110,29 @@
         <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
       </div>
     </div>
-
+  </div>
+  <br><br>
+  <div class="container">
+    <div class="row">
+      <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
+    </div>
     <div class="row">
       <h1 class="session_title"><%= @event.title %></h1>
     </div>
 
-    <div class="session_info" class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M %p") %>
+    <div class="session_info" class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
     </div>
     <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
     </div>
+    <div class="session_info"><strong>Notes:</strong> <a href="http://<%= @event.etherpad_url %>" target="_blank"><%= @event.etherpad_url %></a></div>
     <div class="session_info"><strong>Skill Level:</strong> <%= @event.skill_level %>
     </div>
-    <div class="session_info"><strong>Language:</strong> <%= @event.language %>
+    <div class="session_info"><strong>Language:</strong> 
+      <% if @event.language == "en" %>
+        English
+      <% else %>
+        Spanish
+      <% end %>
     </div>
     <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>      
     <div class="session_info"><strong>Format:</strong> <%= @event.event_type %></div>
@@ -72,7 +143,10 @@
     <div class="session_info"><%= @event.target_audience_experience %></div>
     <div><strong>Desired Outcome:</strong></div> 
     <div class="session_info"><%= @event.desired_outcome %></div>
-    <div class="session_info"><strong>Etherpad_url:</strong> <a href="http://<%= @event.etherpad_url %>" target="_blank"><%= @event.etherpad_url %></a></div>
+    <br>
+    <div class="row">
+      <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
+    </div>
   </div>
 </body>
 <!-- Title
