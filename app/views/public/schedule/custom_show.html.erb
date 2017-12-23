@@ -78,6 +78,16 @@
       }
     }
 
+    .notes_link{
+      color: #f74c33;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .notes_link:hover, .notes_link:visited{
+      color: #f74c33;
+      text-decoration: none;
+    }
+
     @media only screen and (max-width: 414px) {
       .day_button {
         padding: 8px 35px;
@@ -124,7 +134,7 @@
     </div>
     <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
     </div>
-    <div class="session_info"><strong>Notes:</strong> <a href="http://<%= @event.etherpad_url %>" target="_blank"><%= @event.etherpad_url %></a></div>
+    <div class="session_info"><strong>Notes:</strong> <a href="https://<%= @event.etherpad_url %>" target="_blank" class="notes_link"><%= @event.etherpad_url %></a></div>
     <div class="session_info"><strong>Skill Level:</strong> <%= @event.skill_level %>
     </div>
     <div class="session_info"><strong>Language:</strong> 
