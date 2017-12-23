@@ -15,7 +15,9 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      margin-top: 20px;
+      margin-top: 30px;
+      margin-left: 0;
+      margin-bottom: 20px;
     }
     .flex > div {
       flex: 1 1 auto;
@@ -34,11 +36,15 @@
     }
     #main_header{
       font-size: 25px;
+      font-size: 20px;
       font-family: roboto slab;
       color: white;
-      margin:0;
-      margin-top:5px;
+      margin: 0;
+      margin-top: 0px;
+      margin-left: 0px;
+      margin-top: 5px;
       font-weight: 300;
+      margin-left: 5px;
     }
     #header_logo{
       max-width: 200px;
@@ -59,10 +65,14 @@
       transition: 0.2s;
     }
 
-
     .top_border{
       margin-top: 20px;
       border-top: 3px solid #f74c33;
+    }
+
+    .selected_day{
+      font-size: 30px;
+      color: #f74c33;
     }
 /*    .event_block{
       background-color: #fde1d4;
@@ -145,10 +155,14 @@
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
     }
 
     .meditation_event_block:hover{
       background-color: #1ba5abcc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
     }
 
     .time_slot_header{
@@ -203,6 +217,11 @@
         -webkit-transition: 0.2s;
         transition: 0.2s;
       }
+
+      #main_header {
+        font-size: 15px;
+        margin-top: 15px;
+      }
     }
 
     @media only screen and (max-width: 414px) {
@@ -223,6 +242,10 @@
         -webkit-transition: 0.2s;
         transition: 0.2s;
       }
+      #main_header {
+        font-size: 15px;
+        margin-top: 15px;
+      }
     }
 
   </style>
@@ -231,7 +254,7 @@
 <body>
   <div id="banner">
     <div class="row" id="header_container">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
       </div>
       <div class="col-md-8">
@@ -252,6 +275,9 @@
 
   <!-- Testing Testing -->
     <div class="top_border">
+      <div class="row" style="margin-left: 0">
+        <h2 class="selected_day"><%= @days[0].start_date.strftime("%A, %B %e %Y") %></h2>
+      </div>
       <% @events_by_day_time.each do |time, events| %>
         <div>
           <h5 class="time_slot_header"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %></h5>
@@ -270,40 +296,63 @@
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                          <% if event.time_slots > 4 %>
+                            (<%= event.time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= event.language.upcase if event.language %></div>
-                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%= event.event_type if event.event_type %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                          <% if event.event_type && event.event_type.include?("Internet")%>
+                            IF: Present and Future</div>
+                          <% elsif event.event_type && event.event_type.include?("Journalism") %>
+                            Journalism, Media and Comms</div>
+                          <% elsif event.event_type %>
+                            <%= event.event_type %></div>
+                          <% end %>
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
-                    <div class="col-md-12 special_event_block">
+                    <div class="col-md-11 special_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                          <% if event.time_slots > 4 %>
+                            (<%= event.time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
+                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
-                    <div class="col-md-12 social_event_block">
+                    <div class="col-md-11 social_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                          <% if event.time_slots > 4 %>
+                            (<%= event.time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
+                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
-                    <div class="col-md-12 meditation_event_block">
+                    <div class="col-md-11 meditation_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                          <% if event.time_slots > 4 %>
+                            (<%= event.time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
+                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
                   <% end %>
@@ -320,9 +369,20 @@
                           <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                          <% if events[0].time_slots > 4 %>
+                            (<%= events[0].time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= events[0].language.upcase if events[0].language %></div>
-                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%= events[0].event_type if events[0].event_type %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>                           
+                          <% if events[0].event_type && events[0].event_type.include?("Internet")%>
+                            IF: Present and Future</div>
+                          <% elsif events[0].event_type && events[0].event_type.include?("Journalism") %>
+                            Journalism, Media and Comms</div>
+                          <% elsif events[0].event_type %>
+                            <%= events[0].event_type %></div>
+                          <% end %>
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
@@ -332,7 +392,11 @@
                           <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                          <% if events[0].time_slots > 4 %>
+                            (<%= events[0].time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
@@ -342,18 +406,26 @@
                           <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                          <% if events[0].time_slots > 4 %>
+                            (<%= events[0].time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% elsif events[0].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
-                    <div class="col-md-12 meditation_event_block">
+                    <div class="col-md-11 meditation_event_block">
                       <div class="row">
                           <h5 class="session_titles"><%= events[0].title %></h5>
                       </div>
                       <div class="row">
-                        <div class="col-md-2 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %></div>
-                        <div class="col-md-2 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                          <% if events[0].time_slots > 4 %>
+                            (<%= events[0].time_slots / 4.0 %>h)
+                          <% end %>
+                        </div>
+                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
                   <% end %>
@@ -368,9 +440,20 @@
                           <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                          <% if events[1].time_slots > 4 %>
+                            (<%= events[1].time_slots / 4.0 %>h)
+                          <% end %>
+                          </div>
                           <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= events[1].language.upcase if events[1].language %></div>
-                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <%= events[1].event_type if events[1].event_type %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                            <% if events[1].event_type && events[1].event_type.include?("Internet")%>
+                              IF: Present and Future</div>
+                            <% elsif events[1].event_type && events[1].event_type.include?("Journalism") %>
+                              Journalism, Media and Comms</div>
+                            <% elsif events[1].event_type %>
+                              <%= events[1].event_type %></div>
+                            <% end %>
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
@@ -380,7 +463,11 @@
                           <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                          <% if events[1].time_slots > 4 %>
+                            (<%= events[1].time_slots / 4.0 %>h)
+                          <% end %>
+                          </div>
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
@@ -390,7 +477,11 @@
                           <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                          <% if events[1].time_slots > 4 %>
+                            (<%= events[1].time_slots / 4.0 %>h)
+                          <% end %>
+                          </div>
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
@@ -400,13 +491,16 @@
                           <h5 class="session_titles"> <%= events[1].title %></h5>
                         </div>
                         <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                          <% if events[1].time_slots > 4 %>
+                            (<%= events[1].time_slots / 4.0 %>h)
+                          <% end %>
+                          </div>
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
                     <% end %>
                   <% end %>
-                  <!-- </a> -->
                 <% end %>
             </div>
             <% end %>
