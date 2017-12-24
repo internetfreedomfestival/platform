@@ -3,376 +3,396 @@
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
     
-  #main-content{
-    border-width: 0px;
-    margin: 0;
-  }
-
-  #bottom-banner {
-    width: 100%;
-    height: 40px;
-    background-color: #f74c33;
-    position: fixed;
-    z-index: 1001;
-    bottom: 0;
-    margin-left: -20px;
-    padding-left: 6%;
-    padding-top: 10px;
-    color: white;
-    font-family: 'Roboto', sans-serif;
-  }
-
-  #BTT-button {
-    margin-right: 5%;
-    border: 1px solid white;
-    padding: 2px 14px;
-    cursor: pointer;
-    float: right;
-    width: 100px;
-  }
-
-  #bottom-banner-text {
-    float:left;
-  }
-
-  body{
-    font: normal 12px roboto, verdana, sans-serif;
-  }
-
-  .container {
-    width: 95%;
-    margin-bottom: 20px;
-  }
-
-  .flex_buttons{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 30px;
-    margin-left: 0;
-    margin-bottom: 20px;
-  }
-  .flex > div {
-    flex: 1 1 auto;
-    width: 30px; /* To make the transition work nicely. (Transitions to/from
-                    "width:auto" are buggy in Gecko and Webkit, at least.
-                    See http://bugzil.la/731886 for more info.) */
-    transition: width 0.7s ease-out;
-  }
-  #navigation, #header{
-    display: none;
-  }
-
-  #header_container{
-    background-color: black; 
-    padding: 20px;
-  }
-  #main_header{
-    font-size: 25px;
-    font-size: 20px;
-    font-family: roboto slab;
-    color: white;
-    margin: 0;
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-top: 5px;
-    font-weight: 300;
-    margin-left: 5px;
-  }
-  #header_logo{
-    max-width: 200px;
-  }
-
-  .day_button{
-    padding: 15px 35px;
-    background-color: #f74c33;
-    font-size: 16px;
-    border: 0px;
-    color: white;
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-  }
-  .day_button:hover {
-    background-color: #f74c33cc;
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-  }
-
-  .top_border{
-    margin-top: 20px;
-    border-top: 3px solid #f74c33;
-  }
-
-  .selected_day{
-    font-size: 30px;
-    color: #f74c33;
-  }
-
-  .event_block {
-    background-color: #fde1d4;
-    margin-bottom: 20px;
-    margin-left: 25px;
-    padding: 30px;
-    border-left: 5px solid #f74c33;
-    cursor: pointer;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    height: 160px;
-    transition-property: border;
-    transition: 0.2s;
-    border-right: 0px dashed white;
-    width: 47% !important;
-  }
-
-  .event_block:hover {
-    border-left: 25px solid #f74c33;
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-    background-color: #ffeee6;
-  }
-
-
-  .special_event_block{
-    background-color: #f74c33;
-    margin-bottom: 20px;
-    margin-left: 25px;
-    padding: 30px;
-    margin-right: 0px;
-/*      border-bottom: 17px dashed white;
-    border-right: 10px dashed white;*/
-    color: white;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-  }
-
-  .special_event_block:hover{
-    background-color: #f74c33cc
-  }
-
-  .social_event_block{
-    background-color: #1ba5ab;
-    margin-bottom: 20px;
-    margin-left: 25px;
-    padding: 30px;
-    margin-right: 0px;
-/*      border-top: 17px dashed white;
-    border-right: 10px dashed white;*/
-    color: white;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-  }
-
-  .social_event_block:hover{
-    background-color: #1ba5abcc;
-  }
-  
-  .meditation_event_block{
-    background-color: #1ba5ab;
-    margin-bottom: 20px;
-    margin-left: 25px;
-    padding: 30px;
-    margin-right: 0px;
-    color: white;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-    width: 96% !important;
-  }
-
-  .meditation_event_block:hover{
-    background-color: #1ba5abcc;
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-  }
-
-  .time_slot_header{
-    border-bottom: 1px dotted #f74c33;
-    padding-bottom: 8px;
-    color: #f74c33;
-    font-size: 16px;
-  }
-
-  .session_titles{
-    font-size: 19px;
-    font-family: roboto slab;
-    font-weight: 400;
-    margin-top: 0px;
-    margin-bottom: 15px;
-    text-decoration: inherit;
-  }
-
-  .no_link_effect{
-    height: 100%; 
-    width: 100%; 
-    display: block; 
-    text-decoration: inherit; 
-    color: inherit
-  }
-  .no_link_effect:hover{
-    color: inherit;
-  }
-
-  .session_info {
-    width: 41.66666667%;
-    margin-bottom: 8px;
-    font-size: 12px;
-    padding-left: 10px !important;
-  }
-
-  #back_button{
-    text-decoration: none;
-    color: white;
-  }
-  #back_button:hover{
-    text-decoration: none;
-    color: white;
-  }
-
-  @media only screen and (max-width: 980px) {
-    #main_header {
-        font-size: 20px;
-        margin-top: 15px;
+    #main-content{
+      border-width: 0px;
+      margin: 0;
     }
 
-    .meditation_event_block{
-      width: auto !important;
+    #bottom-banner {
+      width: 100%;
+      height: 40px;
+      background-color: #f74c33;
+      position: fixed;
+      z-index: 1001;
+      bottom: 0;
+      margin-left: -20px;
+      padding-left: 6%;
+      padding-top: 10px;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    #BTT-button {
+      margin-right: 5%;
+      border: 1px solid white;
+      padding: 2px 14px;
+      cursor: pointer;
+      float: right;
+      width: 100px;
+    }
+
+    #bottom-banner-text {
+      float:left;
+    }
+
+    body{
+      font: normal 12px roboto, verdana, sans-serif;
+    }
+
+    .container {
+      width: 95%;
+      margin-bottom: 20px;
+    }
+
+    .flex_buttons{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      margin-left: 0;
+      margin-bottom: 20px;
+    }
+    .flex > div {
+      flex: 1 1 auto;
+      width: 30px; /* To make the transition work nicely. (Transitions to/from
+                      "width:auto" are buggy in Gecko and Webkit, at least.
+                      See http://bugzil.la/731886 for more info.) */
+      transition: width 0.7s ease-out;
+    }
+    #navigation, #header{
+      display: none;
+    }
+
+    #header_container{
+      background-color: black; 
+      padding: 20px;
+    }
+    #main_header{
+      font-size: 25px;
+      font-size: 20px;
+      font-family: roboto slab;
+      color: white;
+      margin: 0;
+      margin-top: 0px;
+      margin-left: 0px;
+      margin-top: 5px;
+      font-weight: 300;
+      margin-left: 5px;
+    }
+    #header_logo{
+      max-width: 200px;
+    }
+
+    .day_button{
+      padding: 15px 35px;
+      background-color: #f74c33;
+      font-size: 16px;
+      border: 0px;
+      color: white;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+    .day_button:hover {
+      background-color: #f74c33cc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
+    .top_border{
+      margin-top: 20px;
+      border-top: 3px solid #f74c33;
+    }
+
+    .selected_day{
+      font-size: 30px;
+      color: #f74c33;
     }
 
     .event_block {
-      width: auto !important;
-      height: auto !important;
+      background-color: #fde1d4;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      border-left: 5px solid #f74c33;
+      cursor: pointer;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      height: 160px;
+      transition-property: border;
+      transition: 0.2s;
+      border-right: 0px dashed white;
+      width: 47% !important;
+    }
+
+    .event_block:hover {
+      border-left: 25px solid #f74c33;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      background-color: #ffeee6;
+    }
+
+
+    .special_event_block{
+      background-color: #f74c33;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      height: 160px;
+      /* border-bottom: 17px dashed white;
+      border-right: 10px dashed white;*/
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      width: 47% !important;
+    }
+
+    .special_event_block:hover{
+      background-color: #f74c33cc
+    }
+
+    .social_event_block{
+      background-color: #1ba5ab;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      height: 160px;
+      /*border-top: 17px dashed white;
+      border-right: 10px dashed white;*/
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      width: 47% !important;
+    }
+
+    .social_event_block:hover{
+      background-color: #1ba5abcc;
+    }
+    
+    .meditation_event_block{
+      background-color: #1ba5ab;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      width: 96% !important;
+      height: 160px;
+    }
+
+    .meditation_event_block:hover{
+      background-color: #1ba5abcc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
+    .time_slot_header{
+      border-bottom: 1px dotted #f74c33;
+      padding-bottom: 8px;
+      color: #f74c33;
+      font-size: 16px;
+    }
+
+    .session_titles{
+      font-size: 19px;
+      font-family: roboto slab;
+      font-weight: 400;
+      margin-top: 0px;
+      margin-bottom: 15px;
+      text-decoration: inherit;
+    }
+
+    .no_link_effect{
+      height: 100%; 
+      width: 100%; 
+      display: block; 
+      text-decoration: inherit; 
+      color: inherit
+    }
+    .no_link_effect:hover{
+      color: inherit;
     }
 
     .session_info {
-      width: 100%;
-      margin-bottom: 2px;
+      width: 41.66666667%;
+      margin-bottom: 8px;
       font-size: 12px;
       padding-left: 10px !important;
     }
-  }
 
-  @media only screen and (max-width: 768px) {
-    a:focus, a:hover {
-      color: black;
+    #back_button{
       text-decoration: none;
-    }
-
-    .container {
-      padding-right: 0px;
-      padding-left: 0px;
-      margin-right: 5%;
-      margin-left: auto;
-    }
-
-    .flex_buttons {       
-      flex-direction: column;
-    }
-
-    .selected_day {
-      font-size: 25px;
-    }
-
-    .event_block {
-      height: auto;
-      margin-left: 20px;
-      padding: 20px;
-    }
-
-    .session_titles {
-      font-size: 15px;
-      text-decoration: none;
-      margin-left: 5px;
-    }
-
-    .day_button {
-      padding: 8px 35px;
-      background-color: #f74c33;
-      font-size: 14px;
-      border: 0px;
       color: white;
-      width: 100%;
-      margin-bottom: 7px;
-      -webkit-transition: 0.2s;
-      transition: 0.2s;
     }
-
-    .day_button:hover {
-      background-color: #f74c33cc;
-      -webkit-transition: 0.2s;
-      transition: 0.2s;
-    }
-
-    #header_logo {
-      max-width: 120px;
-    }
-
-    #main_header {
-      font-size: 15px;
-      margin-top: 15px;
-    }
-  }
-
-  @media only screen and (max-width: 414px) {
-    a:focus, a:hover {
-      color: black;
+    #back_button:hover{
       text-decoration: none;
-    }
-   
-    .container {
-      padding-right: 0px;
-      padding-left: 0px;
-      margin-right: 10%;
-      margin-left: auto;
-    }
-
-    .flex_buttons {
-      flex-direction: column;
-    }
-
-    .event_block {
-      height: auto;
-      margin-left: 20px;
-      padding: 10px 20px 10px 20px;
-    }
-
-    .session_titles {
-      font-size: 15px;
-      text-decoration: none;
-      margin-left: 5px;
-    }
-
-    .day_button {
-      padding: 8px 35px;
-      background-color: #f74c33;
-      font-size: 14px;
-      border: 0px;
       color: white;
-      width: 100%;
-      margin-bottom: 7px;
+    }
+
+    @media only screen and (max-width: 980px) {
+      #main_header {
+          font-size: 20px;
+          margin-top: 15px;
+      }
+
+      .meditation_event_block{
+        width: auto !important;
+      }
+
+      .event_block {
+        width: auto !important;
+        height: auto !important;
+      }
+
+      .session_info {
+        width: 100%;
+        margin-bottom: 2px;
+        font-size: 12px;
+        padding-left: 10px !important;
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+      a:focus, a:hover {
+        color: black;
+        text-decoration: none;
+      }
+
+      .container {
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: 5%;
+        margin-left: auto;
+      }
+
+      .flex_buttons {       
+        flex-direction: column;
+      }
+
+      .selected_day {
+        font-size: 25px;
+      }
+
+      .event_block {
+        height: auto;
+        margin-left: 20px;
+        padding: 20px;
+      }
+
+      .session_titles {
+        font-size: 15px;
+        text-decoration: none;
+        margin-left: 5px;
+      }
+
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      #header_logo {
+        max-width: 120px;
+      }
+
+      #main_header {
+        font-size: 15px;
+        margin-top: 15px;
+      }
+    }
+
+    @media only screen and (max-width: 414px) {
+      a:focus, a:hover {
+        color: black;
+        text-decoration: none;
+      }
+     
+      .container {
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: 10%;
+        margin-left: auto;
+      }
+
+      .flex_buttons {
+        flex-direction: column;
+      }
+
+      .event_block {
+        height: auto;
+        margin-left: 20px;
+        padding: 10px 20px 10px 20px;
+      }
+
+      .session_titles {
+        font-size: 15px;
+        text-decoration: none;
+        margin-left: 5px;
+      }
+
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      #header_logo {
+        max-width: 120px;
+      }
+
+      #main_header {
+        font-size: 15px;
+        margin-top: 15px;
+      }
+    }
+    .break_event{
+      background-color: blue;
+      color: white;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
       -webkit-transition: 0.2s;
       transition: 0.2s;
+      width: 96% !important;
+      height: 140px;
     }
-
-    .day_button:hover {
-      background-color: #f74c33cc;
-      -webkit-transition: 0.2s;
-      transition: 0.2s;
-    }
-
-    #header_logo {
-      max-width: 120px;
-    }
-
-    #main_header {
-      font-size: 15px;
-      margin-top: 15px;
-    }
-  }
 
   </style>
 </head>
@@ -388,7 +408,9 @@
       </div>
     </div>
   </div>
+
   <div class="container">
+    
     <div class="row flex_buttons">
       <% @all_days.each do |day| %>
         <div>
@@ -403,19 +425,26 @@
       <div class="row" style="margin-left: 0">
         <h2 class="selected_day"><%= @days[0].start_date.strftime("%A, %B %e %Y") %></h2>
       </div>
+    </div>
+    <div> <!-- Contains all events -->
       <% @events_by_day_time.each do |time, events| %>
-        <div>
+        <div><!-- Show Day and TIME for each start time -->
           <h5 class="time_slot_header"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %></h5>
+        </div>
+
           <!-- If there is no items or nil show no events div -->
           <% if @events_by_day_time[time].length < 1 || @events_by_day_time[time].nil? %>
-            <div>There are no events for this day</div>
+            <div>
+              <h5>There are no events for this day</h5>
+            </div>
         
-          <!-- If there is only one event for a time slot do not slice -->
+          <!-- If there is only one event for a time slot do NOT slice -->
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
-              <div class="row">
-                <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
-                  <% if event.public_type.nil? %><!-- NOT special, social, or meditation-->
+              <% if event.public_type.nil? %><!-- NOT special, social, or meditation-->
+              
+                <div class="row">
+                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                     <div class="col-md-5 event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
@@ -438,7 +467,12 @@
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
-                  <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                  <% end %> <!-- End link to event show-->
+                </div><!-- End Row  -->
+
+              <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                <div class="row">
+                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                     <div class="col-md-11 special_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
@@ -452,7 +486,12 @@
                         <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
-                  <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
+                  <% end %><!-- End of link to special event show -->
+                </div><!-- End Row -->
+
+              <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
+                <div class="row">
+                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                     <div class="col-md-11 social_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
@@ -466,7 +505,12 @@
                         <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
-                  <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
+                  <% end %> <!-- End of link to social event show -->
+                </div><!-- End Row-->
+
+              <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
+                <div class="row">
+                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>  
                     <div class="col-md-11 meditation_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
@@ -480,15 +524,17 @@
                         <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
                       </div>
                     </div>
-                  <% end %>
-                <% end %>
-              </div>
-            <% end %>
-          <% else %><!-- If there are more than one event for a time slot, slice for 2 column effect -->
+                  <% end %><!-- End of link to meditation event show -->
+                </div><!-- End Row-->
+              <% end %><!--End Conditionals for public_type for one event/time slot -->
+            <% end %><!-- End loop -->
+
+
+          <% else %><!-- If more than one event for a time slot, slice for 2 column effect -->
             <% @events_by_day_time[time].each_slice(2) do |events| %>
               <div class="row">
-                <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
-                  <% if events[0].public_type.nil? %><!-- NOT social, special, meditation -->
+                <% if events[0].public_type.nil? %><!-- NOT social, special, meditation -->
+                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
                     <div class="col-md-5 event_block">
                       <div class="row">
                           <h5 class="session_titles"><%= events[0].title %></h5>
@@ -511,7 +557,10 @@
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
-                  <% elsif events[0].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                  <% end %>
+
+                <% elsif events[0].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
                     <div class="col-md-5 special_event_block">
                       <div class="row">
                           <h5 class="session_titles"><%= events[0].title %></h5>
@@ -525,41 +574,47 @@
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
-                  <% elsif events[0].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
-                    <div class="col-md-5 social_event_block">
-                      <div class="row">
-                          <h5 class="session_titles"><%= events[0].title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
-                          <% if events[0].time_slots > 4 %>
-                            (<%= events[0].time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
-                      </div>
-                    </div>
-                  <% elsif events[0].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
-                    <div class="col-md-11 meditation_event_block">
-                      <div class="row">
-                          <h5 class="session_titles"><%= events[0].title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
-                          <% if events[0].time_slots > 4 %>
-                            (<%= events[0].time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
-                      </div>
-                    </div>
                   <% end %>
-                <% end %>
 
-                <!-- Make sure there is a second event -->
-                <% if events[1] %>
-                  <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
-                    <% if events[1].public_type.nil? %><!-- NOT social, special, meditation -->
+                <% elsif events[0].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
+                      <div class="col-md-5 social_event_block">
+                        <div class="row">
+                            <h5 class="session_titles"><%= events[0].title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                            <% if events[0].time_slots > 4 %>
+                              (<%= events[0].time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                        </div>
+                      </div>
+                  <% end %>
+
+                <% elsif events[0].public_type == "meditation" %><!--  IS MEDITATION EVENT -->
+                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
+                      <div class="col-md-11 meditation_event_block">
+                        <div class="row">
+                            <h5 class="session_titles"><%= events[0].title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                            <% if events[0].time_slots > 4 %>
+                              (<%= events[0].time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                          <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                        </div>
+                      </div>
+                  <% end %>
+                <% end %><!-- Ends conditional for first event of multiple events-->
+
+
+                <% if events[1] %><!-- Make sure there is a second event -->
+                  <% if events[1].public_type.nil? %><!-- NOT social, special, meditation -->
+                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                       <div class="col-md-5 event_block">
                         <div class="row">
                           <h5 class="session_titles"> <%= events[1].title %></h5>
@@ -582,7 +637,10 @@
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
-                    <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->                      
+                    <% end %>
+
+                  <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>            
                       <div class="col-md-5 special_event_block">
                         <div class="row">
                           <h5 class="session_titles"> <%= events[1].title %></h5>
@@ -596,7 +654,11 @@
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
-                    <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+                    <% end %>
+                  
+                  <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+
+                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                       <div class="col-md-5 social_event_block">
                         <div class="row">
                           <h5 class="session_titles"> <%= events[1].title %></h5>
@@ -610,7 +672,10 @@
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
-                    <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
+                    <% end %>
+                  
+                  <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
+                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                       <div class="col-md-5 meditation_event_block">
                         <div class="row">
                           <h5 class="session_titles"> <%= events[1].title %></h5>
@@ -625,15 +690,33 @@
                         </div>
                       </div>
                     <% end %>
-                  <% end %>
-                <% end %>
+                  <% end %><!-- Ends conditional for public type for second event -->
+                </div><!-- End Row -->
+
+
+                
+              <% end %><!-- Ends conditional to check if second event -->
+            <% end %><!-- Ends slice 2 loop -->
+          <% end %><!-- Ends check for 0, 1, 2 events per time-->
+        
+        <!-- Add break for 1 hour after start time -->
+        <% unless @events_by_day_time.keys.last == time %>
+          <div class="row">
+            <div class="col-md-11 break_event"> 
+              <div class="col-md-3">
+                <h1>BREAK!</h1>
+              </div>
+              <div class="col-md-3">
+                <h3><%= time.strftime("%l:%M %p") %> - <%= (time + 15.minutes).strftime("%l:%M %p") %></h3>
+              </div>
             </div>
-            <% end %>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
+
       <% end %><!-- End of Events -->
     </div>
   </div><!-- Ends container div -->
+
   <div id="bottom-banner">
     <p id="bottom-banner-text"><i aria-hidden="true" class="fa fa-twitter"></i> @InternetFF - #InternetFF</p>
     <p id="BTT-button"><a href="#banner" id="back_button">Back to Top</a></p>
