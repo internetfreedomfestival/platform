@@ -2,251 +2,377 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
-    #main-content{
-      border-width: 0px;
-      margin: 0;
+    
+  #main-content{
+    border-width: 0px;
+    margin: 0;
+  }
+
+  #bottom-banner {
+    width: 100%;
+    height: 40px;
+    background-color: #f74c33;
+    position: fixed;
+    z-index: 1001;
+    bottom: 0;
+    margin-left: -20px;
+    padding-left: 6%;
+    padding-top: 10px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  #BTT-button {
+    margin-right: 5%;
+    border: 1px solid white;
+    padding: 2px 14px;
+    cursor: pointer;
+    float: right;
+    width: 100px;
+  }
+
+  #bottom-banner-text {
+    float:left;
+  }
+
+  body{
+    font: normal 12px roboto, verdana, sans-serif;
+  }
+
+  .container {
+    width: 95%;
+    margin-bottom: 20px;
+  }
+
+  .flex_buttons{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+  .flex > div {
+    flex: 1 1 auto;
+    width: 30px; /* To make the transition work nicely. (Transitions to/from
+                    "width:auto" are buggy in Gecko and Webkit, at least.
+                    See http://bugzil.la/731886 for more info.) */
+    transition: width 0.7s ease-out;
+  }
+  #navigation, #header{
+    display: none;
+  }
+
+  #header_container{
+    background-color: black; 
+    padding: 20px;
+  }
+  #main_header{
+    font-size: 25px;
+    font-size: 20px;
+    font-family: roboto slab;
+    color: white;
+    margin: 0;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-top: 5px;
+    font-weight: 300;
+    margin-left: 5px;
+  }
+  #header_logo{
+    max-width: 200px;
+  }
+
+  .day_button{
+    padding: 15px 35px;
+    background-color: #f74c33;
+    font-size: 16px;
+    border: 0px;
+    color: white;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+  }
+  .day_button:hover {
+    background-color: #f74c33cc;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+  }
+
+  .top_border{
+    margin-top: 20px;
+    border-top: 3px solid #f74c33;
+  }
+
+  .selected_day{
+    font-size: 30px;
+    color: #f74c33;
+  }
+
+  .event_block {
+    background-color: #fde1d4;
+    margin-bottom: 20px;
+    margin-left: 25px;
+    padding: 30px;
+    border-left: 5px solid #f74c33;
+    cursor: pointer;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    height: 160px;
+    transition-property: border;
+    transition: 0.2s;
+    border-right: 0px dashed white;
+    width: 47% !important;
+  }
+
+  .event_block:hover {
+    border-left: 25px solid #f74c33;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    background-color: #ffeee6;
+  }
+
+
+  .special_event_block{
+    background-color: #f74c33;
+    margin-bottom: 20px;
+    margin-left: 25px;
+    padding: 30px;
+    margin-right: 0px;
+/*      border-bottom: 17px dashed white;
+    border-right: 10px dashed white;*/
+    color: white;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+  }
+
+  .special_event_block:hover{
+    background-color: #f74c33cc
+  }
+
+  .social_event_block{
+    background-color: #1ba5ab;
+    margin-bottom: 20px;
+    margin-left: 25px;
+    padding: 30px;
+    margin-right: 0px;
+/*      border-top: 17px dashed white;
+    border-right: 10px dashed white;*/
+    color: white;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+  }
+
+  .social_event_block:hover{
+    background-color: #1ba5abcc;
+  }
+  
+  .meditation_event_block{
+    background-color: #1ba5ab;
+    margin-bottom: 20px;
+    margin-left: 25px;
+    padding: 30px;
+    margin-right: 0px;
+    color: white;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    width: 96% !important;
+  }
+
+  .meditation_event_block:hover{
+    background-color: #1ba5abcc;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+  }
+
+  .time_slot_header{
+    border-bottom: 1px dotted #f74c33;
+    padding-bottom: 8px;
+    color: #f74c33;
+    font-size: 16px;
+  }
+
+  .session_titles{
+    font-size: 19px;
+    font-family: roboto slab;
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    text-decoration: inherit;
+  }
+
+  .no_link_effect{
+    height: 100%; 
+    width: 100%; 
+    display: block; 
+    text-decoration: inherit; 
+    color: inherit
+  }
+  .no_link_effect:hover{
+    color: inherit;
+  }
+
+  .session_info {
+    width: 41.66666667%;
+    margin-bottom: 8px;
+    font-size: 12px;
+    padding-left: 10px !important;
+  }
+
+  #back_button{
+    text-decoration: none;
+    color: white;
+  }
+  #back_button:hover{
+    text-decoration: none;
+    color: white;
+  }
+
+  @media only screen and (max-width: 980px) {
+    #main_header {
+        font-size: 20px;
+        margin-top: 15px;
     }
 
-    body{
-      font: normal 12px roboto, verdana, sans-serif;
+    .meditation_event_block{
+      width: auto !important;
     }
 
-    .flex_buttons{
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      margin-top: 30px;
-      margin-left: 0;
-      margin-bottom: 20px;
-    }
-    .flex > div {
-      flex: 1 1 auto;
-      width: 30px; /* To make the transition work nicely. (Transitions to/from
-                      "width:auto" are buggy in Gecko and Webkit, at least.
-                      See http://bugzil.la/731886 for more info.) */
-      transition: width 0.7s ease-out;
-    }
-    #navigation, #header{
-      display: none;
+    .event_block {
+      width: auto !important;
+      height: auto !important;
     }
 
-    #header_container{
-      background-color: black; 
+    .session_info {
+      width: 100%;
+      margin-bottom: 2px;
+      font-size: 12px;
+      padding-left: 10px !important;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    a:focus, a:hover {
+      color: black;
+      text-decoration: none;
+    }
+
+    .container {
+      padding-right: 0px;
+      padding-left: 0px;
+      margin-right: 5%;
+      margin-left: auto;
+    }
+
+    .flex_buttons {       
+      flex-direction: column;
+    }
+
+    .selected_day {
+      font-size: 25px;
+    }
+
+    .event_block {
+      height: auto;
+      margin-left: 20px;
       padding: 20px;
     }
-    #main_header{
-      font-size: 25px;
-      font-size: 20px;
-      font-family: roboto slab;
-      color: white;
-      margin: 0;
-      margin-top: 0px;
-      margin-left: 0px;
-      margin-top: 5px;
-      font-weight: 300;
+
+    .session_titles {
+      font-size: 15px;
+      text-decoration: none;
       margin-left: 5px;
     }
-    #header_logo{
-      max-width: 200px;
-    }
 
-    .day_button{
-      padding: 15px 35px;
+    .day_button {
+      padding: 8px 35px;
       background-color: #f74c33;
-      font-size: 16px;
+      font-size: 14px;
       border: 0px;
       color: white;
+      width: 100%;
+      margin-bottom: 7px;
       -webkit-transition: 0.2s;
       transition: 0.2s;
     }
+
     .day_button:hover {
       background-color: #f74c33cc;
       -webkit-transition: 0.2s;
       transition: 0.2s;
     }
 
-    .top_border{
-      margin-top: 20px;
-      border-top: 3px solid #f74c33;
+    #header_logo {
+      max-width: 120px;
     }
 
-    .selected_day{
-      font-size: 30px;
-      color: #f74c33;
+    #main_header {
+      font-size: 15px;
+      margin-top: 15px;
     }
-/*    .event_block{
-      background-color: #fde1d4;
-      margin-bottom: 20px;
-      margin-left: 25px;
-      padding: 30px;
-      margin-right: 0px;
-      border-left: 5px solid #f74c33;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }*/
+  }
+
+  @media only screen and (max-width: 414px) {
+    a:focus, a:hover {
+      color: black;
+      text-decoration: none;
+    }
+   
+    .container {
+      padding-right: 0px;
+      padding-left: 0px;
+      margin-right: 10%;
+      margin-left: auto;
+    }
+
+    .flex_buttons {
+      flex-direction: column;
+    }
+
     .event_block {
-      background-color: #fde1d4;
-      margin-bottom: 20px;
-      margin-left: 25px;
-      padding: 30px;
-      border-left: 5px solid #f74c33;
-      cursor: pointer;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-      height: 160px;
-      transition-property: border;
-      transition: 0.2s;
-      border-right: 0px dashed white;
+      height: auto;
+      margin-left: 20px;
+      padding: 10px 20px 10px 20px;
     }
 
-    .event_block:hover {
-      border-left: 25px solid #f74c33;
-      -webkit-transition: 0.2s;
-      transition: 0.2s;
-      background-color: #ffeee6;
+    .session_titles {
+      font-size: 15px;
+      text-decoration: none;
+      margin-left: 5px;
     }
 
-
-    .special_event_block{
+    .day_button {
+      padding: 8px 35px;
       background-color: #f74c33;
-      margin-bottom: 20px;
-      margin-left: 25px;
-      padding: 30px;
-      margin-right: 0px;
-/*      border-bottom: 17px dashed white;
-      border-right: 10px dashed white;*/
+      font-size: 14px;
+      border: 0px;
       color: white;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }
-
-    .special_event_block:hover{
-      background-color: #f74c33cc
-    }
-
-    .social_event_block{
-      background-color: #1ba5ab;
-      margin-bottom: 20px;
-      margin-left: 25px;
-      padding: 30px;
-      margin-right: 0px;
-/*      border-top: 17px dashed white;
-      border-right: 10px dashed white;*/
-      color: white;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-    }
-
-    .social_event_block:hover{
-      background-color: #1ba5abcc;
-    }
-    
-    .meditation_event_block{
-      background-color: #1ba5ab;
-      margin-bottom: 20px;
-      margin-left: 25px;
-      padding: 30px;
-      margin-right: 0px;
-      color: white;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
+      width: 100%;
+      margin-bottom: 7px;
       -webkit-transition: 0.2s;
       transition: 0.2s;
     }
 
-    .meditation_event_block:hover{
-      background-color: #1ba5abcc;
+    .day_button:hover {
+      background-color: #f74c33cc;
       -webkit-transition: 0.2s;
       transition: 0.2s;
     }
 
-    .time_slot_header{
-      border-bottom: 1px dotted #f74c33;
-      padding-bottom: 8px;
-      color: #f74c33;
-      font-size: 16px;
+    #header_logo {
+      max-width: 120px;
     }
 
-    .session_titles{
-      font-size: 19px;
-      font-family: roboto slab;
-      font-weight: 400;
-      margin-top: 0px;
-      margin-bottom: 15px;
-      text-decoration: inherit;
+    #main_header {
+      font-size: 15px;
+      margin-top: 15px;
     }
-
-    .no_link_effect{
-      height: 100%; 
-      width: 100%; 
-      display: block; 
-      text-decoration: inherit; 
-      color: inherit
-    }
-    .no_link_effect:hover{
-      color: inherit;
-    }
-
-    .session_info {
-      width: 41.66666667%;
-      margin-bottom: 8px;
-      font-size: 12px;
-      padding-left: 10px !important;
-    }
-
-    @media only screen and (max-width: 768px) {
-      .day_button {
-        padding: 8px 35px;
-        background-color: #f74c33;
-        font-size: 14px;
-        border: 0px;
-        color: white;
-        width: 100%;
-        margin-bottom: 7px;
-        -webkit-transition: 0.2s;
-        transition: 0.2s;
-      }
-
-      .day_button:hover {
-        background-color: #f74c33cc;
-        -webkit-transition: 0.2s;
-        transition: 0.2s;
-      }
-
-      #main_header {
-        font-size: 15px;
-        margin-top: 15px;
-      }
-    }
-
-    @media only screen and (max-width: 414px) {
-      .day_button {
-        padding: 8px 35px;
-        background-color: #f74c33;
-        font-size: 14px;
-        border: 0px;
-        color: white;
-        width: 100%;
-        margin-bottom: 7px;
-        -webkit-transition: 0.2s;
-        transition: 0.2s;
-      }
-
-      .day_button:hover {
-        background-color: #f74c33cc;
-        -webkit-transition: 0.2s;
-        transition: 0.2s;
-      }
-      #main_header {
-        font-size: 15px;
-        margin-top: 15px;
-      }
-    }
+  }
 
   </style>
 </head>
@@ -273,7 +399,6 @@
       <% end %>
     </div>
 
-  <!-- Testing Testing -->
     <div class="top_border">
       <div class="row" style="margin-left: 0">
         <h2 class="selected_day"><%= @days[0].start_date.strftime("%A, %B %e %Y") %></h2>
@@ -506,7 +631,11 @@
             <% end %>
           <% end %>
         </div>
-      <% end %>
+      <% end %><!-- End of Events -->
     </div>
   </div><!-- Ends container div -->
+  <div id="bottom-banner">
+    <p id="bottom-banner-text"><i aria-hidden="true" class="fa fa-twitter"></i> @InternetFF - #InternetFF</p>
+    <p id="BTT-button"><a href="#banner" id="back_button">Back to Top</a></p>
+  </div>
 </body>
