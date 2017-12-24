@@ -391,7 +391,7 @@
       -webkit-transition: 0.2s;
       transition: 0.2s;
       width: 96% !important;
-      height: 140px;
+      height: 160px;
     }
 
   </style>
@@ -703,11 +703,11 @@
         <% unless @events_by_day_time.keys.last == time %>
           <div class="row">
             <div class="col-md-11 break_event"> 
-              <div class="col-md-3">
-                <h1>BREAK!</h1>
+              <div class="col-md-2">
+                <h3>BREAK!</h3>
               </div>
-              <div class="col-md-3">
-                <h3><%= time.strftime("%l:%M %p") %> - <%= (time + 15.minutes).strftime("%l:%M %p") %></h3>
+              <div class="col-md-7">
+                <h3><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %> - <%= (time + 15.minutes).strftime("%l:%M %p") %></h3>
               </div>
             </div>
           </div>
