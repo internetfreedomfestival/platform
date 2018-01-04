@@ -1,43 +1,22 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
   <style>
   
     #navigation, #header{
       display: none;
     }
     body{
-      font: normal 14px roboto, verdana, sans-serif;
-    }
-    #main-content{
-      border-width: 0px;
-      margin: 0;
-      background-color: #fde1d4;
-    }
-
-    #header_container{
-      background-color: black; 
-      padding: 20px;
-    }
-    #main_header{
-      font-size: 25px;
-      font-family: roboto slab;
-      color: white;
-    }
-    #header_logo{
-      max-height: 100%;
-      max-width: 100%;
+      font-family: 'Roboto', verdana, sans-serif;
+      line-height: 1.6em;
     }
 
     .session_title{
-      font-family: roboto slab;
+      font-family: 'Roboto Slab', verdana, sans-serif;
       margin-bottom: 25px;
+      margin-top:35px;
       color: #f74c33;
-    }
-
-    .session_info{
-      margin: 6px 0px 10px;
-      border-bottom: 1px solid #f74c33;
-      padding-bottom: 10px;
+      font-size:25px;
     }
 
     .back_button{
@@ -48,6 +27,53 @@
       width: 150px;
       -webkit-transition: 0.2s;
       transition: 0.2s;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+
+    #main-content{
+      border-width: 0px;
+      margin: 0;
+      background-color: #fde1d4;
+    }
+
+    #header_container{
+      background-color: black; 
+      display: table;
+      width:100%;
+      padding-left: 3%;
+      padding-top:25px;
+      padding-right:0%;
+      padding-bottom:20px;
+    }
+
+    #main_header{
+      font-size: 25px;
+      font-size: 20px;
+      font-family: 'Roboto Slab', verdana, sans-serif;
+      color: white;
+      margin: 0;
+      margin-top: 0px;
+      margin-left: 0px;
+      margin-top: 5px;
+      font-weight: 300;
+      margin-left: 5px;
+      display: table-cell;
+      float: left;
+    }
+
+    #header_logo{
+      max-width: 200px;
+      display: table-cell;
+      float: left;
+      margin-right: 20px;
+    }
+
+    .session_info{
+      margin: 6px 0px 10px;
+      border-bottom: 1px solid #f74c33;
+      padding-bottom: 10px;
     }
 
     .back_button:hover{
@@ -113,14 +139,15 @@
 <body>
   <div id="banner">
     <div class="row" id="header_container">
-      <div class="col-md-4">
+      <div>
         <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
       </div>
-      <div class="col-md-8">
+      <div>
         <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
       </div>
     </div>
   </div>
+
   <br><br>
   <div class="container">
     <div class="row">

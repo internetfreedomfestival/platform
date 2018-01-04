@@ -1,35 +1,44 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    
     #main-content{
       border-width: 0px;
       margin: 0;
+      padding-left: 0em;
     }
 
     #bottom-banner {
-      width: 100%;
-      height: 40px;
-      background-color: #f74c33;
-      position: fixed;
-      z-index: 1001;
-      bottom: 0;
-      margin-left: -20px;
-      padding-left: 6%;
-      padding-top: 10px;
-      color: white;
-      font-family: 'Roboto', sans-serif;
+        width: 100%;
+        height: 40px;
+        background-color: #f74c33;
+        position: fixed;
+        z-index: 1001;
+        bottom: 0;
+        left: 0;
+        padding-left: 6%;
+        padding-top: 10px;
+        color: white;
+        font-family: 'Roboto', verdana, sans-serif;
     }
 
     #BTT-button {
       margin-right: 5%;
-      border: 1px solid white;
-      padding: 2px 14px;
+        border: 1px solid white;
+        padding: 2px 14px;
       cursor: pointer;
-      float: right;
-      width: 100px;
+        float: right;
+        width: 100px;
     }
+
+    #BTT-button a {
+      color: white;
+      text-decoration: none;
+      
+      }
 
     #bottom-banner-text {
       float:left;
@@ -42,6 +51,11 @@
     .container {
       width: 95%;
       margin-bottom: 20px;
+    }
+
+    .row {
+      margin-left: 0px;
+      margin-right: 0px;
     }
 
     .flex_buttons{
@@ -65,12 +79,18 @@
 
     #header_container{
       background-color: black; 
-      padding: 20px;
+      display: table;
+      width:100%;
+      padding-left: 3%;
+      padding-top:25px;
+      padding-right:0%;
+      padding-bottom:20px;
     }
+
     #main_header{
       font-size: 25px;
       font-size: 20px;
-      font-family: roboto slab;
+      font-family: 'Roboto Slab', verdana, sans-serif;
       color: white;
       margin: 0;
       margin-top: 0px;
@@ -78,9 +98,15 @@
       margin-top: 5px;
       font-weight: 300;
       margin-left: 5px;
+      display: table-cell;
+      float: left;
     }
+
     #header_logo{
       max-width: 200px;
+      display: table-cell;
+      float: left;
+      margin-right: 20px;
     }
 
     .day_button{
@@ -91,6 +117,9 @@
       color: white;
       -webkit-transition: 0.2s;
       transition: 0.2s;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
     }
     .day_button:hover {
       background-color: #f74c33cc;
@@ -111,18 +140,18 @@
     .event_block {
       background-color: #fde1d4;
       margin-bottom: 20px;
-      margin-left: 25px;
+      margin-left: 0%;
+      margin-right: 2%;
       padding: 30px;
       border-left: 5px solid #f74c33;
       cursor: pointer;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      height: 160px;
+      height:160px;
       transition-property: border;
       transition: 0.2s;
-      border-right: 0px dashed white;
-      width: 47% !important;
+      width: 48% !important;
     }
 
     .event_block:hover {
@@ -139,14 +168,10 @@
       margin-left: 25px;
       padding: 30px;
       margin-right: 0px;
-      height: 160px;
-      /* border-bottom: 17px dashed white;
-      border-right: 10px dashed white;*/
       color: white;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      width: 47% !important;
     }
 
     .special_event_block:hover{
@@ -159,14 +184,10 @@
       margin-left: 25px;
       padding: 30px;
       margin-right: 0px;
-      height: 160px;
-      /*border-top: 17px dashed white;
-      border-right: 10px dashed white;*/
       color: white;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      width: 47% !important;
     }
 
     .social_event_block:hover{
@@ -186,7 +207,6 @@
       -webkit-transition: 0.2s;
       transition: 0.2s;
       width: 96% !important;
-      height: 160px;
     }
 
     .meditation_event_block:hover{
@@ -203,10 +223,10 @@
     }
 
     .session_titles{
-      font-size: 19px;
-      font-family: roboto slab;
+      font-size: 18px;
+      font-family: 'Roboto Slab', verdana, sans-serif;
       font-weight: 400;
-      margin-top: 0px;
+      margin-top: -5px;
       margin-bottom: 15px;
       text-decoration: inherit;
     }
@@ -229,36 +249,44 @@
       padding-left: 10px !important;
     }
 
-    #back_button{
-      text-decoration: none;
-      color: white;
-    }
-    #back_button:hover{
-      text-decoration: none;
-      color: white;
-    }
-
     @media only screen and (max-width: 980px) {
+      .row {
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+
+      #main-content{
+        border-width: 0px;
+        margin: 0;
+        padding-left: 0em;
+      }
+
       #main_header {
           font-size: 20px;
-          margin-top: 15px;
+          margin-top: 10px;
+        }
+
+      .session_titles {
+        margin-top: 0px;
       }
 
       .meditation_event_block{
         width: auto !important;
       }
-
       .event_block {
-        width: auto !important;
+        width: 100% !important;
         height: auto !important;
+        margin-left: 0px;
+        padding:16px;
       }
 
       .session_info {
-        width: 100%;
-        margin-bottom: 2px;
-        font-size: 12px;
-        padding-left: 10px !important;
+          width: 100%;
+          margin-bottom: 2px;
+          font-size: 12px;
+          padding-left: 10px !important;
       }
+
     }
 
     @media only screen and (max-width: 768px) {
@@ -266,16 +294,17 @@
         color: black;
         text-decoration: none;
       }
-
+    
       .container {
-        padding-right: 0px;
+        padding-right: 10px;
         padding-left: 0px;
-        margin-right: 5%;
-        margin-left: auto;
+        margin-left: 5px;
+        width: 97%;
       }
 
-      .flex_buttons {       
+      .flex_buttons {  
         flex-direction: column;
+        width: 103% !important;
       }
 
       .selected_day {
@@ -284,14 +313,20 @@
 
       .event_block {
         height: auto;
-        margin-left: 20px;
-        padding: 20px;
+        margin-left: 4px;
+        padding: 10px;
       }
+
+
+      .event_block:hover {
+        border-left: 5px solid #f74c33;
+       }
 
       .session_titles {
         font-size: 15px;
         text-decoration: none;
         margin-left: 5px;
+        margin-top: 0px;
       }
 
       .day_button {
@@ -313,12 +348,12 @@
       }
 
       #header_logo {
-        max-width: 120px;
+        max-width: 175px;
       }
 
       #main_header {
-        font-size: 15px;
-        margin-top: 15px;
+        font-size: 16px;
+        margin-top: 10px;
       }
     }
 
@@ -329,26 +364,32 @@
       }
      
       .container {
-        padding-right: 0px;
+        padding-right: 10px;
         padding-left: 0px;
-        margin-right: 10%;
-        margin-left: auto;
-      }
+        margin-left: 5px;
+        width: 98%;
+       }
 
       .flex_buttons {
         flex-direction: column;
+        width:102% !important;
       }
 
       .event_block {
         height: auto;
-        margin-left: 20px;
-        padding: 10px 20px 10px 20px;
+        margin-left: 5px;
+        padding: 10px;
+      }
+
+      .event_block:hover {
+        border-left: 5px solid #f74c33;
       }
 
       .session_titles {
         font-size: 15px;
         text-decoration: none;
         margin-left: 5px;
+        margin-top: 0px;
       }
 
       .day_button {
@@ -369,41 +410,33 @@
         transition: 0.2s;
       }
 
+      #header_container{
+        padding-top:20px;
+        padding-bottom:20px;
+      }
+
       #header_logo {
-        max-width: 120px;
+        max-width: 140px;
+        margin-left:25%;
+        margin-right:auto;
       }
 
       #main_header {
         font-size: 15px;
         margin-top: 15px;
+        text-align: center;
       }
     }
-    .break_event{
-      background-color: blue;
-      color: white;
-      margin-bottom: 20px;
-      margin-left: 25px;
-      padding: 30px;
-      margin-right: 0px;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-      -webkit-transition: 0.2s;
-      transition: 0.2s;
-      width: 96% !important;
-      height: 160px;
-    }
-
   </style>
 </head>
 
 <body>
   <div id="banner">
     <div class="row" id="header_container">
-      <div class="col-md-3">
+      <div>
         <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
       </div>
-      <div class="col-md-8">
+      <div>
         <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
       </div>
     </div>
@@ -698,27 +731,12 @@
               <% end %><!-- Ends conditional to check if second event -->
             <% end %><!-- Ends slice 2 loop -->
           <% end %><!-- Ends check for 0, 1, 2 events per time-->
-        
-        <!-- Add break for 1 hour after start time -->
-        <% unless @events_by_day_time.keys.last == time %>
-          <div class="row">
-            <div class="col-md-11 break_event"> 
-              <div class="col-md-2">
-                <h3>BREAK!</h3>
-              </div>
-              <div class="col-md-7">
-                <h3><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %> - <%= (time + 15.minutes).strftime("%l:%M %p") %></h3>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
       <% end %><!-- End of Events -->
     </div>
   </div><!-- Ends container div -->
-
   <div id="bottom-banner">
     <p id="bottom-banner-text"><i aria-hidden="true" class="fa fa-twitter"></i> @InternetFF - #InternetFF</p>
     <p id="BTT-button"><a href="#banner" id="back_button">Back to Top</a></p>
   </div>
+
 </body>
