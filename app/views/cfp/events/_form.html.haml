@@ -64,30 +64,33 @@
   %fieldset.inputs
     %legend= t("cfp.basic_information")
     = f.input :title, label: "Session Title", hint: t("What is the title of your presentation?")
-    = f.input :other_presenters, label: "Other Presenters", hint: t("Is there someone else who is going to presenting with you? Please add their public name here.")
-    /%p{style: "margin-left: 30px;"} (Here's a list of our registered public names you can add)
-    /= @public_names
-    /<hr />
-    = f.input :event_type, label: "Theme", collection: translated_options(Event::TYPES), hint: "Please choose a theme to submit your session under"
-    = f.input :language, as: :language_select, only: @conference.language_codes, include_blank: true
-    = f.association :track, label: "Session Format", collection: @conference.tracks
-    = f.input :skill_level, collection: ["Beginner", "Intermediate", "Advanced"], error: " "
+    / = f.input :other_presenters, label: "Other Presenters", hint: t("Is there someone else who is going to presenting with you? Please add their public name here.")
+    / = f.input :event_type, label: "Theme", collection: translated_options(Event::TYPES), hint: "Please choose a theme to submit your session under"
+    / = f.input :language, as: :language_select, only: @conference.language_codes, include_blank: true
+    / = f.association :track, label: "Session Format", collection: @conference.tracks
+    / = f.input :skill_level, collection: ["Beginner", "Intermediate", "Advanced"], error: " "
     .row
       %p{style: "margin-left: 3em"} Preferred Session Time
       .span8.offset2 
-        = f.collection_select :time_slots, [[4, "1 Hour"],[ 8, "2 Hours"]], :first, :last
+        = f.collection_select :time_slots, [[4, "1 hour"], [6, "1.5 hours"], [ 8, "2 hours"], [10, "2.5 hours"], [12, "3 hours"]], :first, :last
+    <br>
+    .row
+      %p{style: "margin-left: 3em"} Public Event Type
+      .span8.offset2 
+        = f.collection_select :public_type, [["special", "special"], [ "social", "social"], ["meditation", "meditation"] ], :first, :last
     <br />
     .row
-
     = f.input :description, label: "Session Description", hint: t("Describe what your presentation will be about.")
-    = f.input :target_audience_experience, label: "Who is this session for?", hint: t("Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?")
-    = f.input :desired_outcome, label: "What outcomes would you like your session to have?", hint: t("Describe in short sentences.")
+    / = f.input :target_audience_experience, label: "Who is this session for?", hint: t("Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?")
+    / = f.input :desired_outcome, label: "What outcomes would you like your session to have?", hint: t("Describe in short sentences.")
     .row
       .span16
-        <hr />
-        %label Have you presented at IFF before?
-        = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"]], :first, :last
+        / <hr />
+        / %label Have you presented at IFF before?
+        / = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"]], :first, :last
 
+
+        ///// This is saved to model dynamic_associations &/or is not longer used //////
         /%p{style: "margin-left: 60px"} Would you like to apply for travel assistance?
         /= f.collection_radio_buttons :travel_assistance, [[true, "Yes"], [false, "No"]], :first, :last
     / = f.input :subtitle
@@ -97,6 +100,8 @@
   /   = f.input :submission_note, hint: t("cfp.submission_note_hint")
   /   = dynamic_association :links, t("cfp.links"), f
   /   = dynamic_association :event_attachments, t("cfp.uploaded_files"), f
+
+
   - if @new
     .actions
       = f.button :submit, class: 'primary', value: "Create Proposal"

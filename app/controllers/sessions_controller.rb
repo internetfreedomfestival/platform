@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 
   def new
     @user = User.new
-    # @open_schedule = true
+    #@open_schedule = true
     respond_to do |format|
       format.html
     end
