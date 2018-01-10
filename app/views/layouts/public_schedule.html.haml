@@ -4,9 +4,14 @@
   %head
     %meta{ :"http-equiv" => "content-type", content: "text/html; charset=utf-8" }
     %title= title
-    = stylesheet_link_tag 'public_schedule'
+    / = stylesheet_link_tag 'public_schedule'
+    / = stylesheet_link_tag 'schedule2018'
     = stylesheet_link_tag public_schedule_style_path(format: :css), media: "all"
     = stylesheet_link_tag 'public_schedule_print', media: 'print'
+    %link{:rel => "stylesheet", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"}
+    %link{:rel => "stylesheet", :href => "//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"}
+    %link{:rel => "stylesheet", :href => "https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab"}
+    %meta{:name => "viewport", :content => "width=device-width; initial-scale=1.0; maximum-scale=1.0;"}
   %body
     #wrapper
       #banner

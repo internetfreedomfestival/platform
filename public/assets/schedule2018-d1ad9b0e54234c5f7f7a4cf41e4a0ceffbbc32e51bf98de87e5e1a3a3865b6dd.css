@@ -1,0 +1,465 @@
+  .col-md-5{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+
+  }
+
+    #main-content{
+      border-width: 0px;
+      margin: 0;
+      padding-left: 0em;
+    }
+
+#bottom-banner {
+    width: 100%;
+    height: 40px;
+    background-color: #f74c33;
+    position: fixed;
+    z-index: 1001;
+    bottom: 0;
+    left: 0;
+    padding-left: 5%;
+    padding-top: 10px;
+    color: white;
+    font-family: 'Roboto', verdana, sans-serif;
+}
+
+#BTT-button {
+  margin-right: 5%;
+    border: 1px solid white;
+    padding: 2px 14px;
+  cursor: pointer;
+    float: right;
+    width: 100px;
+}
+
+#BTT-button a {
+  color: white;
+  text-decoration: none;
+  
+  }
+
+#bottom-banner-text {
+  float:left;
+}
+
+    body{
+      font: normal 12px roboto, verdana, sans-serif;
+    }
+
+    .break_event {
+  display: none;
+}
+
+
+    .container {
+    width: 95%;
+     margin-bottom: 20px;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+    .flex_buttons{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      margin-left: 0;
+      margin-bottom: 20px;
+    }
+    .flex > div {
+      flex: 1 1 auto;
+      width: 30px; /* To make the transition work nicely. (Transitions to/from
+                      "width:auto" are buggy in Gecko and Webkit, at least.
+                      See http://bugzil.la/731886 for more info.) */
+      transition: width 0.7s ease-out;
+    }
+    #navigation, #header{
+      display: none;
+    }
+
+     #header_container{
+      background-color: black; 
+      display: table;
+      width:100%;
+      padding-left: 3%;
+      padding-top:25px;
+      padding-right:0%;
+      padding-bottom:20px;
+    }
+
+    #main_header{
+      font-size: 25px;
+      font-size: 20px;
+      font-family: 'Roboto Slab', verdana, sans-serif;
+      color: white;
+      margin: 0;
+      margin-top: 0px;
+      margin-left: 0px;
+      margin-top: 5px;
+      font-weight: 300;
+      margin-left: 5px;
+      display: table-cell;
+      float: left;
+    }
+
+    #header_logo{
+      max-width: 200px;
+      display: table-cell;
+      float: left;
+      margin-right: 20px;
+    }
+
+    .day_button{
+      padding: 15px 35px;
+      background-color: #f74c33;
+      font-size: 16px;
+      border: 0px;
+      color: white;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+    .day_button:hover {
+      background-color: #f74c33cc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
+    .top_border{
+      margin-top: 20px;
+      border-top: 3px solid #f74c33;
+    }
+
+    .selected_day{
+      font-size: 30px;
+      color: #f74c33;
+    }
+
+    .event_block {
+      background-color: #fde1d4;
+      margin-bottom: 20px;
+      margin-left: 0%;
+      margin-right: 2%;
+      padding: 30px;
+      border-left: 5px solid #f74c33;
+      cursor: pointer;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      height:160px;
+      transition-property: border;
+      transition: 0.2s;
+      width: 48% !important;
+    }
+
+    .event_block:hover {
+      border-left: 25px solid #f74c33;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      background-color: #ffeee6;
+    }
+
+
+    .special_event_block{
+      background-color: #f74c33;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+
+    .special_event_block:hover{
+      background-color: #f74c33cc
+    }
+
+    .social_event_block{
+      background-color: #1ba5ab;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+
+    .social_event_block:hover{
+      background-color: #1ba5abcc;
+    }
+    
+    .meditation_event_block{
+      background-color: #1ba5ab;
+      margin-bottom: 20px;
+      margin-left: 25px;
+      padding: 30px;
+      margin-right: 0px;
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      width: 96% !important;
+    }
+
+    .meditation_event_block:hover{
+      background-color: #1ba5abcc;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
+    .time_slot_header{
+      border-bottom: 1px dotted #f74c33;
+      padding-bottom: 8px;
+      color: #f74c33;
+      font-size: 16px;
+    }
+
+    .session_titles{
+      font-size: 18px;
+      font-family: 'Roboto Slab', verdana, sans-serif;
+      font-weight: 400;
+      margin-top: -5px;
+      margin-bottom: 15px;
+      text-decoration: inherit;
+    }
+
+    .no_link_effect{
+      height: 100%; 
+      width: 100%; 
+      display: block; 
+      text-decoration: inherit; 
+      color: inherit
+    }
+    .no_link_effect:hover{
+      color: inherit;
+    }
+
+    .session_info {
+      width: 41.66666667%;
+      margin-bottom: 8px;
+      font-size: 12px;
+      padding-left: 10px !important;
+    }
+
+    @media only screen and (max-width: 980px) {
+
+    .row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+    #main-content{
+      border-width: 0px;
+      margin: 0;
+      padding-left: 0em;
+    }
+
+    #main_header {
+        font-size: 20px;
+        margin-top: 10px;
+      }
+
+      .session_titles {
+
+margin-top: 0px;
+
+}
+
+          .meditation_event_block{
+      width: auto !important;
+    }
+
+              .event_block {
+      width: 100% !important;
+      height: auto !important;
+      margin-left: 0px;
+      padding:16px;
+    }
+
+.session_info {
+    width: 100%;
+    margin-bottom: 2px;
+    font-size: 12px;
+    padding-left: 10px !important;
+}
+
+    }
+
+    @media only screen and (max-width: 768px) {
+a:focus, a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.top_border {
+    width: 103%;
+}
+  
+      .container {
+        padding-right: 10px;
+        padding-left: 0px;
+        margin-left: 5px;
+        width: 97%;
+      }
+
+.flex_buttons {
+   
+    flex-direction: column;
+width: 103% !important;
+        margin-top: 10px;
+margin-bottom: -16px;
+}
+
+.selected_day {
+    font-size: 25px;
+}
+
+.event_block {
+height: auto;
+margin-left: 4px;
+padding: 10px;
+}
+
+
+.event_block:hover {
+  border-left: 5px solid #f74c33;
+   
+ }
+
+.session_titles {
+font-size: 15px;
+text-decoration: none;
+margin-left: 5px;
+margin-top: 0px;
+}
+
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      #header_logo {
+    max-width: 29%;
+}
+
+      #main_header {
+        font-size: 130%;
+        margin-top: 0px;
+        max-width: 64%;
+
+      }
+    }
+
+    @media only screen and (max-width: 414px) {
+
+a:focus, a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.top_border {
+    width: 102%;
+}
+   
+.container {
+        padding-right: 10px;
+        padding-left: 0px;
+        margin-left: 5px;
+        width: 98%;
+     }
+
+.flex_buttons {
+   
+    flex-direction: column;
+      width:102% !important;
+      margin-top: 10px;
+margin-bottom: -16px;
+
+}
+
+.event_block {
+height: auto;
+margin-left: 5px;
+padding: 10px;
+}
+
+
+ .event_block:hover {
+  border-left: 5px solid #f74c33;
+   
+ }
+
+
+.session_titles {
+font-size: 15px;
+text-decoration: none;
+margin-left: 5px;
+margin-top: 0px;
+
+}
+
+      .day_button {
+        padding: 8px 35px;
+        background-color: #f74c33;
+        font-size: 14px;
+        border: 0px;
+        color: white;
+        width: 100%;
+        margin-bottom: 7px;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+      .day_button:hover {
+        background-color: #f74c33cc;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
+      }
+
+                 #header_container{
+      padding-top:20px;
+      padding-bottom:20px;
+    }
+      
+
+      #header_logo {
+    max-width: 140px;
+    margin-right:auto;
+    float:left;      
+}
+
+#main_header {
+    font-size: 15px;
+    margin-top: -3px;
+    margin-right: 2%;
+    float: right;
+    max-width: 50%;
+}
+    }
+
+  
