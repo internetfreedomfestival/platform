@@ -58,6 +58,8 @@ class Public::ScheduleController < ApplicationController
 
   def custom_show
     @event = Event.find(params[:id])
+    e_p = EventPerson.find_by(event_id: @event.id)
+    @presenter = Person.find(e_p.person_id)
   end
 
   def day
