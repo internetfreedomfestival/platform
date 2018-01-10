@@ -3,10 +3,14 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    .row {
-      margin-left: 0px;
-      margin-right: 0px;
-    }
+    .container {
+  width: 90%;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
 
     #navigation, #header{
       display: none;
@@ -15,6 +19,16 @@
       font-family: 'Roboto', verdana, sans-serif;
       line-height: 1.6em;
     }
+
+    body a {
+  color:#f74c33;
+  text-decoration: none;
+}
+
+body a:hover {
+  color:#f74c33;
+  text-decoration: none;
+}
 
     .session_title{
       font-family: 'Roboto Slab', verdana, sans-serif;
@@ -128,17 +142,23 @@
       text-decoration: none;
     }
 
-          #header_logo {
-    max-width: 29% !important;
-}
+    #header_logo {
+      max-width: 29% !important;
+    }
 
-      #main_header {
-        font-size: 130% !important;
-        margin-top: 0px !important;
-        max-width: 64% !important;
+    #main_header {
+      font-size: 130% !important;
+      margin-top: 0px !important;
+      max-width: 64% !important;
 
-      }
-}
+    }
+
+    .container {
+      width: 97%;
+    }
+  }
+
+
     @media only screen and (max-width: 414px) {
       .day_button {
         padding: 8px 35px;
@@ -171,7 +191,13 @@
       float: right !important;
       max-width: 50% !important;
       }
+
+      .container {
+  width: 97%;
+}
+
     }
+  
   
   </style>
 
@@ -180,15 +206,13 @@
   <div id="banner">
     <div class="row" id="header_container">
       <div>
-        <%= image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo") %>
+        <%= link_to image_tag("internet-freedom-festival-logo-hd-white.png", id: "header_logo"), "https://internetfreedomfestival.org/", target: "_blank" %>
       </div>
       <div>
         <h1 id="main_header">Internet Freedom Festival 2018 Program</h1>
       </div>
     </div>
   </div>
-
-  <br><br>
   <div class="container">
     <div class="row">
       <h1 class="session_title"><%= @event.title %></h1>
