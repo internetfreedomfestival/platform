@@ -8,6 +8,7 @@
         // = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
       = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
       = action_button "", t("cfp.edit_account"), edit_cfp_user_path
+      = action_button "success", "2018 Schedule","https://platform.internetfreedomfestival.org/en/IFF2018/public/schedule/custom" 
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
     %h2 Welcome to the IFF 2018
     - if @is_fellow || current_user.role == "admin"
