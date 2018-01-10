@@ -1,8 +1,13 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-  
+    .row {
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+
     #navigation, #header{
       display: none;
     }
@@ -35,6 +40,7 @@
     #main-content{
       border-width: 0px;
       margin: 0;
+      padding-left: 0em;
       background-color: #fde1d4;
     }
 
@@ -64,7 +70,7 @@
     }
 
     #header_logo{
-      max-width: 200px;
+      max-width: 200px !important;
       display: table-cell;
       float: left;
       margin-right: 20px;
@@ -84,6 +90,15 @@
       color: white;
     }
 
+@media only screen and (max-width: 980px) {
+
+    #main_header {
+        font-size: 20px;
+        margin-top: 10px;
+      }
+
+  }
+
     @media only screen and (max-width: 768px) {
       .day_button {
         padding: 8px 35px;
@@ -102,7 +117,6 @@
         -webkit-transition: 0.2s;
         transition: 0.2s;
       }
-    }
 
     .notes_link{
       color: #f74c33;
@@ -114,6 +128,17 @@
       text-decoration: none;
     }
 
+          #header_logo {
+    max-width: 29% !important;
+}
+
+      #main_header {
+        font-size: 130% !important;
+        margin-top: 0px !important;
+        max-width: 64% !important;
+
+      }
+}
     @media only screen and (max-width: 414px) {
       .day_button {
         padding: 8px 35px;
@@ -132,7 +157,22 @@
         -webkit-transition: 0.2s;
         transition: 0.2s;
       }
+
+      #header_logo {
+      max-width: 140px !important;
+      margin-right:auto !important;
+      float:left;      
+      }
+
+      #main_header {
+      font-size: 15px !important;
+      margin-top: -3px !important;
+      margin-right: 2% !important;
+      float: right !important;
+      max-width: 50% !important;
+      }
     }
+  
   </style>
 
 </head>
@@ -151,9 +191,6 @@
   <br><br>
   <div class="container">
     <div class="row">
-      <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
-    </div>
-    <div class="row">
       <h1 class="session_title"><%= @event.title %></h1>
     </div>
 
@@ -168,11 +205,12 @@
       <% if @event.language == "en" %>
         English
       <% else %>
-        Spanish
+        Español
       <% end %>
     </div>
     <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>      
     <div class="session_info"><strong>Format:</strong> <%= @event.event_type %></div>
+    <div class="session_info"><strong>Presenter:</strong> <%= @presenter.public_name %></div>
     <div class="session_info"><strong>Other Presenters:</strong> <%= @event.other_presenters %></div>
     <div><strong>Description:</strong></div>
     <div class="session_info"><%= @event.description %></div>

@@ -98,12 +98,10 @@
     }
 
     #main_header{
-      font-size: 25px;
       font-size: 20px;
       font-family: 'Roboto Slab', verdana, sans-serif;
       color: white;
       margin: 0;
-      margin-top: 0px;
       margin-left: 0px;
       margin-top: 5px;
       font-weight: 300;
@@ -447,13 +445,7 @@ margin-top: 0px;
         transition: 0.2s;
       }
 
-                 #header_container{
-      padding-top:20px;
-      padding-bottom:20px;
-    }
-      
-
-      #header_logo {
+  #header_logo {
     max-width: 140px;
     margin-right:auto;
     float:left;      
@@ -528,7 +520,13 @@ margin-top: 0px;
                             (<%= event.time_slots / 4.0 %>h)
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= event.language.upcase if event.language %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> 
+                          <% if event.language && event.language == "en" %>
+                            English
+                          <% elsif event.language && event.language == "es" %>  
+                            Español
+                          <% end %>
+                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                           <% if event.event_type && event.event_type.include?("Internet")%>
                             IF: Present and Future</div>
@@ -618,7 +616,13 @@ margin-top: 0px;
                             (<%= events[0].time_slots / 4.0 %>h)
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= events[0].language.upcase if events[0].language %></div>
+                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> 
+                          <% if events[0].language && events[0].language == "en" %>
+                            English
+                          <% elsif events[0].language && events[0].language == "es" %>  
+                            Español
+                          <% end %>
+                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>                           
                           <% if events[0].event_type && events[0].event_type.include?("Internet")%>
                             IF: Present and Future</div>
@@ -698,7 +702,13 @@ margin-top: 0px;
                             (<%= events[1].time_slots / 4.0 %>h)
                           <% end %>
                           </div>
-                          <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> <%= events[1].language.upcase if events[1].language %></div>
+                          <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
+                            <% if events[1].language && events[1].language == "en" %>
+                              English
+                            <% elsif events[1].language && events[1].language == "es" %>  
+                              Español
+                            <% end %>
+                          </div>
                           <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
                             <% if events[1].event_type && events[1].event_type.include?("Internet")%>
                               IF: Present and Future</div>
