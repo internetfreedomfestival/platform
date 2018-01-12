@@ -283,7 +283,7 @@ class PeopleController < ApplicationController
     users = User.where(confirm_attendance_token: nil)
     
     users.each do |user|
-      if user.person && user.person.attendance_status == 'pending acceptance'
+      if user.person && user.person.attendance_status == 'pending attendance'
         users_to_generate_token << user
       end
     end
