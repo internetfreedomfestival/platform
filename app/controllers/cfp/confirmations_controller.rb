@@ -27,4 +27,18 @@ class Cfp::ConfirmationsController < ApplicationController
       redirect_to new_cfp_user_confirmation_path, error: t('cfp.error_confirming')
     end
   end
+
+  def confirm_attendance
+    confirmation_token = params[:confirm_attendance_token]
+    user = User.find_by(confirm_attendance_token: confirmation_token)
+    if user
+      person = user.person
+      if person.update(attendance_status: "confirmed")
+        flash[:sucess] = "Your attendance status has been confirmed!"
+      else
+        flash[:danger] = "There was an error updating your attendance status. Please contact us."
+      end
+    end
+    redirect_to root_path
+  end
 end

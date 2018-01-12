@@ -16,8 +16,16 @@ class SendBulkMailJob
       persons = persons
                 .where('events.state': 'unconfirmed')
                 .where('event_people.event_role': 'speaker')
+    when 'all_pending_attendance_people'
+      persons = Person
+                .where('attendance_status': 'pending attendance')
+    when 'all_confirmed_attendance_people'
+      persons = Person
+                .where('attendance_status': 'confirmed')
+    when 'pepe_and_jamie'
+      persons = Person
+                .where(email: ['jamie.mackillop.jobs@gmail.com', 'pborras@internetfreedomfestival.org'])
     end
-
     persons = persons.group(:'people.id')
 
     persons.each do |p|
