@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171222162423) do
+ActiveRecord::Schema.define(version: 20180111210948) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -416,24 +416,25 @@ ActiveRecord::Schema.define(version: 20171222162423) do
   add_index "transport_needs", ["person_id"], name: "index_transport_needs_on_person_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                limit: 255, default: "",          null: false
-    t.string   "password_digest",      limit: 255, default: "",          null: false
-    t.string   "reset_password_token", limit: 255
+    t.string   "email",                    limit: 255, default: "",          null: false
+    t.string   "password_digest",          limit: 255, default: "",          null: false
+    t.string   "reset_password_token",     limit: 255
     t.datetime "remember_created_at"
-    t.string   "remember_token",       limit: 255
-    t.integer  "sign_in_count",                    default: 0
+    t.string   "remember_token",           limit: 255
+    t.integer  "sign_in_count",                        default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",   limit: 255
-    t.string   "last_sign_in_ip",      limit: 255
-    t.string   "confirmation_token",   limit: 255
+    t.string   "current_sign_in_ip",       limit: 255
+    t.string   "last_sign_in_ip",          limit: 255
+    t.string   "confirmation_token",       limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
-    t.string   "role",                 limit: 255, default: "submitter"
-    t.string   "pentabarf_salt",       limit: 255
-    t.string   "pentabarf_password",   limit: 255
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
+    t.string   "role",                     limit: 255, default: "submitter"
+    t.string   "pentabarf_salt",           limit: 255
+    t.string   "pentabarf_password",       limit: 255
+    t.string   "confirm_attendance_token"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

@@ -37,7 +37,11 @@ Frab::Application.routes.draw do
 
         resource :user do
           resource :password
-          resource :confirmation
+          resource :confirmation do
+            member do
+              get '/confirm_attendance' => :confirm_attendance
+            end
+          end
         end
 
         resource :person do
@@ -110,6 +114,7 @@ Frab::Application.routes.draw do
           get :waitlisted
           get :invite
           get :canceled
+          get :generate_confirmation_tokens
         end
       end
 

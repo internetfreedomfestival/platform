@@ -115,6 +115,11 @@ class User < ActiveRecord::Base
     conference_users.map(&:conference).last
   end
 
+  def generate_confirm_attendance_token!
+    generate_token_for(:confirm_attendance_token)
+    save
+  end
+
   private
 
   def conference_user_fields_present
