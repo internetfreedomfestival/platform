@@ -2,6 +2,7 @@
   .page-header
     .pull-right
       - if can? :administrate, Person
+        = action_button "success", "Generate Confirmation Tokens", generate_confirmation_tokens_people_path, title: "This will generate tokens for users with pending attendance. This will allow them to confirm their attendance via email at a later time."
         = action_button "primary", "Add person", new_person_path, title: "Add a new person."
     %h1 List of people
   %ul.tabs

@@ -278,6 +278,23 @@ class PeopleController < ApplicationController
     end
   end
 
+  def generate_confirmation_tokens
+    users_to_generate_token = []
+    users = User.where(confirm_attendance_token: nil)
+    
+    users.each do |user|
+      if user.person && user.person.attendance_status == 'pending acceptance'
+        users_to_generate_token << user
+      end
+    end
+
+    users_to_generate_token.each do |user|
+      user.generate_confirm_attendance_token!
+    end
+    redirect_to root_path
+  end
+
+
   private
 
   def restrict_people

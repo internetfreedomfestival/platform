@@ -15,7 +15,10 @@ class MailTemplatesController < ApplicationController
     @mail_template = @conference.mail_templates.find(params[:id])
     @send_filter_options = [
       ['All speakers involved in all confirmed events',   :all_speakers_in_confirmed_events],
-      ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events]
+      ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events],
+      ['All people with pending attendance', :all_pending_attendance_people],
+      ['All people with confirmed attendance', :all_confirmed_attendance_people],
+      ['Test: Send to Pepe and Jamie only', :pepe_and_jamie]
     ]
   end
 
