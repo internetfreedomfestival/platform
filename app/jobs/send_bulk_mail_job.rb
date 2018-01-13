@@ -25,6 +25,9 @@ class SendBulkMailJob
     when 'pepe_and_jamie'
       persons = Person
                 .where(email: ['jamie.mackillop.jobs@gmail.com', 'pborras@internetfreedomfestival.org'])
+    when 'just_jamie'
+      persons = Person
+                .where(email: 'jamie.mackillop.jobs@gmail.com')
     end
     persons = persons.group(:'people.id')
 
