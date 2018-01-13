@@ -5,7 +5,6 @@ class SendBulkMailJob
     persons = Person
               .joins(events: :conference)
               .where('conferences.id': template.conference.id)
-
     case send_filter
     when 'all_speakers_in_confirmed_events'
       persons = persons
@@ -29,8 +28,11 @@ class SendBulkMailJob
       persons = Person
                 .where(email: 'jamie.mackillop.jobs@gmail.com')
     end
-    persons = persons.group(:'people.id')
 
+    if send_filter == 'all_speakers_in_confirmed_events' || send_filter == 'all_speakers_in_unconfirmed_events'
+      persons = persons.group(:'people.id')
+    end
+    
     persons.each do |p|
       UserMailer.bulk_mail(p, template).deliver_now
       Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
