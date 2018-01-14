@@ -32,10 +32,19 @@ class SendBulkMailJob
     if send_filter == 'all_speakers_in_confirmed_events' || send_filter == 'all_speakers_in_unconfirmed_events'
       persons = persons.group(:'people.id')
     end
-    
+
     persons.each do |p|
-      UserMailer.bulk_mail(p, template).deliver_now
-      Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
+      # Update user's confirm_attendance_email_sent if they have pending attendance status
+      # Note: this will currently update any emails sent to this demographic
+      if send_filter == 'all_pending_attendance_people' || send_filter == 'pepe_and_jamie'
+        if UserMailer.bulk_mail(p, template).deliver_now
+          p.user.update(confirm_attendance_email_sent: Time.now)
+          Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
+        end
+      else # Perform original bulk mail function for all non pending attendance people
+        UserMailer.bulk_mail(p, template).deliver_now
+        Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
+      end
     end
   end
 end
