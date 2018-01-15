@@ -269,6 +269,17 @@ class PeopleController < ApplicationController
     end
   end
 
+  def confirm_attendance
+    @person = Person.find_by(id: params[:format])
+    authorize! :manage, @person
+    if @person.update(attendance_status: 'confirmed')
+      flash[:sucess] = "#{@person.public_name} has been confirmed to attend the 2018 IFF!"
+    else
+      flash[:danger] = "#{@person.public_name} was not confirmed...they may need to complete their registration."
+    end
+    redirect_to(all_people_path)
+  end
+
   def cancel_attendance
     @person = Person.find_by(id: params[:format])
     if @person.update(attendance_status: "canceled")
