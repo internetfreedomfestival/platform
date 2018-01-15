@@ -103,6 +103,7 @@ Frab::Application.routes.draw do
         collection do
           get :all
           get :feedbacks
+          get :all_confirmed
           get :speakers
           get :volunteers
           get :dif
