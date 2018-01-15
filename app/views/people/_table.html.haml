@@ -39,7 +39,8 @@
                 = link_to person.ticket.remote_ticket_id, get_ticket_view_url(person.ticket.remote_ticket_id ), target: "_blank"
         %td.buttons
           - if can? :manage, person
+            - if person.attendance_status == "pending attendance"
+              = action_button "small primary", 'Confirm', confirm_attendance_people_path(person), method: :get
             - if person.attendance_status == "waitlist"
               = action_button "small success", 'Invite', invite_people_path(person), method: :get
-            = action_button "small", 'Show', person
             = action_button "small danger", 'Destroy', person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}

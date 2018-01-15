@@ -111,6 +111,7 @@ Frab::Application.routes.draw do
           get :cancel_attendance
           get :allow_late_submissions
           get :confirm_user
+          get :confirm_attendance
           get :waitlisted
           get :invite
           get :canceled
