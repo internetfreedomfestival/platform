@@ -21,6 +21,15 @@ class SendBulkMailJob
     when 'all_confirmed_attendance_people'
       persons = Person
                 .where('attendance_status': 'confirmed')
+    when 'pending_but_no_email'
+      persons = []
+      attending_people = Person
+                .where('attendance_status': 'pending attendance')
+      attending_people.each do |person|
+        if person.user.confirm_attendance_email_sent.nil?
+          persons << person
+        end
+      end
     when 'pepe_and_jamie'
       persons = Person
                 .where(email: ['jamie.mackillop.jobs@gmail.com', 'pborras@internetfreedomfestival.org'])
@@ -36,7 +45,7 @@ class SendBulkMailJob
     persons.each do |p|
       # Update user's confirm_attendance_email_sent if they have pending attendance status
       # Note: this will currently update any emails sent to this demographic
-      if send_filter == 'all_pending_attendance_people' || send_filter == 'pepe_and_jamie'
+      if send_filter == 'all_pending_attendance_people' || send_filter == 'pending_but_no_email' || send_filter == 'pepe_and_jamie'
         if UserMailer.bulk_mail(p, template).deliver_now
           p.user.update(confirm_attendance_email_sent: Time.now)
           Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"

@@ -18,6 +18,7 @@ class MailTemplatesController < ApplicationController
       ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events],
       ['All people with pending attendance', :all_pending_attendance_people],
       ['All people with confirmed attendance', :all_confirmed_attendance_people],
+      ['All people with pending attendance BUT NO EMAIL SENT!!!!', :pending_but_no_email],
       ['Test: Send to Pepe and Jamie only', :pepe_and_jamie],
       ['Test: Only send to jamie', :just_jamie]
     ]
