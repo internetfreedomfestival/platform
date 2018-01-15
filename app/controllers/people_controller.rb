@@ -73,6 +73,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  def all_confirmed
+    authorize! :administrate, Person
+    result = Person.where(attendance_status: "confirmed")
+    @people = result.paginate page: page_param
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def dif
     authorize! :administrate, Person
     result = Person.joins(:dif)

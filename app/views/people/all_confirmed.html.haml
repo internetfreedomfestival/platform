@@ -2,22 +2,23 @@
   .page-header
     .pull-right
       - if can? :administrate, Person
+        = action_button "success", "Generate Confirmation Tokens", generate_confirmation_tokens_people_path, title: "This will generate tokens for users with pending attendance. This will allow them to confirm their attendance via email at a later time."
         = action_button "primary", "Add person", new_person_path, title: "Add a new person."
     %h1 List of people
   %ul.tabs
     %li= link_to "All people", all_people_path
     %li= link_to "Speakers", speakers_people_path
-    %li= link_to "Attendees", all_confirmed_people_path
-    %li.active= link_to "DIF", dif_people_path
+    %li.active= link_to "Attendees", all_confirmed_people_path
+    %li= link_to "DIF", dif_people_path
     %li= link_to "Volunteers", volunteers_people_path
     %li= link_to "Confirmed Speakers", confirmed_speakers_people_path
     %li= link_to "Waitlist", waitlisted_people_path
     %li= link_to "Canceled", canceled_people_path
     /%li= link_to "This conference", people_path
-  %h4 There are #{@people.count} people who have applied for DIF.
+  %h4 There are #{@people.count} total people CONFIRMED for the IFF 2018.
   .pull-right
     - if can? :administrate, Person
-      = link_to "Download CSV of People Interested in DIF", dif_people_path(format: "csv")
+      = link_to "Download CSV of All People", all_people_path(format: "csv")
       <br />
-      = link_to "Download XLS of People Interested in DIF", dif_people_path(format: "xls")
+      = link_to "Download XLS of All People", all_people_path(format: "xls")
   = render 'shared/search_and_table', collection: @people
