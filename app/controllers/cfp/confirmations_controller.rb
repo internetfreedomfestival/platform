@@ -39,6 +39,6 @@ class Cfp::ConfirmationsController < ApplicationController
         flash[:danger] = "There was an error updating your attendance status. Please contact us."
       end
     end
-    redirect_to root_path
+    redirect_to(cfp_person_path(person.id))
   end
 end
