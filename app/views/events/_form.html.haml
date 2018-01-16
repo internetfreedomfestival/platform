@@ -3,6 +3,7 @@
     %legend Basic information
     = f.input :title
     = f.input :subtitle
+    = f.input :other_presenters
     - @event.build_ticket unless @event.ticket
     = f.simple_fields_for :ticket do |ticket|
       = ticket.input :remote_ticket_id
