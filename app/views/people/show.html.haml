@@ -145,36 +145,6 @@
         %br/
         %b Willing to Fascilitate?
         = @person.dif.willing_to_facilitate
-      / %p
-      /   %b Abstract:
-      /   = simple_format @person.abstract
-      / %p
-      /   %b Links:
-      /   %br/
-      /   - @person.links.each do |link|
-      /     = link_to link.title, link.url
-      /     %br/
-      / %p
-      /   %b Description:
-      /   = simple_format @person.description
-      / %p
-      /   %b Notes(admin):
-      /   = @person.note
-
-
-      / %p
-      /   %b Event State:
-      /   - if @person.public_and_accepted_events_as_speaker_in(@conference).present?
-      /     = @person.role_state @conference
-      /   - else
-      /     not speaking
-
-      / - unless @availabilities.nil?
-      /   %p.availability
-      /     %b Availability:
-      /     - @availabilities.each do |availability|
-      /       %span= "#{availability.start_date.strftime("%d.%m. %H:%M")} - #{availability.end_date.strftime("%H:%M")}"
-
       - unless @person.ticket.nil? or @person.ticket.remote_ticket_id.nil?
         %p
           %b Ticket:
@@ -182,25 +152,6 @@
             = @person.ticket.remote_ticket_id
           -else
             = link_to @person.ticket.remote_ticket_id, get_ticket_view_url(@person.ticket.remote_ticket_id), target: "_blank"
-    / - if can? :manage, Person
-    /   .span6
-    /     %h2 Contact information
-    /     %p
-    /       %b Email:
-    /       = mail_to @person.email
-    /       (#{@person.email_public? ? "public" : "non-public"})
-    /     - @person.phone_numbers.each do |phone_number|
-    /       %p
-    /         %b
-    /           Phone number (#{phone_number.phone_type}):
-    /         = phone_number.phone_number
-    /     - @person.im_accounts.each do |im_account|
-    /       %p
-    /         %b
-    /           = im_account.im_type
-    /           \:
-    /         = im_account.im_address
-
 %section
   .row
     .span16
