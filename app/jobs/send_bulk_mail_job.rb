@@ -28,6 +28,9 @@ class SendBulkMailJob
       attending_people.each do |person|
         if person.user.confirm_attendance_email_sent.nil?
           persons << person
+          p "******" * 10
+          p person
+          p person.id
         end
       end
     when 'pepe_and_jamie'
