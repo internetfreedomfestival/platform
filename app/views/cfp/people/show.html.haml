@@ -15,6 +15,9 @@
       .pull-right
         = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
   .row
+    - if @not_registered == false && @person.attendance_status == "confirmed"
+      .span16{style: "background-color: green; width: 871px; height: 31px; margin-bottom: 15px"}
+        %p{style: "color: white; padding: 6px"} You are CONFIRMED to attend the 2018 Internet Freedom Festival.    
     - if @not_registered == false && @person.attendance_status == "pending attendance"
       .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
         %p{style: "color: white; padding: 6px"} You are registered to attend the 2018 Internet Freedom Festival.
