@@ -19,8 +19,8 @@
       .span16{style: "background-color: green; width: 871px; height: 31px; margin-bottom: 15px"}
         %p{style: "color: white; padding: 6px"} You are CONFIRMED to attend the 2018 Internet Freedom Festival.    
     - if @not_registered == false && @person.attendance_status == "pending attendance"
-      .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
-        %p{style: "color: white; padding: 6px"} You are registered to attend the 2018 Internet Freedom Festival.
+      .span16{style: "background-color: red; width: 871px; height: 31px; margin-bottom: 15px"}
+        %p{style: "color: white; padding: 6px"} You must confirm your attendance to access the IFF!
     - if @not_registered == false && @person.attendance_status == "waitlist"
       .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
         %p{style: "color: white; padding: 6px"} You are registered for the 2018 IFF Waitlist. 
