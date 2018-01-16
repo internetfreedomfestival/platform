@@ -93,6 +93,15 @@ class Cfp::PeopleController < ApplicationController
     end
   end
 
+  def confirm_attendance
+    @person = current_user.person
+    if @person.update(attendance_status: "confirmed")
+      flash[:success] = "You are confirmed to attend the 2018 IFF!"
+    else
+      flash[:alert] = "There was some issue updating your status. Please contact the IFF team."
+    end
+    return redirect_to action: :show
+  end
   private
 
   def person_params

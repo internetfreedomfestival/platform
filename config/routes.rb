@@ -47,6 +47,7 @@ Frab::Application.routes.draw do
         resource :person do
           resource :availability
           get :cancel_attendance
+          get :confirm_attendance
         end
 
         get '/events/:id/confirm/:token' => 'events#confirm', as: 'event_confirm_by_token'
