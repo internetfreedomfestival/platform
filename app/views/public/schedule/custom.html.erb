@@ -567,7 +567,7 @@
           <!-- If there is only one event for a time slot do NOT slice -->
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
-              <% if event.public_type.nil? %><!-- NOT special, social, or meditation-->
+              <% if event.public_type.nil? || event.public_type == "" %><!-- NOT special, social, or meditation-->
               
                 <div class="row">
                   <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
@@ -665,7 +665,7 @@
           <% else %><!-- If more than one event for a time slot, slice for 2 column effect -->
             <% @events_by_day_time[time].each_slice(2) do |events| %>
               <div class="row">
-                <% if events[0].public_type.nil? %><!-- NOT social, special, meditation -->
+                <% if events[0].public_type.nil? || events[0].public_type == ""%><!-- NOT social, special, meditation -->
                   <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
                     <div class="col-md-5 event_block">
                       <div class="row">
@@ -751,7 +751,7 @@
 
 
                 <% if events[1] %><!-- Make sure there is a second event -->
-                  <% if events[1].public_type.nil? %><!-- NOT social, special, meditation -->
+                  <% if events[1].public_type.nil? || events[1].public_type == "" %><!-- NOT social, special, meditation -->
                     <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                       <div class="col-md-5 event_block">
                         <div class="row">

@@ -13,7 +13,7 @@
     .row
       %p{style: "margin-left: 3em"} Public Event Type
       .span8.offset2 
-        = f.collection_select :public_type, [["special", "special"], [ "social", "social"], ["meditation", "meditation"] ], :first, :last
+        = f.collection_select :public_type, [[nil, "Normal Event"], ["special", "special"], [ "social", "social"], ["meditation", "meditation"] ], :first, :last
     <hr />
     .row{style: "border-bottom: dotted"}
       = f.input :description, label: "Session Description", hint: t("Describe what your presentation will be about.")
