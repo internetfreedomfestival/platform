@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180114171955) do
+ActiveRecord::Schema.define(version: 20180117154115) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -436,6 +436,7 @@ ActiveRecord::Schema.define(version: 20180114171955) do
     t.string   "pentabarf_password",            limit: 255
     t.string   "confirm_attendance_token"
     t.datetime "confirm_attendance_email_sent"
+    t.datetime "email_sent_to_confirmed_only"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

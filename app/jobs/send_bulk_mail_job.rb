@@ -50,6 +50,12 @@ class SendBulkMailJob
           p.user.update(confirm_attendance_email_sent: Time.now)
           Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
         end
+      #elsif updates email timestamp for confirmed people only
+      elsif send_filter == 'all_confirmed_attendance_people'
+        if UserMailer.bulk_mail(p, template).deliver_now
+          p.user.update(email_sent_to_confirmed_only: Time.now)
+          Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
+        end
       else # Perform original bulk mail function for all non pending attendance people
         UserMailer.bulk_mail(p, template).deliver_now
         Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
