@@ -1,22 +1,29 @@
 = simple_form_for(@event, html: {multipart: true}) do |f|
   %fieldset.inputs
     %legend Basic information
-    = f.input :title
-    = f.input :subtitle
+    %b Note to ADMIN:
+    %p If you are trying to add/update special, social, or meditation events only use the title, time, public event type and description
+    = f.input :title, label: "Session Title", hint: t("What is the title of your presentation?")
+    <hr />
+    .row
+      %p{style: "margin-left: 3em"} Preferred Session Time
+      .span8.offset2
+        = f.collection_select :time_slots, [[4, "1 hour"], [6, "1.5 hours"], [ 8, "2 hours"], [10, "2.5 hours"], [12, "3 hours"]], :first, :last
+    <hr>
+    .row
+      %p{style: "margin-left: 3em"} Public Event Type
+      .span8.offset2 
+        = f.collection_select :public_type, [["special", "special"], [ "social", "social"], ["meditation", "meditation"] ], :first, :last
+    <hr />
+    .row{style: "border-bottom: dotted"}
+      = f.input :description, label: "Session Description", hint: t("Describe what your presentation will be about.")
+    <br />
     = f.input :other_presenters
-    - @event.build_ticket unless @event.ticket
-    = f.simple_fields_for :ticket do |ticket|
-      = ticket.input :remote_ticket_id
+    = f.input :subtitle
     = f.input :event_type, collection: Event::TYPES
     = f.association :track, collection: @conference.tracks
-    = f.input :time_slots, as: :select, collection: timeslots
     = f.input :language, as: :language_select, only: @conference.language_codes
     = f.input :public, as: :inline_boolean, hint: "Is this event visible in the public schedule?"
-    = image_input_box(f.object.logo)
-    = f.input :logo
-  %fieldset.inputs
-    %legend State
-    = f.input :state, collection: Event.state_machine.states.map { |st| [st.display_name, st.name.to_s] }
   %fieldset.inputs
     %legend Time and place
     = f.input :start_time do
@@ -25,17 +32,9 @@
   %fieldset.inputs
     %legend Detailed description
     = f.input :abstract, input_html: {rows: 4}, hint: "One short paragraph that succinctly describes the event. (HTML)"
-    = f.input :description,input_html: {rows: 4}, hint: "A longer description of the event. Use this to give additional details that did not fit in the abstract. Both, abstract and description, will be shown on the conference website. (HTML)"
   %fieldset.inputs
     %legend Notes
     = f.input :note, input_html: {rows: 2}, hint: "visibility: admin only."
     = f.input :submission_note, input_html: {rows: 2}, hint: "visibiliy: admin and user; additional information."
-  %fieldset.inputs
-    %legend Additional Resources
-    = f.input :do_not_record, as: :inline_boolean, hint: "Will this event be recorded?"
-    = f.input :tech_rider, input_html: {rows: 2}, hint: "What is needed for this event?"
-    = f.input :recording_license, hint: "Recording license for this talk"
-    = dynamic_association :links, "Links", f
-    = dynamic_association :event_attachments, "Uploaded files", f
   .actions
     = f.button :submit, class: 'primary'

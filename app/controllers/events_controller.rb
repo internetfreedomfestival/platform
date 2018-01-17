@@ -154,9 +154,9 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.conference = @conference
     authorize! :create, @event
-
     respond_to do |format|
       if @event.save
+        EventPerson.create(event_id: @event.id, person_id: current_user.person.id)
         format.html { redirect_to(@event, notice: 'Event was successfully created.') }
       else
         @start_time_options = @conference.start_times_by_day
@@ -286,7 +286,7 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :tech_rider,
+      :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :public_type, :tech_rider,
       event_attachments_attributes: %i(id title attachment public _destroy),
       ticket_attributes: %i(id remote_ticket_id),
       links_attributes: %i(id title url _destroy),
