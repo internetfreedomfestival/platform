@@ -109,7 +109,7 @@
     / .span4
     /   = image_box @event.logo, :large
   .row
-    - if @submitter.dif
+    - if @submitter && @submitter.dif
       .span6
         %h2 DIF
         %b Status: 
