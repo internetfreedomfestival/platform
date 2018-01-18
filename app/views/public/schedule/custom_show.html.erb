@@ -4,31 +4,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     .container {
-  width: 90%;
-}
+      width: 90%;
+    }
 
-.row {
-  margin-left: 0px;
-  margin-right: 0px;
-}
+    .row {
+      margin-left: 0px;
+      margin-right: 0px;
+    }
 
     #navigation, #header{
       display: none;
     }
+
     body{
       font-family: 'Roboto', verdana, sans-serif;
       line-height: 1.6em;
+      background-color: #fde1d4;
     }
 
     body a {
-  color:#f74c33;
-  text-decoration: none;
-}
+      color:#f74c33;
+      text-decoration: none;
+    }
 
-body a:hover {
-  color:#f74c33;
-  text-decoration: none;
-}
+    body a:hover {
+      color:#f74c33;
+      text-decoration: none;
+    }
 
     .session_title{
       font-family: 'Roboto Slab', verdana, sans-serif;
@@ -103,15 +105,15 @@ body a:hover {
       text-decoration: inherit;
       color: white;
     }
-
-@media only screen and (max-width: 980px) {
-
-    #main_header {
+    .special_back_button{
+      margin-top: 35px;
+    }
+    @media only screen and (max-width: 980px) {
+      #main_header {
         font-size: 20px;
         margin-top: 10px;
       }
-
-  }
+    }
 
     @media only screen and (max-width: 768px) {
       .day_button {
@@ -125,39 +127,33 @@ body a:hover {
         -webkit-transition: 0.2s;
         transition: 0.2s;
       }
-
       .day_button:hover {
         background-color: #f74c33cc;
         -webkit-transition: 0.2s;
         transition: 0.2s;
       }
+      .notes_link{
+        color: #f74c33;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .notes_link:hover, .notes_link:visited{
+        color: #f74c33;
+        text-decoration: none;
+      }
+      #header_logo {
+        max-width: 29% !important;
+      }
 
-    .notes_link{
-      color: #f74c33;
-      text-decoration: none;
-      font-weight: 600;
+      #main_header {
+        font-size: 130% !important;
+        margin-top: 0px !important;
+        max-width: 64% !important;
+      }
+      .container {
+        width: 97%;
+      }
     }
-    .notes_link:hover, .notes_link:visited{
-      color: #f74c33;
-      text-decoration: none;
-    }
-
-    #header_logo {
-      max-width: 29% !important;
-    }
-
-    #main_header {
-      font-size: 130% !important;
-      margin-top: 0px !important;
-      max-width: 64% !important;
-
-    }
-
-    .container {
-      width: 97%;
-    }
-  }
-
 
     @media only screen and (max-width: 414px) {
       .day_button {
@@ -179,29 +175,26 @@ body a:hover {
       }
 
       #header_logo {
-      max-width: 140px !important;
-      margin-right:auto !important;
-      float:left;      
+        max-width: 140px !important;
+        margin-right:auto !important;
+        float:left;      
       }
 
       #main_header {
-      font-size: 15px !important;
-      margin-top: -3px !important;
-      margin-right: 2% !important;
-      float: right !important;
-      max-width: 50% !important;
+        font-size: 15px !important;
+        margin-top: -3px !important;
+        margin-right: 2% !important;
+        float: right !important;
+        max-width: 50% !important;
       }
 
       .container {
-  width: 97%;
-}
-
+        width: 97%;
+      }
     }
-  
-  
   </style>
-
 </head>
+
 <body>
   <div id="banner">
     <div class="row" id="header_container">
@@ -213,40 +206,60 @@ body a:hover {
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <h1 class="session_title"><%= @event.title %></h1>
+  
+  <!-- Special Event -->
+  <% if @event.public_type == "meditation" || @event.public_type == "social" || @event.public_type == "special" %>  
+    <div class="container">
+      <div class="row">
+        <h1 class="session_title"><%= @event.title %></h1>
+      </div>
+        <div class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
+        </div>
+        <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
+        </div>
+        <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>
+        <div><strong>Description:</strong></div>
+        <div class="session_info"><%= @event.description %></div>
+        <div class="row special_back_button">
+          <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
+        </div>
+      </div>
+  <!-- Normal Event -->
+  <% else %>
+    <div class="container">
+      <div class="row">
+        <h1 class="session_title"><%= @event.title %></h1>
+      </div>
+        <div class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
+        </div>
+        <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
+        </div>
+        <div class="session_info"><strong>Notes:</strong> <a href="https://<%= @event.etherpad_url %>" target="_blank" class="notes_link"><%= @event.etherpad_url %></a></div>
+        <div class="session_info"><strong>Skill Level:</strong> <%= @event.skill_level %>
+        </div>
+        <div class="session_info"><strong>Language:</strong> 
+          <% if @event.language == "en" %>
+            English
+          <% else %>
+            Español
+          <% end %>
+        </div>
+        <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>      
+        <div class="session_info"><strong>Format:</strong> <%= @event.event_type %></div>
+        <div class="session_info"><strong>Presenter:</strong> <%= @presenter.public_name %></div>
+        <div class="session_info"><strong>Other Presenters:</strong> <%= @event.other_presenters %></div>
+        <div><strong>Description:</strong></div>
+        <div class="session_info"><%= @event.description %></div>
+        <div><strong>Target Audience:</strong></div>
+        <div class="session_info"><%= @event.target_audience_experience %></div>
+        <div><strong>Desired Outcome:</strong></div> 
+        <div class="session_info"><%= @event.desired_outcome %></div>
+        <br>
+      <div class="row">
+        <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
+      </div>
     </div>
-
-    <div class="session_info" class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
-    </div>
-    <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
-    </div>
-    <div class="session_info"><strong>Notes:</strong> <a href="https://<%= @event.etherpad_url %>" target="_blank" class="notes_link"><%= @event.etherpad_url %></a></div>
-    <div class="session_info"><strong>Skill Level:</strong> <%= @event.skill_level %>
-    </div>
-    <div class="session_info"><strong>Language:</strong> 
-      <% if @event.language == "en" %>
-        English
-      <% else %>
-        Español
-      <% end %>
-    </div>
-    <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>      
-    <div class="session_info"><strong>Format:</strong> <%= @event.event_type %></div>
-    <div class="session_info"><strong>Presenter:</strong> <%= @presenter.public_name %></div>
-    <div class="session_info"><strong>Other Presenters:</strong> <%= @event.other_presenters %></div>
-    <div><strong>Description:</strong></div>
-    <div class="session_info"><%= @event.description %></div>
-    <div><strong>Target Audience:</strong></div>
-    <div class="session_info"><%= @event.target_audience_experience %></div>
-    <div><strong>Desired Outcome:</strong></div> 
-    <div class="session_info"><%= @event.desired_outcome %></div>
-    <br>
-    <div class="row">
-      <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
-    </div>
-  </div>
+  <% end %>
 </body>
 <!-- Title
 Time
