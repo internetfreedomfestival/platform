@@ -60,8 +60,7 @@
               - each_timeslot do  |time|
                 %tr{class: cycle('odd', 'even')}
                   %td{:"data-time" => time.to_s(:rfc822)}
-                    - if slot % @conference.default_timeslots == 0
-                      = time.strftime("%H:%M")
+                    = time.strftime("%H:%M")
                 - slot += 1
         .clear
         #event-pane

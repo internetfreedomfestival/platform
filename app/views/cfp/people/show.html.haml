@@ -27,12 +27,23 @@
     .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
       - if @person.attendance_status == "confirmed"
         %h2{style: "margin-bottom: 10px"} You are confirmed to attend the 2018 IFF!
-        <br />
-        %p Can't make it? Please click on the button below and let someone else attend!
+        %b In order to access the IFF, you must provide the following information at registration:
+        %table{style: "margin-top: -15px"}
+          %tr
+            %th Public Name
+            <br />
+            %td 
+              = @person.public_name
+          %tr
+            %th IFF ID
+            <br />
+            %td 
+              = @person.id
+          %tr
+            %th 
+            %td
+        %p{style: "margin-top: -10px"} Can't make it? Please click on the button below and let someone else attend!
         = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
-        - if @person.late_event_submit
-          <br /> <br /> <br />
-          = action_button "success", "Submit a New Proposal", new_cfp_event_path
       - elsif @not_registered && @person.attendance_status == "pending attendance"
         %h2{style: "margin-bottom: 10px"} Complete the Form to Attend IFF  
         %b{style: "color: orange; font-size: 16px;"} You need to complete the registration form to attend the 2018 Internet Freedom Festival.
