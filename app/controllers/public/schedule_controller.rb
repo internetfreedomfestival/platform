@@ -4,14 +4,14 @@ class Public::ScheduleController < ApplicationController
 
   def index
     @days = @conference.days
-
-    respond_to do |format|
-      format.html
-      format.xml
-      format.xcal
-      format.ics
-      format.json
-    end
+    redirect_to public_custom_path
+    # respond_to do |format|
+    #   format.html
+    #   format.xml
+    #   format.xcal
+    #   format.ics
+    #   format.json
+    # end
   end
 
   def style
@@ -63,24 +63,25 @@ class Public::ScheduleController < ApplicationController
   end
 
   def day
-    @day_index = params[:day].to_i
-    if @day_index < 1 || @day_index > @conference.days.count
-      return redirect_to public_schedule_index_path, alert: "Failed to find day at index #{@day_index}"
-    end
+    redirect_to public_custom_path
+    # @day_index = params[:day].to_i
+    # if @day_index < 1 || @day_index > @conference.days.count
+    #   return redirect_to public_schedule_index_path, alert: "Failed to find day at index #{@day_index}"
+    # end
 
-    setup_day_ivars
+    # setup_day_ivars
 
-    if @rooms.empty?
-      return redirect_to public_schedule_index_path, notice: 'No events are public and scheduled.'
-    end
+    # if @rooms.empty?
+    #   return redirect_to public_schedule_index_path, notice: 'No events are public and scheduled.'
+    # end
 
-    respond_to do |format|
-      format.html
-      format.pdf do
-        @layout = CustomPDF::FullPageLayout.new('A4')
-        render template: 'schedule/custom_pdf'
-      end
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.pdf do
+    #     @layout = CustomPDF::FullPageLayout.new('A4')
+    #     render template: 'schedule/custom_pdf'
+    #   end
+    # end
   end
 
   def events
