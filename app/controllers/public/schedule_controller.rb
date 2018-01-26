@@ -85,24 +85,26 @@ class Public::ScheduleController < ApplicationController
   end
 
   def events
-    @events = @conference.events_including_subs.is_public.confirmed.scheduled.sort { |a, b|
-      a.to_sortable <=> b.to_sortable
-    }
-    @events_by_track = @events.group_by(&:track_id)
-    respond_to do |format|
-      format.html
-      format.json
-      format.xls { render file: 'public/schedule/events.xls.erb', content_type: 'application/xls' }
-    end
+    redirect_to public_custom_path
+    # @events = @conference.events_including_subs.is_public.confirmed.scheduled.sort { |a, b|
+    #   a.to_sortable <=> b.to_sortable
+    # }
+    # @events_by_track = @events.group_by(&:track_id)
+    # respond_to do |format|
+    #   format.html
+    #   format.json
+    #   format.xls { render file: 'public/schedule/events.xls.erb', content_type: 'application/xls' }
+    # end
   end
 
   def event
-    @event = @conference.events_including_subs.is_public.confirmed.scheduled.find(params[:id])
-    @concurrent_events = @conference.events_including_subs.is_public.confirmed.scheduled.where(start_time: @event.start_time)
-    respond_to do |format|
-      format.html
-      format.ics
-    end
+    redirect_to public_custom_path
+    # @event = @conference.events_including_subs.is_public.confirmed.scheduled.find(params[:id])
+    # @concurrent_events = @conference.events_including_subs.is_public.confirmed.scheduled.where(start_time: @event.start_time)
+    # respond_to do |format|
+    #   format.html
+    #   format.ics
+    # end
   end
 
   def speakers
