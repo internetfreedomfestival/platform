@@ -16,7 +16,10 @@
         %th.first
         %td= event.title
         - if @conference.event_state_visible
-          %td= event.state
+          - if event.state == 'rejected'
+            %td= 'Not Accepted'
+          - else
+            %td= event.state
         - if @conference.feedback_enabled
           %td
             %b= number_with_precision event.average_feedback, precision: 2
