@@ -110,8 +110,8 @@
       %p=t("cfp.diversity_info") 
       - if @no_events == false
         - if @no_dif
-          = action_button "success", "Apply Now", new_cfp_dif_path
-          %p{style: "margin-bottom: 19px"}
+          /= action_button "success", "Apply Now", new_cfp_dif_path
+          %p{style: "margin-bottom: 55px"}
         - else
           = action_button "success", "Edit your Application", edit_cfp_dif_path
           %p{style: "margin-bottom: 19px"}
