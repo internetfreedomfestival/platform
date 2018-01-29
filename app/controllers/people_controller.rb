@@ -255,6 +255,17 @@ class PeopleController < ApplicationController
     end
   end
 
+  def move_to_waitlist
+    @person = Person.find_by(id: params[:format])
+    authorize! :manage, @person
+    if @person.update(attendance_status: 'waitlist')
+      SelectionNotification.moved_to_waitlist_notification(@person).deliver_now
+      redirect_to(all_people_path, notice: 'Person was successfully moved from pending attendance to the waitlist')
+    else 
+      redirect_to(all_people_path, notice: 'There was an error moving the pending attendance person to the waitlist. They may not have updated all their registration requirements.')
+    end
+  end
+
   def allow_late_submissions
     @person = Person.find_by(id: params[:format])
     @conference = Conference.find_by(acronym: params[:conference_acronym])
