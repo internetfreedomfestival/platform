@@ -116,6 +116,7 @@ Frab::Application.routes.draw do
           get :confirm_attendance
           get :waitlisted
           get :invite
+          get :move_to_waitlist
           get :canceled
           get :generate_confirmation_tokens
         end

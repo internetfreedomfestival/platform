@@ -57,6 +57,23 @@ en:
         See you at %{conference}
 
         The %{conference} team
+    moved_to_waitlist:
+      subject: "Notification of Attendance Status Change"
+      body:  |
+        Dear friend,
+
+        This is an automatic notification to inform you that you have been moved to the IFF 2018 waiting list, as a result of not confirming your attendance. 
+
+        This action can’t be reversed by any special circumstances. 
+
+        Please note that the Internet Freedom Festival is a nonprofit organization, and one of the few international gatherings of its kind to offer totally free attendance. Our entire team works very hard to keep it that way, and closely controlling attendance, for both safety and to provide the experience for everyone. 
+        
+        Thank you for your interest and understanding. 
+        
+        We hope we can see you next year :)
+        
+        Lots of love, 
+        The IFF Team
     waitlist:
       subject: "Rejoice! You're attending IFF"
       body:  |
