@@ -213,6 +213,8 @@
       <div class="row">
         <h1 class="session_title"><%= @event.title %></h1>
       </div>
+        <div class="session_info"><strong>Date:</strong> <%= @event.end_time.strftime("%A, %B %e, %Y") %>
+        </div>      
         <div class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
         </div>
         <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
@@ -230,6 +232,8 @@
       <div class="row">
         <h1 class="session_title"><%= @event.title %></h1>
       </div>
+        <div class="session_info"><strong>Date:</strong> <%= @event.end_time.strftime("%A, %B %e, %Y") %>
+        </div>   
         <div class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
         </div>
         <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
