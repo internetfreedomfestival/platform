@@ -334,7 +334,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
-    attributes = %w{id title state language description theme skill_level presenter other_presenters iff_before time_slot dif average_rating comments}
+    attributes = %w{id title state language description theme skill_level presenter gender country_of_origin prof_back other_presenters iff_before time_slot dif past_dif average_rating comments}
     
     CSV.generate(headers: true) do |csv|
       csv << attributes
@@ -379,6 +379,48 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def gender
+    main_presenter_gender(id)
+  end
+
+  def main_presenter_gender(event_id)
+    event_presenter = EventPerson.find_by(event_id: event_id)
+    if event_presenter
+      event_person = Person.find(event_presenter.person_id)
+      return event_person.gender
+    else
+      return "Original Submitter Inactive"
+    end
+  end
+
+  def country_of_origin
+    main_presenter_country_of_origin(id)
+  end
+
+  def main_presenter_country_of_origin(event_id)
+    event_presenter = EventPerson.find_by(event_id: event_id)
+    if event_presenter
+      event_person = Person.find(event_presenter.person_id)
+      return event_person.country_of_origin
+    else
+      return "Original Submitter Inactive"
+    end
+  end
+
+  def prof_back
+    main_presenter_professional_background(id)
+  end
+
+  def main_presenter_professional_background(event_id)
+    event_presenter = EventPerson.find_by(event_id: event_id)
+    if event_presenter
+      event_person = Person.find(event_presenter.person_id)
+      return event_person.professional_background
+    else
+      return "Original Submitter Inactive"
+    end
+  end
+
   def time_slot
     plural_time_slot(time_slots)
   end
@@ -402,6 +444,23 @@ class Event < ActiveRecord::Base
         return false
       else
         return true
+      end
+    else
+      false
+    end
+  end
+
+  def past_dif
+    received_past_dif(id)
+  end
+
+  def received_past_dif(event_id)
+    e_p = EventPerson.find_by(event_id: event_id)
+    if e_p
+      if Person.find(e_p.person.id).dif.nil?
+        return false
+      else
+        return Person.find(e_p.person.id).dif.past_travel_assistance
       end
     else
       false
