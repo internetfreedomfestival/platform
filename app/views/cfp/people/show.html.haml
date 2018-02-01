@@ -1,19 +1,17 @@
 %section
   .page-header
     .pull-right
-      - unless @conference.in_the_past
-        - if @person.late_event_submit
-          = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
-        // - unless cfp_hard_deadline_over?
-        // = action_button "primary", t("cfp.submit_new_event"), new_cfp_event_path
-      = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
-      = action_button "", t("cfp.edit_account"), edit_cfp_user_path
-      = action_button "success", "2018 Schedule","https://platform.internetfreedomfestival.org/en/IFF2018/public/schedule/custom" 
+      %div{style: "float: right;"}
+        - if @person.attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
+          = action_button "primary", t("Submit Unconference Proposal"), new_cfp_event_path
+        = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
+        = action_button "", t("cfp.edit_account"), edit_cfp_user_path
+      %div{style: "float: right; clear: both; margin-top: 5px"}
+        - if @is_fellow || current_user.is_admin?
+          = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
+        = action_button "success", "2018 Schedule","https://platform.internetfreedomfestival.org/en/IFF2018/public/schedule/custom" 
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
     %h2 Welcome to the IFF 2018
-    - if @is_fellow || current_user.role == "admin"
-      .pull-right
-        = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
   .row
     - if @not_registered == false && @person.attendance_status == "confirmed"
       .span16{style: "background-color: green; width: 871px; height: 31px; margin-bottom: 15px"}
