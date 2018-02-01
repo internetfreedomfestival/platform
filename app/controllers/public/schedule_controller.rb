@@ -31,7 +31,7 @@ class Public::ScheduleController < ApplicationController
       @days = @conference.days.where(id: 1)
       @day_index = 1
     end
-# @events_by_day_time
+    
     setup_day_ivars
 
     @days_events = []
