@@ -31,7 +31,7 @@ class Public::ScheduleController < ApplicationController
       @days = @conference.days.where(id: 1)
       @day_index = 1
     end
-
+    
     setup_day_ivars
 
     @days_events = []
@@ -52,7 +52,7 @@ class Public::ScheduleController < ApplicationController
     # arrange days by time
     @events_by_day_time = Hash.new { |k,v| k[v] = [] }
     @days_events.each do |event|
-      @events_by_day_time[event.start_time].push(event)
+      @events_by_day_time[event.start_time].push(event) unless event.public_type == 'private'
     end
   end
 
