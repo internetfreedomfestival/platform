@@ -1,5 +1,8 @@
 !!!
-- title = t('public.schedule.title', title: @conference.title)
+- if @event
+  - title = @event.title.to_s + ' Schedule IFF-2018'
+-else 
+  - title = t('public.schedule.title', title: @conference.title)
 %html
   %head
     %meta{ :"http-equiv" => "content-type", content: "text/html; charset=utf-8" }
