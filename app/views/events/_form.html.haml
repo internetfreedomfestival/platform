@@ -8,7 +8,7 @@
     .row
       %p{style: "margin-left: 3em"} Preferred Session Time
       .span8.offset2
-        = f.collection_select :time_slots, [[4, "1 hour"], [5, "1.25 hours"], [6, "1.5 hours"], [7, "1.75 hours"], [ 8, "2 hours"], [9, "2.25 hours"], [10, "2.5 hours"], [11, "2.75 hours"], [12, "3 hours"], [13, "3.25 hours"]], :first, :last
+        = f.collection_select :time_slots, [[1, "15 min"], [2, "30 min"], [3, "45 min"], [4, "1 hour"], [5, "1.25 hours"], [6, "1.5 hours"], [7, "1.75 hours"], [ 8, "2 hours"], [9, "2.25 hours"], [10, "2.5 hours"], [11, "2.75 hours"], [12, "3 hours"], [13, "3.25 hours"]], :first, :last
     <hr>
     .row
       %p{style: "margin-left: 3em"} Public Event Type
