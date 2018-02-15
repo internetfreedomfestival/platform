@@ -45,4 +45,6 @@
               = action_button "small success", 'Invite', invite_people_path(person), method: :get
             - if person.attendance_status == "pending attendance"
               = action_button "small info", "Move to Waitlist", move_to_waitlist_people_path(person), method: :get
+            - if person.attendance_status == "canceled"
+              = action_button "small success", 'Uncancel', move_to_pending_people_path(person), method: :get
             = action_button "small danger", 'Destroy', person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}

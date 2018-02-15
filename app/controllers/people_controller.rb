@@ -310,6 +310,16 @@ class PeopleController < ApplicationController
     end
   end
 
+  # will update a 'canceled' attendance status to 'pending attendance' status
+  def move_to_pending
+    @person = Person.find_by(id: params[:format])
+    if @person.update(attendance_status: "pending attendance")
+      return redirect_to(canceled_people_path, notice: 'Attendance updated to pending attendance.')
+    else
+      return redirect_to(canceled_people_path, notice: 'There was an error updating their attendance status.')
+    end
+  end
+
   def generate_confirmation_tokens
     users_to_generate_token = []
     users = User.where(confirm_attendance_token: nil)
