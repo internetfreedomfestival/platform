@@ -35,7 +35,17 @@ class Cfp::EventsController < ApplicationController
     if auth_person_for_new_event?(person)
       return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
     end
-    if person.late_event_submit == false
+
+    # Remove this if statement for next conference. It is for submiting events after the conference deadline
+    if person.attendance_status == "confirmed"
+      authorize! :submit, Event
+      @event = Event.new(time_slots: @conference.default_timeslots)
+      @event.recording_license = @conference.default_recording_license
+
+      return respond_to do |format|
+        format.html # new.html.erb
+      end
+    elsif person.late_event_submit == false
       return redirect_to cfp_person_path, flash: { error: t('cfp.events_closed') }
     end
     authorize! :submit, Event
@@ -60,13 +70,6 @@ class Cfp::EventsController < ApplicationController
 
   # POST /cfp/events
   def create
-
-    # Removes extra spaces saved by params 
-    # years_only = []
-    # params[:event][:iff_before].each do |year|
-      # years_only << year unless year == ""
-    # end
-
     authorize! :submit, Event
     @event = Event.new(event_params.merge(recording_license: @conference.default_recording_license))
     @event.conference = @conference
@@ -75,7 +78,6 @@ class Cfp::EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        # @event.update(iff_before: years_only)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
