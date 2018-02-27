@@ -3,7 +3,7 @@
     .pull-right
       %div{style: "float: right;"}
         - if @person.attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
-          = action_button "primary", t("Submit Unconference Proposal"), new_cfp_event_path
+          = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
         = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
         = action_button "", t("cfp.edit_account"), edit_cfp_user_path
       %div{style: "float: right; clear: both; margin-top: 5px"}
