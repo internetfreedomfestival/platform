@@ -45,6 +45,25 @@ To start frab in the development environment simply run
 Navigate to http://localhost:3000/ and login as
 "admin@example.org" with password "test123".
 
+## Using docker
+
+Basically, to get started you need `docker`, `docker-compose`
+and follow these steps:
+
+1) First time you install the project, you need to build the app image with:
+
+- `docker-compose build`
+
+2) Then you are ready to start the server:
+
+- `docker-compose up`
+
+3) Run database migrations:
+
+- `docker-compose exec web bin/rake db:migrate RAILS_ENV=development`
+
+Your app should be accessible from http://localhost:3000/.
+
 ## Vagrant Server
 
 frab can more easily be tested by using vagrant with chef recipes taking care of the installation process.
@@ -97,4 +116,3 @@ To start frab in the production environment run
 Note that when seeding the database in production mode, the password for
 admin@example.org will be a random one. It will be printed to the console
 in when `rake db:seed` is invoked.
-
