@@ -64,6 +64,14 @@ and follow these steps:
 
 Your app should be accessible from http://localhost:3000/.
 
+App tests can be executed using:
+
+- `docker-compose exec web rake test`
+
+But first you need to prepare the test database:
+
+- `docker-compose exec web rake db:test:prepare`
+
 ## Vagrant Server
 
 frab can more easily be tested by using vagrant with chef recipes taking care of the installation process.
