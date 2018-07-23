@@ -27,3 +27,11 @@ admin.confirmed_at = Time.now
 admin.save!
 
 puts "Created admin user (#{admin.email}) with password #{password}"
+
+conference = Conference.new(title: "Internet Freedom Festival",
+                            acronym: 'iff',
+                            email: person.email,
+                            color: '00ff7f')
+conference.save!
+
+puts "Created conference [#{conference.acronym}] #{conference.title}"
