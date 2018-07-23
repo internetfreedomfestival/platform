@@ -2,8 +2,16 @@ version: '3'
 services:
   web:
     build: .
-    command: bash -c "rm -rf ./tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/app
+      - ./Gemfile:/app/Gemfile
+      - ./Gemfile.lock:/app/Gemfile.lock
+      - ./app:/app/app
+      - ./bin:/app/bin
+      - ./db/migrate:/app/db/migrate
+      - ./db/schema.rb:/app/db/schema.rb
+      - ./db/seeds.rb:/app/db/seeds.rb
+      - ./lib:/app/lib
+      - ./test:/app/test
     ports:
       - "3000:3000"

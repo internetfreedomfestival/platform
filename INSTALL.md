@@ -58,10 +58,6 @@ and follow these steps:
 
 - `docker-compose up`
 
-3) Run database migrations:
-
-- `docker-compose exec web bin/rake db:migrate RAILS_ENV=development`
-
 Your app should be accessible from http://localhost:3000/.
 
 App tests can be executed using:
