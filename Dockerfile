@@ -1,11 +1,9 @@
-FROM ruby:2.5
+FROM ruby:2.3.1
 
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
 
 ENV APP /app
 WORKDIR $APP
-
-ENV RAILS_ENV=development
 
 COPY Gemfile Gemfile.lock $APP/
 RUN gem install bundler --conservative
