@@ -212,6 +212,7 @@ FactoryGirl.define do
     subtitle 'Getting started organizing your conference'
     time_slots 4
     start_time '10:00'
+    description 'A description of a conference'
     conference { create(:three_day_conference) }
   end
 
