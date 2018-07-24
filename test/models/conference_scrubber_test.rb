@@ -51,6 +51,7 @@ class ConferenceScrubberTest < ActiveSupport::TestCase
     @scrubber = ConferenceScrubber.new(@conference)
     person =  create(:person)
     person.email_public = false
+    person.include_in_mailings = false
     person.phone_numbers << PhoneNumber.new
     person.im_accounts << ImAccount.new
     person.note = TEXT

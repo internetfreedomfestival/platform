@@ -134,7 +134,13 @@ FactoryGirl.define do
 
   factory :person do
     email { generate(:email) }
-    public_name 'Fred Besen'
+    sequence :public_name do |n|
+      "name#{n}"
+    end
+    country_of_origin 'Spain'
+    professional_background ['Developer']
+    iff_before ['yes']
+    gender 'Female'
   end
 
   factory :expense do
