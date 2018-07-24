@@ -8,10 +8,12 @@ env:
 bundler_args: --without capistrano doc production --jobs 2
 before_script:
   - cp config/database.yml.travis config/database.yml
-  - cp config/secrets.yml.travis config/secrets.yml 
+  - cp config/secrets.yml.travis config/secrets.yml
   - mysql -e 'create database frab_test'
   - psql -c 'create database frab_test' -U postgres
 script:
   - bundle exec rake db:create
   - bundle exec rake db:schema:load
   - bundle exec rake
+notifications:
+    slack: devscola:52XdshX3TSY1Eb6nZzFUq2wL#iff-frab-dev
