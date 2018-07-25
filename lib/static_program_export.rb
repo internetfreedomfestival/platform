@@ -97,36 +97,19 @@ class StaticProgramExport
 
   def static_query_paths
     [
-      { source: 'schedule', target: 'schedule.html' },
-      { source: 'events', target: 'events.html' },
       { source: 'speakers', target: 'speakers.html' },
-      { source: 'events.json', target: 'events.json' },
       { source: 'speakers.json', target: 'speakers.json' },
-      { source: 'schedule/style.css', target: 'style.css' },
-      { source: 'schedule.ics', target: 'schedule.ics' },
-      { source: 'schedule.xcal', target: 'schedule.xcal' },
-      { source: 'schedule.json', target: 'schedule.json' },
-      { source: 'schedule.xml', target: 'schedule.xml' }
+      { source: 'schedule/style.css', target: 'style.css' }
     ]
   end
 
   def query_paths
     paths = static_query_paths
-    day_index = 1
-    @conference.days.each do |_day|
-      paths << { source: "schedule/#{day_index}", target: "schedule/#{day_index}.html" }
-      paths << { source: "schedule/#{day_index}.pdf", target: "schedule/#{day_index}.pdf" }
-      day_index += 1
-    end
-
-    @conference.events.is_public.confirmed.scheduled.each do |event|
-      paths << { source: "events/#{event.id}", target: "events/#{event.id}.html" }
-      paths << { source: "events/#{event.id}.ics", target: "events/#{event.id}.ics" }
-    end
 
     Person.publicly_speaking_at(@conference).confirmed(@conference).each do |speaker|
       paths << { source: "speakers/#{speaker.id}", target: "speakers/#{speaker.id}.html" }
     end
+
     paths
   end
 
