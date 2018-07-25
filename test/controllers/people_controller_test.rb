@@ -2,7 +2,8 @@ require 'test_helper'
 
 class PeopleControllerTest < ActionController::TestCase
   setup do
-    @person = create(:person)
+    @user = create(:user)
+    @person = @user.person
     @conference = create(:conference)
     login_as(:admin)
   end
@@ -13,8 +14,7 @@ class PeopleControllerTest < ActionController::TestCase
 
   test 'should get index' do
     get :index, conference_acronym: @conference.acronym
-    assert_response :success
-    assert_not_nil assigns(:people)
+    assert_response :redirect
   end
 
   test 'should get new' do
@@ -50,6 +50,6 @@ class PeopleControllerTest < ActionController::TestCase
       delete :destroy, id: @person.to_param, conference_acronym: @conference.acronym
     end
 
-    assert_redirected_to people_path
+    assert_redirected_to(all_people_path)
   end
 end

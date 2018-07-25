@@ -7,8 +7,9 @@ class MailTemplateTest < ActiveSupport::TestCase
     ActionMailer::Base.deliveries = []
     @event = create(:event, state: 'confirmed')
     @mail_template = create(:mail_template, conference: @event.conference)
-
-    @speaker = create(:person, include_in_mailings: true)
+    @user = create(:user)
+    @speaker = @user.person
+    @speaker.include_in_mailings = true
     @speaker.first_name = 'Frederick'
     @speaker.last_name = 'Besendorf'
     @speaker.save

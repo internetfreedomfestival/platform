@@ -7,15 +7,7 @@ class PeopleController < ApplicationController
   # GET /people.xml
   def index
     authorize! :administrate, Person
-    return redirect_to all_people_path
-    
-    # @people = search Person.involved_in(@conference), params
-
-    # respond_to do |format|
-    #   format.html { @people = @people.paginate page: page_param }
-    #   format.xml  { render xml: @people }
-    #   format.json { render json: @people }
-    # end
+    redirect_to all_people_path
   end
 
   def speakers
@@ -33,7 +25,7 @@ class PeopleController < ApplicationController
       result = search Person.involved_in(@conference), params
       @people = result.paginate page: page_param
       @csv_people = result
-      
+
       format.csv  { send_data @csv_people.to_csv, filename: "speakers-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
@@ -54,13 +46,13 @@ class PeopleController < ApplicationController
       result = search Person.confirmed(@conference), params
       @people = result.paginate page: page_param
       @csv_people = result
-      
+
       format.csv  { send_data @csv_people.to_csv, filename: "speakers-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
 
-  def all
+    def all
     authorize! :administrate, Person
     result = search Person, params
     @people = result.paginate page: page_param
@@ -92,9 +84,9 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html
       format.csv  { send_data @csv_people.to_csv, filename: "dif-#{Date.today}.csv" }
-      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }    
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
-  end  
+  end
 
   def volunteers
     authorize! :administrate, Person
@@ -137,10 +129,10 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
     authorize! :read, @person
     @years_presented = person_presented_before?
-    
+
     @user = User.find(@person.user_id)
     ConferenceUser.exists?(user_id: @user.id) ? @is_fellow = ConferenceUser.find_by(user_id: @user.id) : @is_fellow = false
-    
+
     @current_events = @person.events_as_presenter_in(@conference)
     @other_events = @person.events_as_presenter_not_in(@conference)
     clean_events_attributes
@@ -209,7 +201,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     authorize! :manage, @person
-   
+
     respond_to do |format|
       if @person.update_attributes(person_params)
         format.html { redirect_to(@person, notice: 'Person was successfully updated.') }
@@ -250,7 +242,7 @@ class PeopleController < ApplicationController
     if @person.update(attendance_status: "pending attendance")
       SelectionNotification.invite_notification(@person).deliver_now
       redirect_to(waitlisted_people_path, notice: 'Person was successfully invited, attendance status is now: pending attendance.')
-    else 
+    else
       redirect_to(waitlisted_people_path, notice: 'There was an error inviting the person. Check to see if they have fully registered.')
     end
   end
@@ -261,7 +253,7 @@ class PeopleController < ApplicationController
     if @person.update(attendance_status: 'waitlist')
       SelectionNotification.moved_to_waitlist_notification(@person).deliver_now
       redirect_to(all_people_path, notice: 'Person was successfully moved from pending attendance to the waitlist')
-    else 
+    else
       redirect_to(all_people_path, notice: 'There was an error moving the pending attendance person to the waitlist. They may not have updated all their registration requirements.')
     end
   end
@@ -282,7 +274,7 @@ class PeopleController < ApplicationController
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
     @user = User.find(@person.user_id)
-    
+
     if @user.update(confirmed_at: Time.new)
       redirect_to(person_path(@person.id), notice: 'User profile has been confirmed.')
     else
@@ -323,7 +315,7 @@ class PeopleController < ApplicationController
   def generate_confirmation_tokens
     users_to_generate_token = []
     users = User.where(confirm_attendance_token: nil)
-    
+
     users.each do |user|
       if user.person && user.person.attendance_status == 'pending attendance'
         users_to_generate_token << user

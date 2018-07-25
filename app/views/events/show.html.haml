@@ -47,11 +47,11 @@
         = @event.other_presenters
       %p
         %b= "Theme:"
-        = @event.event_type       
+        = @event.event_type
       %p
         %b Format:
-        = @event.track      
-      
+        = @event.track
+
       - if can? :crud, Event
         %p
           %b= Event.human_attribute_name(:state) + ':'
@@ -68,7 +68,7 @@
         = @event.etherpad_url
       %p
         %b Language:
-        = @event.language 
+        = @event.language
       %p
         %b Skill Level:
         = @event.skill_level
@@ -86,9 +86,6 @@
       %p= @event.speakers.map{ |p| link_to p.public_name, p}.join(", ").html_safe
       %h2 Description:
       = simple_format @event.description
-      %p
-        %b Target Audience:
-        = @event.target_audience_experience
       %p
         %b Desired Outcome:
         = @event.desired_outcome
@@ -112,13 +109,13 @@
     - if @submitter && @submitter.dif
       .span6
         %h2 DIF
-        %b Status: 
+        %b Status:
         = @submitter.dif.status
         %br/
-        %b Type of Travel Support Requested: 
-        = @submitter.dif.travel_support      
+        %b Type of Travel Support Requested:
+        = @submitter.dif.travel_support
         %br/
-        %b Received travel assistance in the past?: 
+        %b Received travel assistance in the past?:
         = @submitter.dif.past_travel_assistance
         %br/
         %b Willing to Fascilitate?

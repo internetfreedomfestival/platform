@@ -64,7 +64,7 @@ class EventsController < ApplicationController
   # show event ratings
   def ratings
     authorize! :create, EventRating
-    
+
     result = search @conference.events, params
     @events = result.paginate page: page_param
     clean_events_attributes
@@ -204,7 +204,7 @@ class EventsController < ApplicationController
     rescue => ex
       return redirect_to(@event, alert: "Cannot update state: #{ex}.")
     end
-    
+
     if params[:transition] == "confirm"
       @event.update!(etherpad_url: "pad.internetfreedomfestival.org/p/#{@event.id}")
     end
