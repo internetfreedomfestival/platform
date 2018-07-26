@@ -128,10 +128,10 @@ class AbilitiesTest < ActiveSupport::TestCase
     assert ability.cannot? :manage, @conference
   end
 
-  test 'reviewer can only read call for papers' do
+  test 'reviewer cannot read call for papers' do
     ability = Ability.new @reviewer_user, @conference
-    assert ability.can? :read, CallForParticipation
-    assert ability.can? :read, @cfp
+    assert ability.cannot? :read, @cfp
+    assert ability.cannot? :read, CallForParticipation
     assert ability.cannot? :manage, CallForParticipation
     assert ability.cannot? :manage, @cfp
   end
@@ -151,14 +151,14 @@ class AbilitiesTest < ActiveSupport::TestCase
     assert ability.cannot? :crud, @event
   end
 
-  test 'reviewer can read all event ratings, but only manage self' do
+  test 'reviewer can read and manage all event ratings' do
     my_rating = create :event_rating, person: @reviewer_user.person
     ability = Ability.new @reviewer_user, @conference
     assert ability.can? :create, my_rating
     assert ability.can? :crud, my_rating
     assert ability.can? :read, @rating
-    assert ability.cannot? :destroy, @rating
-    assert ability.cannot? :manage, EventRating
+    assert ability.can? :destroy, @rating
+    assert ability.can? :manage, EventRating
   end
 
   test 'reviewer can read all persons, but only manage self' do

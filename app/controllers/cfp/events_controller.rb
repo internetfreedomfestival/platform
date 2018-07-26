@@ -93,7 +93,7 @@ class Cfp::EventsController < ApplicationController
     @event = current_user.person.events.readonly(false).find(params[:id])
     @event.recording_license = @event.conference.default_recording_license unless @event.recording_license
 
-    # Removes extra spaces saved by params and does not update for [""] params 
+    # Removes extra spaces saved by params and does not update for [""] params
     # years_only = keep_old_iff_before_if_blank
 
     respond_to do |format|

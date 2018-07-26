@@ -1,7 +1,7 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -36,14 +36,14 @@
 
     #BTT-button a {
       color: white;
-      text-decoration: none; 
+      text-decoration: none;
     }
 
     #bottom-banner-text {
       float:left;
     }
 
-    #bottom-banner-text a { 
+    #bottom-banner-text a {
       text-decoration: none !important;
       color: white;
     }
@@ -95,7 +95,7 @@
     }
 
     #header_container{
-      background-color: black; 
+      background-color: black;
       display: table;
       width:100%;
       padding-left: 3%;
@@ -224,7 +224,7 @@
     .social_event_block:hover{
       background-color: #1ba5abcc;
     }
-    
+
     .meditation_event_block{
       background-color: #1ba5ab;
       margin-bottom: 20px;
@@ -266,10 +266,10 @@
     }
 
     .no_link_effect{
-      height: 100%; 
-      width: 100%; 
-      display: block; 
-      text-decoration: inherit; 
+      height: 100%;
+      width: 100%;
+      display: block;
+      text-decoration: inherit;
       color: inherit
     }
     .no_link_effect:hover{
@@ -318,19 +318,19 @@
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
-        padding:16px;        
+        padding:16px;
       }
       .social_event_block{
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
-        padding:16px;        
+        padding:16px;
       }
       .special_event_block{
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
-        padding:16px;  
+        padding:16px;
       }
 
       .session_info {
@@ -350,7 +350,7 @@
       .top_border {
         width: 103%;
       }
-  
+
       .container {
         padding-right: 10px;
         padding-left: 0px;
@@ -358,7 +358,7 @@
         width: 97%;
       }
 
-      .flex_buttons { 
+      .flex_buttons {
         flex-direction: column;
         width: 103% !important;
         margin-top: 10px;
@@ -382,17 +382,17 @@
       .meditation_event_block{
         height: auto;
         margin-left: 4px;
-        padding: 10px;      
+        padding: 10px;
       }
       .social_event_block{
         height: auto;
         margin-left: 4px;
-        padding: 10px;    
+        padding: 10px;
       }
       .special_event_block{
         height: auto;
         margin-left: 4px;
-        padding: 10px; 
+        padding: 10px;
       }
 
       .session_titles {
@@ -440,7 +440,7 @@
       .top_border {
         width: 102%;
       }
-   
+
       .container {
         padding-right: 10px;
         padding-left: 0px;
@@ -462,18 +462,18 @@
       }
 
       .event_block:hover {
-        border-left: 5px solid #f74c33; 
+        border-left: 5px solid #f74c33;
       }
 
       .meditation_event_block{
         height: auto;
         margin-left: 5px;
-        padding: 10px;    
+        padding: 10px;
       }
       .social_event_block{
         height: auto;
         margin-left: 5px;
-        padding: 10px;   
+        padding: 10px;
       }
       .special_event_block{
         height: auto;
@@ -509,7 +509,7 @@
       #header_logo {
         max-width: 140px;
         margin-right:auto;
-        float:left;      
+        float:left;
       }
 
       #main_header {
@@ -553,7 +553,7 @@
           </p>
         </div>
         <div class="venue_map"><p>Can't find a room? Check out the <a href="https://internetfreedomfestival.org/#venue-map" target="_blank">venue map here</a>.</p></div>
-        <h2 class="selected_day"><%= @days[0].start_date.strftime("%A, %B %e %Y") %></h2>
+        <h2 class="selected_day"><%= @days[0].nil? ? "" : @days[0].start_date.strftime("%A, %B %e %Y") %></h2>
       </div>
     </div>
     <div> <!-- Contains all events -->
@@ -567,12 +567,12 @@
             <div>
               <h5>There are no events for this day</h5>
             </div>
-        
+
           <!-- If there is only one event for a time slot do NOT slice -->
           <% elsif @events_by_day_time[time].length == 1 %>
             <% @events_by_day_time[time].each do |event| %>
               <% if event.public_type.nil? || event.public_type == "" %><!-- NOT special, social, or meditation-->
-              
+
                 <div class="row">
                   <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                     <div class="col-md-5 event_block">
@@ -585,14 +585,14 @@
                             (<%= event.time_slots / 4.0 %>h)
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> 
+                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
                           <% if event.language && event.language == "en" %>
                             English
-                          <% elsif event.language && event.language == "es" %>  
+                          <% elsif event.language && event.language == "es" %>
                             Español
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <% if event.event_type && event.event_type.include?("Internet")%>
                             IF: Present and Future</div>
                           <% elsif event.event_type && event.event_type.include?("Journalism") %>
@@ -625,7 +625,7 @@
                   <% end %><!-- End of link to special event show -->
                 </div><!-- End Row -->
 
-              <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT --> 
+              <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT -->
                 <div class="row">
                   <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                     <div class="col-md-11 social_event_block">
@@ -646,7 +646,7 @@
 
               <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
                 <div class="row">
-                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>  
+                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
                     <div class="col-md-11 meditation_event_block">
                       <div class="row">
                         <h5 class="session_titles"><%= event.title %></h5>
@@ -681,14 +681,14 @@
                             (<%= events[0].time_slots / 4.0 %>h)
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i> 
+                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
                           <% if events[0].language && events[0].language == "en" %>
                             English
-                          <% elsif events[0].language && events[0].language == "es" %>  
+                          <% elsif events[0].language && events[0].language == "es" %>
                             Español
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>                           
+                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <% if events[0].event_type && events[0].event_type.include?("Internet")%>
                             IF: Present and Future</div>
                           <% elsif events[0].event_type && events[0].event_type.include?("Journalism") %>
@@ -770,11 +770,11 @@
                           <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
                             <% if events[1].language && events[1].language == "en" %>
                               English
-                            <% elsif events[1].language && events[1].language == "es" %>  
+                            <% elsif events[1].language && events[1].language == "es" %>
                               Español
                             <% end %>
                           </div>
-                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <% if events[1].event_type && events[1].event_type.include?("Internet")%>
                               IF: Present and Future</div>
                             <% elsif events[1].event_type && events[1].event_type.include?("Journalism") %>
@@ -788,7 +788,7 @@
                     <% end %>
 
                   <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
-                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>            
+                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                       <div class="col-md-5 special_event_block">
                         <div class="row">
                           <h5 class="session_titles"> <%= events[1].title %></h5>
@@ -803,7 +803,7 @@
                         </div>
                       </div>
                     <% end %>
-                  
+
                   <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
 
                     <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
@@ -821,7 +821,7 @@
                         </div>
                       </div>
                     <% end %>
-                  
+
                   <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
                     <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
                       <div class="col-md-5 meditation_event_block">
@@ -839,7 +839,7 @@
                       </div>
                     <% end %>
                   <% end %><!-- Ends conditional for public type for second event -->
-             
+
 
                 <% else %><!-- The is NOT a second event so add empty div-->
                   <div class='col-md-6'></div>

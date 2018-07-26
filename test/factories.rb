@@ -3,6 +3,10 @@ FactoryGirl.define do
     "test#{n}@example.com"
   end
 
+  sequence :public_name do |n|
+    "name#{n}"
+  end
+
   sequence :conference_acronym do |n|
     "frabcon#{n}"
   end
@@ -133,10 +137,10 @@ FactoryGirl.define do
   end
 
   factory :person do
+    first_name 'Fred'
+    last_name 'Besen'
     email { generate(:email) }
-    sequence :public_name do |n|
-      "name#{n}"
-    end
+    public_name { generate(:public_name) }
     country_of_origin 'Spain'
     professional_background ['Developer']
     iff_before ['yes']

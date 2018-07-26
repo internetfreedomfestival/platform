@@ -13,7 +13,7 @@ class Cfp::EventsControllerTest < ActionController::TestCase
 
   test 'should get new' do
     get :new, conference_acronym: @conference.acronym
-    assert_response :success
+    assert_response :redirect
   end
 
   test 'should create event' do

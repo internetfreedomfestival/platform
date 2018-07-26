@@ -30,7 +30,7 @@
       %h5 Training and Best Practices
       %p{style: "font-size: 14px"} The Training and Best Practices theme creates a space for trainers, practitioners, researchers and techies working with risk management, digital security, and holistic privacy human-centered capacity building. From sharing effective tools and customized teaching practices and solutions, to addressing shared challenges and strengthening community support and fostering feedback exchange with tool developers.
     .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
-      %h5 Internet Freedom: 
+      %h5 Internet Freedom:
       %h5 Present and Future
       %p{style: "font-size: 14px"}  How should the future of the Internet Freedom space look? How can we get there from here? The Internet Freedom: Past, Present and Future theme provides the community with an opportunity to collectively create a vision and roadmap future opportunities, and tackle some of our overarching issues and concerns.
     .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
@@ -55,9 +55,9 @@
       %h5 Training
       %p{style: "font-size: 14px"} Teach something to the attendees
     .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
-      %h5 Panel Discussion 
+      %h5 Panel Discussion
       %p{style: "font-size: 14px"} Several speakers sharing their point of view around one topic
-    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"} 
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
       %h5 Other
       %p{style: "font-size: 14px"} You can also create your own formats, as long as they fit within the allocated times and spaces.
   <hr />
@@ -71,12 +71,11 @@
     = f.input :skill_level, collection: ["Beginner", "Intermediate", "Advanced"], error: " "
     .row
       %p{style: "margin-left: 3em"} Preferred Session Time
-      .span8.offset2 
+      .span8.offset2
         = f.collection_select :time_slots, [[4, "1 hour"], [ 8, "2 hours"]], :first, :last
     <br />
     .row
     = f.input :description, label: "Session Description", hint: t("Describe what your presentation will be about.")
-    = f.input :target_audience_experience, label: "Who is this session for?", hint: t("Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?")
     = f.input :desired_outcome, label: "What outcomes would you like your session to have?", hint: t("Describe in short sentences.")
     .row
       .span16

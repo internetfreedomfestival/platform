@@ -103,12 +103,12 @@
           |
           = link_to "Accepted only", "#", id: "languages_accepted_events_only"
         .row
-          .span3  
+          .span3
             %b English:
             = @conference.events.where(language: "en").count
           .span3
             %b Spanish:
-            = @conference.events.where(language: "es").count 
+            = @conference.events.where(language: "es").count
         #event_language_graph(style="width:400px;height:300px;")
 
       - if @conference.gender_breakdown.count > 1
@@ -131,7 +131,7 @@
                 - @presented_before += 1
               - else @first_presentation += 1
             - else
-              - @first_presentation += 1          
+              - @first_presentation += 1
           - @event_people.each do |ep|
             - unless ep.nil?
               - person = Person.find_by(id: ep.person.id)
@@ -140,7 +140,7 @@
           - @event_people_genders = Hash.new(0)
           - @people_from_events.each do |person|
             - @event_people_genders[person.gender] += 1
-          .span3  
+          .span3
             %b Female:
             = @event_people_genders["Female"]
           .span3
@@ -172,19 +172,19 @@
     - else @countries[person.country_of_origin] += 1
     - if person.professional_background.class == String
       - @prof_back[person.professional_background] += 1
-    - else 
+    - else
       - person.professional_background.each do |prof|
         - @prof_back[prof] += 1 unless prof == ""
     - if person.iff_before.class == String
       - @iff_before[person.iff_before] += 1
-    - else 
+    - else
       - person.iff_before.each do |year|
         - @iff_before[year] += 1
     - if !person.events.empty? && person.professional_background.class == String
       - @event_people_proffesions[person.professional_background] += 1
     - elsif !person.events.empty?
       -person.professional_background.each do |prof|
-        - @event_people_proffesions[prof] += 1  
+        - @event_people_proffesions[prof] += 1
     - if person.events
       - if person.dif
         - @event_people_dif['Applied for DIF'] += 1
@@ -203,7 +203,7 @@
       %p
         %b= "Total Volunteers:"
         = @volunteers.count
-      %p  
+      %p
         %b Female:
         = @people.where(gender: "Female").count
       %p
@@ -215,7 +215,7 @@
       %p
         %b Other (Gender):
         = @people.where(gender: "Other").count
-      
+
       <hr />
       %h2 Professional Background
       %p
@@ -225,20 +225,20 @@
             = value
       <hr />
       %h2 Returning Vs New
-      %p 
+      %p
         - @iff_before = @iff_before.sort_by{|k, v| k}
         - @iff_before.each do |key, value|
           %p
             %b= key + ":" unless key == ""
             = value unless key == ""
-      <hr /> 
+      <hr />
       %h2 Events
       %h4 By Format
       - @formats = Hash.new(0)
       - @themes = Hash.new(0)
       - @conference.events.each do |event|
         - if event.track
-          - @formats[event.track.name] += 1 
+          - @formats[event.track.name] += 1
         - @themes[event.event_type] += 1
       %p
         - @formats.each do |key, value|
@@ -261,7 +261,7 @@
         %b Total Events:
         = @conference.events.count
       - @event_people_dif.each do |key, value|
-        %p 
+        %p
           %b= key + ":"
           = value
       %h4 Presenters
@@ -272,6 +272,7 @@
         %b 1st Time Presenters:
         = @first_presentation
       %h4 Events By Country:
+      - @event_countries ||= Hash.new(0)
       - @event_countries.each do |country, count|
         %p
           %b= country + ":"
@@ -363,4 +364,3 @@
       update_gender_breakdown(true)
       event.preventDefault()
     update_gender_breakdown()
-
