@@ -30,7 +30,7 @@
       .span8
         %p
           %b Title:
-          = @event.title        
+          = @event.title
         %p
           %b Other Presenters:
           = @event.other_presenters
@@ -58,34 +58,11 @@
         %h3 Description:
         = simple_format @event.description
         %p
-          %b Target Audience:
-          = @event.target_audience_experience
-        %p
           %b Desired Outcome:
-          = @event.desired_outcome 
+          = @event.desired_outcome
         %p
           %b Presented at IFF Before?:
-          = @event.iff_before      
-    / .row
-    /   .span6
-    /     %p
-    /       %b Abstract:
-    /       %br/
-    /       = simple_format @event.abstract
-    /     - if @event.links
-    /       %p
-    /         %b Links:
-    /         %br/
-    /         - @event.links.each do |link|
-    /           = link_to link.title, link.url
-    /           %br/
-    /     - unless @event.event_attachments.is_public.empty?
-    /       %p
-    /         %b #{t('publich.schedule.files')}:
-    /         %br/
-    /         - @event.event_attachments.is_public.each do |attachment|
-    /           = link_to attachment.link_title, attachment.attachment.url
-    /           %br/
+          = @event.iff_before
   .row
     .span16
       %h2 My rating
@@ -98,7 +75,7 @@
         %li Are the proposed length and format reasonable?
         %li Does it demonstrate and support collaboration and coordination?
         %li Is it interesting?
-  
+
       = simple_form_for @rating, url: event_event_rating_path do |f|
         %fieldset.inputs
           = f.input :rating, as: :rating

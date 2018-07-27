@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EventRatingsControllerTest < ActionController::TestCase
   setup do
-    @conference = create :conference, :with_events
+    @conference = create :three_day_conference_with_events_and_speakers
     @event = Event.last
     @user = login_as(:admin)
   end

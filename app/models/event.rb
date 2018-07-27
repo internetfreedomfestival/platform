@@ -36,10 +36,10 @@ class Event < ActiveRecord::Base
 
   validates :title, :time_slots, :description, presence: true
 
-  
-  # These presence validations are commented out for now to allow Admin to add social and special events with only required info. 
+
+  # These presence validations are commented out for now to allow Admin to add social and special events with only required info.
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
-  # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level, 
+  # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
 
 
   after_save :update_conflicts
@@ -335,7 +335,7 @@ class Event < ActiveRecord::Base
 
   def self.to_csv(options = {})
     attributes = %w{id title state language description theme skill_level presenter gender country_of_origin prof_back other_presenters iff_before time_slot dif past_dif average_rating comments}
-    
+
     CSV.generate(headers: true) do |csv|
       csv << attributes
 

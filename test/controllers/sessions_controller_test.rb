@@ -69,12 +69,6 @@ class SessionsControllerTest < ActionController::TestCase
     assert_redirected_to root_path, conference_acronym: @last_conference.acronym
   end
 
-  test 'login page works if no conferences are known' do
-    Conference.all.each(&:destroy)
-    get :new
-    assert_response :success
-  end
-
   test 'does not return error code if parameters are missing' do
     post :create, whatever: 'foooo'
     assert_nil assigns(:current_user)
