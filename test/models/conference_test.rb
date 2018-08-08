@@ -19,8 +19,12 @@ class ConferenceTest < ActiveSupport::TestCase
   should validate_presence_of :timeslot_duration
   should validate_presence_of :timezone
 
-  test 'current returns the newest conference' do
-    conferences = create_list(:conference, 3)
+  test '.current returns the newest conference' do
+    conferences = [
+      create(:conference, created_at: Time.now),
+      create(:conference, created_at: Time.now + 1),
+      create(:conference, created_at: Time.now + 2)
+    ]
     assert_equal conferences.last.id, Conference.current.id
   end
 
