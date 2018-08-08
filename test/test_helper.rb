@@ -7,7 +7,7 @@ require 'sucker_punch/testing/inline'
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
@@ -17,9 +17,9 @@ class ActiveSupport::TestCase
   DatabaseCleaner.strategy = :truncation
 
   def login_as(role)
-    user = FactoryGirl.create(
+    user = FactoryBot.create(
       :user,
-      person: FactoryGirl.create(:person),
+      person: FactoryBot.create(:person),
       role: role.to_s
     )
     session[:user_id] = user.id
