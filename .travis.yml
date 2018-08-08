@@ -1,4 +1,5 @@
 language: ruby
+dist: trusty
 rvm:
   - 2.5.1
 env:
@@ -8,12 +9,12 @@ env:
 bundler_args: --without capistrano doc production --jobs 2
 before_script:
   - cp config/database.yml.travis config/database.yml
-  - cp config/secrets.yml.travis config/secrets.yml
-  - mysql -e 'create database frab_test'
-  - psql -c 'create database frab_test' -U postgres
+  - sed -i 's/config.eager_load = .*/config.eager_load = true/' config/environments/test.rb
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database frab_test'; fi"
+  - sh -c "if [ '$DB' = 'postgresql' ]; then psql -c 'create database frab_test' -U postgres; fi"
 script:
-  - bundle exec rake db:create
-  - bundle exec rake db:schema:load
-  - bundle exec rake
+  - RAILS_ENV=test bundle exec rails db:schema:load --trace
+  - bundle exec rails db:test:prepare
+  - bundle exec rails test
 notifications:
     slack: devscola:52XdshX3TSY1Eb6nZzFUq2wL#iff-frab-dev
