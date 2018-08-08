@@ -14,4 +14,4 @@ COPY . $APP
 COPY config/database.yml.template $APP/config/database.yml
 COPY config/secrets.yml.template $APP/config/secrets.yml
 
-RUN bin/rake db:setup
+RUN bundle exec rake db:setup
