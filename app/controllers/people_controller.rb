@@ -52,7 +52,7 @@ class PeopleController < ApplicationController
     end
   end
 
-    def all
+  def all
     authorize! :administrate, Person
     result = search Person, params
     @people = result.paginate page: page_param

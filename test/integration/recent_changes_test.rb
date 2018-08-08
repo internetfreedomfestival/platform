@@ -30,7 +30,7 @@ class RecentChangesTest < ActionDispatch::IntegrationTest
     PaperTrail.enabled = true
     event = create(:event, conference: @conference)
     create(:event_person, event: event)
-    delete "/#{@conference.acronym}/people/#{@tmp_user.id}"
+    delete "/#{@conference.acronym}/people/#{@tmp_user.person.id}"
     sign_in(@user)
     get '/', conference_acronym: @conference.acronym
     assert_response :success
