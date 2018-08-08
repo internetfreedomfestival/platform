@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/frab/localized_language_select.git
+  remote: https://github.com/frab/localized_language_select.git
   revision: 85df6b97789de6e29c630808b630e56a1b76f80c
   branch: master
   specs:
@@ -171,7 +171,7 @@ GEM
       mime-types
       mimemagic (= 0.3.0)
     pdf-core (0.1.6)
-    pg (1.0.0)
+    pg (0.21.0)
     polyamorous (1.3.2)
       activerecord (>= 3.0)
     prawn (0.15.0)
@@ -229,6 +229,8 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    rb-kqueue (0.2.5)
+      ffi (>= 0.5.0)
     redcarpet (3.4.0)
     request_store (1.4.0)
       rack (>= 1.4)
@@ -326,7 +328,7 @@ DEPENDENCIES
   nokogiri
   paper_trail
   paperclip (~> 4.1)
-  pg
+  pg (~> 0.15)
   prawn (< 1.0)
   prawn_rails
   pry-byebug
@@ -334,6 +336,7 @@ DEPENDENCIES
   puma
   rails (~> 4.2)
   ransack
+  rb-kqueue (>= 0.2)
   redcarpet
   ri_cal
   roust
