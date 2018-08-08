@@ -40,7 +40,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :public_name, :email
   validates :public_name, uniqueness: true, on: :update
   ### validates_inclusion_of :gender, in: GENDERS, allow_nil: true
-  
+
   validates_presence_of :country_of_origin, :professional_background, :iff_before, :gender, :on => :update
 
   scope :involved_in, ->(conference) {
@@ -120,7 +120,12 @@ class Person < ActiveRecord::Base
   end
 
   def role_state(conference)
-    event_people.presenter_at(conference).map(&:role_state).uniq.join ', '
+    event_people.
+      presenter_at(conference).
+      order('created_at ASC').
+      map(&:role_state).
+      uniq.
+      join(', ')
   end
 
   def set_role_state(conference, state)
@@ -195,7 +200,7 @@ class Person < ActiveRecord::Base
 
   def self.to_csv(options = {})
     attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer attendance_status created_at travel_support past_travel_assistance willing_to_facilitate}
-    
+
     non_dif_attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer attendance_status created_at}
 
     CSV.generate(headers: true) do |csv|
@@ -203,7 +208,7 @@ class Person < ActiveRecord::Base
 
       all.each do |person|
         if person.dif
-          csv << attributes.map do |attr| 
+          csv << attributes.map do |attr|
             if person.try(attr).nil?
               person.dif.send(attr)
             else
