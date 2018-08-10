@@ -249,6 +249,8 @@ class PeopleController < ApplicationController
 
   def send_invitation
     person = Person.find_by(id: params[:id])
+    conference = Conference.find_by(acronym: params[:conference_acronym])
+    InvitationMailer.invitation_mail(person, conference).deliver_now
     redirect_to(person_path(person), notice: 'Person was invited.')
   end
 

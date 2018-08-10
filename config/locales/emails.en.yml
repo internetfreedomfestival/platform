@@ -5,17 +5,17 @@ en:
       greeting: "Dear %{forename},"
       accepted_event: |
         We are very happy to tell you that we accepted your submission
-        
+
         %{event}
       confirmation: |
         Please quickly reconfirm that you will be present and deliver
         your talk, using the following link:
-        
+
         %{link}
       check_data: |
         While you are at it: After confirming using that link, you will
         be logged in to the conference planning system. Please take the time
-        to check your data there. The data will be used in the official 
+        to check your data there. The data will be used in the official
         conference program. You can also specify your availability at
         different times there. We will try to consider this when planning the
         final schedule.
@@ -35,7 +35,7 @@ en:
         submission
 
         %{event}
-        
+
         We can assure you that this was not an easy decision to make.
         We hope we can still  welcome you at the conference.
       goodbye: |
@@ -49,9 +49,9 @@ en:
         We're glad to inform you that your submission
 
         %{event}
-        
+
         has been scheduled for the %{date} at %{time}.
-        
+
         You will be speaking at %{room}.
       goodbye: |
         See you at %{conference}
@@ -62,27 +62,29 @@ en:
       body:  |
         Dear friend,
 
-        This is an automatic notification to inform you that you have been moved to the IFF 2018 waiting list, as a result of not confirming your attendance. 
+        This is an automatic notification to inform you that you have been moved to the IFF 2018 waiting list, as a result of not confirming your attendance.
 
-        This action can’t be reversed by any special circumstances. 
+        This action can’t be reversed by any special circumstances.
 
-        Please note that the Internet Freedom Festival is a nonprofit organization, and one of the few international gatherings of its kind to offer totally free attendance. Our entire team works very hard to keep it that way, and closely controlling attendance, for both safety and to provide the experience for everyone. 
-        
-        Thank you for your interest and understanding. 
-        
+        Please note that the Internet Freedom Festival is a nonprofit organization, and one of the few international gatherings of its kind to offer totally free attendance. Our entire team works very hard to keep it that way, and closely controlling attendance, for both safety and to provide the experience for everyone.
+
+        Thank you for your interest and understanding.
+
         We hope we can see you next year :)
-        
+
         Lots of love, 
         The IFF Team
     waitlist:
       subject: "Rejoice! You're attending IFF"
       body:  |
         Dear friend,
-        
-        We’re glad to inform you that you have been moved from the waitlist 
-        to the attendee list to join us at the Internet Freedom Festival 2018. 
-        If you can no longer attend, please let us know immediately so we can 
+
+        We’re glad to inform you that you have been moved from the waitlist
+        to the attendee list to join us at the Internet Freedom Festival 2018.
+        If you can no longer attend, please let us know immediately so we can
         transfer your spot to somebody else.
 
         Looking forward to seeing you in Valencia!
         The IFF Team
+    invitation_mail:
+      subject: "Rejoice! You've been invited to IFF"
