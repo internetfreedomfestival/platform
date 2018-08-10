@@ -52,4 +52,10 @@ class PeopleControllerTest < ActionController::TestCase
 
     assert_redirected_to(all_people_path)
   end
+
+  test 'should invite persons to a conference' do
+    post :send_invitation, id: @person.to_param, conference_acronym: @conference.acronym
+
+    assert_equal(@person, Invited.first.person)
+  end
 end
