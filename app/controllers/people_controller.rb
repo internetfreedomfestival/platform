@@ -247,6 +247,11 @@ class PeopleController < ApplicationController
     end
   end
 
+  def send_invitation
+    person = Person.find_by(id: params[:id])
+    redirect_to(person_path(person), notice: 'Person was invited.')
+  end
+
   def move_to_waitlist
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person

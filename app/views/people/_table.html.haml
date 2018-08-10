@@ -23,7 +23,7 @@
     - collection.each do |person|
       %tr
         /%td= image_box person.avatar, :small
-        %td 
+        %td
         %td= link_to person.first_name, person
         %td= link_to person.last_name, person
         %td= link_to person.public_name, person

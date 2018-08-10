@@ -85,6 +85,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 4.0'
   gem 'shoulda'
+  gem 'minitest-rails-capybara'
 end
 
 group :doc do

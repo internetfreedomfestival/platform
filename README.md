@@ -4,8 +4,8 @@ frab is a web-based conference planning and management system.
 It helps to collect submissions, to manage talks and speakers
 and to create a schedule.
 
-[![Build Status](https://travis-ci.org/frab/frab.svg?branch=master)](https://travis-ci.org/frab/frab)
-[![Code Climate](https://codeclimate.com/github/frab/frab.png)](https://codeclimate.com/github/frab/frab)
+[![Build Status](https://travis-ci.org/helenmg/iff_frab-frab.svg?branch=master)](https://travis-ci.org/helenmg/iff_frab-frab)
+[![Code Climate](https://codeclimate.com/github/helenmg/iff_frab-frab.png)](https://codeclimate.com/github/helenmg/iff_frab-frab)
 
 ## Background
 

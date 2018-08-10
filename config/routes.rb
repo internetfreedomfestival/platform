@@ -121,6 +121,9 @@ Frab::Application.routes.draw do
           get :canceled
           get :generate_confirmation_tokens
         end
+        member do
+          post :send_invitation
+        end
       end
 
       resources :events do

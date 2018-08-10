@@ -143,7 +143,7 @@ FactoryBot.define do
     public_name { generate(:public_name) }
     country_of_origin 'Spain'
     professional_background ['Developer']
-    iff_before ['yes']
+    iff_before ['2015']
     gender 'Female'
   end
 
@@ -224,6 +224,7 @@ FactoryBot.define do
     start_time '10:00'
     description 'A description of a conference'
     conference { create(:three_day_conference) }
+    iff_before ['2015']
   end
 
   factory :event_person do

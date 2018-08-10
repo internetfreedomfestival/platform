@@ -11,6 +11,9 @@ services:
       - ./db/migrate:/app/db/migrate
       - ./db/schema.rb:/app/db/schema.rb
       - ./db/seeds.rb:/app/db/seeds.rb
+      - ./config/routes.rb:/app/config/routes.rb
+      - ./config/initializers:/app/config/initializers
+      - ./config/environments:/app/config/environments
       - ./lib:/app/lib
       - ./test:/app/test
     ports:

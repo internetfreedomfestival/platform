@@ -17,7 +17,7 @@
     .span8
       %h1 Sign in
       = render "shared/flash", flash: flash
-      = simple_form_for @user, url: session_path do |f|
+      = simple_form_for @user, url: session_path, html:{id: 'login'} do |f|
         %fieldset.inputs
           = f.input :email
           = f.input :password
