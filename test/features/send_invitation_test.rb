@@ -36,6 +36,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on @event_person.person.public_name
 
     click_on 'Send invitation'
+    sleep 2
     click_on 'Send invitation'
 
 
