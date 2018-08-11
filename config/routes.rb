@@ -123,6 +123,7 @@ Frab::Application.routes.draw do
         end
         member do
           post :send_invitation
+          get :ticketing_form
         end
       end
 
