@@ -262,11 +262,12 @@ class PeopleController < ApplicationController
     conference = Conference.find_by(acronym: params[:conference_acronym])
     InvitationMailer.invitation_mail(person, conference).deliver_now
 
-    unless Invited.exists?(person_id: person.id, conference_id: conference.id)
-      Invited.create!(person: person, conference: conference)
-      redirect_to(person_path(person), notice: 'Person was invited.')
+    if Invited.exists?(person_id: person.id, conference_id: conference.id)
+      redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
     else
-      redirect_to(person_path(person), notice: 'You have already sent an invitation to this person.')
+      Invited.create!(person: person, conference: conference)
+
+      redirect_to(person_path(person), notice: 'Person was invited.')
     end
   end
 

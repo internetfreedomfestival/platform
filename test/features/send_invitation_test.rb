@@ -4,21 +4,16 @@ require "minitest/rails/capybara"
 class SendInvitationTest < Capybara::Rails::TestCase
   setup do
     @conference = create :three_day_conference
-    @event = create :event, conference: @conference
-    @event_person = create :event_person, event: @event
-    @user = create :user, person: @event_person.person
+    event = create :event, conference: @conference
+    event_person = create :event_person, event: event
+    @person = event_person.person
+    user = create :user, person: @person
     @admin = create(:user, person: create(:person), role: 'admin')
   end
 
   test 'admin receives feedback when an invitation is sent' do
-    visit "/"
-    within '#login' do
-      fill_in 'user_email', with: @admin.email
-      fill_in 'user_password', with: @admin.password
-      click_on 'Sign in'
-    end
-    visit "/#{@conference.acronym}/people"
-    click_on @event_person.person.public_name
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @person)
 
     click_on 'Send invitation'
 
@@ -26,19 +21,31 @@ class SendInvitationTest < Capybara::Rails::TestCase
   end
 
   test 'admin receives feedback when an invitation is sent twice' do
-    visit "/"
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @person)
+    click_on 'Send invitation'
+
+    click_on 'Send invitation'
+
+    assert_text "This person was already invited but we've sent the invitation again."
+  end
+
+  private
+
+  def login_as(user)
+    visit '/'
+
     within '#login' do
-      fill_in 'user_email', with: @admin.email
-      fill_in 'user_password', with: @admin.password
+      fill_in 'user_email', with: user.email
+      fill_in 'user_password', with: user.password
+
       click_on 'Sign in'
     end
-    visit "/#{@conference.acronym}/people"
-    click_on @event_person.person.public_name
+  end
 
-    click_on 'Send invitation'
-    click_on 'Send invitation'
+  def go_to_conference_person_profile(conference, person)
+    visit "/#{conference.acronym}/people"
 
-
-    assert_text 'You have already sent an invitation to this person.'
+    click_on person.public_name
   end
 end
