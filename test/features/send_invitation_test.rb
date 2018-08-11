@@ -4,11 +4,8 @@ require "minitest/rails/capybara"
 class SendInvitationTest < Capybara::Rails::TestCase
   setup do
     @conference = create :three_day_conference
-    event = create :event, conference: @conference
-    event_person = create :event_person, event: event
-    @person = event_person.person
-    user = create :user, person: @person
     @admin = create(:user, person: create(:person), role: 'admin')
+    @person = create(:person)
   end
 
   test 'admin receives feedback when an invitation is sent' do
