@@ -130,8 +130,17 @@ class PeopleController < ApplicationController
     authorize! :read, @person
     @years_presented = person_presented_before?
 
-    @user = User.find(@person.user_id)
-    ConferenceUser.exists?(user_id: @user.id) ? @is_fellow = ConferenceUser.find_by(user_id: @user.id) : @is_fellow = false
+    if @person.user.nil?
+      @is_fellow = false
+      @user = User.new
+    else
+      @user = @person.user
+      if ConferenceUser.exists?(user_id: @user.id)
+        @is_fellow = ConferenceUser.find_by(user_id: @user.id)
+      else
+        @is_fellow = false
+      end
+    end
 
     @current_events = @person.events_as_presenter_in(@conference)
     @other_events = @person.events_as_presenter_not_in(@conference)

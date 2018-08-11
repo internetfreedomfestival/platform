@@ -29,7 +29,7 @@
   - if can? :manage, Person and @person.user.nil?
     .row
       .span16
-        %p.message
+        %p.alert-message.warning
           Person has no user account yet and cannot login. Click on the user tab to create an account.
   .row
     .span10
@@ -41,7 +41,7 @@
         %b Public name:
         = @person.public_name
       %p
-        %b User Id:
+        %b Person Id:
         = @person.id
       %p
         %b Email:
