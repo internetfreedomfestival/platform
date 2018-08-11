@@ -261,7 +261,8 @@ class PeopleController < ApplicationController
     person = Person.find_by(id: params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
     InvitationMailer.invitation_mail(person, conference).deliver_now
-    if Invited.find_by(id: params[:id]).nil?
+
+    unless Invited.exists?(person_id: person.id, conference_id: conference.id)
       Invited.create!(person: person, conference: conference)
       redirect_to(person_path(person), notice: 'Person was invited.')
     else
