@@ -1,8 +1,21 @@
-Dear <%= @person.public_name %>,
+<p>
+  Dear <strong><%= @person.public_name %></strong>,
+</p>
 
-We’re glad to inform you that you have been invited to the <%= @conference.title %>.
-If you want to accept this invitation you should click on this link:
-link <%= @link %>
+<p>
+  We're glad to inform you that you have been invited to the <strong><%= @conference.title %></strong>.<br />
+  If you want to accept this invitation you should click on this link: <a href="<%= @link %>">Accept invitation</a>
+</p>
 
-Looking forward to seeing you in Valencia!
-The IFF Team
+<p>
+  If your mail client does not allow you to click the link, please copy&paste this link into your browser:
+</p>
+
+<pre>
+  <%= @link %>
+</pre>
+
+<p>
+  Looking forward to seeing you in Valencia!<br />
+  The IFF Team
+</p>
