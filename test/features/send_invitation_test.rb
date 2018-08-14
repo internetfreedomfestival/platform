@@ -3,9 +3,10 @@ require "minitest/rails/capybara"
 
 class SendInvitationTest < Capybara::Rails::TestCase
   setup do
-    @conference = create :three_day_conference
+    @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
-    @person = create(:person)
+    @person_user = create(:user, person: create(:person), role: 'submitter')
+    @person = @person_user.person
   end
 
   test 'admin receives feedback when an invitation is sent' do
@@ -27,6 +28,41 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text "This person was already invited but we've sent the invitation again."
   end
 
+  test 'person can access to the invitation link' do
+    with_an_invited_person(@person)
+
+    login_as(@person_user)
+
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    assert_text 'Get your ticket'
+  end
+
+  test 'person cannot access without the invitation link' do
+    login_as(@person_user)
+
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    assert_text 'You cannot register to the conference without an invitation'
+  end
+
+  test 'not logged person cannot access get ticket form' do
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    assert_text 'You must sign up to the platform'
+  end
+
+  test 'other persons cannot access to other invitation links' do
+    with_an_invited_person(@person)
+    @other_person_user = create(:user, role: 'submitter')
+
+    login_as(@other_person_user)
+
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    assert_text 'You cannot register to the conference without a valid invitation'
+  end
+
   private
 
   def login_as(user)
@@ -44,5 +80,12 @@ class SendInvitationTest < Capybara::Rails::TestCase
     visit "/#{conference.acronym}/people"
 
     click_on person.public_name
+  end
+
+  def with_an_invited_person(person)
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @person)
+    click_on 'Send invitation'
+    click_on 'Logout'
   end
 end

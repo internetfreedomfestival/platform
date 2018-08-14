@@ -1,6 +1,7 @@
+%h1 Get your ticket
+
 = simple_form_for(@person, html: {multipart: true}) do |f|
   %fieldset.inputs
-    %legend Ticket Form
     = f.input :public_name, hint: "This is the name that will be displayed in your badge."
     = f.input :gender, collection: Person::GENDER_PRONOUN, hint: 'Your public gender pronoun will be displayed in your badge.'
     .row
