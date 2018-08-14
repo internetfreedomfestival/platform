@@ -1,1 +1,48 @@
-%h1 ticketing_form
+= simple_form_for(@person, html: {multipart: true}) do |f|
+  %fieldset.inputs
+    %legend Ticket Form
+    = f.input :public_name, hint: "This is the name that will be displayed in your badge."
+    = f.input :gender, collection: Person::GENDER_PRONOUN, hint: 'Your public gender pronoun will be displayed in your badge.'
+    .row
+      .span16
+        %label * Have you attended the IFF before?
+        %div.input
+          %ul.inputs-list
+            - Person::IFF_BEFORE.each do |iff|
+              %li
+                %label
+                  %input{name: 'person[iff_before][]', type: 'checkbox', value: iff.last }
+                  %span= iff.first
+    %br
+    .row
+      .span16
+        %label * What are your main goals for attending the 2019 IFF?
+        %div.input
+          %ul.inputs-list
+            - Person::GOALS.map{ |value| [value, value] }.each do |goals|
+              %li
+                %label
+                  %input{name: 'person[iff_goals][]', type: 'checkbox', value: goals.last }
+                  %span= goals.first
+    %br
+    .row
+      .span16
+        %label * Would you like to hear more about our awesome volunteering opportunities?
+        %br
+        = f.input :iff_before, :collection => ['Yes, sounds fun!', 'No, thank you'], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
+
+    %br
+    .row
+      .span16
+        %label * Which days are you planning to attend?
+        %div.input
+          %ul.inputs-list
+            - Person::IFF_DAYS.each do |days|
+              %li
+                %label
+                  %input{name: 'person[iff_goals][]', type: 'checkbox', value: days.last }
+                  %span= days.first
+
+  .actions
+    = f.button :submit, value: 'Register', class: 'primary'
+    = link_to "Cancel", :back, class: "btn"
