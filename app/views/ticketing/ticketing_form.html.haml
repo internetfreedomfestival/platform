@@ -1,6 +1,6 @@
 %h1 Get your ticket
 
-= simple_form_for(@person, url: register_ticket_person_path(@person), html: {method: 'post', multipart: true}) do |f|
+= simple_form_for(@person, url: register_ticket_person_path(@person), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
   %fieldset.inputs
     = f.input :public_name, hint: "This is the name that will be displayed in your badge."
     = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, hint: 'Your public gender pronoun will be displayed in your badge.'
@@ -30,7 +30,7 @@
       .span16
         %label * Would you like to hear more about our awesome volunteering opportunities?
         %br
-        = f.input :interested_in_volunteer, :collection => ['Yes, sounds fun!', 'No, thank you'], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
+        = f.input :interested_in_volunteer, :collection => [['Yes, sounds fun!', true], ['No, thank you', false]], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
 
     %br
     .row
