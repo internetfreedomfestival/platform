@@ -1,7 +1,7 @@
 require 'test_helper'
 require "minitest/rails/capybara"
 
-class SendInvitationTest < Capybara::Rails::TestCase
+class RegisterTicketTest < Capybara::Rails::TestCase
   setup do
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
@@ -26,10 +26,28 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
       click_on 'Register'
     end
+
     assert_text "You've been succesfuly registered"
   end
 
+  test 'person cannot register twice' do
+    with_an_registered_person(@person)
 
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    within '#register_ticket' do
+      fill_in 'person[public_name]', with: 'test'
+      select('she', from: 'person[gender_pronoun]')
+      check('person[iff_before][]', option: '2015')
+      check('person[iff_goals][]', option: 'Requesting support with a specific issue')
+      select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
+      check('person[iff_days][]', option: 'Monday, April 1st')
+
+      click_on 'Register'
+    end
+
+    assert_text "You cannot register to the conference twice"
+  end
 
   private
 
@@ -55,5 +73,24 @@ class SendInvitationTest < Capybara::Rails::TestCase
     go_to_conference_person_profile(@conference, @person)
     click_on 'Send invitation'
     click_on 'Logout'
+  end
+
+  def with_an_registered_person(person)
+    with_an_invited_person(@person)
+
+    login_as(@person_user)
+
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    within '#register_ticket' do
+      fill_in 'person[public_name]', with: 'test'
+      select('she', from: 'person[gender_pronoun]')
+      check('person[iff_before][]', option: '2015')
+      check('person[iff_goals][]', option: 'Requesting support with a specific issue')
+      select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
+      check('person[iff_days][]', option: 'Monday, April 1st')
+
+      click_on 'Register'
+    end
   end
 end

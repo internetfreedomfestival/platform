@@ -3,6 +3,8 @@ class TicketingController < ApplicationController
   before_action :require_same_person
   before_action :require_invitation
 
+  before_action :no_previous_ticket, only: [:register_ticket]
+
   def ticketing_form
     @person = Person.find(params[:id])
   end
@@ -43,6 +45,15 @@ class TicketingController < ApplicationController
 
     unless Invited.exists?(person_id: person.id, conference_id: conference.id)
       flash[:error] = 'You cannot register to the conference without an invitation'
+      redirect_to cfp_root_path
+    end
+  end
+
+  def no_previous_ticket
+    person = Person.find(params[:id])
+
+    if person.attendance_status == 'confirmed'
+      flash[:error] = 'You cannot register to the conference twice'
       redirect_to cfp_root_path
     end
   end
