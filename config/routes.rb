@@ -124,6 +124,7 @@ Frab::Application.routes.draw do
         member do
           post :send_invitation
           get :ticketing_form, to: 'ticketing#ticketing_form'
+          post :register_ticket, to: 'ticketing#register_ticket'
         end
       end
 

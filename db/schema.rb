@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180810152233) do
+ActiveRecord::Schema.define(version: 20180814103351) do
 
   create_table "availabilities", force: :cascade do |t|
     t.integer  "person_id"
@@ -337,6 +337,8 @@ ActiveRecord::Schema.define(version: 20180810152233) do
     t.string   "complete_mattermost"
     t.boolean  "late_event_submit",        default: false
     t.string   "attendance_status"
+    t.string   "gender_pronoun"
+    t.string   "iff_days"
   end
 
   add_index "people", ["email"], name: "index_people_on_email"

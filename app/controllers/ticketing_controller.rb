@@ -7,6 +7,25 @@ class TicketingController < ApplicationController
     @person = Person.find(params[:id])
   end
 
+  def register_ticket
+    id = params[:id]
+    attributes = params[:person]
+
+    @person = Person.find(params[:id])
+    @person.public_name = attributes[:public_name]
+    @person.gender_pronoun = attributes[:gender_pronoun]
+    @person.iff_before = attributes[:iff_before]
+    @person.iff_goals = attributes[:iff_goals]
+    @person.interested_in_volunteer = attributes[:interested_in_volunteer]
+    @person.iff_days = attributes[:iff_days]
+
+    @person.attendance_status = 'confirmed'
+
+    @person.save!
+
+    redirect_to cfp_root_path, notice: "You've been succesfuly registered"
+  end
+
   private
 
   def require_same_person
