@@ -1,21 +1,22 @@
 <p>
-  Dear <strong><%= @person.public_name %></strong>,
+  Hello, <strong><%= @person.public_name %></strong>!
 </p>
-
 <p>
-  We're glad to inform you that you have been invited to the <strong><%= @conference.title %></strong>.<br />
-  If you want to accept this invitation you should click on this link: <a href="<%= @link %>">Accept invitation</a>
+  We are happy to inform you that we are launching a new edition of the Internet Freedom
+  Festival!
+  We are organising a week of events, conferences and sessions, beginning on April 1st.
+  We will be presenting a big variety of topics and quite a number of presenters, so we are
+  sure there will be something of interest for everyone.
+  We have reviewed your profile and we believe you would be a great fit for this edition of IFF
+  and therefore would love for you to be able to participate!
+  Please follow the link below to register for the conference:
+  <a href="<%= @link %>"><%= @link %></a>
 </p>
-
 <p>
-  If your mail client does not allow you to click the link, please copy&paste this link into your browser:
-</p>
-
-<pre>
-  <%= @link %>
-</pre>
-
+  If you have any questions regarding this edition of the IFF, we invite you to contact us!
+  If you are not able to attend the festival, please cancel in time, as we have a limited number
+  of tickets, and would love for them all to be used!
 <p>
-  Looking forward to seeing you in Valencia!<br />
-  The IFF Team
+  Sincerily,
+  IFF Team
 </p>
