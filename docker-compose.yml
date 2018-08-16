@@ -14,6 +14,7 @@ services:
       - ./config/routes.rb:/app/config/routes.rb
       - ./config/initializers:/app/config/initializers
       - ./config/environments:/app/config/environments
+      - ./public:/app/public
       - ./lib:/app/lib
       - ./test:/app/test
     ports:
