@@ -1,18 +1,18 @@
 %section
   .page-header
-    =image_tag "iff-logos.png", :style => "max-width: 24em; margin-bottom: 25px"
+    = image_tag "iff-logos.png", :style => "max-width: 24em; margin-bottom: 25px"
     - if @open_schedule
       .pull-right
-        =link_to "See our the upcoming schedule", public_schedule_index_path
+        = link_to "See our the upcoming schedule", public_schedule_index_path
     %h1 Welcome to the IFF Community Platform
-    %h5 We’re happy to see you here! You must sign up to the platform to before you are able to take advantage of the following features:
+    %h5 Please register to be able to:
     %ul
-      %li Register to attend the IFF
-      %li Submit session proposals to the IFF
+      %li Get your ticket to attend the IFF
+      %li Send your presentations through the open call for proposals
       %li Apply to the Diversity and Inclusion Fund to receive travel support for the IFF
       %li See the full program and schedule
-      %li Leave your session comments and feedback
-    %p Please contact <a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a> if you have any issues signing up!
+      %li Leave comments and feedback on sessions
+
   .row
     .span8
       %h1 Sign in
@@ -49,3 +49,6 @@
       %h2=t("cfp.confirmation_headline")
       %p=t("cfp.confirmation_description")
       = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
+
+  .page-footer__registration
+    %p Please contact <b><a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a></b> for sign-up issues.

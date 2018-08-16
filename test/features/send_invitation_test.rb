@@ -49,7 +49,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
   test 'not logged person cannot access get ticket form' do
     visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
 
-    assert_text 'You must sign up to the platform'
+    assert_text 'Please register to be able to'
   end
 
   test 'other persons cannot access to other invitation links' do
