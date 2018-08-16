@@ -13,7 +13,7 @@ class TicketingController < ApplicationController
     id = params[:id]
     attributes = params[:person]
 
-    @person = Person.find(id)
+    @person = Person.find(params[:id])
     @person.public_name = attributes[:public_name]
     @person.gender_pronoun = attributes[:gender_pronoun]
     @person.iff_before = attributes[:iff_before]
@@ -23,11 +23,9 @@ class TicketingController < ApplicationController
 
     @person.attendance_status = 'confirmed'
 
-    unless @person.save
-      render :ticketing_form, errors: @person.errors
-    else
-      redirect_to cfp_root_path, notice: "You've been succesfuly registered"
-    end
+    @person.save!
+
+    redirect_to cfp_root_path, notice: "You've been succesfuly registered"
   end
 
   private
