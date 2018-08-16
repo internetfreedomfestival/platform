@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  before_action :set_raven_context
   before_action :set_locale
   before_filter :set_paper_trail_whodunnit
   prepend_before_filter :load_conference
@@ -109,5 +110,10 @@ class ApplicationController < ActionController::Base
     elsif @conference.call_for_participation.start_date > Date.today
       redirect_to cfp_open_soon_path
     end
+  end
+
+  def set_raven_context
+    Raven.user_context(id: session[:current_user_id])
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 end

@@ -43,5 +43,11 @@ module Frab
     # ActionView::Base.sanitized_allowed_tags.delete 'img'
     # ActionView::Base.sanitized_allowed_protocols.delete 'urn'
     # end
+    Raven.configure do |config|
+      credentials = ENV['SENTRY_CREDENTIALS']
+      application_id = ENV['SENTRY_APPLICATION_ID']
+
+      config.dsn = "https://#{credentials}@sentry.io/#{application_id}"
+    end
   end
 end

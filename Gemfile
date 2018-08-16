@@ -69,6 +69,8 @@ gem 'sucker_punch'
 gem 'transitions', require: ['transitions', 'active_record/transitions']
 gem 'will_paginate'
 
+gem 'sentry-raven'
+
 group :production do
   gem 'exception_notification'
 end
