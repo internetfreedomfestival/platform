@@ -67,7 +67,8 @@ class PeopleController < ApplicationController
 
   def all_confirmed
     authorize! :administrate, Person
-    result = Person.where(attendance_status: "confirmed")
+    @conference = Conference.find_by(acronym: params[:conference_acronym])
+    result = Person.joins(:attendees).where(attendees: {conference: @conference})
     @people = result.paginate page: page_param
 
     respond_to do |format|

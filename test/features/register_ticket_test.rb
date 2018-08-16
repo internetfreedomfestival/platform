@@ -7,6 +7,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     @admin = create(:user, person: create(:person), role: 'admin')
     @person_user = create(:user, person: create(:person), role: 'submitter')
     @person = @person_user.person
+    # @ticket = create(:person_with_ticket)
+    @ticket = create(:attendee, conference: @conference)
   end
 
   test 'person can register through to the ticketing form' do
@@ -47,6 +49,16 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     end
 
     assert_text "You cannot register to the conference twice"
+  end
+
+  test 'admin can view users with ticket' do
+    login_as(@admin)
+
+    visit "/#{@conference.acronym}/people"
+
+    click_on 'Attendees'
+
+    assert_text @ticket.person.public_name
   end
 
   private

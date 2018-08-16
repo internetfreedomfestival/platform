@@ -14,6 +14,8 @@ class TicketingController < ApplicationController
     attributes = params[:person]
 
     @person = Person.find(params[:id])
+    @conference = Conference.find_by(acronym: params[:conference_acronym])
+
     @person.public_name = attributes[:public_name]
     @person.gender_pronoun = attributes[:gender_pronoun]
     @person.iff_before = attributes[:iff_before]
@@ -21,7 +23,7 @@ class TicketingController < ApplicationController
     @person.interested_in_volunteer = attributes[:interested_in_volunteer]
     @person.iff_days = attributes[:iff_days]
 
-    @person.attendance_status = 'confirmed'
+    Attendee.create(person: @person, conference: @conference, status: 'invited')
 
     @person.save!
 
@@ -51,8 +53,9 @@ class TicketingController < ApplicationController
 
   def no_previous_ticket
     person = Person.find(params[:id])
+    conference = Conference.find_by(acronym: params[:conference_acronym])
 
-    if person.attendance_status == 'confirmed'
+    if Attendee.exists?(person_id: person.id, conference_id: conference.id)
       flash[:error] = 'You cannot register to the conference twice'
       redirect_to cfp_root_path
     end

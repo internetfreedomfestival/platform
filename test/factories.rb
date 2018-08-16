@@ -145,6 +145,20 @@ FactoryBot.define do
     professional_background ['Developer']
     iff_before ['2015']
     gender 'Female'
+
+    factory :person_with_ticket do
+      gender_pronoun 'she'
+      iff_goals 'Requesting support with a specific issue'
+      interested_in_volunteer true
+      iff_days 'Monday, April 1st'
+      attendance_status 'confirmed'
+    end
+  end
+
+  factory :attendee do
+    person
+    conference
+    status 'invited'
   end
 
   factory :expense do
