@@ -43,9 +43,15 @@ class Person < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
   validates_presence_of :public_name, :email
-  # validates :public_name, on: :update
-  ### validates_inclusion_of :gender, in: GENDERS, allow_nil: true
+  validates_presence_of :interested_in_volunteer, :on => :update
 
+  validates_inclusion_of :gender_pronoun, in: GENDER_PRONOUN, allow_nil: false, :on => :update
+  validates_inclusion_of :iff_goals, in: GOALS, allow_nil: false, :on => :update
+  validates_inclusion_of :iff_before, in: IFF_BEFORE, allow_nil: false, :on => :update
+  validates_inclusion_of :iff_days, in: IFF_DAYS, allow_nil: false, :on => :update
+
+  # validates :public_name, on: :update
+  # validates_inclusion_of :gender, in: GENDERS, allow_nil: true
   # validates_presence_of :country_of_origin, :professional_background, :iff_before, :gender, :on => :update
 
   scope :involved_in, ->(conference) {
