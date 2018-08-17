@@ -26,29 +26,20 @@
             = f.hidden_field 'return_to', value: params[:return_to], name: "return_to"
         .actions
           = f.button :button, "Sign in", class: 'primary'
+          = action_button "", t("cfp.forgot_password_button"), new_cfp_user_password_path
+
     - if @conference
       .span8
-      .span8
-        %h2 Sign up to Register and Submit Proposals
-        /%h4 Sign up here
+        %h1 New around here?
         = simple_form_for(@user, url: cfp_user_path) do |f|
           %fieldset.inputs
             = f.input :email
             = f.input :password
             = f.input :password_confirmation
-            %p{style: "font-size: 15px; font-weight: bold;"} Please contact us if you don’t receive a confirmation email within 10 minutes after signing up! And don’t forget to check your spam folder ;)
-          .actions
             = f.button :submit, t("cfp.sign_up"), class: 'primary'
-            = link_to t("cfp.back"), new_cfp_session_path, class: "btn"
-  .row
-    .span8
-      %h2=t("cfp.forgot_password_headline")
-      %p=t("cfp.forgot_password_description")
-      = action_button "", t("cfp.forgot_password_button"), new_cfp_user_password_path
-    .span8
-      %h2=t("cfp.confirmation_headline")
-      %p=t("cfp.confirmation_description")
-      = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
+        %p
+          =t("cfp.confirmation_description")
+        = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
 
   .page-footer__registration
     %p Please contact <b><a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a></b> for sign-up issues.

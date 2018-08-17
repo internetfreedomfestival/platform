@@ -12,6 +12,7 @@ services:
       - ./db/schema.rb:/app/db/schema.rb
       - ./db/seeds.rb:/app/db/seeds.rb
       - ./config/routes.rb:/app/config/routes.rb
+      - ./config/locales:/app/config/locales
       - ./config/initializers:/app/config/initializers
       - ./config/environments:/app/config/environments
       - ./public:/app/public
