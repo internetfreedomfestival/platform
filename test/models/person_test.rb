@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  should validate_presence_of :public_name
   should validate_presence_of :email
   should have_many :availabilities
   should have_many :event_people
