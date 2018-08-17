@@ -135,4 +135,15 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal merged_person, person3
     assert_equal 'orga', person3.user.conference_users.find_by(conference_id: conference1.id).role
   end
+
+  test 'different people can have same public name' do
+    same_public_name = 'Helen'
+
+    person = build(:person, public_name: same_public_name)
+    other_person = build(:person, public_name: same_public_name)
+    assert person.save
+    assert other_person.save
+
+    assert_equal person.public_name, other_person.public_name
+  end
 end
