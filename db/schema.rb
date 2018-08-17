@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180816132036) do
+ActiveRecord::Schema.define(version: 20180817093021) do
 
   create_table "attendees", force: :cascade do |t|
     t.string   "status"
@@ -312,7 +312,7 @@ ActiveRecord::Schema.define(version: 20180816132036) do
   create_table "people", force: :cascade do |t|
     t.string   "first_name",               default: ""
     t.string   "last_name",                default: ""
-    t.string   "public_name",                              null: false
+    t.string   "public_name"
     t.string   "email",                                    null: false
     t.boolean  "email_public",             default: true
     t.string   "gender"

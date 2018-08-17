@@ -5,7 +5,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   setup do
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
-    @person_user = create(:user, person: create(:person), role: 'submitter')
+    @person_user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @person = @person_user.person
     @attendee = create(:attendee, conference: @conference)
   end
@@ -50,6 +50,37 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     assert_text "You cannot register to the conference twice"
   end
 
+  test 'ticket form has mandatory fields' do
+    with_an_invited_person(@person)
+
+    login_as(@person_user)
+
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    within '#register_ticket' do
+      click_on 'Register'
+    end
+
+    assert_text "You cannot get a ticket without public name, gender pronoun, past editions, goals, attendance days"
+  end
+
+  test 'only reports not filled mandatory fields' do
+    with_an_invited_person(@person)
+
+    login_as(@person_user)
+
+    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+
+    within '#register_ticket' do
+      select('she', from: 'person[gender_pronoun]')
+      check('person[iff_before][]', option: '2015')
+
+      click_on 'Register'
+    end
+
+    assert_text "You cannot get a ticket without public name, goals, attendance days"
+  end
+
   test 'admin can view users with ticket' do
     login_as(@admin)
 
@@ -76,7 +107,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   def go_to_conference_person_profile(conference, person)
     visit "/#{conference.acronym}/people"
 
-    click_on person.public_name
+    click_on person.email
   end
 
   def with_an_invited_person(person)
