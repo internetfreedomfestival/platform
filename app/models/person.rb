@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
   GENDER_PRONOUN = ["ze/hir", "ze/zir", "she", "he", "they/.../themselves", "they/.../themself", "xey", "sie", "it", "ey", "e", "hu", "peh", "per", "thon", "jee", "ve/ver", "xe", "zie/zir", "ze/zem", "zie/zem", "ze/mer", "se", "zme", "ve/vem", "zee", "fae", "zie/hir", "si", "kit", "Ne"].freeze
 
   has_many :availabilities, dependent: :destroy
-  has_many :attendees
+  has_many :attendees, dependent: :destroy
   has_many :event_people, dependent: :destroy
   has_many :event_ratings, dependent: :destroy
   has_many :events, -> { uniq }, through: :event_people
