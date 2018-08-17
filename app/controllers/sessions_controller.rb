@@ -39,11 +39,11 @@ class SessionsController < ApplicationController
   protected
 
   def successful_sign_in_path
-    if current_user.is_submitter?
-      cfp_person_path
+    if params.key?(:return_to)
+      params[:return_to]
     else
-      if params.key?(:return_to)
-        params[:return_to]
+      if current_user.is_submitter?
+        cfp_person_path
       else
         root_path
       end
