@@ -3,7 +3,14 @@
 = simple_form_for(@person, url: register_ticket_person_path(@person), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
   %fieldset.inputs
     = f.input :public_name, hint: "This is the name that will be displayed in your badge."
-    = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, hint: 'Your public gender pronoun will be displayed in your badge. Pronoun list written by @morganastra. Visit https://pronoun.is/ for more information.'
+    = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN
+    %div.input.help-block
+      Your public gender pronoun will be displayed in your badge. Pronoun list written by
+      %a{href: '@morganastra'} @morganastra.
+      Visits
+      %a{href: 'https://pronoun.is/'} https://pronoun.is/
+      for more information.
+    %br
     .row
       .span16
         %label * Have you attended the IFF before?
