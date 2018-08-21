@@ -1,27 +1,48 @@
 %section
-  .page-header
+  .page-header{style: "border-bottom: 2px solid;"}
     .pull-right
-      %div{style: "float: right;"}
-        - if @person.attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
-          = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
-        = action_button "", t("cfp.edit_registration"), edit_cfp_person_path
-        = action_button "", t("cfp.edit_account"), edit_cfp_user_path
       %div{style: "float: right; clear: both; margin-top: 5px"}
         - if @is_fellow || current_user.is_admin?
           = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
-        = action_button "success", "2018 Schedule","https://platform.internetfreedomfestival.org/en/IFF2018/public/schedule/custom" 
+
+      %div{style: "float: right; margin-top: 76px"}
+        - if @person.attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
+          = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
+        = action_button "", "Edit Profile", edit_cfp_person_path, :style => "background: black; color: white; font-weight: 100;"
+        = action_button "", "Edit Account", edit_cfp_user_path, :style => "background: black; color: white; font-weight: 100;"
+
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
-    %h2 Welcome to the IFF 2018
+    %h2 User Portal
+
   .row
+    .span8{style: "margin-bottom: 30px; height: 200px;"}
+      %div{style: "margin:10px;"}
+        %h3 Get your 2019 IFF Ticket
+        %p You have been invited to get an IFF Ticket!
+        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+          = action_button "", "Get your ticket", edit_cfp_person_path, :style => "margin: 10px; background: black; color: white; font-weight: 100"
+
+    .span8{style: "margin-bottom: 30px; height: 200px;"}
+      %div{style: "margin:10px;"}
+        %h3 Share your invites!
+        %p You have #{@invites} invites remaining.
+        %input{placeholder: 'email'}
+        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+          = action_button "", "Send", edit_cfp_person_path, :style => "margin: 10px; background: black; color: white; font-weight: 100"
+    .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+
+
+  .row{style: "margin-left: 10px;"}
     - if @not_registered == false && @person.attendance_status == "confirmed"
       .span16{style: "background-color: green; width: 871px; height: 31px; margin-bottom: 15px"}
-        %p{style: "color: white; padding: 6px"} You are CONFIRMED to attend the 2018 Internet Freedom Festival.    
+        %p{style: "color: white; padding: 6px"} You are CONFIRMED to attend the 2018 Internet Freedom Festival.
     - if @not_registered == false && @person.attendance_status == "pending attendance"
       .span16{style: "background-color: red; width: 871px; height: 31px; margin-bottom: 15px"}
         %p{style: "color: white; padding: 6px"} You must confirm your attendance to access the IFF!
     - if @not_registered == false && @person.attendance_status == "waitlist"
       .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
-        %p{style: "color: white; padding: 6px"} You are registered for the 2018 IFF Waitlist. 
+        %p{style: "color: white; padding: 6px"} You are registered for the 2018 IFF Waitlist.
+
     .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
       - if @person.attendance_status == "confirmed"
         %h2{style: "margin-bottom: 10px"} You are confirmed to attend the 2018 IFF!
@@ -30,27 +51,28 @@
           %tr
             %th Public Name
             <br />
-            %td 
+            %td
               = @person.public_name
           %tr
             %th IFF ID
             <br />
-            %td 
+            %td
               = @person.id
           %tr
-            %th 
+            %th
             %td
+
         %p{style: "margin-top: -10px"} Can't make it? Please click on the button below and let someone else attend!
         = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
       - elsif @not_registered && @person.attendance_status == "pending attendance"
-        %h2{style: "margin-bottom: 10px"} Complete the Form to Attend IFF  
+        %h2{style: "margin-bottom: 10px"} Complete the Form to Attend IFF
         %b{style: "color: orange; font-size: 16px;"} You need to complete the registration form to attend the 2018 Internet Freedom Festival.
         <br />
         <br />
         = action_button "primary", "Register Now", edit_cfp_person_path
       - elsif @not_registered == false && @person.attendance_status == "pending attendance"
         %h2{style: "margin-bottom: 10px"} Confirm your Attendance!
-        %b{style: "font-size: 16px;"} All registered participants must confirm attendance to access the IFF: 
+        %b{style: "font-size: 16px;"} All registered participants must confirm attendance to access the IFF:
         <br />
         <br />
         = action_button "success", "Confirm Your Attendance", confirm_attendance_cfp_person_path
@@ -100,12 +122,12 @@
       = action_button "success", "Follow @InternetFF", "http://twitter.com/internetff/", target: :blank
       %p{style: "margin-top: 20px"} Subscribe to the IFF Weekly Mailing List to get general news and updates, community stories, upcoming events and new job opportunities, all conveniently summarized and sent to your inbox once a week!
       = action_button "success", t("Subscribe"), "https://lists.ghserv.net/mailman/listinfo/festival", target: :blank
-      
+
   <br />
-  .row
-    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}        
+  .row{style: "margin-left: 10px;"}
+    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
       %h2{style: "margin-bottom: 10px"}=t("cfp.diversity_inclusion_headline")
-      %p=t("cfp.diversity_info") 
+      %p=t("cfp.diversity_info")
       - if @no_events == false
         - if @no_dif
           /= action_button "success", "Apply Now", new_cfp_dif_path
@@ -113,16 +135,16 @@
         - else
           = action_button "success", "Edit your Application", edit_cfp_dif_path
           %p{style: "margin-bottom: 19px"}
-      - else 
+      - else
         %p=t("cfp.dif_submit_events")
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px; height: 155px"}
       %h2{style: "margin-bottom: 10px"} IFF Wiki
       %p The IFF Wiki is the central information hub for the IFF. You will find useful tips about our host city of Valencia including where to stay, transportation options, restaurants and more!
       = action_button "success", "Check out the IFF Wiki", "https://internetfreedomfestival.org/wiki/index.php/Main_Page", target: :blank
   <br />
-  .row
+  .row{style: "margin-left: 10px;"}
     .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
-      %h2{style: "margin-bottom: 10px"} Respect and Collaboration 
+      %h2{style: "margin-bottom: 10px"} Respect and Collaboration
       %p The IFF is designed to improve collaboration among very diverse communities, and is committed to providing a safe, welcoming and fun environment for everybody.
       %p We encourage all participants to approach the event with open and positive attitudes, to engage constructively with others, and take the time to celebrate the passion and accomplishments of fellows attendees.
       = action_button "success", "Please Review our Code of Conduct", "https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct", target: :blank

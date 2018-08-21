@@ -10,7 +10,8 @@ class Cfp::PeopleController < ApplicationController
     @person.events.count > 0 ? @no_events = false : @no_events = true
     @person.dif.nil? ? @no_dif = true : @no_dif = false
     ConferenceUser.exists?(user_id: current_user.id) ? @is_fellow = true : @is_fellow = false
-    
+    @invites = 3
+
     return redirect_to action: 'new' unless @person
     if @person.public_name == current_user.email
       flash[:alert] = 'Your email address is not a valid public name, please change it.'
@@ -66,7 +67,7 @@ class Cfp::PeopleController < ApplicationController
       flash[:danger] = "This public name has already been taken!"
       return redirect_to action: :edit
     end
-    
+
     if person_invalid_for_update
       flash[:alert] = "You must fill out all the required fields!"
       return redirect_to action: :edit
@@ -89,7 +90,7 @@ class Cfp::PeopleController < ApplicationController
       return redirect_to action: :show
     else
       flash[:alert] = "There was an error cancelling your attendance. Please contact the IFF team."
-      return redirect_to action: :show      
+      return redirect_to action: :show
     end
   end
 
