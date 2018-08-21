@@ -5,13 +5,12 @@ class SendInvitationTest < Capybara::Rails::TestCase
   setup do
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
-    @person_user = create(:user, person: create(:person), role: 'submitter')
-    @person = @person_user.person
+    @user = create(:user, person: create(:person), role: 'submitter')
   end
 
   test 'admin receives feedback when an invitation is sent' do
     login_as(@admin)
-    go_to_conference_person_profile(@conference, @person)
+    go_to_conference_person_profile(@conference, @user.person)
 
     click_on 'Send invitation'
 
@@ -20,7 +19,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'admin receives feedback when an invitation is sent twice' do
     login_as(@admin)
-    go_to_conference_person_profile(@conference, @person)
+    go_to_conference_person_profile(@conference, @user.person)
     click_on 'Send invitation'
 
     click_on 'Send invitation'
@@ -29,36 +28,51 @@ class SendInvitationTest < Capybara::Rails::TestCase
   end
 
   test 'person can access to the invitation link' do
-    with_an_invited_person(@person)
+    invited = create(:invited, person: @user.person, conference: @conference)
 
-    login_as(@person_user)
+    login_as(@user)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     assert_text 'Get your ticket'
   end
 
-  test 'person cannot access without the invitation link' do
-    login_as(@person_user)
+  test 'person cannot access to other conferences with same invitation' do
+    other_conference = create(:conference)
+    other_invited = create(:invited, person: @user.person, conference: other_conference)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/invitations/#{other_invited.id}/ticketing_form"
 
     assert_text 'You cannot register to the conference without an invitation'
   end
 
   test 'not logged person cannot access get ticket form' do
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    invited = create(:invited, conference: @conference)
+
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     assert_text 'Please register to be able to'
   end
 
   test 'other persons cannot access to other invitation links' do
-    with_an_invited_person(@person)
-    @other_person_user = create(:user, role: 'submitter')
+    invited = create(:invited, person: @user.person, conference: @conference)
+    @non_invited_person = create(:user, role: 'submitter')
 
-    login_as(@other_person_user)
+    login_as(@non_invited_person)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
+
+    assert_text 'You cannot register to the conference without a valid invitation'
+  end
+
+  test 'invitation must exists' do
+    wrong_invited_id = '123'
+
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/invitations/#{wrong_invited_id}/ticketing_form"
 
     assert_text 'You cannot register to the conference without a valid invitation'
   end
@@ -84,7 +98,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   def with_an_invited_person(person)
     login_as(@admin)
-    go_to_conference_person_profile(@conference, @person)
+    go_to_conference_person_profile(@conference, @user.person)
     click_on 'Send invitation'
     click_on 'Logout'
   end

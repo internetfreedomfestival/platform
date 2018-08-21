@@ -1,12 +1,12 @@
 %h1 Get your ticket
 
-= simple_form_for(@person, url: register_ticket_person_path(@person), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
+= simple_form_for(@person, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
   %fieldset.inputs
     = f.input :public_name, hint: "This is the name that will be displayed in your badge."
     = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN
     %div.input.help-block
       Your public gender pronoun will be displayed in your badge. Pronoun list written by
-      %a{href: '@morganastra'} @morganastra.
+      %a{href: 'https://twitter.com/morganastra'} @morganastra.
       Visits
       %a{href: 'https://pronoun.is/'} https://pronoun.is/
       for more information.

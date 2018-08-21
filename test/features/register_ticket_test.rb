@@ -5,17 +5,16 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   setup do
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
-    @person_user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
-    @person = @person_user.person
+    @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @attendee = create(:attendee, conference: @conference)
   end
 
-  test 'person can register through to the ticketing form' do
-    with_an_invited_person(@person)
+  test 'invited person can register through to the ticketing form' do
+    invited = create(:invited, person: @user.person, conference: @conference)
 
-    login_as(@person_user)
+    login_as(@user)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
       fill_in 'person[public_name]', with: 'test'
@@ -31,10 +30,13 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     assert_text "You've been succesfuly registered"
   end
 
-  test 'person cannot register twice' do
-    with_an_registered_person(@person)
+  test 'registered person cannot register twice' do
+    invited = create(:invited, person: @user.person, conference: @conference)
+    _attendee = create(:attendee, person: invited.person, conference: invited.conference)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
       fill_in 'person[public_name]', with: 'test'
@@ -51,11 +53,11 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   end
 
   test 'ticket form has mandatory fields' do
-    with_an_invited_person(@person)
+    invited = create(:invited, person: @user.person, conference: @conference)
 
-    login_as(@person_user)
+    login_as(@user)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
       click_on 'Register'
@@ -65,11 +67,11 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   end
 
   test 'only reports not filled mandatory fields' do
-    with_an_invited_person(@person)
+    invited = create(:invited, person: @user.person, conference: @conference)
 
-    login_as(@person_user)
+    login_as(@user)
 
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
       select('she', from: 'person[gender_pronoun]')
@@ -101,38 +103,6 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       fill_in 'user_password', with: user.password
 
       click_on 'Sign in'
-    end
-  end
-
-  def go_to_conference_person_profile(conference, person)
-    visit "/#{conference.acronym}/people"
-
-    click_on person.email
-  end
-
-  def with_an_invited_person(person)
-    login_as(@admin)
-    go_to_conference_person_profile(@conference, @person)
-    click_on 'Send invitation'
-    click_on 'Logout'
-  end
-
-  def with_an_registered_person(person)
-    with_an_invited_person(@person)
-
-    login_as(@person_user)
-
-    visit "/#{@conference.acronym}/people/#{@person.id}/ticketing_form"
-
-    within '#register_ticket' do
-      fill_in 'person[public_name]', with: 'test'
-      select('she', from: 'person[gender_pronoun]')
-      check('person[iff_before][]', option: '2015')
-      check('person[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
-      check('person[iff_days][]', option: 'Monday, April 1st')
-
-      click_on 'Register'
     end
   end
 end

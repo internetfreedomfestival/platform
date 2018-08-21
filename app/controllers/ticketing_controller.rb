@@ -1,21 +1,23 @@
 class TicketingController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_invitation
   before_action :require_same_person
-  before_action :require_invitation
+  before_action :require_same_conference
 
   before_action :no_previous_ticket, only: [:register_ticket]
 
   def ticketing_form
-    @person = Person.find(params[:id])
+    @invited = Invited.find(params[:id])
+    @person = @invited.person
+    @conference = @invited.conference
   end
 
   def register_ticket
-    id = params[:id]
-    acronym = params[:conference_acronym]
     attributes = params[:person]
 
-    @person = Person.find(id)
-    @conference = Conference.find_by(acronym: acronym)
+    @invited = Invited.find(params[:id])
+    @person = @invited.person
+    @conference = @invited.conference
 
     @person.public_name = attributes['public_name']
     @person.gender_pronoun = attributes['gender_pronoun']
@@ -62,8 +64,16 @@ class TicketingController < ApplicationController
     errors
   end
 
+  def check_invitation
+    unless Invited.exists?(id: params[:id])
+      flash[:error] = 'You cannot register to the conference without a valid invitation'
+      redirect_to cfp_root_path
+    end
+  end
+
   def require_same_person
-    person = Person.find(params[:id])
+    invited = Invited.find(params[:id])
+    person = invited.person
 
     if current_user.person.nil? || person.id != current_user.person.id
       flash[:error] = 'You cannot register to the conference without a valid invitation'
@@ -71,19 +81,21 @@ class TicketingController < ApplicationController
     end
   end
 
-  def require_invitation
-    person = Person.find(params[:id])
+  def require_same_conference
+    invited = Invited.find(params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
 
-    unless Invited.exists?(person_id: person.id, conference_id: conference.id)
+    unless invited.conference.acronym == conference.acronym
       flash[:error] = 'You cannot register to the conference without an invitation'
       redirect_to cfp_root_path
     end
   end
 
   def no_previous_ticket
-    person = Person.find(params[:id])
-    conference = Conference.find_by(acronym: params[:conference_acronym])
+    invited = Invited.find(params[:id])
+
+    person = invited.person
+    conference = invited.conference
 
     if Attendee.exists?(person_id: person.id, conference_id: conference.id)
       flash[:error] = 'You cannot register to the conference twice'

@@ -22,6 +22,7 @@ class Person < ActiveRecord::Base
   has_many :phone_numbers, dependent: :destroy
   has_many :expenses, dependent: :destroy
   has_many :transport_needs, dependent: :destroy
+  has_many :inviteds, dependent: :destroy
   has_one :ticket, as: :object, dependent: :destroy
   has_one :dif, dependent: :destroy
 

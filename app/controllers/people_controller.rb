@@ -261,12 +261,15 @@ class PeopleController < ApplicationController
     authorize! :administrate, Person
     person = Person.find_by(id: params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
-    InvitationMailer.invitation_mail(person, conference).deliver_now
 
     if Invited.exists?(person_id: person.id, conference_id: conference.id)
+      invited = Invited.find_by(person_id: person.id, conference_id: conference.id)
+      InvitationMailer.invitation_mail(invited).deliver_now
+
       redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
     else
-      Invited.create!(person: person, conference: conference)
+      invited = Invited.create!(person: person, conference: conference)
+      InvitationMailer.invitation_mail(invited).deliver_now
 
       redirect_to(person_path(person), notice: 'Person was invited.')
     end

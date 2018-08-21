@@ -153,6 +153,11 @@ FactoryBot.define do
     status 'invited'
   end
 
+  factory :invited do
+    person
+    conference
+  end
+
   factory :expense do
     name 'Kiste Bier'
     value 22.5

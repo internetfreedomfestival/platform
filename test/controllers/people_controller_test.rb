@@ -57,5 +57,6 @@ class PeopleControllerTest < ActionController::TestCase
     post :send_invitation, id: @person.to_param, conference_acronym: @conference.acronym
 
     assert_equal(@person, Invited.first.person)
+    assert_equal(@conference, Invited.first.conference)
   end
 end
