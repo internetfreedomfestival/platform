@@ -41,3 +41,12 @@ conference = Conference.new(title: "Internet Freedom Festival",
 conference.save!
 
 puts "Created conference [#{conference.acronym}] #{conference.title}"
+
+cfp = CallForParticipation.new(
+  conference: conference,
+  start_date: Time.now - 1,
+  end_date: Time.now + 30,
+)
+cfp.save!
+
+puts "Created call for participation for conference [#{conference.acronym}] #{conference.title}"
