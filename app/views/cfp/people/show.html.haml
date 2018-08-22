@@ -25,10 +25,11 @@
     .span8{style: "margin-bottom: 30px; height: 200px;"}
       %div{style: "margin:10px;"}
         %h3 Share your invites!
-        %p You have #{@invites} invites remaining.
-        %input{placeholder: 'email'}
-        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-          = action_button "", "Send", edit_cfp_person_path, :style => "margin: 10px; background: black; color: white; font-weight: 100"
+        = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
+          %p You have #{@invites} invites remaining.
+          = text_field_tag(:email, '', placeholder: 'email')
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = submit_tag('Send', style: 'margin: 10px; background: black; color: white; font-weight: 100')
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
 
 

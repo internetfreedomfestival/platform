@@ -8,12 +8,17 @@ class SendInvitationTest < Capybara::Rails::TestCase
     @user = create(:user, person: create(:person), role: 'submitter')
   end
 
+  teardown do
+    ActionMailer::Base.deliveries.clear
+  end
+
   test 'admin receives feedback when an invitation is sent' do
     login_as(@admin)
     go_to_conference_person_profile(@conference, @user.person)
 
     click_on 'Send invitation'
 
+    assert_equal ActionMailer::Base.deliveries.size, 1
     assert_text 'Person was invited.'
   end
 
@@ -24,7 +29,22 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     click_on 'Send invitation'
 
+    assert_equal ActionMailer::Base.deliveries.size, 2
     assert_text "This person was already invited but we've sent the invitation again."
+  end
+
+  test 'user can send invitations to the conference by email' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@user)
+
+    within '#invitations-form' do
+      fill_in 'email', with: 'user@email.com'
+      click_on 'Send'
+    end
+
+    assert_equal ActionMailer::Base.deliveries.size, 1
+    assert_text 'We have sent an invite to user@email.com'
   end
 
   test 'person can access to the invitation link' do

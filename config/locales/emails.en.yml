@@ -88,3 +88,5 @@ en:
         The IFF Team
     invitation_mail:
       subject: "Rejoice! You've been invited to IFF"
+    additional_invitation_mail:
+      subject: "%{first_name} invited you to the 2019 IFF!"
