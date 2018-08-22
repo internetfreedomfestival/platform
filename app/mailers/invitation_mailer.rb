@@ -4,7 +4,7 @@ class InvitationMailer < ApplicationMailer
     @conference = invited.conference
     @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
     mail(
-      to: @person.email,
+      to: invited.email,
       subject: I18n.t('emails.invitation_mail.subject'),
       locale: :en
     )

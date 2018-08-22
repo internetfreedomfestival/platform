@@ -156,6 +156,7 @@ FactoryBot.define do
   factory :invited do
     person
     conference
+    email { generate(:email) }
   end
 
   factory :expense do
