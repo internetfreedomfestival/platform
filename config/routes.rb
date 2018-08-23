@@ -50,7 +50,7 @@ Frab::Application.routes.draw do
           get :confirm_attendance
         end
 
-        post '/send_invitation' => 'invitations#send', as: 'send_invitation'
+        post '/send_invitation' => 'invitations#invite', as: 'send_invitation'
 
         get '/events/:id/confirm/:token' => 'events#confirm', as: 'event_confirm_by_token'
         get '/events/:id/update_state' => 'events#update_state', as: 'update_state_cfp_event_path'
