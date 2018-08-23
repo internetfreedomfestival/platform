@@ -8,7 +8,7 @@ class TicketingController < ApplicationController
 
   def ticketing_form
     @invited = Invited.find(params[:id])
-    @person = @invited.person
+    @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
   end
 
