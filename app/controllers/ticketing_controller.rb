@@ -16,7 +16,7 @@ class TicketingController < ApplicationController
     attributes = params[:person]
 
     @invited = Invited.find(params[:id])
-    @person = @invited.person
+    @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
 
     @person.public_name = attributes['public_name']
@@ -73,9 +73,9 @@ class TicketingController < ApplicationController
 
   def require_same_person
     invited = Invited.find(params[:id])
-    person = invited.person
+    email = invited.email
 
-    if current_user.person.nil? || person.id != current_user.person.id
+    if current_user.person.nil? || email != current_user.person.email
       flash[:error] = 'You cannot register to the conference without a valid invitation'
       redirect_to cfp_root_path
     end
@@ -94,7 +94,7 @@ class TicketingController < ApplicationController
   def no_previous_ticket
     invited = Invited.find(params[:id])
 
-    person = invited.person
+    person = Person.find_by(email: invited.email)
     conference = invited.conference
 
     if Attendee.exists?(person_id: person.id, conference_id: conference.id)

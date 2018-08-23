@@ -18,9 +18,14 @@
     .span8{style: "margin-bottom: 30px; height: 200px;"}
       %div{style: "margin:10px;"}
         %h3 Get your 2019 IFF Ticket
-        %p You have been invited to get an IFF Ticket!
-        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-          = action_button "", "Get your ticket", edit_cfp_person_path, :style => "margin: 10px; background: black; color: white; font-weight: 100"
+        - if @invited
+          %p You have been invited to get an IFF Ticket!
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = action_button "", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px; background: black; color: white; font-weight: 100"
+        - else
+          %p You don't have an invitation.
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
 
     .span8{style: "margin-bottom: 30px; height: 200px;"}
       %div{style: "margin:10px;"}
