@@ -13,6 +13,12 @@ class Cfp::InvitationsController < ApplicationController
     person = current_user.person
     conference = Conference.find_by(acronym: acronym)
 
+    if Invited.pending_invites_for(person) == 0
+      flash[:error] = 'You have already sent all your available invitations'
+      redirect_to cfp_root_path
+      return
+    end
+
     invited = Invited.create(email: email, person: person, conference: conference)
     InvitationMailer.additional_invitation_mail(invited).deliver_now
 

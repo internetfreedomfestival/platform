@@ -26,7 +26,10 @@
       %div{style: "margin:10px;"}
         %h3 Share your invites!
         = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
-          %p You have #{@invites} invites remaining.
+          %p
+            You have
+            %b= @invites
+            invites remaining.
           = text_field_tag(:email, '', placeholder: 'email')
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = submit_tag('Send', style: 'margin: 10px; background: black; color: white; font-weight: 100')

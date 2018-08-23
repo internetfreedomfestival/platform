@@ -10,7 +10,7 @@ class Cfp::PeopleController < ApplicationController
     @person.events.count > 0 ? @no_events = false : @no_events = true
     @person.dif.nil? ? @no_dif = true : @no_dif = false
     ConferenceUser.exists?(user_id: current_user.id) ? @is_fellow = true : @is_fellow = false
-    @invites = 3
+    @invites = Invited.pending_invites_for(@person)
 
     return redirect_to action: 'new' unless @person
     if @person.public_name == current_user.email

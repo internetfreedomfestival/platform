@@ -18,7 +18,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     click_on 'Send invitation'
 
-    assert_equal ActionMailer::Base.deliveries.size, 1
+    assert_equal 1, ActionMailer::Base.deliveries.size
     assert_text 'Person was invited.'
   end
 
@@ -29,11 +29,11 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     click_on 'Send invitation'
 
-    assert_equal ActionMailer::Base.deliveries.size, 2
+    assert_equal 2, ActionMailer::Base.deliveries.size
     assert_text "This person was already invited but we've sent the invitation again."
   end
 
-  test 'user can send invitations to the conference by email' do
+  test 'users can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
 
     login_as(@user)
@@ -43,8 +43,36 @@ class SendInvitationTest < Capybara::Rails::TestCase
       click_on 'Send'
     end
 
-    assert_equal ActionMailer::Base.deliveries.size, 1
+    assert_equal 1, ActionMailer::Base.deliveries.size
     assert_text 'We have sent an invite to user@email.com'
+  end
+
+  test 'users has a limited number of invites' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@user)
+
+    number_of_invites = Invited::MAX_INVITES_PER_USER
+
+    number_of_invites.times do |iteration|
+      pending_invites = number_of_invites - iteration # starts with 0
+      assert_text "You have #{pending_invites} invites remaining."
+
+      within '#invitations-form' do
+        fill_in 'email', with: 'one@email.com'
+        click_on 'Send'
+      end
+    end
+
+    assert_text 'You have 0 invites remaining.'
+
+    within '#invitations-form' do
+      fill_in 'email', with: 'three@email.com'
+      click_on 'Send'
+    end
+
+    assert_equal 3, ActionMailer::Base.deliveries.size
+    assert_text 'You have already sent all your available invitations'
   end
 
   test 'person can access to the invitation link' do
