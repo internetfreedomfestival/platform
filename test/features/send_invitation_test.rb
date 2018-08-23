@@ -35,6 +35,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'users can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
 
     login_as(@user)
 
@@ -49,6 +50,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'users has a limited number of invites' do
     create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
 
     login_as(@user)
 
@@ -78,6 +80,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
   test 'users cannot invite people already invited' do
     same_email = 'user@email.com'
     create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
     create(:invited, email: same_email, conference: @conference)
 
     login_as(@user)
@@ -89,6 +92,27 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     assert_equal 0, ActionMailer::Base.deliveries.size
     assert_text 'The user you are trying to invite has already received an invite'
+  end
+
+  test 'only users invited by admins can invite other people' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@user)
+    assert_text 'You have 0 invites remaining.'
+    within '#invitations-form' do
+      fill_in 'email', with: 'an@email.com'
+      click_on 'Send'
+    end
+    assert_text 'Only users invited by an admin can invite colleagues'
+    click_on 'Logout'
+
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @user.person)
+    click_on 'Send invitation'
+    click_on 'Logout'
+
+    login_as(@user)
+    assert_text 'You have 3 invites remaining.'
   end
 
   test 'person can access to the invitation link' do

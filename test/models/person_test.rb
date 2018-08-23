@@ -145,4 +145,32 @@ class PersonTest < ActiveSupport::TestCase
 
     assert_equal person.public_name, other_person.public_name
   end
+
+  test '#allowed_to_send_invites? return false when person has not been invited' do
+    person = create(:person)
+
+    not_allowed = person.allowed_to_send_invites?
+
+    assert_equal false, not_allowed
+  end
+
+  test '#allowed_to_send_invites? return false when person has been invited by a non admin' do
+    person = create(:person)
+    non_admin = create(:person, user: create(:user, role: 'submitter'))
+    create(:invited, email: person.email, person: non_admin)
+
+    not_allowed = person.allowed_to_send_invites?
+
+    assert_equal false, not_allowed
+  end
+
+  test '#allowed_to_send_invites? return true when person has been invited by an admin' do
+    person = create(:person)
+    admin = create(:person, user: create(:user, role: 'admin'))
+    create(:invited, email: person.email, person: admin)
+
+    allowed = person.allowed_to_send_invites?
+
+    assert_equal true, allowed
+  end
 end

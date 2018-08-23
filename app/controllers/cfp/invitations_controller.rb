@@ -1,5 +1,6 @@
 class Cfp::InvitationsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_user_is_allowed_to_invite_people
   before_action :check_email_not_blank
   before_action :check_user_has_available_invites
   before_action :check_email_not_invited
@@ -18,6 +19,15 @@ class Cfp::InvitationsController < ApplicationController
   end
 
   private
+
+  def check_user_is_allowed_to_invite_people
+    person = current_user.person
+
+    return if person.allowed_to_send_invites?
+
+    flash[:error] = 'Only users invited by an admin can invite colleagues'
+    redirect_to cfp_root_path
+  end
 
   def check_email_not_blank
     if params['email'].blank?

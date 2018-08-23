@@ -205,6 +205,14 @@ class Person < ActiveRecord::Base
     MergePersons.new(keep_last_updated).combine!(self, doppelgaenger)
   end
 
+  def allowed_to_send_invites?
+    return false unless Invited.exists?(email: email)
+    invited = Invited.find_by(email: email)
+    invited_by = invited.person.user
+
+    invited_by.role == 'admin'
+  end
+
   def self.to_csv(options = {})
     attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer attendance_status created_at travel_support past_travel_assistance willing_to_facilitate}
 
