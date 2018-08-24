@@ -116,7 +116,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
   end
 
   test 'person can access to the invitation link' do
-    invited = create(:invited, person: @user.person, conference: @conference)
+    invited = create(:invited, email: @user.person.email, conference: @conference)
 
     login_as(@user)
 
@@ -127,7 +127,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'person cannot access to other conferences with same invitation' do
     other_conference = create(:conference)
-    other_invited = create(:invited, person: @user.person, conference: other_conference)
+    other_invited = create(:invited, email: @user.person.email, conference: other_conference)
 
     login_as(@user)
 
