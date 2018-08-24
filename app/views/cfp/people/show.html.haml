@@ -8,8 +8,8 @@
       %div{style: "float: right; margin-top: 76px"}
         - if @person.attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
           = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
-        = action_button "", "Edit Profile", edit_cfp_person_path, :style => "background: black; color: white; font-weight: 100;"
-        = action_button "", "Edit Account", edit_cfp_user_path, :style => "background: black; color: white; font-weight: 100;"
+        = action_button "primary", "Edit Profile", edit_cfp_person_path
+        = action_button "primary", "Edit Account", edit_cfp_user_path
 
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
     %h2 User Portal
@@ -21,7 +21,7 @@
         - if @invited
           %p You have been invited to get an IFF Ticket!
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = action_button "", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px; background: black; color: white; font-weight: 100"
+            = action_button "success", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
         - else
           %p You don't have an invitation.
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
@@ -37,7 +37,7 @@
             invites remaining.
           = text_field_tag(:email, '', placeholder: 'email')
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = submit_tag('Send', style: 'margin: 10px; background: black; color: white; font-weight: 100')
+            = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
 
 
