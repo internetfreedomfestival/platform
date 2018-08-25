@@ -6,6 +6,8 @@ class SendInvitationTest < Capybara::Rails::TestCase
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
     @user = create(:user, person: create(:person), role: 'submitter')
+
+    ActionMailer::Base.deliveries.clear
   end
 
   teardown do
