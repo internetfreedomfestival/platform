@@ -2,10 +2,10 @@ class Cfp::PeopleController < ApplicationController
   layout 'cfp'
 
   before_action :authenticate_user!
+  before_action :obtain_person, except: [:new]
   before_action :check_cfp_open
 
   def show
-    @person = current_user.person
     @not_registered = (@person.public_name == "Enter a public name here")
     @no_events = @person.events.empty?
     @no_dif = @person.dif.nil?
@@ -26,6 +26,7 @@ class Cfp::PeopleController < ApplicationController
 
   def new
     @person = Person.new(email: current_user.email)
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render xml: @person }
@@ -33,18 +34,15 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def edit
-    @person = current_user.person
-    if @person.public_name == 'Enter a public name here'
-      @first_time = true
-    end
+    @first_time = (@person.public_name == 'Enter a public name here')
+
     if @person.nil?
       flash[:alert] = 'Not a valid person'
-      return redirect_to action: :index
+      redirect_to action: :index
     end
   end
 
   def create
-    @person = current_user.person
     if @person.nil?
       @person = Person.new(person_params)
       @person.user = current_user
@@ -62,13 +60,14 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def update
-    @person = current_user.person
-   # validates that public name hasn't already been taken
-    email = person_params[:email] && person_params[:email_confirm]
-    if email == ""
+    new_email = person_params[:email]
+
+    if new_email.blank?
       flash[:danger] = "Confirm your email"
       return redirect_to action: :edit
-    elsif email != @person.email && Person.where(email: email).count > 0
+    end
+
+    if new_email != @person.email && Person.where(email: new_email).count > 0
       flash[:danger] = "This email has already been taken"
       return redirect_to action: :edit
     end
@@ -77,6 +76,7 @@ class Cfp::PeopleController < ApplicationController
       flash[:alert] = "You must fill out all the required fields!"
       return redirect_to action: :edit
     end
+
     respond_to do |format|
       if @person.update_attributes(person_params)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.person_updated_notice')) }
@@ -89,26 +89,30 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def cancel_attendance
-    @person = current_user.person
     if @person.update(attendance_status: "canceled")
       flash[:alert] = "You have canceled your attendance."
-      return redirect_to action: :show
     else
       flash[:alert] = "There was an error cancelling your attendance. Please contact the IFF team."
-      return redirect_to action: :show
     end
+
+    redirect_to action: :show
   end
 
   def confirm_attendance
-    @person = current_user.person
     if @person.update(attendance_status: "confirmed")
       flash[:success] = "You are confirmed to attend the 2018 IFF!"
     else
       flash[:alert] = "There was some issue updating your status. Please contact the IFF team."
     end
-    return redirect_to action: :show
+
+    redirect_to action: :show
   end
+
   private
+
+  def obtain_person
+    @person = current_user.person
+  end
 
   def person_params
     params.require(:person).permit(
@@ -121,14 +125,14 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def person_invalid_for_update
-    if  person_params[:email].nil? ||
-        person_params[:email_confirm].nil? || person_params[:email] != person_params[:email_confirm] ||
-        person_params[:first_name] == "" ||
-        person_params[:country_of_origin] == "" ||
-        person_params[:gender] == "" ||
-        person_params[:professional_background].nil? ||
-        person_params[:include_in_mailings] == [] ||
-        person_params[:invitation_to_mattermost] == []
+    if person_params[:email].nil? ||
+       person_params[:email_confirm].nil? || person_params[:email] != person_params[:email_confirm] ||
+       person_params[:first_name] == "" ||
+       person_params[:country_of_origin] == "" ||
+       person_params[:gender] == "" ||
+       person_params[:professional_background].nil? ||
+       person_params[:include_in_mailings] == [] ||
+       person_params[:invitation_to_mattermost] == []
       return true
     end
   end
