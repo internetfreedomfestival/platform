@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180825132634) do
+ActiveRecord::Schema.define(version: 20180825134951) do
 
   create_table "attendees", force: :cascade do |t|
     t.string   "status"
@@ -352,6 +352,7 @@ ActiveRecord::Schema.define(version: 20180825132634) do
     t.string   "gender_pronoun"
     t.string   "iff_days"
     t.string   "email_confirm"
+    t.boolean  "group"
   end
 
   add_index "people", ["email"], name: "index_people_on_email"
