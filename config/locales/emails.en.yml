@@ -87,6 +87,6 @@ en:
         Looking forward to seeing you in Valencia!
         The IFF Team
     invitation_mail:
-      subject: "Rejoice! You've been invited to IFF"
+      subject: "You are invited to the 2019 IFF!"
     additional_invitation_mail:
       subject: "%{first_name} invited you to the 2019 IFF!"

@@ -1,6 +1,6 @@
 class InvitationMailer < ApplicationMailer
   def invitation_mail(invited)
-    @person = invited.person
+    @first_name = Person.find_by(email: invited.email).first_name
     @conference = invited.conference
     @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
 
