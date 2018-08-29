@@ -104,6 +104,10 @@
       %p
         %b Country of Origin:
         = @person.country_of_origin
+      %p
+        %b Do you identify as part of an ethnic, racial or cultural minority group?:
+        = @person.group
+
   .row
     .span10
       %h2 Professional
@@ -134,6 +138,7 @@
       %p
         %b What resources or tools do you think that the IF community should be aware of?:
         = @person.other_resources
+
 %section
   - if @person.dif
     .row
