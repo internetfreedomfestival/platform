@@ -2,8 +2,8 @@ require 'test_helper'
 
 class Cfp::UsersControllerTest < ActionController::TestCase
   setup do
-    @call_for_participation = create(:call_for_participation)
-    @conference = @call_for_participation.conference
+    call_for_participation = create(:call_for_participation)
+    @conference = call_for_participation.conference
   end
 
   test 'shows registration form' do
@@ -13,11 +13,25 @@ class Cfp::UsersControllerTest < ActionController::TestCase
 
   test 'allows registration of new user' do
     assert_difference 'User.count' do
-      post :create, conference_acronym: @conference.acronym, user: { email: 'new_user@example.com', password: 'frab123', password_confirmation: 'frab123', person_attributes: {gender: 'Female'}} 
+      sign_up_form_params = {
+        email: 'new_user@example.com',
+        email_confirm: 'new_user@example.com',
+        password: 'frab123',
+        password_confirmation: 'frab123',
+        first_name: 'Aretha',
+        gender: 'Female',
+        country_of_origin: 'United States',
+        professional_background: ['Software/web developer'],
+        include_in_mailings: true,
+        invitation_to_mattermost: true
+      }
+      post :create, conference_acronym: @conference.acronym, sign_up_form: sign_up_form_params
     end
     assert_response :redirect
-    assert_not_nil assigns(:user)
-    assert_not_nil assigns(:user).confirmation_token
+
+    user = User.find_by(email: 'new_user@example.com')
+    assert_not_nil user
+    assert_not_nil user.confirmation_token
   end
 
   test 'shows password editing form' do
