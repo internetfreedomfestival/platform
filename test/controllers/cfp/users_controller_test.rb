@@ -13,7 +13,7 @@ class Cfp::UsersControllerTest < ActionController::TestCase
 
   test 'allows registration of new user' do
     assert_difference 'User.count' do
-      post :create, conference_acronym: @conference.acronym, user: { email: 'new_user@example.com', password: 'frab123', password_confirmation: 'frab123' }
+      post :create, conference_acronym: @conference.acronym, user: { email: 'new_user@example.com', password: 'frab123', password_confirmation: 'frab123', person_attributes: {gender: 'Female'}} 
     end
     assert_response :redirect
     assert_not_nil assigns(:user)

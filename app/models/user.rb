@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_one :person
 
   accepts_nested_attributes_for :conference_users, allow_destroy: true
+  accepts_nested_attributes_for :person
 
   has_secure_password
 
@@ -19,6 +20,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :person
   validates_presence_of :email
+  # validates_presence_of :password
+  # validates_presence_of :password_confirmation
   validates_format_of :email, with: EMAIL_REGEXP
   validates_uniqueness_of :email, case_sensitive: false
   validates_length_of :password, minimum: 6, allow_nil: true

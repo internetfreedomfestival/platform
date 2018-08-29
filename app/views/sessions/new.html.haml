@@ -31,11 +31,12 @@
     - if @conference
       .span8
         %h1 New around here?
-        %p
-          = link_to t("cfp.register_button"), new_cfp_user_path, class: 'btn primary'
-        %p
-          =t("cfp.confirmation_description")
-        = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
+        = simple_form_for(@user, url: cfp_user_path) do |f|
+          %fieldset.inputs
+            = link_to t("cfp.sign_up"), new_cfp_user_path, class: 'btn primary'
+          %p
+            =t("cfp.confirmation_description")
+          = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
 
   .page-footer__registration
     %p Please contact <b><a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a></b> for sign-up issues.

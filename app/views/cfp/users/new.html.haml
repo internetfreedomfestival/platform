@@ -1,15 +1,54 @@
-%section
-  .page-header
-    %h1
-      = @conference.title
-      Sign up
-  .row
-    .span16
-      = simple_form_for(@user, url: cfp_user_path) do |f|
-        %fieldset.inputs
-          = f.input :email
-          = f.input :password
-          = f.input :password_confirmation
-        .actions
-          = f.button :submit, t("cfp.sign_up"), class: 'primary'
-          = link_to t("cfp.back"), new_cfp_session_path, class: "btn"
+= simple_form_for(@user, url: cfp_user_path, html: {multipart: true, id: "register_form"}) do |f|
+  =f.fields_for :person do |p|
+    %fieldset.inputs
+      .row
+        .offset1
+          %h2 User Registration Form
+          %hr{style: "max-width: 51rem; border-bottom: 5px solid #eee;"}
+            %br
+            .span24
+              %br
+                %p The information provided in this form will remain private. None of it will be shared with other participants.
+              %br
+            .span24
+              = f.input :email, label: "Contact Email"
+              = p.input :email_confirm, label: "Confirm Contact Email"
+              = f.input :password
+              = f.input :password_confirmation
+              = p.input :first_name, label: "First Name"
+              = p.input :last_name, label: "Last Name"
+              = p.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f"
+              = p.input :gender, collection: translated_options(Person::GENDERS), label: "Gender"
+              = p.input :country_of_origin, label: "Country of Origin", collection: translated_options(Person::COUNTRIES), error: " "
+
+            %br
+            .span24
+              %p Do you identify as part of an ethnic, racial or cultural minority group?
+              %br
+                = p.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: false
+            .span24
+              %p * Check the boxes that most closely describe the work you do
+              %div.input
+                %ul.inputs-list
+                  - Person::PROFESSIONAL_BACKGROUND.each do |work|
+                    %li
+                      %label
+                        %input{name: 'professional_background[]', type: 'checkbox', value: work.last }
+                        %span= work.first
+            %br
+            .span24
+              %br
+                = p.input :other_background, label: "Professional Title"
+                = p.input :organization
+                = p.input :project, as: :text
+              %br
+                %p * Would you like to subscribe to the IFF Mailing List? Don’t miss important updates and opportunities!
+                = p.input :include_in_mailings, as: :radio_buttons, collection: [[true, "Yes, keep me updated!"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
+              %br
+                %p * Would you like to receive a Mattermost invite? Like Slack, but open source! A great way to connect with the IFF community.
+                = p.input :invitation_to_mattermost, as: :radio_buttons, collection: [[true, "Yes, I want an invite"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
+            %br
+            .span24
+              %br
+                = f.button :submit, class: 'primary', value: "Register"
+                = link_to t("cfp.back"), new_cfp_session_path, class: "btn"

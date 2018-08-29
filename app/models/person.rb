@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
   IFF_BEFORE = [["Not yet!", "Not yet!"], ["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"]]
   IFF_DAYS = [["Monday, April 1st", "Monday, April 1st"], ["Tuesday, April 2nd", "Tuesday, April 2nd"], ["Wednesday, April 3rd", "Wednesday, April 3rd"], ["Thursday, April 4th", "Thursday, April 4th"], ["Friday, April 5th", "Friday, April 5th"], ["Full week", "Full week"]].freeze
   GENDER_PRONOUN = ["ze/hir", "ze/zir", "she", "he", "they/.../themselves", "they/.../themself", "xey", "sie", "it", "ey", "e", "hu", "peh", "per", "thon", "jee", "ve/ver", "xe", "zie/zir", "ze/zem", "zie/zem", "ze/mer", "se", "zme", "ve/vem", "zee", "fae", "zie/hir", "si", "kit", "Ne"].freeze
-  PROFESSION = [["Digital Security Training","Digital Security Training"],["Software/Web Development","Software/Web Development"],["Cryptography","Cryptography"],["Information Security","Information Security"],["Student","Student"],["Frontline Activism","Frontline Activism"],["Research/Academia","Research/Academia"],["Community Management","Community Management"],["Social Sciences","Social Sciences"],["Policy/Internet Governance","Policy/Internet Governance"],["Data Science","Data Science"],["Advocacy","Advocacy"],["Communications","Communications"],["Journalism and Media","Journalism and Media"],["Arts & Culture","Arts & Culture"],["Design","Design"],["Program Management","Program Management"],["Philanthropic/Grantmaking Organization","Philanthropic/Grantmaking Organization"]]
+  PROFESSIONAL_BACKGROUND = [["Digital Security Training","Digital Security Training"],["Software/Web Development","Software/Web Development"],["Cryptography","Cryptography"],["Information Security","Information Security"],["Student","Student"],["Frontline Activism","Frontline Activism"],["Research/Academia","Research/Academia"],["Community Management","Community Management"],["Social Sciences","Social Sciences"],["Policy/Internet Governance","Policy/Internet Governance"],["Data Science","Data Science"],["Advocacy","Advocacy"],["Communications","Communications"],["Journalism and Media","Journalism and Media"],["Arts & Culture","Arts & Culture"],["Design","Design"],["Program Management","Program Management"],["Philanthropic/Grantmaking Organization","Philanthropic/Grantmaking Organization"]].freeze
 
 
   has_many :availabilities, dependent: :destroy
@@ -49,8 +49,14 @@ class Person < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
   validates_presence_of :email
-  # validates_inclusion_of :gender, in: GENDERS, allow_nil: true
-  # validates_presence_of :country_of_origin, :professional_background, :iff_before, :gender, :on => :update
+  #   :email_confirm,
+  #   :first_name,
+  #   :gender,
+  #   :country_of_origin,
+  #   :professional_background,
+  #   :include_in_mailings,
+  #   :invitation_to_mattermost
+
 
   scope :involved_in, ->(conference) {
     joins(events: :conference).where('conferences.id': conference).uniq

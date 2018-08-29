@@ -27,7 +27,7 @@
             %p * Check the boxes that most closely describe the work you do
             %div.input
               %ul.inputs-list
-                - Person::PROFESSION.each do |work|
+                - Person::PROFESSIONAL_BACKGROUND.each do |work|
                   %li
                     %label
                       %input{name: 'person[professional_background][]', type: 'checkbox', value: work.last }

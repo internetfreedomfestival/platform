@@ -140,11 +140,14 @@ FactoryBot.define do
     first_name 'Fred'
     last_name 'Besen'
     email { generate(:email) }
+    email_confirm { email }
     public_name { generate(:public_name) }
     country_of_origin 'Spain'
     professional_background ['Developer']
     iff_before ['2015']
     gender 'Female'
+    include_in_mailings true
+    invitation_to_mattermost true
   end
 
   factory :attendee do
