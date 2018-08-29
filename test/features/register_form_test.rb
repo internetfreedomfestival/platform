@@ -37,6 +37,28 @@ class RegisterFormTest < Capybara::Rails::TestCase
     assert_text 'An email with confirmation instructions has been sent to the address you provided'
   end
 
+  test 'new user cannot complete his profile without required information' do
+    visit '/'
+
+    click_on 'Sign Up'
+
+    within '#register_form' do
+      fill_in 'sign_up_form_email', with: 'sample@email.com'
+      fill_in 'sign_up_form_email_confirm', with: 'sample@email.com'
+      fill_in 'sign_up_form_password', with: 'password'
+      fill_in 'sign_up_form_password_confirmation', with: 'password'
+      select 'Female', from: 'sign_up_form_gender'
+      select 'Croatia', from: 'sign_up_form_country_of_origin'
+      check 'sign_up_form[professional_background][]', option: 'Software/Web Development'
+      choose 'Yes, keep me updated!'
+      choose 'Yes, I want an invite'
+
+      click_on 'Register'
+    end
+
+    assert_text "can't be blank"
+  end
+
   test 'user can edit his profile through to the register form' do
     login_as(@user)
 

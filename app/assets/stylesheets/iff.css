@@ -2,6 +2,10 @@
   color: red;
 }
 
+form .error {
+  margin-left: 20px;
+}
+
 .page-footer__registration {
   margin-top: 17px;
   padding-top: 17px;

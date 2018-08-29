@@ -26,7 +26,9 @@
             %br
             = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: false
           .span24
-            %p * Check the boxes that most closely describe the work you do
+            %p
+              %abbr{title: 'required'} *
+              Check the boxes that most closely describe the work you do
             %div.input
               %ul.inputs-list
                 = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
@@ -41,10 +43,14 @@
               = f.input :organization
               = f.input :project, as: :text
             %br
-              %p * Would you like to subscribe to the IFF Mailing List? Don’t miss important updates and opportunities!
+              %p
+                %abbr{title: 'required'} *
+                Would you like to subscribe to the IFF Mailing List? Don’t miss important updates and opportunities!
               = f.input :include_in_mailings, as: :radio_buttons, collection: [[true, "Yes, keep me updated!"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
             %br
-              %p * Would you like to receive a Mattermost invite? Like Slack, but open source! A great way to connect with the IFF community.
+              %p
+                %abbr{title: 'required'} *
+                Would you like to receive a Mattermost invite? Like Slack, but open source! A great way to connect with the IFF community.
               = f.input :invitation_to_mattermost, as: :radio_buttons, collection: [[true, "Yes, I want an invite"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
           %br
           .span24

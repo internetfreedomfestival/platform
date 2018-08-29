@@ -75,12 +75,12 @@ class Cfp::UsersController < ApplicationController
       :gender,
       :country_of_origin,
       :group,
-      :professional_background,
       :other_background,
       :organization,
       :project,
       :include_in_mailings,
-      :invitation_to_mattermost
+      :invitation_to_mattermost,
+      professional_background: []
     )
   end
 end
