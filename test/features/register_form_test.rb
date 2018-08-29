@@ -24,7 +24,7 @@ class RegisterFormTest < Capybara::Rails::TestCase
       select 'Female', from: 'sign_up_form_gender'
       select 'Croatia', from: 'sign_up_form_country_of_origin'
       select 'No', from: 'sign_up_form_group'
-      check 'professional_background[]', option: 'Software/Web Development'
+      check 'sign_up_form[professional_background][]', option: 'Software/Web Development'
       fill_in 'sign_up_form_other_background', with: 'Product Owner'
       fill_in 'sign_up_form_organization', with: 'Devscola'
       fill_in 'sign_up_form_project', with: 'IFF'

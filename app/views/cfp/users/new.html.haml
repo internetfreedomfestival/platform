@@ -18,22 +18,22 @@
             = f.input :last_name, label: "Last Name"
             = f.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f"
             = f.input :gender, collection: translated_options(Person::GENDERS), label: "Gender"
-            = f.input :country_of_origin, label: "Country of Origin", collection: translated_options(Person::COUNTRIES), error: " "
+            = f.input :country_of_origin, collection: translated_options(Person::COUNTRIES), label: "Country of Origin"
 
           %br
           .span24
             %p Do you identify as part of an ethnic, racial or cultural minority group?
             %br
-              = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: false
+            = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: false
           .span24
             %p * Check the boxes that most closely describe the work you do
             %div.input
               %ul.inputs-list
-                - Person::PROFESSIONAL_BACKGROUND.each do |work|
+                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
                   %li
-                    %label
-                      %input{name: 'professional_background[]', type: 'checkbox', value: work.last }
-                      %span= work.first
+                    = c.label do
+                      = c.check_box
+                      %span= c.text
           %br
           .span24
             %br

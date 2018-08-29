@@ -8,7 +8,7 @@ class Cfp::UsersController < ApplicationController
   end
 
   def create
-    @form = SignUpForm.new(params['sign_up_form'])
+    @form = SignUpForm.new(sign_up_form_params)
 
     if @form.valid?
       person = Person.new(
@@ -65,7 +65,22 @@ class Cfp::UsersController < ApplicationController
     params.require(:user).permit(:email, :password, :password_confirmation)
   end
 
-  def person_params
-    params.require(:user).require(:person_attributes).permit(:email_confirm, :first_name, :last_name, :pgp_key, :gender, :country_of_origin, :group, :professional_background, :other_background, :organization, :project, :include_in_mailings, :invitation_to_mattermost)
+  def sign_up_form_params
+    params.require(:sign_up_form).permit(
+      :email, :email_confirm,
+      :password, :password_confirmation,
+      :first_name,
+      :last_name,
+      :pgp_key,
+      :gender,
+      :country_of_origin,
+      :group,
+      :professional_background,
+      :other_background,
+      :organization,
+      :project,
+      :include_in_mailings,
+      :invitation_to_mattermost
+    )
   end
 end

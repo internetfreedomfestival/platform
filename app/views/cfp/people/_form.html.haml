@@ -27,11 +27,11 @@
             %p * Check the boxes that most closely describe the work you do
             %div.input
               %ul.inputs-list
-                - Person::PROFESSIONAL_BACKGROUND.each do |work|
+                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
                   %li
-                    %label
-                      %input{name: 'person[professional_background][]', type: 'checkbox', value: work.last }
-                      %span= work.first
+                    = c.label do
+                      = c.check_box
+                      %span= c.text
           %br
           .span24
             %br
