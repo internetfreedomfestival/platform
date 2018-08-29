@@ -4,26 +4,45 @@ class Cfp::UsersController < ApplicationController
   before_action :authenticate_user!, only: [:edit, :update]
 
   def new
-    @user = User.new
-    @person = Person.new
-    @user.person = @person
+    @form = SignUpForm.new
   end
 
   def create
-    @user = User.new(user_params)
-    @person = Person.new(person_params)
-    @conference = Conference.find_by_acronym(params[:conference_acronym])
-    @person.email = @user.email
-    @person.professional_background = params['professional_background']
+    @form = SignUpForm.new(params['sign_up_form'])
 
-    @user.person = @person
+    if @form.valid?
+      person = Person.new(
+        email: @form.email,
+        email_confirm: @form.email_confirm,
+        first_name: @form.first_name,
+        last_name: @form.last_name,
+        pgp_key: @form.pgp_key,
+        gender: @form.gender,
+        country_of_origin: @form.country_of_origin,
+        group: @form.group,
+        professional_background: @form.professional_background,
+        other_background: @form.other_background,
+        organization: @form.organization,
+        project: @form.project,
+        include_in_mailings: @form.include_in_mailings,
+        invitation_to_mattermost: @form.invitation_to_mattermost
+      )
+      user = User.new(
+        email: @form.email,
+        password: @form.password,
+        password_confirmation: @form.password_confirmation,
+        person: person
+      )
+      conference = Conference.find_by_acronym(params[:conference_acronym])
 
-    if @user.save
-      @user.send_confirmation_instructions(@conference)
-      redirect_to new_cfp_session_path, notice: t(:"cfp.signed_up")
-    else
-      render action: 'new'
+      if user.save
+        user.send_confirmation_instructions(conference)
+        redirect_to new_cfp_session_path, notice: t(:"cfp.signed_up")
+        return
+      end
     end
+
+    render action: 'new'
   end
 
   def edit
