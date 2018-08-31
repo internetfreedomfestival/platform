@@ -74,7 +74,7 @@ class RegisterFormTest < Capybara::Rails::TestCase
       choose 'Yes, keep me updated!'
       choose 'Yes, I want an invite'
 
-      click_on 'Update your Registration for the 2018 IFF'
+      click_on 'Update your profile'
     end
 
     assert_text "You have successfully registered for the 2018 IFF!"
