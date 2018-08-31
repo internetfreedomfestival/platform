@@ -35,6 +35,9 @@
     .span10
       %h2 Basic information
       %p
+        %b Created at:
+        = @person.created_at
+      %p
         %b Attendance Status:
         = @person.attendance_status
       %p
