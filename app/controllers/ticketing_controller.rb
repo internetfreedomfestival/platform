@@ -47,7 +47,8 @@ class TicketingController < ApplicationController
     gender_pronoun: 'gender pronoun',
     iff_before: 'past editions',
     iff_goals: 'goals',
-    iff_days: 'attendance days'
+    iff_days: 'attendance days',
+    code_of_conduct: 'code of conduct'
   }
 
   def validate_required_ticket_fields(values)

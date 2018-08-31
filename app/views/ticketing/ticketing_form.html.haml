@@ -2,7 +2,7 @@
   %fieldset.inputs
   .row
     .offset1
-      %h1 Get your ticket
+      %h1 2019 IFF Ticket
       %br
       .span24
         = f.input :public_name, hint: "This is the name that will be displayed in your badge."
@@ -45,6 +45,14 @@
                   %label
                     %input{name: 'person[iff_days][]', type: 'checkbox', value: days.last }
                     %span= days.first
+      %br
+        %p
+        *I agree to respect and follow
+        %a{href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
+        We are committed to providing a safe and welcoming environment.
+        All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
+        %input{name: 'person[code_of_conduct][]', type: 'checkbox', value: 'true'}
+
 
   .actions
     = f.button :submit, value: 'Register', class: 'primary'

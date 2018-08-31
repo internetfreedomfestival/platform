@@ -23,6 +23,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('person[iff_goals][]', option: 'Requesting support with a specific issue')
       select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
       check('person[iff_days][]', option: 'Monday, April 1st')
+      check('person[code_of_conduct][]', option: 'true')
 
       click_on 'Register'
     end
@@ -44,6 +45,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('person[iff_goals][]', option: 'Requesting support with a specific issue')
       select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
       check('person[iff_days][]', option: 'Monday, April 1st')
+      check('person[code_of_conduct][]', option: 'true')
 
       click_on 'Register'
     end
@@ -56,6 +58,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('person[iff_goals][]', option: 'Requesting support with a specific issue')
       select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
       check('person[iff_days][]', option: 'Monday, April 1st')
+      check('person[code_of_conduct][]', option: 'true')
 
       click_on 'Register'
     end
