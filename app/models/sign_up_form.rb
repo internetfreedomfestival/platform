@@ -1,3 +1,11 @@
+class CustomValidator < ActiveModel::Validator
+  def validate(form)
+    selected_values = form.professional_background.reject{|value| value.blank?}
+    if selected_values.length == 0
+      form.errors[:professional_background] << "can't be blank"
+    end
+  end
+end
 class SignUpForm
   include ActiveModel::Model
 
@@ -25,7 +33,8 @@ class SignUpForm
                 :first_name,
                 :gender,
                 :country_of_origin,
-                :professional_background,
                 :include_in_mailings,
                 :invitation_to_mattermost
+
+  validates_with CustomValidator, fields: [:professional_background]
 end

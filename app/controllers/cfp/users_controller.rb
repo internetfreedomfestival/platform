@@ -20,7 +20,7 @@ class Cfp::UsersController < ApplicationController
         gender: @form.gender,
         country_of_origin: @form.country_of_origin,
         group: @form.group,
-        professional_background: @form.professional_background,
+        professional_background: @form.professional_background.reject{|value| value.blank?},
         other_background: @form.other_background,
         organization: @form.organization,
         project: @form.project,

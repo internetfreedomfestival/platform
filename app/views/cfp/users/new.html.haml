@@ -29,6 +29,8 @@
             %p
               %abbr{title: 'required'} *
               Check the boxes that most closely describe the work you do
+            - if @form.errors.messages.key?(:professional_background)
+              %span.error= @form.errors.messages[:professional_background].first
             %div.input
               %ul.inputs-list
                 = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
