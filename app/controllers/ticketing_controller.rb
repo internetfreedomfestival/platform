@@ -37,6 +37,8 @@ class TicketingController < ApplicationController
 
     Attendee.create(person: @person, conference: @conference, status: 'invited')
 
+    TicketingMailer.ticketing_mail(@person, @conference).deliver_now
+
     redirect_to cfp_root_path, notice: "You've been succesfuly registered"
   end
 
