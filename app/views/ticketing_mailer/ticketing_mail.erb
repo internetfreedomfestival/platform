@@ -5,28 +5,29 @@
   Rejoice! You now hold an IFF Ticket!
 </p>
 <p>
-  ******************** 2019 IFF Ticket **********************
-</p>
-    IFF ID: <%= @id %> </br>
-    Public Display Name: <%= @public_name %> </br>
-    Preferred Gender Pronoun: <%= @gender_pronoun %> </br>
-<p>
-  ***********************************************************
-</p>
+  ******************** 2019 IFF Ticket ********************** </br>
+  + IFF ID: <%= @id %> </br>
+  + Public Display Name: <%= @public_name %> </br>
+  + Preferred Gender Pronoun: <%= @gender_pronoun %> </br>
+  *********************************************************** </br>
     Attending: </br>
-    <%= @iff_days %> </br>
-<p>
+    <% @iff_days.each do |day| %>
+    <%= day %> </br>
+    <% end %>
   ***********************************************************
 </p>
-    IFF Venue Details: </br>
-    Las Naves </br>
-    Calle de Juan Verdeguer 16, </br>
-    46024 – Valencia (Spain) </br>
-    <a href="www.lasnaves.com">www.lasnaves.com</a></br>
-    +34 963 910 477 </br>
 <p>
-  ***********************************************************
+  IFF Venue Details:
 </p>
+<p>
+  Las Naves </br>
+  Calle de Juan Verdeguer 16, </br>
+  46024 – Valencia (Spain) </br>
+</p>
+<p>
+  <a href="www.lasnaves.com">www.lasnaves.com</a></br>
+  +34 963 910 477 </br>
+  ***********************************************************
 </p>
 <p>
   Please don’t print this email, but make sure to save it. You will need to show it at the door so
