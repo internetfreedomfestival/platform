@@ -7,6 +7,12 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     @admin = create(:user, person: create(:person), role: 'admin')
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @attendee = create(:attendee, conference: @conference)
+
+    ActionMailer::Base.deliveries.clear
+  end
+
+  teardown do
+    ActionMailer::Base.deliveries.clear
   end
 
   test 'invited person can register through to the ticketing form' do
@@ -28,6 +34,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       click_on 'Register'
     end
 
+    assert_equal 1, ActionMailer::Base.deliveries.size
     assert_text "You've been succesfuly registered"
   end
 
