@@ -5,7 +5,7 @@ class TicketingMailer < ApplicationMailer
     @gender_pronoun = Person.find_by(email: person.email).gender_pronoun
     @iff_days = Person.find_by(email: person.email).iff_days
     @id = Person.find_by(email: person.email).user_id
-    @link = cfp_root_url(conference_acronym: conference.acronym)
+    @link = cfp_person_url(conference_acronym: conference.acronym)
 
     mail(
       to: person.email,
