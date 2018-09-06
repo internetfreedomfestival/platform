@@ -122,6 +122,7 @@ Frab::Application.routes.draw do
           get :move_to_waitlist
           get :canceled
           get :generate_confirmation_tokens
+          get :tickets
         end
         member do
           post :send_invitation

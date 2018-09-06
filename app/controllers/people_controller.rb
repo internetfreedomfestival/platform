@@ -124,6 +124,10 @@ class PeopleController < ApplicationController
     end
   end
 
+  def tickets
+    authorize! :administrate, Person
+  end
+
   # GET /people/1
   # GET /people/1.xml
   def show
