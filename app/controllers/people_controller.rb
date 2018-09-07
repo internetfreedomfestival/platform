@@ -126,6 +126,16 @@ class PeopleController < ApplicationController
 
   def tickets
     authorize! :administrate, Person
+    result = search Person, params
+    @people = result.paginate page: page_param
+    @csv_people = result
+    @attendee = Attendee.find_by(params[:person_id])
+
+    respond_to do |format|
+      format.html
+      format.csv  { send_data @csv_people.to_csv, filename: "people-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
+    end
   end
 
   # GET /people/1

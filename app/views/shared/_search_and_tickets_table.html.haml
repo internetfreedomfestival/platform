@@ -1,0 +1,13 @@
+.row
+  .span16
+    = render 'shared/simple_search', path: request.path
+.row
+  .span16
+    - if collection.empty?
+      %p Sorry, but your search yielded no results.
+    - else
+      = actions_bar do
+        = will_paginate collection
+      = render 'tickets_table', collection: collection
+      = actions_bar do
+        = will_paginate collection
