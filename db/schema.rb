@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180825134951) do
+ActiveRecord::Schema.define(version: 20180907154515) do
+
+  create_table "attendance_statuses", force: :cascade do |t|
+    t.string   "status"
+    t.integer  "person_id"
+    t.integer  "conference_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "attendance_statuses", ["conference_id"], name: "index_attendance_statuses_on_conference_id"
+  add_index "attendance_statuses", ["person_id", "conference_id"], name: "index_attendance_statuses_on_person_id_and_conference_id", unique: true
+  add_index "attendance_statuses", ["person_id"], name: "index_attendance_statuses_on_person_id"
 
   create_table "attendees", force: :cascade do |t|
     t.string   "status"
