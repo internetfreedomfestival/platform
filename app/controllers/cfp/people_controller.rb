@@ -18,6 +18,11 @@ class Cfp::PeopleController < ApplicationController
 
     return redirect_to action: 'new' unless @person
 
+
+    if person_needs_to_upgrade
+      flash[:alert] = 'Please update your registration information in order to request an invite to the 2019 IFF'
+    end
+
     if @person.public_name == current_user.email
       flash[:alert] = 'Your email address is not a valid public name, please change it.'
       redirect_to action: 'edit'
@@ -133,6 +138,18 @@ class Cfp::PeopleController < ApplicationController
        person_params[:professional_background].nil? ||
        person_params[:include_in_mailings] == [] ||
        person_params[:invitation_to_mattermost] == []
+      return true
+    end
+  end
+
+  def person_needs_to_upgrade
+    if @person.email.nil? || @person.email == "" ||
+       @person.first_name == "" ||
+       @person.country_of_origin == "" ||
+       @person.gender == "" ||
+       @person.professional_background.nil? ||
+       @person.include_in_mailings == [] ||
+       @person.invitation_to_mattermost == []
       return true
     end
   end
