@@ -35,7 +35,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     end
 
     assert_equal 1, ActionMailer::Base.deliveries.size
-    assert_text "You've been succesfuly registered"
+    assert_text "You've been succesfully registered"
   end
 
   test 'registered person cannot register twice' do
