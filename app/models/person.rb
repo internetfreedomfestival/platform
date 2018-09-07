@@ -31,6 +31,7 @@ class Person < ActiveRecord::Base
     'Philanthropic/Grantmaking Organization'
   ].freeze
 
+  has_many :attendance_status, dependent: :destroy
   has_many :availabilities, dependent: :destroy
   has_many :attendees, dependent: :destroy
   has_many :event_people, dependent: :destroy

@@ -35,7 +35,11 @@ class TicketingController < ApplicationController
 
     @person.save!
 
-    Attendee.create(person: @person, conference: @conference, status: 'invited')
+    AttendanceStatus.create(
+      person: @person,
+      conference: @conference,
+      status: AttendanceStatus::REGISTERED
+    )
 
     TicketingMailer.ticketing_mail(@person, @conference).deliver_now
 
@@ -100,7 +104,11 @@ class TicketingController < ApplicationController
     person = Person.find_by(email: invited.email)
     conference = invited.conference
 
-    if Attendee.exists?(person_id: person.id, conference_id: conference.id)
+    if AttendanceStatus.exists?(
+        person_id: person.id,
+        conference_id: conference.id,
+        status: AttendanceStatus::REGISTERED
+      )
       flash[:error] = 'You cannot register to the conference twice'
       redirect_to cfp_root_path
     end

@@ -68,7 +68,14 @@ class PeopleController < ApplicationController
   def all_confirmed
     authorize! :administrate, Person
     @conference = Conference.find_by(acronym: params[:conference_acronym])
-    result = Person.joins(:attendees).where(attendees: {conference: @conference})
+    result = Person.
+      joins(:attendance_status).
+      where(
+        attendance_statuses: {
+          conference_id: @conference.id,
+          status: AttendanceStatus::REGISTERED
+        }
+      )
     @people = result.paginate page: page_param
 
     respond_to do |format|
@@ -126,10 +133,17 @@ class PeopleController < ApplicationController
 
   def tickets
     authorize! :administrate, Person
-    result = search Person, params
+    result = search Person.joins(:attendance_status).where(attendance_statuses: { conference_id: @conference.id }), params
     @people = result.paginate page: page_param
     @csv_people = result
-    @attendee = Attendee.all
+    @requested_tickets_count = AttendanceStatus.where(
+      conference: @conference,
+      status: AttendanceStatus::REQUESTED
+    ).count
+    @registered_tickets_count = AttendanceStatus.where(
+      conference: @conference,
+      status: AttendanceStatus::REGISTERED
+    ).count
 
     respond_to do |format|
       format.html
@@ -283,6 +297,7 @@ class PeopleController < ApplicationController
       redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
     else
       invited = Invited.create!(email: person.email, person: current_user.person, conference: conference)
+      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
       InvitationMailer.invitation_mail(invited).deliver_now
 
       redirect_to(person_path(person), notice: 'Person was invited.')

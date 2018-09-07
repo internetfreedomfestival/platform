@@ -6,7 +6,6 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
-    @attendee = create(:attendee, conference: @conference)
 
     ActionMailer::Base.deliveries.clear
   end
@@ -105,13 +104,19 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   end
 
   test 'admin can view users with ticket' do
+    attendee = AttendanceStatus.create(
+      person: create(:person),
+      conference: @conference,
+      status: AttendanceStatus::REGISTERED
+    )
+
     login_as(@admin)
 
     visit "/#{@conference.acronym}/people"
 
     click_on 'Attendees'
 
-    assert_text @attendee.person.public_name
+    assert_text attendee.person.public_name
   end
 
   private

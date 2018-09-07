@@ -29,4 +29,4 @@
         %td= link_to person.email, person
         %td= person.organization
         %td= person.country_of_origin
-        %td= person.attendance_status
+        %td= person.attendance_status.first.status
