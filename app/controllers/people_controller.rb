@@ -129,7 +129,7 @@ class PeopleController < ApplicationController
     result = search Person, params
     @people = result.paginate page: page_param
     @csv_people = result
-    @attendee = Attendee.find_by(params[:person_id])
+    @attendee = Attendee.all
 
     respond_to do |format|
       format.html
