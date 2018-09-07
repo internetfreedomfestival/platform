@@ -19,7 +19,7 @@ class Cfp::PeopleController < ApplicationController
     return redirect_to action: 'new' unless @person
 
 
-    if !person_needs_to_upgrade
+    if person_needs_to_upgrade
       flash[:alert] = 'Please update your registration information in order to request an invite to the 2019 IFF'
     end
 
