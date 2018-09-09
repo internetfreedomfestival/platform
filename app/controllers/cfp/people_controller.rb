@@ -7,6 +7,7 @@ class Cfp::PeopleController < ApplicationController
 
   def show
     @not_registered = (@person.public_name == "Enter a public name here")
+    @old_account = person_needs_to_upgrade
     @no_events = @person.events.empty?
     @no_dif = @person.dif.nil?
     @is_fellow = ConferenceUser.exists?(user_id: current_user.id)
@@ -17,11 +18,6 @@ class Cfp::PeopleController < ApplicationController
     @invited = Invited.find_by(email: @person.email)
 
     return redirect_to action: 'new' unless @person
-
-
-    if person_needs_to_upgrade
-      flash[:alert] = 'Please update your registration information in order to request an invite to the 2019 IFF'
-    end
 
     if @person.public_name == current_user.email
       flash[:alert] = 'Your email address is not a valid public name, please change it.'

@@ -1,6 +1,9 @@
 %section
   .page-header{style: "border-bottom: 2px solid;"}
     .pull-right
+    - if @old_account
+      %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
+
       %div{style: "float: right; clear: both; margin-top: 5px"}
         - if @is_fellow || current_user.is_admin?
           = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
