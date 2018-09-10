@@ -16,6 +16,23 @@ class AttendanceStatusTest < ActiveSupport::TestCase
     assert attendance_status.valid?
   end
 
+  test "a person has different attendance statuses for different conferences" do
+    other_conference = create(:conference)
+    AttendanceStatus.create(
+      person: @person,
+      conference: other_conference,
+      status: AttendanceStatus::REGISTERED
+    )
+
+    attendance_status = AttendanceStatus.new(
+      person: @person,
+      conference: @conference,
+      status: AttendanceStatus::INVITED
+    )
+
+    assert attendance_status.valid?
+  end
+
   test "a person cannot have more than one attendance status for same conference" do
     AttendanceStatus.create(
       person: @person,

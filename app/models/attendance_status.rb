@@ -8,6 +8,6 @@ class AttendanceStatus < ActiveRecord::Base
   belongs_to :person
   belongs_to :conference
 
-  validates_uniqueness_of [:person_id, :conference_id]
+  validates_uniqueness_of :conference_id, scope: :person_id
   validates_inclusion_of :status, in: STATUSES
 end
