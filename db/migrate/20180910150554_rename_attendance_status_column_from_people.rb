@@ -1,4 +1,4 @@
-class RenameAttendandeStatusColumnFromPeople < ActiveRecord::Migration
+class RenameAttendanceStatusColumnFromPeople < ActiveRecord::Migration
   def change
     rename_column :people, :attendance_status, :old_attendance_status
   end
