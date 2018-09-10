@@ -36,6 +36,9 @@ class Cfp::UsersController < ApplicationController
       conference = Conference.find_by_acronym(params[:conference_acronym])
 
       if user.save
+        if Invited.find_by(email: user.email, conference: conference)
+          AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
+        end
         user.send_confirmation_instructions(conference)
         redirect_to new_cfp_session_path, notice: t(:"cfp.signed_up")
         return
