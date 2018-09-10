@@ -111,7 +111,7 @@ class PeopleController < ApplicationController
 
   def waitlisted
     authorize! :administrate, Person
-    result = Person.where(attendance_status: "waitlist")
+    result = Person.where(old_old_attendance_status: "waitlist")
     @people = result.paginate page: page_param
     @csv_people = result
     respond_to do |format|
@@ -122,7 +122,7 @@ class PeopleController < ApplicationController
 
   def canceled
     authorize! :administrate, Person
-    result = Person.where(attendance_status: "canceled")
+    result = Person.where(old_old_attendance_status: "canceled")
     @people = result.paginate page: page_param
     @csv_people = result
     respond_to do |format|
@@ -278,7 +278,7 @@ class PeopleController < ApplicationController
   def invite
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
-    if @person.update(attendance_status: "pending attendance")
+    if @person.update(old_old_attendance_status: "pending attendance")
       SelectionNotification.invite_notification(@person).deliver_now
       redirect_to(waitlisted_people_path, notice: 'Person was successfully invited, attendance status is now: pending attendance.')
     else
@@ -324,7 +324,7 @@ class PeopleController < ApplicationController
   def move_to_waitlist
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
-    if @person.update(attendance_status: 'waitlist')
+    if @person.update(old_old_attendance_status: 'waitlist')
       SelectionNotification.moved_to_waitlist_notification(@person).deliver_now
       redirect_to(all_people_path, notice: 'Person was successfully moved from pending attendance to the waitlist')
     else
@@ -359,7 +359,7 @@ class PeopleController < ApplicationController
   def confirm_attendance
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
-    if @person.update(attendance_status: 'confirmed')
+    if @person.update(old_old_attendance_status: 'confirmed')
       flash[:sucess] = "#{@person.public_name} has been confirmed to attend the 2018 IFF!"
     else
       flash[:danger] = "#{@person.public_name} was not confirmed...they may need to complete their registration."
@@ -369,7 +369,7 @@ class PeopleController < ApplicationController
 
   def cancel_attendance
     @person = Person.find_by(id: params[:format])
-    if @person.update(attendance_status: "canceled")
+    if @person.update(old_old_attendance_status: "canceled")
       return redirect_to(person_path(@person.id), notice: 'You canceled their attendance.')
     else
       return redirect_to(person_path(@person.id), notice: 'There was an error cancelling their attendance.')
@@ -379,7 +379,7 @@ class PeopleController < ApplicationController
   # will update a 'canceled' attendance status to 'pending attendance' status
   def move_to_pending
     @person = Person.find_by(id: params[:format])
-    if @person.update(attendance_status: "pending attendance")
+    if @person.update(old_old_attendance_status: "pending attendance")
       return redirect_to(canceled_people_path, notice: 'Attendance updated to pending attendance.')
     else
       return redirect_to(canceled_people_path, notice: 'There was an error updating their attendance status.')
@@ -391,7 +391,7 @@ class PeopleController < ApplicationController
     users = User.where(confirm_attendance_token: nil)
 
     users.each do |user|
-      if user.person && user.person.attendance_status == 'pending attendance'
+      if user.person && user.person.old_attendance_status == 'pending attendance'
         users_to_generate_token << user
       end
     end

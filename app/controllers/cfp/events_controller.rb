@@ -37,7 +37,7 @@ class Cfp::EventsController < ApplicationController
     end
 
     # Remove this if statement for next conference. It is for submiting events after the conference deadline
-    if person.attendance_status == "confirmed"
+    if person.old_attendance_status == "confirmed"
       authorize! :submit, Event
       @event = Event.new(time_slots: @conference.default_timeslots)
       @event.recording_license = @conference.default_recording_license

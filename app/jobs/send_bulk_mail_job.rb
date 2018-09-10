@@ -17,14 +17,14 @@ class SendBulkMailJob
                 .where('event_people.event_role': 'speaker')
     when 'all_pending_attendance_people'
       persons = Person
-                .where('attendance_status': 'pending attendance')
+                .where('old_attendance_status': 'pending attendance')
     when 'all_confirmed_attendance_people'
       persons = Person
-                .where('attendance_status': 'confirmed')
+                .where('old_attendance_status': 'confirmed')
     when 'pending_but_no_email'
       persons = []
       attending_people = Person
-                .where('attendance_status': 'pending attendance')
+                .where('old_attendance_status': 'pending attendance')
       attending_people.each do |person|
         if person.user.confirm_attendance_email_sent.nil?
           persons << person

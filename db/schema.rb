@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180907154515) do
+ActiveRecord::Schema.define(version: 20180910150554) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -360,7 +360,7 @@ ActiveRecord::Schema.define(version: 20180907154515) do
     t.string   "complete_mailing"
     t.string   "complete_mattermost"
     t.boolean  "late_event_submit",        default: false
-    t.string   "attendance_status"
+    t.string   "old_attendance_status"
     t.string   "gender_pronoun"
     t.string   "iff_days"
     t.string   "email_confirm"

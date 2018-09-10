@@ -241,9 +241,9 @@ class Person < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
-    attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer attendance_status created_at travel_support past_travel_assistance willing_to_facilitate}
+    attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer old_attendance_status created_at travel_support past_travel_assistance willing_to_facilitate}
 
-    non_dif_attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer attendance_status created_at}
+    non_dif_attributes = %w{id email public_name first_name last_name pgp_key gender country_of_origin professional_background other_background organization project title iff_before iff_goals challenges other_resources complete_mailing complete_mattermost interested_in_volunteer old_attendance_status created_at}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
