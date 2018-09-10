@@ -6,10 +6,40 @@ class Person < ActiveRecord::Base
 
   GENDERS = ["Female", "Gender Nonconforming","Male", "Other"].freeze
   COUNTRIES = ["Afghanistan", "Åland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Antarctic Territory", "British Indian Ocean Territory", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Canton and Enderbury Islands", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos [Keeling] Islands", "Colombia", "Comoros", "Congo - Brazzaville", "Congo - Kinshasa", "Cook Islands", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Côte d’Ivoire", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Dronning Maud Land", "East Germany", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories", "French Southern and Antarctic Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Honduras", "Hong Kong SAR China", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Johnston Island", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau SAR China", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Metropolitan France", "Mexico", "Micronesia", "Midway Islands", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar [Burma]", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "Neutral Zone", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "North Korea", "North Vietnam", "Northern Mariana Islands", "Norway", "Oman", "Pacific Islands Trust Territory", "Pakistan", "Palau", "Palestine", "Panama", "Panama Canal Zone", "Papua New Guinea", "Paraguay", "People's Democratic Republic of Yemen", "Peru", "Philippines", "Pitcairn Islands", "Poland", "Portugal", "Puerto Rico", "Qatar", "Romania", "Russia", "Rwanda", "Réunion", "Saint Barthélemy", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Saudi Arabia", "Senegal", "Serbia", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "South Korea", "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen", "Swaziland", "Sweden", "Switzerland", "Syria", "São Tomé and Príncipe", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Tibet", "Timor-Leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "U.S. Minor Outlying Islands", "U.S. Miscellaneous Pacific Islands", "U.S. Virgin Islands", "Uganda", "Ukraine", "Union of Soviet Socialist Republics", "United Arab Emirates", "United Kingdom", "United States", "Unknown or Invalid Region", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Wake Island", "Wallis and Futuna", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"].freeze
-  GOALS = ["Requesting support with a specific issue", "Making new connections", "Meeting with key constituents and partners", "Working hands-on", "Sharing a new project/initiative", "Getting funding for your project", "Improving digital security skills", "Introduction to digital security and Internet Freedom", "Professional development", "Learning more about the situation in Latin America", "Learning more about the situation in Eurasia/Central Asia", "Learning more about the situation in Middle East & Northern Africa", "Learning more about the situation in Sub-Saharan Africa", "Learning more about the situation in South Asia", "Learning more about the situation in Southeast Asia", "Learning more about the situation in East Asia"].freeze
-  IFF_BEFORE = [["Not yet!", "Not yet!"], ["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"]]
-  IFF_DAYS = [["Monday, April 1st", "Monday, April 1st"], ["Tuesday, April 2nd", "Tuesday, April 2nd"], ["Wednesday, April 3rd", "Wednesday, April 3rd"], ["Thursday, April 4th", "Thursday, April 4th"], ["Friday, April 5th", "Friday, April 5th"], ["Full week", "Full week"]].freeze
   GENDER_PRONOUN = ["ze/hir", "ze/zir", "she", "he", "they/.../themselves", "they/.../themself", "xey", "sie", "it", "ey", "e", "hu", "peh", "per", "thon", "jee", "ve/ver", "xe", "zie/zir", "ze/zem", "zie/zem", "ze/mer", "se", "zme", "ve/vem", "zee", "fae", "zie/hir", "si", "kit", "Ne"].freeze
+  GOALS = [
+    "Requesting support with a specific issue",
+    "Making new connections",
+    "Meeting with key constituents and partners",
+    "Working hands-on",
+    "Sharing a new project/initiative",
+    "Getting funding for your project",
+    "Improving digital security skills",
+    "Introduction to digital security and Internet Freedom",
+    "Professional development",
+    "Learning more about the situation in Latin America",
+    "Learning more about the situation in Eurasia/Central Asia",
+    "Learning more about the situation in Middle East & Northern Africa",
+    "Learning more about the situation in Sub-Saharan Africa",
+    "Learning more about the situation in South Asia",
+    "Learning more about the situation in Southeast Asia",
+    "Learning more about the situation in East Asia"
+  ].freeze
+  IFF_BEFORE = [
+    "Not yet!",
+    "2015",
+    "2016",
+    "2017",
+    "2018"
+  ].freeze
+  IFF_DAYS = [
+    "Monday, April 1st",
+    "Tuesday, April 2nd",
+    "Wednesday, April 3rd",
+    "Thursday, April 4th",
+    "Friday, April 5th",
+    "Full week"
+  ].freeze
   PROFESSIONAL_BACKGROUND = [
     'Digital Security Training',
     'Software/Web Development',

@@ -17,34 +17,35 @@
           %p * Have you attended the IFF before?
           %div.input
             %ul.inputs-list
-              - Person::IFF_BEFORE.each do |iff|
+              = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline) do |c|
                 %li
-                  %label
-                    %input{name: 'person[iff_before][]', type: 'checkbox', value: iff.last }
-                    %span= iff.first
+                  = c.label do
+                    = c.check_box
+                    %span= c.text
         %br
           %p * What are your main goals for attending the 2019 IFF?
           %div.input
             %ul.inputs-list
-              - Person::GOALS.map{ |value| [value, value] }.each do |goals|
+              = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline) do |c|
                 %li
-                  %label
-                    %input{name: 'person[iff_goals][]', type: 'checkbox', value: goals.last }
-                    %span= goals.first
+                  = c.label do
+                    = c.check_box
+                    %span= c.text
+
         %br
           %p * Would you like to hear more about our awesome volunteering opportunities?
           %br
-          = f.input :interested_in_volunteer, :collection => [['Yes, sounds fun!', true], ['No, thank you', false]], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
+          = f.input :interested_in_volunteer, collection: [['Yes, sounds fun!', true], ['No, thank you', false]], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
 
         %br
           %p * Which days are you planning to attend?
           %div.input
             %ul.inputs-list
-              - Person::IFF_DAYS.each do |days|
+              = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline) do |c|
                 %li
-                  %label
-                    %input{name: 'person[iff_days][]', type: 'checkbox', value: days.last }
-                    %span= days.first
+                  = c.label do
+                    = c.check_box
+                    %span= c.text
       %br
         %p
         *I agree to respect and follow

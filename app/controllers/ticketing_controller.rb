@@ -21,10 +21,10 @@ class TicketingController < ApplicationController
 
     @person.public_name = attributes['public_name']
     @person.gender_pronoun = attributes['gender_pronoun']
-    @person.iff_before = attributes['iff_before']
-    @person.iff_goals = attributes['iff_goals']
     @person.interested_in_volunteer = attributes['interested_in_volunteer']
-    @person.iff_days = attributes['iff_days']
+    @person.iff_days = attributes['iff_days'].reject { |value| value.blank? }
+    @person.iff_goals = attributes['iff_goals'].reject { |value| value.blank? }
+    @person.iff_before = attributes['iff_before'].reject { |value| value.blank? }
 
     errors = validate_required_ticket_fields(attributes)
     unless errors.empty?
@@ -81,6 +81,7 @@ class TicketingController < ApplicationController
 
     REQUIRED_FIELDS.each do |field, error|
       value = values[field]
+      value = value.reject { |v| v.blank? } if value.kind_of?(Enumerable)
 
       if value.nil? || value.blank?
         errors << error
