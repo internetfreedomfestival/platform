@@ -92,7 +92,7 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def cancel_attendance
-    if @person.update(attendance_status: "canceled")
+    if @person.update(old_old_attendance_status: "canceled")
       flash[:alert] = "You have canceled your attendance."
     else
       flash[:alert] = "There was an error cancelling your attendance. Please contact the IFF team."
@@ -102,7 +102,7 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def confirm_attendance
-    if @person.update(attendance_status: "confirmed")
+    if @person.update(old_old_attendance_status: "confirmed")
       flash[:success] = "You are confirmed to attend the 2018 IFF!"
     else
       flash[:alert] = "There was some issue updating your status. Please contact the IFF team."

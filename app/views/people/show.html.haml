@@ -16,7 +16,7 @@
       - if can? :crud, @person
         = action_button "primary", "Edit person", edit_person_path(@person), title: "Edit this person's data."
       - if can? :administrate, Person
-        - if @person.attendance_status != 'canceled'
+        - if @person.old_attendance_status != 'canceled'
           = action_button "danger", "Cancel Attendance", cancel_attendance_people_path(@person), title: "Cancel this person's attendance."
         = action_button "add", "Add person", new_person_path, title: "Add a new person."
       - if @person.public_and_accepted_events_as_speaker_in(@conference).present?

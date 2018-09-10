@@ -33,7 +33,7 @@ class Cfp::ConfirmationsController < ApplicationController
     user = User.find_by(confirm_attendance_token: confirmation_token)
     if user
       person = user.person
-      if person.update(attendance_status: "confirmed")
+      if person.update(old_attendance_status: "confirmed")
         flash[:sucess] = "Your attendance status has been confirmed!"
       else
         flash[:danger] = "There was an error updating your attendance status. Please contact us."
