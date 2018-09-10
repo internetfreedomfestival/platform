@@ -50,6 +50,19 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'We have sent an invite to user@email.com'
   end
 
+  test 'users can request invitation to the conference' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@user)
+
+    within '#request_invitation' do
+      click_on 'Request Invite'
+    end
+
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_text 'Your ticket request has been received.'
+  end
+
   test 'users has a limited number of invites' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
@@ -100,12 +113,12 @@ class SendInvitationTest < Capybara::Rails::TestCase
     create(:call_for_participation, conference: @conference)
 
     login_as(@user)
-    assert_text 'You have 0 invites remaining.'
-    within '#invitations-form' do
-      fill_in 'email', with: 'an@email.com'
-      click_on 'Send'
+
+    within '#request_invitation' do
+      click_on 'Request Invite'
     end
-    assert_text 'Only users invited by an admin can invite colleagues'
+
+    assert_text 'Your ticket request has been received.'
     click_on 'Logout'
 
     login_as(@admin)

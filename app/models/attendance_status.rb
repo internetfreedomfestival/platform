@@ -1,7 +1,7 @@
 class AttendanceStatus < ActiveRecord::Base
-  INVITED = 'invited'.freeze
-  REQUESTED = 'requested'.freeze
-  REGISTERED = 'registered'.freeze
+  INVITED = 'Invited'.freeze
+  REQUESTED = 'Requested'.freeze
+  REGISTERED = 'Holds Ticket'.freeze
 
   STATUSES = [INVITED, REQUESTED, REGISTERED]
 

@@ -92,3 +92,5 @@ en:
       subject: "%{first_name} invited you to the 2019 IFF!"
     ticketing_mail:
       subject: "Here’s your 2019 IFF Ticket!"
+    request_invitation_mail:
+      subject: "IFF 2019 Ticket Request Received"

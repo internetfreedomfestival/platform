@@ -1,8 +1,8 @@
 class TicketingController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_invitation
-  before_action :require_same_person
-  before_action :require_same_conference
+  before_action :check_invitation, except: [:request_invitation]
+  before_action :require_same_person, except: [:request_invitation]
+  before_action :require_same_conference, except: [:request_invitation]
 
   before_action :no_previous_ticket, only: [:register_ticket]
 
@@ -35,15 +35,34 @@ class TicketingController < ApplicationController
 
     @person.save!
 
-    AttendanceStatus.create(
-      person: @person,
-      conference: @conference,
-      status: AttendanceStatus::REGISTERED
-    )
+    if !AttendanceStatus.find_by(person: @person, conference: @conference)
+      AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
+    else
+      status = AttendanceStatus.find_by(person: @person, conference: @conference)
+      status.status = AttendanceStatus::REGISTERED
+      status.save
+    end
 
     TicketingMailer.ticketing_mail(@person, @conference).deliver_now
 
     redirect_to cfp_root_path, notice: "You've been succesfully registered"
+  end
+
+  def request_invitation
+    @person = Person.find_by(id: params[:id])
+    @conference = Conference.find_by(acronym: params[:conference_acronym])
+
+    if !AttendanceStatus.find_by(person: @person, conference: @conference)
+      AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REQUESTED)
+    else
+      status = AttendanceStatus.find_by(person: @person, conference: @conference)
+      status.status = AttendanceStatus::REQUESTED
+      status.save
+    end
+
+    InvitationMailer.request_invitation_mail(@person).deliver_now
+
+    redirect_to(cfp_root_path(@person))
   end
 
   private

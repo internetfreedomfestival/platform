@@ -158,6 +158,7 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
     authorize! :read, @person
     @years_presented = person_presented_before?
+    @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
 
     if @person.user.nil?
       @is_fellow = false
@@ -294,10 +295,26 @@ class PeopleController < ApplicationController
       invited = Invited.find_by(email: person.email, conference_id: conference.id)
       InvitationMailer.invitation_mail(invited).deliver_now
 
+      if !AttendanceStatus.find_by(person: person, conference: conference)
+        AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
+      else
+        status = AttendanceStatus.find_by(person: person, conference: conference)
+        status.status = AttendanceStatus::INVITED
+        status.save
+      end
+
       redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
     else
       invited = Invited.create!(email: person.email, person: current_user.person, conference: conference)
-      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
+
+      if !AttendanceStatus.find_by(person: person, conference: conference)
+        AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
+      else
+        status = AttendanceStatus.find_by(person: person, conference: conference)
+        status.status = AttendanceStatus::INVITED
+        status.save
+      end
+
       InvitationMailer.invitation_mail(invited).deliver_now
 
       redirect_to(person_path(person), notice: 'Person was invited.')

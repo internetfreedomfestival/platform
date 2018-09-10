@@ -32,6 +32,7 @@
 
     .span8{style: "margin-bottom: 30px; height: 200px;"}
       %div{style: "margin:10px;"}
+      - if !@invited.nil?
         %h3 Share your invites!
         = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
           %p
@@ -41,8 +42,15 @@
           = text_field_tag(:email, '', placeholder: 'email')
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
+      - else
+        - if @attendance_status && @attendance_status.status == "Requested"
+          %p Your ticket request has been received.
+        - else
+          = form_tag(request_invitation_person_path(@person, @conference), id: 'request_invitation') do
+            %h3 No invite?
+            %p We will me sending out new invites periodically. Request an invite to be considered.
+            = submit_tag('Request Invite', class: "btn success")
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
-
 
   .row{style: "margin-left: 10px;"}
     - if @not_registered == false && @person.attendance_status == "confirmed"

@@ -11,6 +11,8 @@ class Cfp::PeopleController < ApplicationController
     @no_events = @person.events.empty?
     @no_dif = @person.dif.nil?
     @is_fellow = ConferenceUser.exists?(user_id: current_user.id)
+    @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
+
 
     @invites = 0
     @invites = Invited.pending_invites_for(@person) if @person.allowed_to_send_invites?

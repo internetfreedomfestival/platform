@@ -24,4 +24,14 @@ class InvitationMailer < ApplicationMailer
       locale: :en
     )
   end
+
+  def request_invitation_mail(person)
+    @first_name = Person.find_by(email: person.email).first_name
+
+    mail(
+      to: person.email,
+      subject: I18n.t('emails.request_invitation_mail.subject'),
+      locale: :en
+    )
+  end
 end
