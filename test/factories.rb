@@ -140,7 +140,7 @@ FactoryBot.define do
     first_name 'Fred'
     last_name 'Besen'
     email { generate(:email) }
-    email_confirm { email }
+    email_confirmation { email }
     public_name { generate(:public_name) }
     country_of_origin 'Spain'
     professional_background ['Developer']

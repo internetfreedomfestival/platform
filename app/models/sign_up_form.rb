@@ -10,7 +10,7 @@ class SignUpForm
   include ActiveModel::Model
 
   attr_accessor :email,
-                :email_confirm,
+                :email_confirmation,
                 :password,
                 :password_confirmation,
                 :first_name,
@@ -27,7 +27,7 @@ class SignUpForm
                 :invitation_to_mattermost
 
   validates_presence_of :email,
-                :email_confirm,
+                :email_confirmation,
                 :password,
                 :password_confirmation,
                 :first_name,

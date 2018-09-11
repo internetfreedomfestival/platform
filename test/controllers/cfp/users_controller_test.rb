@@ -15,7 +15,7 @@ class Cfp::UsersControllerTest < ActionController::TestCase
     assert_difference 'User.count' do
       sign_up_form_params = {
         email: 'new_user@example.com',
-        email_confirm: 'new_user@example.com',
+        email_confirmation: 'new_user@example.com',
         password: 'frab123',
         password_confirmation: 'frab123',
         first_name: 'Aretha',

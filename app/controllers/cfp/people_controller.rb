@@ -119,7 +119,7 @@ class Cfp::PeopleController < ApplicationController
 
   def person_params
     params.require(:person).permit(
-      :first_name, :last_name, :public_name, :email, :email_confirm, :email_public, :gender, :avatar, :group, :abstract, :description, :include_in_mailings, :include_in_mailings, :pgp_key, :country_of_origin, :other_background, :organization, :project, :title, :invitation_to_mattermost, :iff_goals, :challenges, :other_resources, :interested_in_volunteer, :already_mattermost, :already_mailing, :twitter, :personal_website, :complete_mattermost, :complete_mailing, { iff_before: [] }, { professional_background: [] },
+      :first_name, :last_name, :public_name, :email, :email_confirmation, :email_public, :gender, :avatar, :group, :abstract, :description, :include_in_mailings, :include_in_mailings, :pgp_key, :country_of_origin, :other_background, :organization, :project, :title, :invitation_to_mattermost, :iff_goals, :challenges, :other_resources, :interested_in_volunteer, :already_mattermost, :already_mailing, :twitter, :personal_website, :complete_mattermost, :complete_mailing, { iff_before: [] }, { professional_background: [] },
       im_accounts_attributes: %i(id im_type im_address _destroy),
       languages_attributes: %i(id code _destroy),
       links_attributes: %i(id title url _destroy),
@@ -129,7 +129,7 @@ class Cfp::PeopleController < ApplicationController
 
   def person_invalid_for_update
     if person_params[:email].nil? ||
-       person_params[:email_confirm].nil? || person_params[:email] != person_params[:email_confirm] ||
+       person_params[:email_confirmation].nil? || person_params[:email] != person_params[:email_confirmation] ||
        person_params[:first_name] == "" ||
        person_params[:country_of_origin] == "" ||
        person_params[:gender] == "" ||

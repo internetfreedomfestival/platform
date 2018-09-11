@@ -106,6 +106,9 @@ class Person < ActiveRecord::Base
   #   :include_in_mailings,
   #   :invitation_to_mattermost
 
+  validates :email, confirmation: true
+  # validates :email_confirmation
+
 
   scope :involved_in, ->(conference) {
     joins(events: :conference).where('conferences.id': conference).uniq

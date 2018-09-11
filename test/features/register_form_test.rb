@@ -15,7 +15,7 @@ class RegisterFormTest < Capybara::Rails::TestCase
 
     within '#register_form' do
       fill_in 'sign_up_form_email', with: 'sample@email.com'
-      fill_in 'sign_up_form_email_confirm', with: 'sample@email.com'
+      fill_in 'sign_up_form_email_confirmation', with: 'sample@email.com'
       fill_in 'sign_up_form_password', with: 'password'
       fill_in 'sign_up_form_password_confirmation', with: 'password'
       fill_in 'sign_up_form_first_name', with: 'Name'
@@ -44,7 +44,7 @@ class RegisterFormTest < Capybara::Rails::TestCase
 
     within '#register_form' do
       fill_in 'sign_up_form_email', with: 'sample@email.com'
-      fill_in 'sign_up_form_email_confirm', with: 'sample@email.com'
+      fill_in 'sign_up_form_email_confirmation', with: 'sample@email.com'
       fill_in 'sign_up_form_password', with: 'password'
       fill_in 'sign_up_form_password_confirmation', with: 'password'
       select 'Female', from: 'sign_up_form_gender'
@@ -66,7 +66,7 @@ class RegisterFormTest < Capybara::Rails::TestCase
 
     within '#register_form' do
       fill_in 'person[email]', with: 'test@test.com'
-      fill_in 'person[email_confirm]', with: 'test@test.com'
+      fill_in 'person[email_confirmation]', with: 'test@test.com'
       fill_in 'person[first_name]', with: 'test'
       select 'Female', from: 'person[gender]'
       select 'Albania', from: 'person[country_of_origin]'

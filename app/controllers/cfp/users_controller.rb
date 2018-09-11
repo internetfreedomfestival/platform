@@ -13,7 +13,7 @@ class Cfp::UsersController < ApplicationController
     if @form.valid?
       person = Person.new(
         email: @form.email,
-        email_confirm: @form.email_confirm,
+        email_confirmation: @form.email_confirmation,
         first_name: @form.first_name,
         last_name: @form.last_name,
         pgp_key: @form.pgp_key,
@@ -70,7 +70,7 @@ class Cfp::UsersController < ApplicationController
 
   def sign_up_form_params
     params.require(:sign_up_form).permit(
-      :email, :email_confirm,
+      :email, :email_confirmation,
       :password, :password_confirmation,
       :first_name,
       :last_name,
