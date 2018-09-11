@@ -63,6 +63,50 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'Your ticket request has been received.'
   end
 
+  test 'admin can accept a request invitation' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@user)
+
+    within '#request_invitation' do
+      click_on 'Request Invite'
+    end
+
+    click_on 'Logout'
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    click_on 'Accept request'
+
+    assert_text 'Person was invited.'
+  end
+
+  test 'users invited by admin that they send a request invitation not have a extra invitations' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@user)
+
+    within '#request_invitation' do
+      click_on 'Request Invite'
+    end
+
+    click_on 'Logout'
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    click_on 'Accept request'
+
+    click_on 'Logout'
+
+    login_as(@user)
+
+    assert_text 'You have 0 invites remaining.'
+  end
+
   test 'users has a limited number of invites' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)

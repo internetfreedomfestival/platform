@@ -33,7 +33,7 @@
         %h1 New around here?
         = simple_form_for(@user, url: cfp_user_path) do |f|
           %fieldset.inputs
-            = link_to t("cfp.register_button"), new_cfp_user_path, class: 'btn primary'
+            = link_to t("cfp.sign_up"), new_cfp_user_path, class: 'btn primary'
         %p
           =t("cfp.confirmation_description")
         = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path

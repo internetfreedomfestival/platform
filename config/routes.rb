@@ -127,6 +127,7 @@ Frab::Application.routes.draw do
         member do
           post :send_invitation
           post :request_invitation, to: 'ticketing#request_invitation'
+          post :accept_request
         end
       end
 

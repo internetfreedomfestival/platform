@@ -321,6 +321,26 @@ class PeopleController < ApplicationController
     end
   end
 
+  def accept_request
+    authorize! :administrate, Person
+    person = Person.find_by(id: params[:id])
+    conference = Conference.find_by(acronym: params[:conference_acronym])
+
+    invited = Invited.create!(email: person.email, person: person, conference: conference)
+
+    if !AttendanceStatus.find_by(person: person, conference: conference)
+      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
+    else
+      status = AttendanceStatus.find_by(person: person, conference: conference)
+      status.status = AttendanceStatus::INVITED
+      status.save
+    end
+
+    # InvitationMailer.invitation_mail(invited).deliver_now
+
+    redirect_to(person_path(person), notice: 'Person was invited.')
+  end
+
   def move_to_waitlist
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person

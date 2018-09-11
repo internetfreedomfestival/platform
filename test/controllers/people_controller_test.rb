@@ -59,4 +59,11 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal(@person.email, Invited.first.email)
     assert_equal(@conference, Invited.first.conference)
   end
+
+  test 'should accept invitations request' do
+    post :accept_request, id: @person.to_param, conference_acronym: @conference.acronym
+
+    assert_equal(@person.email, Invited.first.email)
+    assert_equal(@conference, Invited.first.conference)
+  end
 end
