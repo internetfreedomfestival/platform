@@ -336,7 +336,7 @@ class PeopleController < ApplicationController
       status.save
     end
 
-    # InvitationMailer.invitation_mail(invited).deliver_now
+    InvitationMailer.accept_request_mail(invited).deliver_now
 
     redirect_to(person_path(person), notice: 'Person was invited.')
   end

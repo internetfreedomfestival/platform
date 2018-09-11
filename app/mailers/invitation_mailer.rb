@@ -34,4 +34,18 @@ class InvitationMailer < ApplicationMailer
       locale: :en
     )
   end
+
+  def accept_request_mail(invited)
+    person = invited.person
+    conference = invited.conference
+
+    @first_name = Person.find_by(email: invited.email).first_name
+    @link = ticketing_form_url(id: invited.id, conference_acronym: conference.acronym)
+
+    mail(
+      to: invited.email,
+      subject: I18n.t('emails.accept_request_mail.subject'),
+      locale: :en
+    )
+  end
 end
