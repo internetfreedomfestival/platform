@@ -1,5 +1,5 @@
 %section
-  .page-header{style: "border-bottom: 2px solid;"}
+  .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
     .pull-right
     - if @old_account
       %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
@@ -17,100 +17,158 @@
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
     %h2 User Portal
 
-  .row
-    .span8{style: "margin-bottom: 30px; height: 200px;"}
-      %div{style: "margin:10px;"}
-        %h3 Get your 2019 IFF Ticket
-        - if @invited
-          %p You have been invited to get an IFF Ticket!
-          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = action_button "success", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
-        - else
-          %p You don't have an invitation.
-          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
-        - if @old_account
-          %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
-    .span8{style: "margin-bottom: 30px; height: 200px;"}
-      %div{style: "margin:10px;"}
-      - if !@invited.nil?
-        %h3 Share your invites!
-        = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
-          %p
-            You have
-            %b= @invites
-            invites remaining.
-          = text_field_tag(:email, '', placeholder: 'email')
-          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
-      - else
-        - if @attendance_status && @attendance_status.status == "Requested"
-          %p Your ticket request has been received.
-        - else
-          = form_tag(request_invitation_person_path(@person, @conference), id: 'request_invitation') do
-            %h3 No invite?
-            %p We will me sending out new invites periodically. Request an invite to be considered.
-            = submit_tag('Request Invite', class: "btn success")
-    .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+  .row{style: "margin: 10px;"}
+    .span8{style: "margin-bottom: 30px; margin-left: 5px; height: 200px;"}
+      %div
+        %h3 Submit a Session for the 2019 IFF
+        %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 1st, 2018.
+        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+          = action_button "primary", "Submit a Session", '#', style: "margin: 10px;"
 
-  .row{style: "margin-left: 10px;"}
-    - if @not_registered == false && @person.old_attendance_status == "confirmed"
-      .span16{style: "background-color: green; width: 871px; height: 31px; margin-bottom: 15px"}
-        %p{style: "color: white; padding: 6px"} You are CONFIRMED to attend the 2018 Internet Freedom Festival.
-    - if @not_registered == false && @person.old_attendance_status == "pending attendance"
-      .span16{style: "background-color: red; width: 871px; height: 31px; margin-bottom: 15px"}
-        %p{style: "color: white; padding: 6px"} You must confirm your attendance to access the IFF!
-    - if @not_registered == false && @person.old_attendance_status == "waitlist"
-      .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
-        %p{style: "color: white; padding: 6px"} You are registered for the 2018 IFF Waitlist.
 
-    .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
-      - if @person.old_attendance_status == "confirmed"
-        %h2{style: "margin-bottom: 10px"} You are confirmed to attend the 2018 IFF!
-        %b In order to access the IFF, you must provide the following information at registration:
-        %table{style: "margin-top: -15px"}
-          %tr
-            %th Public Name
-            <br />
-            %td
-              = @person.public_name
-          %tr
-            %th IFF ID
-            <br />
-            %td
-              = @person.id
-          %tr
-            %th
-            %td
+  -# TICKET SECCTION -->
 
-        %p{style: "margin-top: -10px"} Can't make it? Please click on the button below and let someone else attend!
-        = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
-      - elsif @not_registered && @person.old_attendance_status == "pending attendance"
-        %h2{style: "margin-bottom: 10px"} Complete the Form to Attend IFF
-        %b{style: "color: orange; font-size: 16px;"} You need to complete the registration form to attend the 2018 Internet Freedom Festival.
-        <br />
-        <br />
-        = action_button "primary", "Register Now", edit_cfp_person_path
-      - elsif @not_registered == false && @person.old_attendance_status == "pending attendance"
-        %h2{style: "margin-bottom: 10px"} Confirm your Attendance!
-        %b{style: "font-size: 16px;"} All registered participants must confirm attendance to access the IFF:
-        <br />
-        <br />
-        = action_button "success", "Confirm Your Attendance", confirm_attendance_cfp_person_path
-        <br /><br />
-        %p Please Note: Failure to confirm attendance before January 18th will result in getting moved to the waiting list.
-        <br />
-        %p Can't make it? Please click on the button below and let someone else attend!
-        = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
-      - elsif @person.old_attendance_status == "canceled"
-        %b{style: "color: orange; font-size: 16px;"} You canceled your attendance to the IFF 2018.
-      - elsif @person.old_attendance_status == "waitlist"
-        %b{style: "color: orange; font-size: 16px"} Ops! We’re at capacity!
-        <br />
-        <br />
-        - if @not_registered
-          %p Join the waitlist and we will contact you when more spots open.
-          = action_button "primary", "Register for the Waitlist", edit_cfp_person_path
+  -# .row
+  -#   .span8{style: "margin-bottom: 30px; height: 200px;"}
+  -#     %div{style: "margin:10px;"}
+  -#       %h3 Get your 2019 IFF Ticket
+  -#       - if @invited
+  -#         %p You have been invited to get an IFF Ticket!
+  -#         %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+  -#           = action_button "success", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
+  -#       - else
+  -#         %p You don't have an invitation.
+  -#         %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+  -#           = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+  -#       - if @old_account
+  -#         %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
+  -#   .span8{style: "margin-bottom: 30px; height: 200px;"}
+  -#     %div{style: "margin:10px;"}
+  -#     - if !@invited.nil?
+  -#       %h3 Share your invites!
+  -#       = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
+  -#         %p
+  -#           You have
+  -#           %b= @invites
+  -#           invites remaining.
+  -#         = text_field_tag(:email, '', placeholder: 'email')
+  -#         %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+  -#           = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
+  -#     - else
+  -#       - if @attendance_status && @attendance_status.status == "Requested"
+  -#         %p Your ticket request has been received.
+  -#       - else
+  -#         = form_tag(request_invitation_person_path(@person, @conference), id: 'request_invitation') do
+  -#           %h3 No invite?
+  -#           %p We will me sending out new invites periodically. Request an invite to be considered.
+  -#           = submit_tag('Request Invite', class: "btn success")
+
+
+  -# END TICKET SECCTION -->
+
+
+  .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+
+  .row{style: "margin: 10px;"}
+    .span8{style: "width: 400px; padding: 13px; height: 186px;"}
+      %h2{style: "margin-bottom: 10px"}=t("cfp.contact_headline")
+      %p=t("cfp.contact_mattermost")
+      = action_button "primary", "Join the IFF Mattermost", "https://community.internetfreedomfestival.org/signup_user_complete/?id=ae9acd5b24f12ad51e158db0cddd97d0", target: :blank
+      %p{style: "margin-top: 20px"} Follow the IFF on Twitter to be on top of all things IFF!
+      = action_button "primary", "Follow @InternetFF", "http://twitter.com/internetff/", target: :blank
+
+    .span8{style: "width: 400px; padding: 13px; height: 186px"}
+      %h2{style: "margin-bottom: 10px"} Subscribe to the IFF Weekly Mailing List
+      %p{style: "margin-top: 20px"} Get general news and updates, community stories, upcoming events and new job opportunities, all conveniently summarized and sent to your inbox once a week!
+      = action_button "primary", t("Subscribe"), "https://lists.ghserv.net/mailman/listinfo/festival", target: :blank
+
+  .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+
+  .row{style: "margin: 10px;"}
+    .span8{style: "width: 400px; padding: 13px; height: 219px"}
+      %h2{style: "margin-bottom: 10px"} Respect and Collaboration
+      %p The IFF is designed to improve collaboration among very diverse communities, and is committed to providing a safe, welcoming and fun environment for everybody.
+      %p We encourage all participants to approach the event with open and positive attitudes, to engage constructively with others, and take the time to celebrate the passion and accomplishments of fellows attendees.
+      = action_button "primary", "Please Review our Code of Conduct", "https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct", target: :blank
+
+    .span8{style: "width: 400px; padding: 13px; height: 219px"}
+      %h2{style: "margin-bottom: 10px"} IFF Wiki
+      %p The IFF Wiki is the central information hub for the IFF. You will find useful tips about our host city of Valencia including where to stay, transportation options, restaurants and more!
+      = action_button "primary", "Check out the IFF Wiki", "https://internetfreedomfestival.org/wiki/index.php/Main_Page", target: :blank
+
+  .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+
+  .row{style: "margin: 10px;"}
+    .span8{style: "width: 400px; padding: 13px; height: 219px"}
+      %h2{style: "margin-bottom: 10px"} Your Sessions
+
+  .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+    %br
+    .row{style: "margin: 10px;"}
+      %p
+      You can contact us at
+      %a{href: "mailto:team@internetfreedomfestival.org"} team@internetfreedomfestival.org.
+
+
+  -#
+  -# .row{style: "margin-left: 10px;"}
+  -#   - if @not_registered == false && @person.old_attendance_status == "confirmed"
+  -#     .span16{style: "background-color: green; width: 871px; height: 31px; margin-bottom: 15px"}
+  -#       %p{style: "color: white; padding: 6px"} You are CONFIRMED to attend the 2018 Internet Freedom Festival.
+  -#   - if @not_registered == false && @person.old_attendance_status == "pending attendance"
+  -#     .span16{style: "background-color: red; width: 871px; height: 31px; margin-bottom: 15px"}
+  -#       %p{style: "color: white; padding: 6px"} You must confirm your attendance to access the IFF!
+  -#   - if @not_registered == false && @person.old_attendance_status == "waitlist"
+  -#     .span16{style: "background-color: #1ba5ab; width: 871px; height: 31px; margin-bottom: 15px"}
+  -#       %p{style: "color: white; padding: 6px"} You are registered for the 2018 IFF Waitlist.
+  -#
+  -#   .span8{style: "background-color: #f2f2f2; width: 400px; height: 307px; padding: 13px"}
+  -#     - if @person.old_attendance_status == "confirmed"
+  -#       %h2{style: "margin-bottom: 10px"} You are confirmed to attend the 2018 IFF!
+  -#       %b In order to access the IFF, you must provide the following information at registration:
+  -#       %table{style: "margin-top: -15px"}
+  -#         %tr
+  -#           %th Public Name
+  -#           <br />
+  -#           %td
+  -#             = @person.public_name
+  -#         %tr
+  -#           %th IFF ID
+  -#           <br />
+  -#           %td
+  -#             = @person.id
+  -#         %tr
+  -#           %th
+  -#           %td
+  -#
+  -#       %p{style: "margin-top: -10px"} Can't make it? Please click on the button below and let someone else attend!
+  -#       = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
+  -#     - elsif @not_registered && @person.old_attendance_status == "pending attendance"
+  -#       %h2{style: "margin-bottom: 10px"} Complete the Form to Attend IFF
+  -#       %b{style: "color: orange; font-size: 16px;"} You need to complete the registration form to attend the 2018 Internet Freedom Festival.
+  -#       <br />
+  -#       <br />
+  -#       = action_button "primary", "Register Now", edit_cfp_person_path
+  -#     - elsif @not_registered == false && @person.old_attendance_status == "pending attendance"
+  -#       %h2{style: "margin-bottom: 10px"} Confirm your Attendance!
+  -#       %b{style: "font-size: 16px;"} All registered participants must confirm attendance to access the IFF:
+  -#       <br />
+  -#       <br />
+  -#       = action_button "success", "Confirm Your Attendance", confirm_attendance_cfp_person_path
+  -#       <br /><br />
+  -#       %p Please Note: Failure to confirm attendance before January 18th will result in getting moved to the waiting list.
+  -#       <br />
+  -#       %p Can't make it? Please click on the button below and let someone else attend!
+  -#       = action_button "danger", "Cancel Attendance", cancel_attendance_cfp_person_path(@person.id)
+  -#     - elsif @person.old_attendance_status == "canceled"
+  -#       %b{style: "color: orange; font-size: 16px;"} You canceled your attendance to the IFF 2018.
+  -#     - elsif @person.old_attendance_status == "waitlist"
+  -#       %b{style: "color: orange; font-size: 16px"} Ops! We’re at capacity!
+  -#       <br />
+  -#       <br />
+  -#       - if @not_registered
+  -#         %p Join the waitlist and we will contact you when more spots open.
+  -#         = action_button "primary", "Register for the Waitlist", edit_cfp_person_path
       /%h2{style: "margin-bottom: 10px; margin-top: 10px"}=t("cfp.call_for_proposal_headline")
       / - if !@person.late_event_submit
       /   %b Thank you all for the amazing ideas and sessions!
@@ -135,46 +193,31 @@
       - else
         - unless @conference.in_the_past
           /%p=t("cfp.not_forget_personal_details")
-    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
-      %h2{style: "margin-bottom: 10px"}=t("cfp.contact_headline")
-      %p=t("cfp.contact_mattermost")
-      = action_button "success", "Join the IFF Mattermost", "https://community.internetfreedomfestival.org/signup_user_complete/?id=ae9acd5b24f12ad51e158db0cddd97d0", target: :blank
-      %p{style: "margin-top: 20px"} Follow the IFF on Twitter to be on top of all things IFF!
-      = action_button "success", "Follow @InternetFF", "http://twitter.com/internetff/", target: :blank
-      %p{style: "margin-top: 20px"} Subscribe to the IFF Weekly Mailing List to get general news and updates, community stories, upcoming events and new job opportunities, all conveniently summarized and sent to your inbox once a week!
-      = action_button "success", t("Subscribe"), "https://lists.ghserv.net/mailman/listinfo/festival", target: :blank
 
-  <br />
-  .row{style: "margin-left: 10px;"}
-    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
-      %h2{style: "margin-bottom: 10px"}=t("cfp.diversity_inclusion_headline")
-      %p=t("cfp.diversity_info")
-      - if @no_events == false
-        - if @no_dif
-          /= action_button "success", "Apply Now", new_cfp_dif_path
-          %p{style: "margin-bottom: 55px"}
-        - else
-          = action_button "success", "Edit your Application", edit_cfp_dif_path
-          %p{style: "margin-bottom: 19px"}
-      - else
-        %p=t("cfp.dif_submit_events")
-    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px; height: 155px"}
-      %h2{style: "margin-bottom: 10px"} IFF Wiki
-      %p The IFF Wiki is the central information hub for the IFF. You will find useful tips about our host city of Valencia including where to stay, transportation options, restaurants and more!
-      = action_button "success", "Check out the IFF Wiki", "https://internetfreedomfestival.org/wiki/index.php/Main_Page", target: :blank
-  <br />
-  .row{style: "margin-left: 10px;"}
-    .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
-      %h2{style: "margin-bottom: 10px"} Respect and Collaboration
-      %p The IFF is designed to improve collaboration among very diverse communities, and is committed to providing a safe, welcoming and fun environment for everybody.
-      %p We encourage all participants to approach the event with open and positive attitudes, to engage constructively with others, and take the time to celebrate the passion and accomplishments of fellows attendees.
-      = action_button "success", "Please Review our Code of Conduct", "https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct", target: :blank
-    .span8{style: "background-color: #f2f2f2; width: 400px; height: 219px; padding: 13px;"}
-      %h2{style: "margin-bottom: 10px"} Contact
-      %p You can always reach the IFF team at <a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a>
-      /%p=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
-      = action_button "success", "Public PGP Key", "https://internetfreedomfestival.org/wp-content/uploads/2015/10/0x6FF97A2F.asc", target: :blank
-  <br />
+          -# --------------------------------------------------------------------------------
+
+
+  -# .row{style: "margin-left: 10px;"}
+  -#   .span8{style: "background-color: #f2f2f2; width: 400px; padding: 13px"}
+  -#     %h2{style: "margin-bottom: 10px"}=t("cfp.diversity_inclusion_headline")
+  -#     %p=t("cfp.diversity_info")
+  -#     - if @no_events == false
+  -#       - if @no_dif
+  -#         /= action_button "success", "Apply Now", new_cfp_dif_path
+  -#         %p{style: "margin-bottom: 55px"}
+  -#       - else
+  -#         = action_button "success", "Edit your Application", edit_cfp_dif_path
+  -#         %p{style: "margin-bottom: 19px"}
+  -#     - else
+
+
+  -#   .span8{style: "background-color: #f2f2f2; width: 400px; height: 219px; padding: 13px;"}
+  -#     %h2{style: "margin-bottom: 10px"} Contact
+  -#     %p You can always reach the IFF team at <a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a>
+  -#     /%p=t("cfp.contact_description_html", mail_to: mail_to(@conference.call_for_participation.contact_email))
+  -#     = action_button "success", "Public PGP Key", "https://internetfreedomfestival.org/wp-content/uploads/2015/10/0x6FF97A2F.asc", target: :blank
+  -# <br />
+
   .row
     .span16
       - if @person.events_in(@conference).size > 0
