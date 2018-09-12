@@ -4,15 +4,15 @@
     - if @old_account
       %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
 
-      %div{style: "float: right; clear: both; margin-top: 5px"}
-        - if @is_fellow || current_user.is_admin?
-          = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
+    %div{style: "float: right; clear: both; margin-top: 5px"}
+      - if @is_fellow || current_user.is_admin?
+        = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
 
-      %div{style: "float: right; margin-top: 76px"}
-        - if @person.old_attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
-          = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
-        = action_button "primary", "Edit Profile", edit_cfp_person_path
-        = action_button "primary", "Edit Account", edit_cfp_user_path
+    %div{style: "float: right; margin-top: 76px"}
+      - if @person.old_attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?
+        = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
+      = action_button "primary", "Edit Profile", edit_cfp_person_path
+      = action_button "primary", "Edit Account", edit_cfp_user_path
 
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
     %h2 User Portal
