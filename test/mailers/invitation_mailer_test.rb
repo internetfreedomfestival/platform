@@ -27,7 +27,7 @@ class InvitationMailerTest < ActionMailer::TestCase
     assert_not ActionMailer::Base.deliveries.empty?
     assert_equal [ENV.fetch('FROM_EMAIL')], email.from
     assert_equal [invited.email], email.to
-    assert_equal "You are invited to the 2019 IFF!", email.subject
+    assert_equal "Here’s your invite to the 2019 IFF!", email.subject
     assert_match expected_link, email.body.to_s
   end
 end
