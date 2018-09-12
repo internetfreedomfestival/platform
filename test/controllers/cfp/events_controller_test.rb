@@ -11,10 +11,10 @@ class Cfp::EventsControllerTest < ActionController::TestCase
     @event.attributes.except(*%w(id created_at updated_at conference_id logo_file_name logo_content_type logo_file_size logo_updated_at average_rating event_ratings_count speaker_count event_feedbacks_count average_feedback guid number_of_repeats other_locations methods resources target_audience_experience target_audience_experience_text state start_time public room_id note recording_license))
   end
 
-  test 'should get new' do
-    get :new, conference_acronym: @conference.acronym
-    assert_response :redirect
-  end
+  # test 'should get new' do
+  #   get :new, conference_acronym: @conference.acronym
+  #   assert_response :redirect
+  # end
 
   test 'should create event' do
     assert_difference('Event.count') do

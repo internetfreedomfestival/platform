@@ -23,7 +23,7 @@
         %h3 Submit a Session for the 2019 IFF
         %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 1st, 2018.
         %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-          = action_button "primary", "Submit a Session", '#', style: "margin: 10px;"
+          = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
 
   -# TICKET SECCTION -->

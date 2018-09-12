@@ -24,37 +24,48 @@ class Cfp::EventsController < ApplicationController
   end
 
   # GET /cfp/events/new
+  # def new
+  #   @new = true
+  #   # @public_names = ""
+  #   # Person.all.each do |person|
+  #   #   @public_names += person.public_name + ", " unless person.public_name == "Enter a public name here"
+  #   # end
+  #   @users = User.all
+  #   person = Person.find_by(user_id: current_user.id)
+  #   if auth_person_for_new_event?(person)
+  #     return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
+  #   end
+  #
+  #   # Remove this if statement for next conference. It is for submiting events after the conference deadline
+  #   if person.old_attendance_status == "confirmed"
+  #     authorize! :submit, Event
+  #     @event = Event.new(time_slots: @conference.default_timeslots)
+  #     @event.recording_license = @conference.default_recording_license
+  #
+  #     return respond_to do |format|
+  #       format.html # new.html.erb
+  #     end
+  #   elsif person.late_event_submit == false
+  #     return redirect_to cfp_person_path, flash: { error: t('cfp.events_closed') }
+  #   end
+  #   authorize! :submit, Event
+  #   @event = Event.new(time_slots: @conference.default_timeslots)
+  #   @event.recording_license = @conference.default_recording_license
+  #
+  #   respond_to do |format|
+  #     format.html # new.html.erb
+  #   end
+  # end
+
   def new
+    authorize! :submit, Event
     @new = true
-    @public_names = ""
-    Person.all.each do |person|
-      @public_names += person.public_name + ", " unless person.public_name == "Enter a public name here"
-    end
     @users = User.all
     person = Person.find_by(user_id: current_user.id)
-    if auth_person_for_new_event?(person)
-      return redirect_to cfp_person_path, flash: { error: t('cfp.complete_personal_profile') }
-    end
-
-    # Remove this if statement for next conference. It is for submiting events after the conference deadline
-    if person.old_attendance_status == "confirmed"
-      authorize! :submit, Event
-      @event = Event.new(time_slots: @conference.default_timeslots)
-      @event.recording_license = @conference.default_recording_license
-
-      return respond_to do |format|
-        format.html # new.html.erb
-      end
-    elsif person.late_event_submit == false
-      return redirect_to cfp_person_path, flash: { error: t('cfp.events_closed') }
-    end
-    authorize! :submit, Event
     @event = Event.new(time_slots: @conference.default_timeslots)
     @event.recording_license = @conference.default_recording_license
 
-    respond_to do |format|
-      format.html # new.html.erb
-    end
+    # redirect_to cfp_person_path
   end
 
   # GET /cfp/events/1/edit

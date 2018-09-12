@@ -1,0 +1,104 @@
+= simple_form_for([:cfp, @event], html: {multipart: true}) do |f|
+  %h3 Please, read the following instructions thoroughly before submitting your proposal.
+  <hr />
+  %h3 1. As a presenter, you should:
+  .row
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Trigger a conversation over a particular topic that will continue outside of the session
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Be inclusive and foster new connections between participants
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Respect diversity of opinion, experience and background. Please review our <a href="https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct">Code of Conduct</a>
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Design your session to fit under one of the IFF’s Themes
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Avoid using a projector or technical equipment
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Limit your session time to between 1 and 2 hours
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %p{style: "font-size: 14px"} Invite different organizations or projects to collaborate on the session with you
+  <hr />
+  %h3 2. Choose one of the 2018 IFF themes for your session
+  .row
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 On the Frontlines
+      %p{style: "font-size: 14px"} This theme creates a space for individuals on the frontlines, with two specific goals in mind: providing them with the skills and knowledge they need to stay safe online, and an opportunity to share regional experiences about current and upcoming surveillance and censorship challenges.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Making Better Tech
+      %p{style: "font-size: 14px"} The Making Better Tech theme is a space for the technologists that are driving the next generation of security and privacy tools. The theme is geared towards sharing knowledge on improving existing tools, collectively tackling known obstacles, and helping the community strategize on how to work better, together.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Training and Best Practices
+      %p{style: "font-size: 14px"} The Training and Best Practices theme creates a space for trainers, practitioners, researchers and techies working with risk management, digital security, and holistic privacy human-centered capacity building. From sharing effective tools and customized teaching practices and solutions, to addressing shared challenges and strengthening community support and fostering feedback exchange with tool developers.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Internet Freedom:
+      %h5 Present and Future
+      %p{style: "font-size: 14px"}  How should the future of the Internet Freedom space look? How can we get there from here? The Internet Freedom: Past, Present and Future theme provides the community with an opportunity to collectively create a vision and roadmap future opportunities, and tackle some of our overarching issues and concerns.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Healthier Networks and Organizations
+      %p{style: "font-size: 14px"} The Healthier Networks and Organizations theme provides a space to tackle common problems that prevent entities in the Internet Freedom space from better serving their constituents. In addition, common good projects or FLOSS tools needing help with their strategy can opt to present their project and receive collaborative feedback and recommendations from IFF participants.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Advocacy, Policy and Research
+      %p{style: "font-size: 14px"} Only through collaboration can we achieve social and political change. The Advocacy, Policy and Research theme addresses how the Internet Freedom communities can facilitate civic engagement and collective action for better policies worldwide, and how actors from other fields can take an active part in the conversation.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Journalism, Media and Communications
+      %p{style: "font-size: 14px"} The Journalism, Media and Communications theme creates a space for journalists, media organizations, designers and communications professionals to better assess the risks and threats to their work in an increasingly hostile global environment.
+  <hr />
+  %h3 3. Session Formats
+  .row
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Conversation
+      %p{style: "font-size: 14px"} Share your experience and ideas and invite reflection
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Workshop
+      %p{style: "font-size: 14px"} A practical, hands-on oriented session.
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Training
+      %p{style: "font-size: 14px"} Teach something to the attendees
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Panel Discussion
+      %p{style: "font-size: 14px"} Several speakers sharing their point of view around one topic
+    .span16{style: "background-color: #fde1d4; line-height: 22px; padding: 10px; border-left: 3px solid #f74c33; margin-bottom: 10px; width: 922px;"}
+      %h5 Other
+      %p{style: "font-size: 14px"} You can also create your own formats, as long as they fit within the allocated times and spaces.
+  <hr />
+  %fieldset.inputs
+    %legend= t("cfp.basic_information")
+    = f.input :title, label: "Session Title", hint: t("What is the title of your presentation?")
+    = f.input :other_presenters, label: "Other Presenters", hint: t("Is there someone else who is going to presenting with you? Please add their public name here.")
+    = f.input :event_type, label: "Theme", collection: translated_options(Event::TYPES), hint: "Please choose a theme to submit your session under"
+    = f.input :language, as: :language_select, only: @conference.language_codes, include_blank: true
+    = f.association :track, label: "Session Format", collection: @conference.tracks
+    = f.input :skill_level, collection: ["Beginner", "Intermediate", "Advanced"], error: " "
+    .row
+      %p{style: "margin-left: 3em"} Preferred Session Time
+      .span8.offset2
+        = f.collection_select :time_slots, [[4, "1 hour"], [ 8, "2 hours"]], :first, :last
+    <br />
+    .row
+    = f.input :description, label: "Session Description", hint: t("Describe what your presentation will be about.")
+    = f.input :desired_outcome, label: "What outcomes would you like your session to have?", hint: t("Describe in short sentences.")
+    .row
+      .span16
+        <hr />
+        %label Have you presented at IFF before?
+        = f.collection_check_boxes :iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"]], :first, :last
+
+
+        ///// This is saved to model dynamic_associations &/or is not longer used //////
+        /%p{style: "margin-left: 60px"} Would you like to apply for travel assistance?
+        /= f.collection_radio_buttons :travel_assistance, [[true, "Yes"], [false, "No"]], :first, :last
+    / = f.input :subtitle
+  / %fieldset.inputs
+  /   %legend= t("cfp.detailed_description")
+  /   = f.input :abstract, input_html: {rows: 4}, hint: t("cfp.event_abstract_hint")
+  /   = f.input :submission_note, hint: t("cfp.submission_note_hint")
+  /   = dynamic_association :links, t("cfp.links"), f
+  /   = dynamic_association :event_attachments, t("cfp.uploaded_files"), f
+
+
+  - if @new
+    .actions
+      = f.button :submit, class: 'primary', value: "Create Proposal"
+  -if @edit
+    .actions
+      = f.button :submit, class: 'primary', value: "Update Proposal"
