@@ -238,8 +238,8 @@ ActiveRecord::Schema.define(version: 20180914140558) do
     t.string   "iff_before"
     t.string   "etherpad_url"
     t.string   "public_type"
-    t.integer  "phone_number"
-    t.integer  "phone_prefix"
+    t.string   "phone_number"
+    t.string   "phone_prefix"
     t.boolean  "projector"
   end
 
