@@ -234,6 +234,8 @@ FactoryBot.define do
   factory :event do
     title { generate(:event_title) }
     subtitle 'Getting started organizing your conference'
+    time_slots 4
+    start_time '10:00'
     description 'A description of a conference'
     conference { create(:three_day_conference) }
     iff_before ['2015']
@@ -241,7 +243,6 @@ FactoryBot.define do
     desired_outcome "desired_outcome"
     phone_prefix 34
     phone_number  12345678
-    track_id 1
     event_type "Workshop"
     projector true
     track

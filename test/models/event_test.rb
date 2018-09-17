@@ -19,7 +19,6 @@ class EventTest < ActiveSupport::TestCase
   should accept_nested_attributes_for :event_attachments
   should accept_nested_attributes_for :ticket
   should validate_presence_of :title
-  should validate_presence_of :time_slots
 
   setup do
     ActionMailer::Base.deliveries = []

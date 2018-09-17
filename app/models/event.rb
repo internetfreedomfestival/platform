@@ -3,6 +3,8 @@ class Event < ActiveRecord::Base
   include ActiveRecord::Transitions
   include ActionView::Helpers::TextHelper
 
+  serialize :iff_before, Array
+
   attr_accessor :instructions
 
   before_create :generate_guid
@@ -44,8 +46,6 @@ class Event < ActiveRecord::Base
     :desired_outcome, :phone_prefix, :phone_number, :track, :event_type
 
   validates :iff_before, presence: true
-
-  validates :instructions, acceptance: true, presence: true
 
   validates_inclusion_of :projector, in: [true, false]
 

@@ -89,6 +89,7 @@ class Cfp::EventsController < ApplicationController
     )
     event_values[:iff_before] = event_values[:iff_before].reject { |value| value.blank? }
     event_values[:iff_before] = nil if event_values[:iff_before].empty?
+
     @event = Event.new(event_values)
 
     @event.instructions = event_values[:instructions]
@@ -97,10 +98,14 @@ class Cfp::EventsController < ApplicationController
     @event.event_people << EventPerson.new(person: current_user.person, event_role: 'submitter')
     @event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
 
+
     respond_to do |format|
-      if @event.save
+      if event_values[:instructions] == "true" && @event.save
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
+        if event_values[:instructions] == nil
+          @event.errors.messages[:instructions] = ["can't be blank"]
+        end
         flash[:alert] = "You must fill out all the required fields!"
         @form_params = form_params
         @new = true
