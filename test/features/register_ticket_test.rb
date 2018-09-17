@@ -3,6 +3,10 @@ require "minitest/rails/capybara"
 
 class RegisterTicketTest < Capybara::Rails::TestCase
   setup do
+    @initial_env_value = ENV['NEW_TICKETING_SYSTEM_ENABLED']
+
+    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'true'
+
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
@@ -11,6 +15,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   end
 
   teardown do
+    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = @initial_env_value
+    
     ActionMailer::Base.deliveries.clear
   end
 

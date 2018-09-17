@@ -1,32 +1,33 @@
-%table.zebra-striped
-  %thead
-    %tr
-      %th.first
-      - if @search
-        %th= sort_link @search, :first_name, term: params[:term]
-        %th= sort_link @search, :last_name, term: params[:term]
-        %th= sort_link @search, :email, term: params[:term]
-        %th= sort_link @search, :organization, term: params[:term]
-        %th= sort_link @search, :country, term: params[:term]
-        %th= sort_link @search, :status, term: params[:term]
-
-        %th
-      - else
-        %th First name
-        %th Last name
-        %th Email
-        %th Organization
-        %th Country
-        %th Status
-
-      %th.last
-  %tbody
-    - collection.each do |person|
+- if FeatureToggle.new_ticketing_system_enabled?
+  %table.zebra-striped
+    %thead
       %tr
-        %td
-        %td= link_to person.first_name, person
-        %td= link_to person.last_name, person
-        %td= link_to person.email, person
-        %td= person.organization
-        %td= person.country_of_origin
-        %td= person.attendance_status.first.status
+        %th.first
+        - if @search
+          %th= sort_link @search, :first_name, term: params[:term]
+          %th= sort_link @search, :last_name, term: params[:term]
+          %th= sort_link @search, :email, term: params[:term]
+          %th= sort_link @search, :organization, term: params[:term]
+          %th= sort_link @search, :country, term: params[:term]
+          %th= sort_link @search, :status, term: params[:term]
+
+          %th
+        - else
+          %th First name
+          %th Last name
+          %th Email
+          %th Organization
+          %th Country
+          %th Status
+
+        %th.last
+    %tbody
+      - collection.each do |person|
+        %tr
+          %td
+          %td= link_to person.first_name, person
+          %td= link_to person.last_name, person
+          %td= link_to person.email, person
+          %td= person.organization
+          %td= person.country_of_origin
+          %td= person.attendance_status.first.status

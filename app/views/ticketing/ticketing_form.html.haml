@@ -1,60 +1,61 @@
-= simple_form_for(@person, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
-  %fieldset.inputs
-  .row
-    .offset1
-      %h1 2019 IFF Ticket
-      %br
-      .span24
-        = f.input :public_name, hint: "This is the name that will be displayed in your badge."
-        = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN
-        %div.input.help-block
-          Your public gender pronoun will be displayed in your badge. Pronoun list written by
-          %a{href: 'https://twitter.com/morganastra'} @morganastra.
-          Visits
-          %a{href: 'https://pronoun.is/'} https://pronoun.is/
-          for more information.
+- if FeatureToggle.new_ticketing_system_enabled?
+  = simple_form_for(@person, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
+    %fieldset.inputs
+    .row
+      .offset1
+        %h1 2019 IFF Ticket
         %br
-          %p * Have you attended the IFF before?
-          %div.input
-            %ul.inputs-list
-              = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline) do |c|
-                %li
-                  = c.label do
-                    = c.check_box
-                    %span= c.text
-        %br
-          %p * What are your main goals for attending the 2019 IFF?
-          %div.input
-            %ul.inputs-list
-              = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline) do |c|
-                %li
-                  = c.label do
-                    = c.check_box
-                    %span= c.text
-
-        %br
-          %p * Would you like to hear more about our awesome volunteering opportunities?
+        .span24
+          = f.input :public_name, hint: "This is the name that will be displayed in your badge."
+          = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN
+          %div.input.help-block
+            Your public gender pronoun will be displayed in your badge. Pronoun list written by
+            %a{href: 'https://twitter.com/morganastra'} @morganastra.
+            Visits
+            %a{href: 'https://pronoun.is/'} https://pronoun.is/
+            for more information.
           %br
-          = f.input :interested_in_volunteer, collection: [['Yes, sounds fun!', true], ['No, thank you', false]], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
+            %p * Have you attended the IFF before?
+            %div.input
+              %ul.inputs-list
+                = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline) do |c|
+                  %li
+                    = c.label do
+                      = c.check_box
+                      %span= c.text
+          %br
+            %p * What are your main goals for attending the 2019 IFF?
+            %div.input
+              %ul.inputs-list
+                = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline) do |c|
+                  %li
+                    = c.label do
+                      = c.check_box
+                      %span= c.text
 
+          %br
+            %p * Would you like to hear more about our awesome volunteering opportunities?
+            %br
+            = f.input :interested_in_volunteer, collection: [['Yes, sounds fun!', true], ['No, thank you', false]], label: false, default: 0,  hint: "Volunteering is a great way to meet people outside of your usual circles!"
+
+          %br
+            %p * Which days are you planning to attend?
+            %div.input
+              %ul.inputs-list
+                = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline) do |c|
+                  %li
+                    = c.label do
+                      = c.check_box
+                      %span= c.text
         %br
-          %p * Which days are you planning to attend?
-          %div.input
-            %ul.inputs-list
-              = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline) do |c|
-                %li
-                  = c.label do
-                    = c.check_box
-                    %span= c.text
-      %br
-        %p
-        *I agree to respect and follow
-        %a{href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
-        We are committed to providing a safe and welcoming environment.
-        All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
-        %input{name: 'person[code_of_conduct][]', type: 'checkbox', value: 'true'}
+          %p
+          *I agree to respect and follow
+          %a{href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
+          We are committed to providing a safe and welcoming environment.
+          All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
+          %input{name: 'person[code_of_conduct][]', type: 'checkbox', value: 'true'}
 
 
-  .actions
-    = f.button :submit, value: 'Register', class: 'primary'
-    = link_to "Cancel", :back, class: "btn"
+    .actions
+      = f.button :submit, value: 'Register', class: 'primary'
+      = link_to "Cancel", :back, class: "btn"

@@ -7,8 +7,9 @@
         - if @user.role == "crew" && !@is_fellow.nil?
           %h3 Already a Fellow
         - else
-          = action_button "success", 'Send invitation', send_invitation_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to send an invitation to this person?"}
-          = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request to this person?"}
+          - if FeatureToggle.new_ticketing_system_enabled?
+            = action_button "success", 'Send invitation', send_invitation_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to send an invitation to this person?"}
+            = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request to this person?"}
           = action_button "success", "Make this person a Fellow", make_fellow_people_path(@person), title: "This will make this person a fellow."
         - if @person.late_event_submit == false
           = action_button "success", "Allow Late Event Submission", allow_late_submissions_people_path(@person), title: "This will allow this person to submit events after the deadline."

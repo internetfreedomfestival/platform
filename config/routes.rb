@@ -134,7 +134,7 @@ Frab::Application.routes.draw do
       scope path: '/invitations/:id' do
         get :ticketing_form, to: 'ticketing#ticketing_form'
         post :register_ticket, to: 'ticketing#register_ticket'
-      end
+      end 
 
       resources :events do
         collection do
