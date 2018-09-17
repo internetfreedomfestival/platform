@@ -40,6 +40,11 @@ conference = Conference.new(title: "Internet Freedom Festival",
                             color: '00ff7f')
 conference.save!
 
+tracks = ["Collaborative Talk", "Workshop", "Panel Discussion", "Feature", "Feedback"]
+tracks.each do |track|
+  Track.create!(conference: conference, name: track)
+end
+
 puts "Created conference [#{conference.acronym}] #{conference.title}"
 
 cfp = CallForParticipation.new(

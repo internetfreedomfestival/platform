@@ -3,6 +3,8 @@ class Event < ActiveRecord::Base
   include ActiveRecord::Transitions
   include ActionView::Helpers::TextHelper
 
+  attr_accessor :instructions
+
   before_create :generate_guid
 
   TYPES = ["On the Frontlines", "Making Better Tech", "Training and Best Practices", "Internet Freedom: Present and Future", "Healthier Networks and Organizations", "Advocacy, Policy and Research", "Journalism, Media and Communications"].freeze
@@ -34,13 +36,18 @@ class Event < ActiveRecord::Base
 
   validates_attachment_content_type :logo, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
-  validates :title, :time_slots, :description, presence: true
-
 
   # These presence validations are commented out for now to allow Admin to add social and special events with only required info.
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
   # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
+  validates_presence_of :title, :subtitle, :description, :public_type,
+    :desired_outcome, :phone_prefix, :phone_number, :track, :event_type
 
+  validates :iff_before, presence: true
+
+  validates :instructions, acceptance: true, presence: true
+
+  validates_inclusion_of :projector, in: [true, false]
 
   after_save :update_conflicts
 

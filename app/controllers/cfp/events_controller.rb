@@ -61,7 +61,9 @@ class Cfp::EventsController < ApplicationController
     authorize! :submit, Event
     @new = true
     @users = User.all
-    person = Person.find_by(user_id: current_user.id)
+
+    @person = Person.find_by(user_id: current_user.id)
+
     @event = Event.new(time_slots: @conference.default_timeslots)
     @event.recording_license = @conference.default_recording_license
 
@@ -82,7 +84,15 @@ class Cfp::EventsController < ApplicationController
   # POST /cfp/events
   def create
     authorize! :submit, Event
-    @event = Event.new(event_params.merge(recording_license: @conference.default_recording_license))
+    event_values = form_params.merge(
+      recording_license: @conference.default_recording_license,
+    )
+    event_values[:iff_before] = event_values[:iff_before].reject { |value| value.blank? }
+    event_values[:iff_before] = nil if event_values[:iff_before].empty?
+    @event = Event.new(event_values)
+
+    @event.instructions = event_values[:instructions]
+
     @event.conference = @conference
     @event.event_people << EventPerson.new(person: current_user.person, event_role: 'submitter')
     @event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
@@ -92,6 +102,7 @@ class Cfp::EventsController < ApplicationController
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
+        @form_params = form_params
         @new = true
         format.html { render action: 'new' }
       end
@@ -189,6 +200,12 @@ class Cfp::EventsController < ApplicationController
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
+  end
+
+  def form_params
+    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
+      :desired_outcome, :phone_prefix, :phone_number, :track_id, :event_type,
+      :projector, {iff_before: []}, :instructions)
   end
 
   def auth_person_for_new_event?(person)

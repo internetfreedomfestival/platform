@@ -234,11 +234,25 @@ FactoryBot.define do
   factory :event do
     title { generate(:event_title) }
     subtitle 'Getting started organizing your conference'
-    time_slots 4
-    start_time '10:00'
     description 'A description of a conference'
     conference { create(:three_day_conference) }
     iff_before ['2015']
+    public_type "Conferencers"
+    desired_outcome "desired_outcome"
+    phone_prefix 34
+    phone_number  12345678
+    track_id 1
+    event_type "Workshop"
+    projector true
+    track
+  end
+
+  factory :track do
+    conference_id 3
+    name 'Name'
+    created_at { Date.today.ago(1.days) }
+    updated_at { Date.today.since(6.days) }
+    color "fefd7f"
   end
 
   factory :event_person do

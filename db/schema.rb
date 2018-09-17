@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180910150554) do
+ActiveRecord::Schema.define(version: 20180914140558) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -238,6 +238,9 @@ ActiveRecord::Schema.define(version: 20180910150554) do
     t.string   "iff_before"
     t.string   "etherpad_url"
     t.string   "public_type"
+    t.integer  "phone_number"
+    t.integer  "phone_prefix"
+    t.boolean  "projector"
   end
 
   add_index "events", ["conference_id"], name: "index_events_on_conference_id"
