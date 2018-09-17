@@ -82,7 +82,7 @@
           = f.input :phone_prefix, label: "Prefix"
           = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS"
           = f.association :track, label: "Session Format", collection: @conference.tracks
-          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: translated_options(Event::TYPES)
+          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
 
           %p
             %abbr{title: 'required'} *

@@ -7,6 +7,11 @@ class CfpFormTest < Capybara::Rails::TestCase
     @event = create(:event)
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @cfp = create(:call_for_participation, conference: @conference)
+
+    tracks = ["Collaborative Talk", "Workshop", "Panel Discussion", "Feature", "Feedback"]
+    tracks.each do |track|
+      Track.create!(conference: @conference, name: track)
+    end
   end
 
   test 'new user can create a new call for proposals' do
@@ -26,7 +31,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_prefix]', with: 34
       fill_in 'event[phone_number]', with: 12345678
-      select("4", from: 'event[track_id]')
+      select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
