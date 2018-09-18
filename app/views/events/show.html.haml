@@ -40,6 +40,12 @@
     .span6
       %h2= t(:basic_information)
       %p
+        %b= "Title:"
+        = @event.title
+      %p
+        %b= "Goal of the session:"
+        = @event.subtitle
+      %p
         %b= Event.human_attribute_name(:track) + ':'
         = @event.track_name
       %p
@@ -49,7 +55,10 @@
         %b= "Theme:"
         = @event.event_type
       %p
-        %b Format:
+        %b= "Public type:"
+        = @event.public_type
+      %p
+        %b= "Format:"
         = @event.track
 
       - if can? :crud, Event
@@ -64,6 +73,9 @@
           -else
             = link_to @event.ticket.remote_ticket_id, get_ticket_view_url( @event.ticket.remote_ticket_id ), target: "_blank"
       %p
+        %b Presented IFF Before?:
+        = @event.iff_before
+      %p
         %b Etherpad URL:
         = @event.etherpad_url
       %p
@@ -73,30 +85,43 @@
         %b Skill Level:
         = @event.skill_level
       %p
-        %b Presented IFF Before?:
-        = @event.iff_before
-      %p
         %b Average audience feedback:
         = number_with_precision @event.average_feedback, precision: 1
     .span6
       %h2= EventPerson.model_name.human(count: 2)
       %p= @event.speakers.map{ |p| link_to p.public_name, p}.join(", ").html_safe
-      %h2 Description:
+      %p
+        %b Contact phone number:
+        =link_to "(" + @event.phone_prefix + ")" + @event.phone_number,  "tel:#{@event.phone_prefix+@event.phone_number}"
+      %h2= "Description:"
       = simple_format @event.description
       %p
-        %b Desired Outcome:
+        %b= "Desired Outcome:"
         = @event.desired_outcome
+      %p
+        %b Instructions:
+        = @event.instructions
       %h2 Scheduling
       - if can? :crud, Event
         %p
           %b Start time:
           = event_start_time
       %p
-        %b Room:
+        %b= "Room:"
         = @event.room.try(:name)
       -if @event.conference != @conference
         %b Conference:
         = @event.conference.acronym
+      %p
+        %b= "Time Slots:"
+        = @event.time_slots
+      %p
+        %b= "Need projector:"
+        -if @event.projector
+          Yes
+        -else
+          No
+
     / .span4
     /   = image_box @event.logo, :large
   .row

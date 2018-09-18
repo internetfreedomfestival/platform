@@ -94,6 +94,12 @@ class Cfp::EventsController < ApplicationController
 
     @event.instructions = event_values[:instructions]
 
+    if @event.track == 'Workshop'
+      @event.time_slots = 6
+    else
+      @event.time_slots = 3
+    end
+
     @event.conference = @conference
     @event.event_people << EventPerson.new(person: current_user.person, event_role: 'submitter')
     @event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
