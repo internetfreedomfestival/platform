@@ -151,7 +151,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
-    @event = Event.new(event_params)
+    @event = Event.new(form_params)
     @event.conference = @conference
     authorize! :create, @event
     respond_to do |format|
@@ -170,7 +170,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     authorize! :update, @event
     respond_to do |format|
-      if @event.update_attributes(event_params)
+      if @event.update_attributes(form_params)
         format.html { redirect_to(@event, notice: 'Event was successfully updated.') }
         format.js   { head :ok }
       else
@@ -284,14 +284,20 @@ class EventsController < ApplicationController
     @search.result(distinct: true)
   end
 
-  def event_params
-    params.require(:event).permit(
-      :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :public_type, :tech_rider,
-      event_attachments_attributes: %i(id title attachment public _destroy),
-      ticket_attributes: %i(id remote_ticket_id),
-      links_attributes: %i(id title url _destroy),
-      event_people_attributes: %i(id person_id event_role role_state notification_subject notification_body _destroy)
-    )
+  # def event_params
+  #   params.require(:event).permit(
+  #     :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :public_type, :tech_rider,
+  #     event_attachments_attributes: %i(id title attachment public _destroy),
+  #     ticket_attributes: %i(id remote_ticket_id),
+  #     links_attributes: %i(id title url _destroy),
+  #     event_people_attributes: %i(id person_id event_role role_state notification_subject notification_body _destroy)
+  #   )
+  # end
+
+  def form_params
+    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
+      :desired_outcome, :phone_prefix, :phone_number, :track_id, :event_type,
+      :projector, {iff_before: []}, :instructions)
   end
 
   # Trying to send email to user for accepted event notification

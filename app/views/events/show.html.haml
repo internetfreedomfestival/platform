@@ -73,9 +73,6 @@
         %b Skill Level:
         = @event.skill_level
       %p
-        %b Event Duration in Hours:
-        = @event.time_slots / 4
-      %p
         %b Presented IFF Before?:
         = @event.iff_before
       %p
@@ -90,9 +87,6 @@
         %b Desired Outcome:
         = @event.desired_outcome
       %h2 Scheduling
-      %p
-        %b Time slots:
-        = format_time_slots @event.time_slots
       - if can? :crud, Event
         %p
           %b Start time:
