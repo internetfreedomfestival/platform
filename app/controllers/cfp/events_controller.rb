@@ -94,6 +94,13 @@ class Cfp::EventsController < ApplicationController
 
     @event.instructions = event_values[:instructions]
 
+    matched = 0
+    Event.all.each do |event|
+      if event.title == event_values[:title]
+        matched =+ 1
+      end
+    end
+
     if @event.track == 'Workshop'
       @event.time_slots = 6
     else
@@ -106,11 +113,14 @@ class Cfp::EventsController < ApplicationController
 
 
     respond_to do |format|
-      if event_values[:instructions] == "true" && @event.save
+      if event_values[:instructions] == "true" && matched == 0 && @event.save
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
         if event_values[:instructions] == nil
           @event.errors.messages[:instructions] = ["can't be blank"]
+        end
+        if matched > 0
+          flash[:danger] = "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted."
         end
         flash[:alert] = "You must fill out all the required fields!"
         @form_params = form_params

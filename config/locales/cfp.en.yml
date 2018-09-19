@@ -50,6 +50,7 @@ en:
     event_abstract_hint: "One short paragraph that succinctly describes your proposal. (HTML)"
     submission_note_hint: "Visible for admins and users, contains additional information."
     event_confirmed: "Your proposal was confirmed"
+    event_title_already_exist: "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted."
     event_created_notice: "Your proposal was successfully created."
     event_description_hint: "A longer description of your proposal. Use this to give additional details that did not fit in the abstract. Both, abstract and description, will be shown on the conference website. (HTML)"
     event_time_slots_hint: "Length of your event in hours and minutes. For regular talks etc. just use the default."
