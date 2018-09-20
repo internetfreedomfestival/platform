@@ -91,11 +91,12 @@
       = action_button "primary", "Check out the IFF Wiki", "https://internetfreedomfestival.org/wiki/index.php/Main_Page", target: :blank
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+
   .row
     .span16
       - if @person.events_in(@conference).size > 0
         <br />
-        %h2=t("cfp.events_submitted")
+        %h2{style: "margin: 10px;"}=t("cfp.events_submitted")
         = render "table", collection: @person.events_as_presenter_in(@conference)
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
