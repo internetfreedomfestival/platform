@@ -14,11 +14,11 @@
       = action_button "primary", "Edit Profile", edit_cfp_person_path
       = action_button "primary", "Edit Account", edit_cfp_user_path
 
-    =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px"
-    %h2 User Portal
+    =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px; margin-left: 10px;"
+    %h2{style: "margin-left: 20px;"} User Portal
 
   .row{style: "margin: 10px;"}
-    .span8{style: "margin-bottom: 30px; margin-left: 5px; height: 200px;"}
+    .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
       %div
         %h3 Submit a Session for the 2019 IFF
         %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 1st, 2018.
@@ -96,12 +96,12 @@
     .span16
       - if @person.events_in(@conference).size > 0
         <br />
-        %h2{style: "margin: 10px;"}=t("cfp.events_submitted")
+        %h2{style: "margin-left: 40px; margin-bottom: 35px;"}=t("cfp.events_submitted")
         = render "table", collection: @person.events_as_presenter_in(@conference)
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
     %br
-    .row{style: "margin: 10px;"}
+    .row{style: "margin-left: 35px;"}
       %p
       You can contact us at
       %a{href: "mailto:team@internetfreedomfestival.org"} team@internetfreedomfestival.org.
