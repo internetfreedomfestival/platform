@@ -73,12 +73,10 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/1/edit
   def edit
     @edit = true
-    @public_names = ""
     Person.all.each do |person|
-      @public_names += person.public_name + ", "
+      @event = current_user.person.events.find(params[:id])
     end
     authorize! :submit, Event
-    @event = current_user.person.events.find(params[:id])
   end
 
   # POST /cfp/events

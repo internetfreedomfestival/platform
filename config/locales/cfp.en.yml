@@ -58,7 +58,7 @@ en:
     event_withdrawn_notice: "Your submission has been withdrawn."
     events_closed: "The deadline for event submission is over."
     events_closed_info: "The 2018 IFF Call for Proposals closed on"
-    events_submitted: "Proposals you've already submitted:"
+    events_submitted: "Your Sessions:"
     forgot_password_button: "Lost password"
     forgot_password_description: "Been here before, but don't remember your password? We know how it is, so please feel free to"
     forgot_password_headline: "Forgot your password?"
