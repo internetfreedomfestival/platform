@@ -63,15 +63,16 @@
       %h5 Feedback
       %p Present a project or tool to get feedback from participants.
     .span16
-      %p{style: "margin-top: 10px;"}
-        %b I have read the instructions above and I will follow them to complete this form
+      %p{style: "margin-top: 10px; margin-right: 26rem; background: #e6e2d3;"}
         %input{name: "event[instructions]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
         - if @event.errors.messages.key?(:instructions)
           %span.error= @event.errors.messages[:instructions].first
+        %b I have read the instructions above and I will follow them to complete this form
 
   %fieldset.inputs
     .offset1
       .row
+        %h2{style: "margin: 25px;"} Session Submmision Form
         .span24{style: "line-height: 22px; padding: 10px; width: 922px;"}
           = f.input :title, label: "Session Title"
           = f.input :subtitle, label: "Goal of the session", hint: "Describe it in just a sentence."

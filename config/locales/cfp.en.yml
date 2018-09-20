@@ -20,7 +20,7 @@ en:
     contact_description_html: "You can always reach the IFF team at %{mail_to}"
     contact_headline: "Stay in touch with the Community"
     contact_mattermost: "Join the IFF Mattermost, our platform for community discussions."
-    create_cfp: "Call for Proposals Form"
+    create_cfp: "Call for Proposals"
     create_dif: "You can apply for the DIF here"
     create_event_headline: "Create a new proposal"
     current_password_hint: "we need your current password to confirm your changes"

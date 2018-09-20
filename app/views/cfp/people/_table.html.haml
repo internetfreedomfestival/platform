@@ -3,7 +3,7 @@
     %tr
       %th.first
       %th= t("Title")
-      
+
       - if @conference.event_state_visible
         %th= t("Status")
       - if @conference.feedback_enabled
@@ -26,11 +26,11 @@
           %td
             - if event.event_feedbacks_count > 2
               s<sub>N-1</sub> = #{event.feedback_standard_deviation} n = #{event.event_feedbacks_count}
-            - else 
+            - else
               No Feedback
         %td
-          = link_to t("edit"), edit_cfp_event_path(event), class: "btn small"
-          = link_to t("delete"), cfp_event_path(event), class: "btn small", method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this proposal? This will be final!"}
+          = link_to t("Edit"), edit_cfp_event_path(event), class: "btn primary"
+          = link_to t("Delete"), cfp_event_path(event), class: "btn danger", method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this proposal? This will be final!"}
           - if event.state == "accepting"
             = action_button "success", "Confirm", update_state_cfp_event_path(event)
           - if @conference.event_state_visible
