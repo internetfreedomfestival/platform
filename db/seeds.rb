@@ -55,3 +55,30 @@ cfp = CallForParticipation.new(
 cfp.save!
 
 puts "Created call for participation for conference [#{conference.acronym}] #{conference.title}"
+
+person = Person.create!(
+  email: 'test@example.org',
+  first_name: 'Test',
+  last_name: 'User',
+  public_name: 'test_user',
+  country_of_origin: 'Spain',
+  professional_background: ['Developer'],
+  iff_before: ['none'],
+  gender: ['female']
+)
+
+password = Rails.env.production? ? SecureRandom.urlsafe_base64(32) : 'test123'
+
+test_user = User.new(
+  email: person.email,
+  password: password,
+  password_confirmation: password
+)
+test_user.person = person
+test_user.role = 'submmiter'
+test_user.confirmed_at = Time.now
+test_user.save!
+person.user_id = test_user.id
+person.save!
+
+puts "Created test user (#{test_user.email}) with password #{password}"
