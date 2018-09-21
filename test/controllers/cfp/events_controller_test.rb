@@ -8,7 +8,9 @@ class Cfp::EventsControllerTest < ActionController::TestCase
   end
 
   def event_params
-    @event.attributes.except(*%w(id created_at updated_at conference_id logo_file_name logo_content_type logo_file_size logo_updated_at average_rating event_ratings_count speaker_count event_feedbacks_count average_feedback guid number_of_repeats other_locations methods resources target_audience_experience target_audience_experience_text state start_time public room_id note recording_license))
+    params = @event.attributes.except(*%w(id created_at updated_at conference_id logo_file_name logo_content_type logo_file_size logo_updated_at average_rating event_ratings_count speaker_count event_feedbacks_count average_feedback guid number_of_repeats other_locations methods resources target_audience_experience target_audience_experience_text state start_time public room_id note recording_license))
+    params["instructions"] = "true"
+    params
   end
 
   test 'should get new' do
@@ -17,9 +19,16 @@ class Cfp::EventsControllerTest < ActionController::TestCase
   end
 
   test 'should create event' do
-    post :create, event: event_params, conference_acronym: @conference.acronym
+    assert_difference('Event.count') do
+      post :create, event: event_params.merge(title: "titulo nuevo"), conference_acronym: @conference.acronym
+    end
+    assert_redirected_to cfp_person_path
+  end
 
-    assert_response :success
+  test 'should validate title' do
+    post :create, event: event_params, conference_acronym: @conference.acronym
+    post :create, event: event_params, conference_acronym: @conference.acronym
+    assert_match "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted.", @response.body
   end
 
   test 'should get edit' do

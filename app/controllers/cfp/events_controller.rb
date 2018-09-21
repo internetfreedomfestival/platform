@@ -82,52 +82,19 @@ class Cfp::EventsController < ApplicationController
   # POST /cfp/events
   def create
     authorize! :submit, Event
-    event_values = form_params.merge(
-      recording_license: @conference.default_recording_license,
-    )
-    event_values[:iff_before] = event_values[:iff_before].reject { |value| value.blank? }
-    event_values[:iff_before] = nil if event_values[:iff_before].empty?
 
-    @event = Event.new(event_values)
+    event_values = prepare_params(form_params)
+    @event = build_event(event_values)
 
-    @event.instructions = event_values[:instructions]
-
-    wrong_email_list = []
-    unless @event.other_presenters.nil?
-      email_list = @event.other_presenters.split(/[\s,]/)
-
-      email_list.each do |email|
-        found = Person.find_by(email: email)
-        if found.nil?
-          wrong_email_list << email
-        end
-      end
-    end
-
-
-    matched = 0
-
-    Event.all.each do |event|
-      if event.title == event_values[:title]
-        matched =+ 1
-      end
-    end
-
-    if @event.track == 'Workshop'
-      @event.time_slots = 6
-    else
-      @event.time_slots = 3
-    end
-
-    @event.conference = @conference
-    @event.event_people << EventPerson.new(person: current_user.person, event_role: 'submitter')
-    @event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
-
+    duplicated_title = duplicated_title?(@event.title)
+    instructions_checked = event_values[:instructions] == "true"
+    event_valid = @event.valid? && instructions_checked && !duplicated_title
 
     respond_to do |format|
-      if event_values[:instructions] == "true" && matched == 0 && @event.save
+      if event_valid && @event.save
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
+
         flash[:alert] = "You must fill out all the required fields!"
 
         if event_values[:instructions] == nil
@@ -136,10 +103,11 @@ class Cfp::EventsController < ApplicationController
 
         flash[:danger] = []
 
-        if matched > 0
+        if duplicated_title
           flash[:danger] << "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted."
         end
-        if wrong_email_list.count > 0
+
+        if invalid_presenters?(@event.other_presenters)
           flash[:danger] << "It seems that the e-mail you inserted does not exist in our database. Please be sure your colleagues are registered platform users in order to be able to add them as your collaborators.
                             NOTE: This field is not mandatory and therefore you can add information about your collaborators later."
         end
@@ -247,6 +215,47 @@ class Cfp::EventsController < ApplicationController
     params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
       :desired_outcome, :phone_prefix, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions)
+  end
+
+  def prepare_params(form_params)
+    event_values = form_params.merge(
+      recording_license: @conference.default_recording_license,
+    )
+    event_values[:iff_before] = event_values[:iff_before].reject { |value| value.blank? }
+    event_values[:iff_before] = nil if event_values[:iff_before].empty?
+    event_values
+  end
+
+  def build_event(event_values)
+    event = Event.new(event_values)
+    event.instructions = event_values[:instructions]
+    if event.track == 'Workshop'
+      event.time_slots = 6
+    else
+      event.time_slots = 3
+    end
+    event.conference = @conference
+    event.event_people << EventPerson.new(person: current_user.person, event_role: 'submitter')
+    event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
+    event
+  end
+
+  def invalid_presenters?(presenters)
+    return false if presenters.nil?
+
+    email_list = presenters.split(/[\s,]/)
+
+    email_list.each do |email|
+      found = Person.find_by(email: email)
+      if found.nil?
+        return true
+      end
+    end
+    false
+  end
+
+  def duplicated_title?(title)
+    Event.exists?(title: title, conference: @conference)
   end
 
   def auth_person_for_new_event?(person)
