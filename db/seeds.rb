@@ -75,7 +75,7 @@ test_user = User.new(
   password_confirmation: password
 )
 test_user.person = person
-test_user.role = 'submmiter'
+test_user.role = 'submitter'
 test_user.confirmed_at = Time.now
 test_user.save!
 person.user_id = test_user.id
