@@ -1,5 +1,11 @@
 .flash
   - flash.each do |type, message|
-    %div{class: "alert-message #{type == 'notice' ? "success" : type} fade in", "data-alert" => "alert"}
-      %a.close{href: "#"} ×
-      %p= message
+    -if message.is_a?(Array)
+      -message.each do |msg|
+        %div{class: "alert-message #{type == 'notice' ? "success" : type} fade in", "data-alert" => "alert"}
+          %a.close{href: "#"} ×
+          %p= msg
+    -else
+      %div{class: "alert-message #{type == 'notice' ? "success" : type} fade in", "data-alert" => "alert"}
+        %a.close{href: "#"} ×
+        %p= message

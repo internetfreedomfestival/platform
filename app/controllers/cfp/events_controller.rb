@@ -92,7 +92,21 @@ class Cfp::EventsController < ApplicationController
 
     @event.instructions = event_values[:instructions]
 
+    wrong_email_list = []
+    unless @event.other_presenters.nil?
+      email_list = @event.other_presenters.split(/[\s,]/)
+
+      email_list.each do |email|
+        found = Person.find_by(email: email)
+        if found.nil?
+          wrong_email_list << email
+        end
+      end
+    end
+
+
     matched = 0
+
     Event.all.each do |event|
       if event.title == event_values[:title]
         matched =+ 1
@@ -114,13 +128,21 @@ class Cfp::EventsController < ApplicationController
       if event_values[:instructions] == "true" && matched == 0 && @event.save
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
+        flash[:alert] = "You must fill out all the required fields!"
+
         if event_values[:instructions] == nil
           @event.errors.messages[:instructions] = ["can't be blank"]
         end
+
+        flash[:danger] = []
+
         if matched > 0
-          flash[:danger] = "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted."
+          flash[:danger] << "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted."
         end
-        flash[:alert] = "You must fill out all the required fields!"
+        if wrong_email_list.count > 0
+          flash[:danger] << "It seems that the e-mail you inserted does not exist in our database. Please be sure your colleagues are registered platform users in order to be able to add them as your collaborators.
+                            NOTE: This field is not mandatory and therefore you can add information about your collaborators later."
+        end
         @form_params = form_params
         @new = true
         format.html { render action: 'new' }
