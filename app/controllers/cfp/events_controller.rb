@@ -115,13 +115,13 @@ class Cfp::EventsController < ApplicationController
           @event.errors.messages[:instructions] = ["can't be blank"]
         end
 
-        # if event_values[:understand_one_presenter] == nil
-        #   @event.errors.messages[:understand_one_presenter] = ["can't be blank"]
-        # end
-        #
-        # if event_values[:confirm_not_stipend] == nil
-        #   @event.errors.messages[:confirm_not_stipend] = ["can't be blank"]
-        # end
+        if event_values[:understand_one_presenter] == nil
+          @event.errors.messages[:understand_one_presenter] = ["can't be blank"]
+        end
+
+        if event_values[:confirm_not_stipend] == nil
+          @event.errors.messages[:confirm_not_stipend] = ["can't be blank"]
+        end
 
         # if event_values[:code_of_conduct] == nil
         #   @event.errors.messages[:code_of_conduct] = ["can't be blank"]
