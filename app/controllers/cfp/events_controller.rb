@@ -88,16 +88,22 @@ class Cfp::EventsController < ApplicationController
 
     duplicated_title = duplicated_title?(@event.title)
     instructions_checked = event_values[:instructions] == "true"
+
     understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
     confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
-    code_of_conduct_checked = event_values[:code_of_conduct] == "true"
 
-    event_valid = @event.valid? && instructions_checked && !duplicated_title && understand_one_presenter_checked &&
-                  confirm_not_stipend_checked && code_of_conduct_checked
+    travel_assistance_checked = event_values[:travel_assistence] == "true"
+
+
+    travel_assistence = travel_assistance_checked != "true" || (travel_assistance_checked == "true" && understand_one_presenter_checked && confirm_not_stipend_checked)
+    # p event_values[:code_of_conduct]
+
+    event_valid = @event.valid? && instructions_checked && !duplicated_title && travel_assistence
+
 
     respond_to do |format|
       if event_valid && @event.save
-
+        # p event_values[:code_of_conduct], "@@@@@@@@@@@@@@@@@@@@@@@@@"
         event_person = EventPerson.new(person: current_user.person, event: @event, event_role: "submitter")
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
@@ -109,17 +115,17 @@ class Cfp::EventsController < ApplicationController
           @event.errors.messages[:instructions] = ["can't be blank"]
         end
 
-        if event_values[:understand_one_presenter] == nil
-          @event.errors.messages[:understand_one_presenter] = ["can't be blank"]
-        end
+        # if event_values[:understand_one_presenter] == nil
+        #   @event.errors.messages[:understand_one_presenter] = ["can't be blank"]
+        # end
+        #
+        # if event_values[:confirm_not_stipend] == nil
+        #   @event.errors.messages[:confirm_not_stipend] = ["can't be blank"]
+        # end
 
-        if event_values[:confirm_not_stipend] == nil
-          @event.errors.messages[:confirm_not_stipend] = ["can't be blank"]
-        end
-
-        if event_values[:code_of_conduct] == nil
-          @event.errors.messages[:code_of_conduct] = ["can't be blank"]
-        end
+        # if event_values[:code_of_conduct] == nil
+        #   @event.errors.messages[:code_of_conduct] = ["can't be blank"]
+        # end
 
         flash[:danger] = []
 

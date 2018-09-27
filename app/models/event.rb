@@ -96,12 +96,18 @@ class Event < ActiveRecord::Base
 
   validates_inclusion_of :projector, in: [true, false]
 
-  validates :group, presence: true
 
-  validates :past_travel_assistance, presence: true
+  def is_travel_assistence
+    if @travel_assistance.present?
+      return true
+    end
+    return false
+  end
 
+  validates :group, presence: true, if: :is_travel_assistence
+  validates :past_travel_assistance, presence: true, if: :is_travel_assistence
 
-  validates_format_of :recipient_travel_stipend, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates_format_of :recipient_travel_stipend, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
 
   after_save :update_conflicts
 
