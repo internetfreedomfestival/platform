@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180914140558) do
+ActiveRecord::Schema.define(version: 20180927070947) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -139,13 +139,16 @@ ActiveRecord::Schema.define(version: 20180914140558) do
 
   create_table "difs", force: :cascade do |t|
     t.string   "travel_support"
-    t.boolean  "past_travel_assistance"
+    t.string   "past_travel_assistance"
     t.boolean  "willing_to_facilitate"
     t.string   "status"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "person_id"
+    t.integer  "event_id"
   end
+
+  add_index "difs", ["event_id"], name: "index_difs_on_event_id"
 
   create_table "event_attachments", force: :cascade do |t|
     t.integer  "event_id",                               null: false
@@ -200,17 +203,17 @@ ActiveRecord::Schema.define(version: 20180914140558) do
   add_index "event_ratings", ["person_id"], name: "index_event_ratings_on_person_id"
 
   create_table "events", force: :cascade do |t|
-    t.integer  "conference_id",                          null: false
-    t.string   "title",                                  null: false
+    t.integer  "conference_id",                             null: false
+    t.string   "title",                                     null: false
     t.string   "subtitle"
-    t.string   "event_type",            default: "talk"
+    t.string   "event_type",               default: "talk"
     t.integer  "time_slots"
-    t.string   "state",                 default: "new",  null: false
+    t.string   "state",                    default: "new",  null: false
     t.string   "language"
     t.datetime "start_time"
     t.text     "abstract"
     t.text     "description"
-    t.boolean  "public",                default: true
+    t.boolean  "public",                   default: true
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
@@ -220,14 +223,14 @@ ActiveRecord::Schema.define(version: 20180914140558) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "average_rating"
-    t.integer  "event_ratings_count",   default: 0
+    t.integer  "event_ratings_count",      default: 0
     t.text     "note"
     t.text     "submission_note"
-    t.integer  "speaker_count",         default: 0
-    t.integer  "event_feedbacks_count", default: 0
+    t.integer  "speaker_count",            default: 0
+    t.integer  "event_feedbacks_count",    default: 0
     t.float    "average_feedback"
     t.string   "guid"
-    t.boolean  "do_not_record",         default: false
+    t.boolean  "do_not_record",            default: false
     t.string   "recording_license"
     t.text     "tech_rider"
     t.text     "other_presenters"
@@ -241,6 +244,10 @@ ActiveRecord::Schema.define(version: 20180914140558) do
     t.string   "phone_number"
     t.string   "phone_prefix"
     t.boolean  "projector"
+    t.string   "group"
+    t.string   "recipient_travel_stipend"
+    t.string   "travel_support"
+    t.string   "past_travel_assistance"
   end
 
   add_index "events", ["conference_id"], name: "index_events_on_conference_id"

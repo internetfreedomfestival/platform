@@ -69,6 +69,7 @@
           %span.error= @event.errors.messages[:instructions].first
         %b I have read the instructions above and I will follow them to complete this form
 
+
   %fieldset.inputs
     .offset1
       .row
@@ -110,6 +111,87 @@
                   =c.label do
                     = c.check_box
                     %span= c.text
+
+          %br
+          %br
+
+            .span16
+              %b Diversity and Inclusion Program for Session Presenters
+            .span16
+              %p{style: "margin-top: 10px; margin-right: 26rem;margin-left: 7px;"}
+                = f.check_box :travel_assistance, id: :travel
+                I need travel support to attend the 2019 IFF.
+
+            .span16{hidden: "hidden", id: "dif_form", style: "width: 55rem; margin-top: 2rem;"}
+              %div
+              At the IFF we work very hard to raise funds to ensure that voices from underrepresented and marginalized groups have more opportunities to be heard. Because of the huge demand for support, we ask that you don’t request more than what you need to attend– for some, this stipend is the only opportunity they have to participate. If you have other options to support your participation, we encourage you to explore them early on in order to secure your attendance.
+              %br
+
+              .span24{style: "margin-top: 50px;"}
+                %p
+                *Which underrepresented group(s) do you belong to?
+              .span8{style: "margin-left: -146px;margin-top: 15px;height: 50px;"}
+                = f.input :group, label: false
+                %br
+                %br
+
+              .span24
+                %p
+                Only one presenter per session can be awarded a travel stipend. For sessions with more than one presenter, who should be the recipient of the stipend?
+
+              .span8{style: "margin-left: -146px;margin-top: 15px;height: 50px;"}
+                = f.input :recipient_travel_stipend, label: false
+
+              - if @event.errors.messages.key?(:recipient_travel_stipend)
+                %span.error= @event.errors.messages[:recipient_travel_stipend].first
+
+                %br
+                %br
+
+                %p
+                  Please choose the type of travel support you need:
+                %div.input
+                  %ul.inputs-list
+                    = f.collection_check_boxes(:travel_support, [["Hotel", "Hotel"], ["Flight", "Flight"], ["Daily Per Diem", "Daily Per Diem"]], :first, :last, {boolean_style: :inline}) do |c|
+                      %li
+                        =c.label do
+                          = c.check_box
+                          %span= c.text
+
+                  %br
+                  %br
+
+                %p
+                  %abbr{title: 'required'} *
+                  Have you been awarded a travel stipend from the IFF in the past?
+                %div.input
+                  %ul.inputs-list
+                    = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline}) do |c|
+                      %li
+                        =c.label do
+                          = c.check_box
+                          %span= c.text
+                  %br
+                  %br
+
+                %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}
+                  %input{name: "event[understand_one_presenter]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
+                  I understand that only one presenter per session will be awarded a travel stipend
+
+                %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}
+                  %input{name: "event[confirm_not_stipend]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
+                  I confirm that I am not getting a stipend to participate in the IFF from another organization
+
+                %br
+                %br
+
+          .span16{style: "margin-top: 10px; margin-right: 26rem; background: #e6e2d3; width: 833px; margin-left: 6px;"}
+            %p
+            %input{name: 'event[code_of_conduct]', type: 'checkbox', value: 'true'}
+            *I agree to respect and follow
+            %a{href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
+            We are committed to providing a safe and welcoming environment.
+            All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
 
       %br
       %br

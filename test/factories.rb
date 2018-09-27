@@ -246,6 +246,10 @@ FactoryBot.define do
     event_type "Workshop"
     projector true
     track
+    group "group"
+    recipient_travel_stipend "test@example.org"
+    travel_support "Hotel"
+    past_travel_assistance "2017"
   end
 
   factory :track do

@@ -4,8 +4,13 @@ class Event < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
 
   serialize :iff_before, Array
+  serialize :travel_support, Array
+  serialize :past_travel_assistance, Array
 
   attr_accessor :instructions
+  attr_accessor :understand_one_presenter
+  attr_accessor :confirm_not_stipend
+  attr_accessor :code_of_conduct
 
   before_create :generate_guid
 
@@ -50,7 +55,7 @@ class Event < ActiveRecord::Base
     'Virgin Islands - US (+1340)',	'Wallis & Futuna (+681)','Yemen (North)(+969)','Yemen (South)(+967)',
     'Zambia (+260)','Zimbabwe (+263)']
 
-    
+
   TYPES = ["On the Frontlines", "Making Better Tech", "Training and Best Practices", "Internet Freedom: Present and Future", "Healthier Networks and Organizations", "Advocacy, Policy and Research", "Journalism, Media and Communications"].freeze
   ACCEPTED = %w(accepting unconfirmed confirmed scheduled).freeze
 
@@ -90,6 +95,13 @@ class Event < ActiveRecord::Base
   validates :iff_before, presence: true
 
   validates_inclusion_of :projector, in: [true, false]
+
+  validates :group, presence: true
+
+  validates :past_travel_assistance, presence: true
+
+
+  validates_format_of :recipient_travel_stipend, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 
   after_save :update_conflicts
 

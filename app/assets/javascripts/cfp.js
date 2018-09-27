@@ -1,10 +1,10 @@
 $( document ).ready(function() {
+  var element = document.getElementById("dif_form");
+    if( $("#travel").attr("checked")) {
+      $(element).show()
+    }
   $("#travel").on("click", function(){
     var x = document.getElementById("dif_form");
-      if(x.style.display === "block"){
-        x.style.display = "none";
-      } else {
-        x.style.display = "block";
-      }
+      $(element).toggle()
     })
   });

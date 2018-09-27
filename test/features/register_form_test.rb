@@ -85,7 +85,7 @@ class RegisterFormTest < Capybara::Rails::TestCase
       click_on 'Update your profile'
     end
 
-    assert_text "You have successfully registered for the 2018 IFF!"
+    assert_text "You have successfully updated your profile for the 2019 IFF!"
   end
 
   private

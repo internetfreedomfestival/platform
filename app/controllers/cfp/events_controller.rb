@@ -88,10 +88,18 @@ class Cfp::EventsController < ApplicationController
 
     duplicated_title = duplicated_title?(@event.title)
     instructions_checked = event_values[:instructions] == "true"
-    event_valid = @event.valid? && instructions_checked && !duplicated_title
+    understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
+    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
+    code_of_conduct_checked = event_values[:code_of_conduct] == "true"
+
+    event_valid = @event.valid? && instructions_checked && !duplicated_title && understand_one_presenter_checked &&
+                  confirm_not_stipend_checked && code_of_conduct_checked
 
     respond_to do |format|
       if event_valid && @event.save
+
+        event_person = EventPerson.new(person: current_user.person, event: @event, event_role: "submitter")
+
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
 
@@ -99,6 +107,18 @@ class Cfp::EventsController < ApplicationController
 
         if event_values[:instructions] == nil
           @event.errors.messages[:instructions] = ["can't be blank"]
+        end
+
+        if event_values[:understand_one_presenter] == nil
+          @event.errors.messages[:understand_one_presenter] = ["can't be blank"]
+        end
+
+        if event_values[:confirm_not_stipend] == nil
+          @event.errors.messages[:confirm_not_stipend] = ["can't be blank"]
+        end
+
+        if event_values[:code_of_conduct] == nil
+          @event.errors.messages[:code_of_conduct] = ["can't be blank"]
         end
 
         flash[:danger] = []
@@ -126,9 +146,12 @@ class Cfp::EventsController < ApplicationController
 
     # Removes extra spaces saved by params and does not update for [""] params
     # years_only = keep_old_iff_before_if_blank
+    # support = keep_old_travel_support_if_blank
+    # @event.update(travel_support: support)
+
 
     respond_to do |format|
-      if @event.update_attributes(event_params)
+      if @event.update_attributes(form_params)
         # @event.update(iff_before: years_only)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
@@ -214,7 +237,9 @@ class Cfp::EventsController < ApplicationController
   def form_params
     params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
       :desired_outcome, :phone_prefix, :phone_number, :track_id, :event_type,
-      :projector, {iff_before: []}, :instructions)
+      :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
+      :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
+      :understand_one_presenter, :confirm_not_stipend)
   end
 
   def prepare_params(form_params)
@@ -223,6 +248,11 @@ class Cfp::EventsController < ApplicationController
     )
     event_values[:iff_before] = event_values[:iff_before].reject { |value| value.blank? }
     event_values[:iff_before] = nil if event_values[:iff_before].empty?
+    event_values[:travel_support] = event_values[:travel_support].reject { |value| value.blank? }
+    event_values[:travel_support] = nil if event_values[:travel_support].empty?
+    event_values[:past_travel_assistance] = event_values[:past_travel_assistance].reject { |value| value.blank? }
+    event_values[:past_travel_assistance] = nil if event_values[:past_travel_assistance].empty?
+
     event_values
   end
 
@@ -272,5 +302,17 @@ class Cfp::EventsController < ApplicationController
       end
     end
     years_only
+  end
+
+  def keep_old_travel_support_if_blank
+    support = []
+    if params[:event][:travel_support] == [""]
+      support = @event.travel_support
+    else
+      params[:event][:travel_support].each do |s|
+        support << s unless s == ""
+      end
+    end
+    support
   end
 end
