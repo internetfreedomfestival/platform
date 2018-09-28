@@ -250,7 +250,6 @@ FactoryBot.define do
     recipient_travel_stipend "test@example.org"
     travel_support ["Hotel"]
     past_travel_assistance ["2017"]
-
   end
 
   factory :track do

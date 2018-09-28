@@ -35,6 +35,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       select('On the Frontlines', from: 'event[event_type]')
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
+      check('event[code_of_conduct]', option: 'true')
 
       click_on 'Create Proposal'
     end

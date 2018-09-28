@@ -1,0 +1,25 @@
+= simple_form_for(@dif, url: cfp_dif_path, html: {multipart: true}) do |f|
+  %fieldset.inputs
+  .row
+    .span16
+      %label * Please choose the type of travel support you need:
+      = f.collection_check_boxes :travel_support, [["Hotel","Hotel"],["Flight","Flight"],["Daily Per Diem", "Daily Per Diem"]], :first, :last
+  .row
+    <hr />
+    .span16
+      %label * Have you been awarded travel assistance from the IFF in the past?
+      = f.collection_radio_buttons :past_travel_assistance, [[true, "Yes"], [false, "No"]], :first, :last
+  .row
+    <hr />
+    .span16
+      %label * Would you be willing to facilitate gatherings with other Diversity and Inclusion Fund grantees?
+      = f.collection_radio_buttons :willing_to_facilitate, [[true, "Yes"], [false, "No"]], :first, :last
+  .row
+    <hr />
+    %p{style: "font-size: 16px; color: #f74c33; margin-left: 20px"} Please Note: The Diversity and Inclusion Fund <strong>can only support 1 speaker per session</strong>. Duplicate sessions <strong>won’t be considered for funding</strong>.
+    .span1{style: "margin-top: 30px"}
+    - if @edit
+      = f.button :submit, class: 'primary', value: "Edit your Application"
+    - else
+      = f.button :submit, class: 'primary', value: "Submit your Application"
+
