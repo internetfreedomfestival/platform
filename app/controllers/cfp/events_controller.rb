@@ -96,7 +96,7 @@ class Cfp::EventsController < ApplicationController
 
     travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && instructions_checked && !duplicated_title && travel_assistence
+    event_valid = @event.valid? && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
 
     respond_to do |format|
       if event_valid && @event.save
