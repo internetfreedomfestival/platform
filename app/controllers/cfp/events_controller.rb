@@ -3,6 +3,7 @@ class Cfp::EventsController < ApplicationController
 
   before_action :authenticate_user!, except: :confirm
 
+
   # GET /cfp/events
   # GET /cfp/events.xml
   def index
@@ -26,10 +27,7 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/new
   # def new
   #   @new = true
-  #   # @public_names = ""
-  #   # Person.all.each do |person|
-  #   #   @public_names += person.public_name + ", " unless person.public_name == "Enter a public name here"
-  #   # end
+  #
   #   @users = User.all
   #   person = Person.find_by(user_id: current_user.id)
   #   if auth_person_for_new_event?(person)
@@ -96,14 +94,19 @@ class Cfp::EventsController < ApplicationController
 
     travel_assistance_checked = event_values[:travel_assistence] == "true"
 
-    travel_assistence = travel_assistance_checked != "true" || (travel_assistance_checked == "true" && understand_one_presenter_checked && confirm_not_stipend_checked)
+    travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
-
+    event_valid = @event.valid? && instructions_checked && !duplicated_title && travel_assistence
 
     respond_to do |format|
       if event_valid && @event.save
+        Rails.logger.info event_values.inspect
+
+
         event_person = EventPerson.new(person: current_user.person, event: @event, event_role: "submitter")
+        # other_presenters = EventPerson.new(person: email_collaborator, event: @event, event_role: "collaborator")
+
+        # p other_presenters
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
@@ -148,12 +151,6 @@ class Cfp::EventsController < ApplicationController
     authorize! :submit, Event
     @event = current_user.person.events.readonly(false).find(params[:id])
     @event.recording_license = @event.conference.default_recording_license unless @event.recording_license
-
-    # Removes extra spaces saved by params and does not update for [""] params
-    # years_only = keep_old_iff_before_if_blank
-    # support = keep_old_travel_support_if_blank
-    # @event.update(travel_support: support)
-
 
     respond_to do |format|
       if @event.update_attributes(form_params)
@@ -275,8 +272,19 @@ class Cfp::EventsController < ApplicationController
     event
   end
 
+  def valid_presenters(presenters)
+    email_list = presenters.split(/[\s,]/)
+
+    email_list.each do |email|
+      found = Person.find_by(email: email)
+      if found.nil?
+        return email.to_s
+      end
+    end
+  end
+
   def invalid_presenters?(presenters)
-    return false if presenters.nil?
+    return false if presenters.nil? || presenters.blank?
 
     email_list = presenters.split(/[\s,]/)
 

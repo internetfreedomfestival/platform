@@ -101,7 +101,6 @@ class Event < ActiveRecord::Base
     if @travel_assistance.present?
       return true
     end
-    return false
   end
 
   validates :group, presence: true, if: :is_travel_assistence
