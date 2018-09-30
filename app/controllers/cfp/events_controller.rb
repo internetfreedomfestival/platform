@@ -85,28 +85,26 @@ class Cfp::EventsController < ApplicationController
     @event = build_event(event_values)
 
     duplicated_title = duplicated_title?(@event.title)
+
     instructions_checked = event_values[:instructions] == "true"
     code_of_conduct_checked = event_values[:code_of_conduct] == "true"
-
-
     understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
     confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
-
     travel_assistance_checked = event_values[:travel_assistence] == "true"
 
     travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
     event_valid = @event.valid? && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
+    emails_list = valid_presenters(@event.other_presenters)
 
     respond_to do |format|
       if event_valid && @event.save
-        Rails.logger.info event_values.inspect
 
+        event_person = EventPerson.create(person: current_user.person, event: @event, event_role: "submitter")
 
-        event_person = EventPerson.new(person: current_user.person, event: @event, event_role: "submitter")
-        # other_presenters = EventPerson.new(person: email_collaborator, event: @event, event_role: "collaborator")
-
-        # p other_presenters
+        other_presenters = emails_list.map do |email|
+          EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: "collaborator")
+        end
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
@@ -278,7 +276,7 @@ class Cfp::EventsController < ApplicationController
     email_list.each do |email|
       found = Person.find_by(email: email)
       if found.nil?
-        return email.to_s
+        return email_list.reject { |value| value.blank? }
       end
     end
   end

@@ -2,7 +2,7 @@ class EventPerson < ActiveRecord::Base
   include UniqueToken
   include Rails.application.routes.url_helpers
 
-  ROLES = %i(coordinator submitter speaker moderator).freeze
+  ROLES = %i(coordinator submitter speaker moderator collaborator).freeze
   STATES = %i(canceled confirmed declined idea offer unclear attending).freeze
   SPEAKER = %i(speaker moderator).freeze
 
