@@ -7,6 +7,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     @event = create(:event)
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @cfp = create(:call_for_participation, conference: @conference)
+    @person = create(:person)
 
     tracks = ["Collaborative Talk", "Workshop", "Panel Discussion", "Feature", "Feedback"]
     tracks.each do |track|
@@ -26,7 +27,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[title]', with: 'Session Title'
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: 'presenter@gmail.com'
+      fill_in 'event[other_presenters]', with: @person.email
       fill_in 'event[public_type]', with: 'Students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       select('Spain (+34)', from: 'event[phone_prefix]')

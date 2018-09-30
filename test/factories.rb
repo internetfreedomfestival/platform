@@ -235,6 +235,7 @@ FactoryBot.define do
     title { generate(:event_title) }
     subtitle 'Getting started organizing your conference'
     time_slots 4
+    other_presenters ""
     start_time '10:00'
     description 'A description of a conference'
     conference { create(:three_day_conference) }
@@ -264,6 +265,8 @@ FactoryBot.define do
     person
     event
     event_role 'speaker'
+    created_at { Date.today.ago(1.days) }
+    updated_at { Date.today.since(6.days) }
 
     factory :confirmed_event_person do
       role_state 'confirmed'
