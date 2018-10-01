@@ -85,16 +85,16 @@ class Cfp::EventsController < ApplicationController
     @event = build_event(event_values)
 
     duplicated_title = duplicated_title?(@event.title)
+    not_invalid_presenters = !invalid_presenters?(@event.other_presenters)
 
     instructions_checked = event_values[:instructions] == "true"
     code_of_conduct_checked = event_values[:code_of_conduct] == "true"
     understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
     confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
     travel_assistance_checked = event_values[:travel_assistence] == "true"
-
     travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
+    event_valid = @event.valid? && not_invalid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
     emails_list = valid_presenters(@event.other_presenters)
 
     respond_to do |format|
@@ -134,6 +134,9 @@ class Cfp::EventsController < ApplicationController
         end
 
         if invalid_presenters?(@event.other_presenters)
+          @invalid_list_of_emails = invalid_presenters_list(@event.other_presenters)
+          wrong_emails_alert = "These emails does not exist in our database: " << @invalid_list_of_emails << ". Please, correct this. Remember emails can be separated by , or space."
+          flash[:danger] <<  wrong_emails_alert
           flash[:danger] << "It seems that the e-mail you inserted does not exist in our database. Please be sure your colleagues are registered platform users in order to be able to add them as your collaborators.
                             NOTE: This field is not mandatory and therefore you can add information about your collaborators later."
         end
@@ -293,6 +296,21 @@ class Cfp::EventsController < ApplicationController
       end
     end
     false
+  end
+
+  def invalid_presenters_list(presenters)
+    return [] if presenters.nil? || presenters.blank?
+
+    invalid_list_of_emails = []
+    email_list = presenters.split(/[\s,]/)
+    email_list.each do |email|
+      found = Person.find_by(email: email)
+      if found.nil?
+        invalid_list_of_emails << email
+      end
+    end
+
+    return invalid_list_of_emails.reject(&:blank?).join(", ")
   end
 
   def duplicated_title?(title)
