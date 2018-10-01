@@ -2,7 +2,7 @@
   .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
     .pull-right
     - if @old_account
-      %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
+      %p.alert-message Please update your registration information in order to request an invite to the 2019 IFF.
 
     %div{style: "float: right; clear: both; margin-top: 5px"}
       - if @is_fellow || current_user.is_admin?
@@ -22,8 +22,13 @@
       %div
         %h3 Submit a Session for the 2019 IFF
         %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 1st, 2018.
-        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-          = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
+        - if @old_account
+          %p Please update your profile in order to submit a session proposal for the 2019 IFF.
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = action_button "primary", "Update Profile", edit_cfp_person_path, style: "margin: 10px"
+        - else
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
   - if FeatureToggle.new_ticketing_system_enabled?
     .row
