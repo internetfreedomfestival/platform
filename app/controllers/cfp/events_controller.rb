@@ -236,7 +236,7 @@ class Cfp::EventsController < ApplicationController
 
   def form_params
     params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
-      :desired_outcome, :phone_prefix, :phone_number, :track_id, :event_type,
+      :desired_outcome, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
       :understand_one_presenter, :confirm_not_stipend, :code_of_conduct)

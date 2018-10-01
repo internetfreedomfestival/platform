@@ -30,7 +30,6 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[other_presenters]', with: @person.email
       fill_in 'event[public_type]', with: 'Students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      select('Spain (+34)', from: 'event[phone_prefix]')
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')

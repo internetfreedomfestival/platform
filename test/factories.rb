@@ -242,7 +242,6 @@ FactoryBot.define do
     iff_before ['2015']
     public_type "Conferencers"
     desired_outcome "desired_outcome"
-    phone_prefix 34
     phone_number  12345678
     event_type "Workshop"
     projector true

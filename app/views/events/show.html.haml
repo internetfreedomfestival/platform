@@ -92,7 +92,7 @@
       %p= @event.speakers.map{ |p| link_to p.public_name, p}.join(", ").html_safe
       %p
         %b Contact phone number:
-        = @event.phone_prefix + @event.phone_number
+        = @event.phone_number
       %h2= "Description:"
       = simple_format @event.description
       %p

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180927070947) do
+ActiveRecord::Schema.define(version: 20181001135519) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -242,7 +242,6 @@ ActiveRecord::Schema.define(version: 20180927070947) do
     t.string   "etherpad_url"
     t.string   "public_type"
     t.string   "phone_number"
-    t.string   "phone_prefix"
     t.boolean  "projector"
     t.string   "group"
     t.string   "recipient_travel_stipend"

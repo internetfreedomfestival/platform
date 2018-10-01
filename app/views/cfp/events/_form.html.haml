@@ -81,8 +81,7 @@
           = f.input :other_presenters, type: "email", label: "Other presenters in this session", hint: "Enter the email addresses they used to register in the platform. You may add other presenters later."
           = f.input :public_type, label: "Who is this session for?", hint: "Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?"
           = f.input :desired_outcome, label: "What outcomes do you envision for this session?"
-          = f.input :phone_prefix, label: "Prefix", collection: Event::COUNTRY_CODES
-          = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS"
+          = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix in front of your telephone number."
           = f.association :track, label: "Session Format", collection: @conference.tracks
           = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
 
