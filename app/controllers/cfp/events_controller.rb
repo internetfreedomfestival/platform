@@ -71,9 +71,7 @@ class Cfp::EventsController < ApplicationController
   # GET /cfp/events/1/edit
   def edit
     @edit = true
-    Person.all.each do |person|
-      @event = current_user.person.events.find(params[:id])
-    end
+    @event = current_user.person.events.find(params[:id])
     authorize! :submit, Event
   end
 
@@ -85,7 +83,7 @@ class Cfp::EventsController < ApplicationController
     @event = build_event(event_values)
 
     duplicated_title = duplicated_title?(@event.title)
-    not_invalid_presenters = !invalid_presenters?(@event.other_presenters)
+    valid_presenters = !invalid_presenters?(@event.other_presenters)
 
     instructions_checked = event_values[:instructions] == "true"
     code_of_conduct_checked = event_values[:code_of_conduct] == "true"
@@ -94,7 +92,7 @@ class Cfp::EventsController < ApplicationController
     travel_assistance_checked = event_values[:travel_assistence] == "true"
     travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && not_invalid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
+    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
     emails_list = valid_presenters(@event.other_presenters)
 
     respond_to do |format|
@@ -150,15 +148,62 @@ class Cfp::EventsController < ApplicationController
   # PUT /cfp/events/1
   def update
     authorize! :submit, Event
-    @event = current_user.person.events.readonly(false).find(params[:id])
-    @event.recording_license = @event.conference.default_recording_license unless @event.recording_license
+    event_values = prepare_params(form_params)
+
+    @old_event = current_user.person.events.readonly(false).find(params[:id])
+    @event = Event.new(event_values)
+    @event.conference = @conference
+
+    valid_presenters = !invalid_presenters?(event_values[:other_presenters])
+
+    instructions_checked = event_values[:instructions] == "true"
+    code_of_conduct_checked = event_values[:code_of_conduct] == "true"
+    understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
+    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
+    travel_assistance_checked = event_values[:travel_assistence] == "true"
+    travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
+
+    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistence
+    emails_list = valid_presenters(@event.other_presenters)
+    old_emails_list = @old_event.other_presenters
 
     respond_to do |format|
-      if @event.update_attributes(form_params)
-        # @event.update(iff_before: years_only)
+      if event_valid && @event.update_attributes(form_params)
+
+        create_role_if_not_exists(emails_list)
+        new_emails_list = @event.other_presenters
+        delete_role(old_emails_list, new_emails_list)
+
+
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
+
+        if event_values[:instructions] == nil
+          @event.errors.messages[:instructions] = ["can't be blank"]
+        end
+
+        if event_values[:understand_one_presenter] == nil
+          @event.errors.messages[:understand_one_presenter] = ["can't be blank"]
+        end
+
+        if event_values[:confirm_not_stipend] == nil
+          @event.errors.messages[:confirm_not_stipend] = ["can't be blank"]
+        end
+
+        if event_values[:code_of_conduct] == nil
+          @event.errors.messages[:code_of_conduct] = ["can't be blank"]
+        end
+
+        flash[:danger] = []
+
+        if invalid_presenters?(event_values[:other_presenters])
+          @invalid_list_of_emails = invalid_presenters_list(event_values[:other_presenters])
+          wrong_emails_alert = "These emails does not exist in our database: " << @invalid_list_of_emails << ". Please, correct this. Remember emails can be separated by , or space."
+          flash[:danger] <<  wrong_emails_alert
+          flash[:danger] << "It seems that the e-mail you inserted does not exist in our database. Please be sure your colleagues are registered platform users in order to be able to add them as your collaborators.
+                            NOTE: This field is not mandatory and therefore you can add information about your collaborators later."
+        end
         @edit = true
         format.html { render action: 'edit' }
       end
@@ -272,14 +317,27 @@ class Cfp::EventsController < ApplicationController
     event
   end
 
+  def create_role_if_not_exists(emails_list)
+    other_presenters = emails_list.map do |email|
+      if EventPerson.find_by(person: Person.find_by(email: email), event: @event, event_role: "collaborator").nil?
+          EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: "collaborator")
+      end
+    end
+  end
+
+  def delete_role(old_emails_list, new_emails_list)
+    emails_to_delete = old_emails_list.split(',') - new_emails_list.split(',')
+
+    emails_to_delete.map do |email|
+      EventPerson.find_by(person: Person.find_by(email: email), event: @event, event_role: "collaborator").destroy
+    end
+  end
+
   def valid_presenters(presenters)
     email_list = presenters.split(/[\s,]/)
 
-    email_list.each do |email|
-      found = Person.find_by(email: email)
-      if found.nil?
-        return email_list.reject { |value| value.blank? }
-      end
+    email_list.select do |email|
+      Person.find_by(email: email)
     end
   end
 
@@ -290,7 +348,7 @@ class Cfp::EventsController < ApplicationController
 
     email_list.each do |email|
       found = Person.find_by(email: email)
-      if found.nil?
+      if !found
         return true
       end
     end
