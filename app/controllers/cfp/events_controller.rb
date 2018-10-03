@@ -268,7 +268,6 @@ class Cfp::EventsController < ApplicationController
       event.time_slots = 3
     end
     event.conference = @conference
-    event.event_people << EventPerson.new(person: current_user.person, event_role: 'submitter')
     event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
     event
   end

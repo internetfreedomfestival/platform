@@ -13,6 +13,7 @@ class Cfp::PeopleController < ApplicationController
     @is_fellow = ConferenceUser.exists?(user_id: current_user.id)
     @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
 
+    @events = @person.events_as_presenter_in(@conference)
 
     @invites = 0
     @invites = Invited.pending_invites_for(@person) if @person.allowed_to_send_invites?

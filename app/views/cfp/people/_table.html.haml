@@ -3,6 +3,8 @@
     %tr
       %th.first
       %th= t("Title")
+      %th.roles
+      %th= t("Roles")
 
       - if @conference.event_state_visible
         %th= t("Status")
@@ -11,10 +13,15 @@
         %th= t(:event_feedback)
       %th.last= t(:actions)
   %tbody
+
     - collection.each do |event|
       %tr
         %th.first
         %td= event.title
+
+        %th.role
+        %td= event.event_people.select{|event_person| event_person.person == @person}.map(&:event_role).join(', ')
+
         - if @conference.event_state_visible
           - if event.state == 'rejected'
             %td= 'Not Accepted'

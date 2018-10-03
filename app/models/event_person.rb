@@ -4,7 +4,7 @@ class EventPerson < ActiveRecord::Base
 
   ROLES = %i(coordinator submitter speaker moderator collaborator).freeze
   STATES = %i(canceled confirmed declined idea offer unclear attending).freeze
-  SPEAKER = %i(speaker moderator).freeze
+  SPEAKER = %i(speaker moderator collaborator).freeze
 
   belongs_to :event
   belongs_to :person

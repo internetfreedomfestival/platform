@@ -102,7 +102,7 @@
       - if @person.events_in(@conference).size > 0
         <br />
         %h2{style: "margin-left: 40px; margin-bottom: 35px;"}=t("cfp.events_submitted")
-        = render "table", collection: @person.events_as_presenter_in(@conference)
+        = render "table", collection: @events
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
     %br
