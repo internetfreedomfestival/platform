@@ -136,7 +136,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     assert_text 'Your proposal was successfully updated.'
   end
 
-test 'a collaborator cannot delete their call for proposals' do
+  test 'a collaborator cannot delete their call for proposals' do
     visit '/'
 
     event = create(:event, conference: @conference)
@@ -148,7 +148,6 @@ test 'a collaborator cannot delete their call for proposals' do
 
     assert_no_text 'Delete'
   end
-
 
   private
 
