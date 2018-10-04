@@ -97,12 +97,12 @@ class Cfp::EventsController < ApplicationController
 
     respond_to do |format|
       if event_valid && @event.save
-        EventPerson.create(person: current_user.person, event: @event, event_role: 'submitter')
-        EventsMailer.create_event_mail(current_user.person.email, @event).deliver_now
+        register_for_proposal(current_user.person, @event, 'submitter')
+        register_for_proposal(current_user.person, @event, 'speaker')
 
         emails_list.map do |email|
-          EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: 'collaborator')
-          EventsMailer.create_event_mail(email, @event).deliver_now
+          person = Person.find_by(email: email)
+          register_for_proposal(person, @event, 'collaborator')
         end
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
@@ -170,7 +170,7 @@ class Cfp::EventsController < ApplicationController
     respond_to do |format|
       if @event.update(event_values) && event_valid
         emails_list = valid_presenters(event_values[:other_presenters])
-        create_role_if_not_exists(emails_list, @event)
+        create_role_if_not_exists(emails_list, @event, 'collaborator')
         new_emails_list = @event.other_presenters
         delete_role(old_emails_list, new_emails_list, @event)
 
@@ -278,6 +278,11 @@ class Cfp::EventsController < ApplicationController
 
   private
 
+  def register_for_proposal(person, event, role)
+    EventPerson.create(person: person, event: event, event_role: role)
+    EventsMailer.create_event_mail(person.email, event).deliver_now
+  end
+
   def event_params
     params.require(:event).permit(
       :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, :public_type, { iff_before: [] }, :track,
@@ -317,15 +322,16 @@ class Cfp::EventsController < ApplicationController
       event.time_slots = 3
     end
     event.conference = @conference
-    event.event_people << EventPerson.new(person: current_user.person, event_role: 'speaker')
+
     event
   end
 
-  def create_role_if_not_exists(emails_list, event)
+  def create_role_if_not_exists(emails_list, event, role)
     emails_list.map do |email|
-      if EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: 'collaborator').nil?
-          EventPerson.create(person: Person.find_by(email: email), event: event, event_role: 'collaborator')
-          EventsMailer.create_event_mail(email, event).deliver_now
+      person = Person.find_by(email: email)
+
+      unless EventPerson.exists?(person: person, event: event, event_role: role)
+        register_for_proposal(person, event, role)
       end
     end
   end
