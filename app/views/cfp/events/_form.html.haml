@@ -81,7 +81,7 @@
           = f.input :other_presenters, type: "email", label: "Other presenters in this session", hint: "Enter the email addresses they used to register in the platform. You may add other presenters later."
           = f.input :public_type, label: "Who is this session for?", hint: "Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?"
           = f.input :desired_outcome, label: "What outcomes do you envision for this session?"
-          = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix in front of your telephone number."
+          = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix (e.g., 0034)."
           = f.association :track, label: "Session Format", collection: @conference.tracks
           = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
 
@@ -125,7 +125,6 @@
               %div
               At the IFF we work very hard to raise funds to ensure that voices from underrepresented and marginalized groups have more opportunities to be heard. Because of the huge demand for support, we ask that you don’t request more than what you need to attend– for some, this stipend is the only opportunity they have to participate. If you have other options to support your participation, we encourage you to explore them early on in order to secure your attendance.
               %br
-
               .span24{style: "margin-top: 50px;"}
                 %p
                 *Which underrepresented group(s) do you belong to?
@@ -199,5 +198,5 @@
         .span24
           - if @new
             = f.button :submit, class: 'primary', value: "Create Proposal"
-          -if @edit
+          - if @edit
             = f.button :submit, class: 'primary', value: "Update Proposal"
