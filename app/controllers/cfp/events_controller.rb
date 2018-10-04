@@ -172,11 +172,11 @@ class Cfp::EventsController < ApplicationController
     old_emails_list = @old_event.other_presenters
 
     respond_to do |format|
-      if event_valid && @event.update_attributes(form_params)
+      if event_valid && @old_event.update(event_values)
 
-        create_role_if_not_exists(emails_list)
+        create_role_if_not_exists(emails_list, @old_event)
         new_emails_list = @event.other_presenters
-        delete_role(old_emails_list, new_emails_list)
+        delete_role(old_emails_list, new_emails_list, @old_event)
 
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
@@ -321,19 +321,21 @@ class Cfp::EventsController < ApplicationController
     event
   end
 
-  def create_role_if_not_exists(emails_list)
+  def create_role_if_not_exists(emails_list, event)
     other_presenters = emails_list.map do |email|
-      if EventPerson.find_by(person: Person.find_by(email: email), event: @event, event_role: "collaborator").nil?
-          EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: "collaborator")
+      if EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: "collaborator").nil?
+          EventPerson.create(person: Person.find_by(email: email), event: event, event_role: "collaborator")
       end
     end
   end
 
-  def delete_role(old_emails_list, new_emails_list)
+  def delete_role(old_emails_list, new_emails_list, event)
     emails_to_delete = old_emails_list.split(',') - new_emails_list.split(',')
 
     emails_to_delete.map do |email|
-      EventPerson.find_by(person: Person.find_by(email: email), event: @event, event_role: "collaborator").destroy
+      Rails.logger.info "deleting email #{email}"
+      person = EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: "collaborator")
+      person.destroy if person
     end
   end
 
