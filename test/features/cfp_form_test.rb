@@ -1,5 +1,5 @@
 require 'test_helper'
-require "minitest/rails/capybara"
+require 'minitest/rails/capybara'
 
 class CfpFormTest < Capybara::Rails::TestCase
   setup do
@@ -20,8 +20,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'new user can create a new call for proposals' do
-    visit '/'
-
     login_as(@user)
 
     visit "/#{@conference.acronym}/cfp/events/new"
@@ -48,8 +46,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'call for proposals needs required fields fullfilled' do
-    visit '/'
-
     login_as(@user)
 
     visit "/#{@conference.acronym}/cfp/events/new"
@@ -71,12 +67,10 @@ class CfpFormTest < Capybara::Rails::TestCase
       click_on 'Create Proposal'
     end
 
-    assert_text "can't be blank "
+    assert_text "can't be blank"
   end
 
   test 'an user cannot create two call for proposals with the same title' do
-    visit '/'
-
     login_as(@user)
 
     visit "/#{@conference.acronym}/cfp/events/new"
@@ -100,6 +94,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     end
 
     assert_text 'Your proposal was successfully created.'
+
     visit "/#{@conference.acronym}/cfp/events/new"
 
     within '#cfp_form' do
@@ -121,7 +116,6 @@ class CfpFormTest < Capybara::Rails::TestCase
     end
 
     assert_text 'There is already a session submitted with this title.'
-
   end
 
   test 'an user editing call for proposals cannot use same title than other cfp' do
@@ -148,8 +142,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'an user can edit a call for proposals' do
-    visit '/'
-
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
@@ -180,8 +172,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'an user can view their call of proposals' do
-    visit '/'
-
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
@@ -194,8 +184,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
 
   test 'an user can delete a call for proposals' do
-    visit '/'
-
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
@@ -210,8 +198,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'a collaborator can edit their call for proposals' do
-    visit '/'
-
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
@@ -241,8 +227,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'a collaborator cannot delete their call for proposals' do
-    visit '/'
-
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
@@ -254,8 +238,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'collaborator recibes an email when user add your email in other collaborator' do
-    visit '/'
-
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
