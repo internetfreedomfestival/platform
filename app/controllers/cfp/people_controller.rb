@@ -134,7 +134,10 @@ class Cfp::PeopleController < ApplicationController
        person_params[:first_name] == "" ||
        person_params[:country_of_origin] == "" ||
        person_params[:gender] == "" ||
+       person_params[:gender].nil? ||
        person_params[:professional_background].nil? ||
+       person_params[:professional_background] == [""] ||
+       person_params[:professional_background] == [] ||
        person_params[:include_in_mailings] == [] ||
        person_params[:invitation_to_mattermost] == []
       return true
@@ -143,12 +146,19 @@ class Cfp::PeopleController < ApplicationController
 
   def person_needs_to_upgrade
     if @person.email.nil? || @person.email == "" ||
+      @person.first_name.nil? ||
        @person.first_name == "" ||
+       @person.country_of_origin.nil? ||
        @person.country_of_origin == "" ||
+       @person.gender.nil? ||
        @person.gender == "" ||
-       @person.professional_background.nil? ||
+       @person.professional_background == [] ||
+       @person.professional_background.blank? ||
+       @person.professional_background == [""] ||
        @person.include_in_mailings == [] ||
-       @person.invitation_to_mattermost == []
+       @person.include_in_mailings.blank? ||
+       @person.invitation_to_mattermost == [] ||
+       @person.invitation_to_mattermost.blank?
       return true
     end
   end
