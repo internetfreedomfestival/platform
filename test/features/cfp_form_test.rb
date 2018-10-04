@@ -13,6 +13,8 @@ class CfpFormTest < Capybara::Rails::TestCase
     tracks.each do |track|
       Track.create!(conference: @conference, name: track)
     end
+
+    ActionMailer::Base.deliveries.clear
   end
 
   teardown do
