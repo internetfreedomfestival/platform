@@ -85,12 +85,9 @@ class Cfp::EventsController < ApplicationController
     duplicated_title = duplicated_title?(@event.title)
     valid_presenters = !invalid_presenters?(@event.other_presenters)
 
-    instructions_checked = event_values[:instructions] == 'true'
-    code_of_conduct_checked = event_values[:code_of_conduct] == 'true'
-    understand_one_presenter_checked = event_values[:understand_one_presenter] == 'true'
-    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == 'true'
-    travel_assistance_checked = event_values[:travel_assistance] == 'true' || event_values[:travel_assistance] == "1"
-    travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
+    instructions_checked = checkbox_accepted?(event_values[:instructions])
+    code_of_conduct_checked = checkbox_accepted?(event_values[:code_of_conduct])
+    travel_assistance = valid_travel_assistance?(event_values)
 
     event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistance
     emails_list = valid_presenters(@event.other_presenters)
@@ -158,12 +155,9 @@ class Cfp::EventsController < ApplicationController
 
     valid_presenters = !invalid_presenters?(event_values[:other_presenters])
 
-    instructions_checked = event_values[:instructions] == 'true'
-    code_of_conduct_checked = event_values[:code_of_conduct] == 'true'
-    understand_one_presenter_checked = event_values[:understand_one_presenter] == 'true'
-    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == 'true'
-    travel_assistance_checked = event_values[:travel_assistance] == 'true'
-    travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
+    instructions_checked = checkbox_accepted?(event_values[:instructions])
+    code_of_conduct_checked = checkbox_accepted?(event_values[:code_of_conduct])
+    travel_assistance = valid_travel_assistance?(event_values)
 
     event_valid = valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistance
 
@@ -281,6 +275,19 @@ class Cfp::EventsController < ApplicationController
   def register_for_proposal(person, event, role)
     EventPerson.create(person: person, event: event, event_role: role)
     EventsMailer.create_event_mail(person.email, event).deliver_now
+  end
+
+  def valid_travel_assistance?(params)
+    return true if !checkbox_accepted?(params[:travel_assistance])
+
+    checkbox_accepted?(params[:understand_one_presenter]) &&
+      checkbox_accepted?(params[:confirm_not_stipend])
+  end
+
+  def checkbox_accepted?(checkbox)
+    return false if checkbox.nil?
+
+    checkbox == 'true' || checkbox == '1'
   end
 
   def event_params
