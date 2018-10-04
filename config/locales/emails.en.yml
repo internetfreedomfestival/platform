@@ -96,3 +96,5 @@ en:
       subject: "IFF 2019 Ticket Request Received"
     accept_request_mail:
       subject: "Here’s your invite to the 2019 IFF!"
+    event_mail:
+      subject: "Success! 2019 IFF Session Submitted"

@@ -102,7 +102,11 @@ class Cfp::EventsController < ApplicationController
 
         other_presenters = emails_list.map do |email|
           EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: "collaborator")
+          EventsMailer.create_event_mail(email, @event).deliver_now
         end
+
+        EventsMailer.create_event_mail(current_user.person.email, @event).deliver_now
+
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
