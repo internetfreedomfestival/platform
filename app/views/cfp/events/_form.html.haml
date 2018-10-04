@@ -64,7 +64,10 @@
       %p Present a project or tool to get feedback from participants.
     .span16
       %p{style: "margin-top: 10px; margin-right: 26rem; background: #e6e2d3;"}
-        %input{name: "event[instructions]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
+        - if @edit
+          %input{name: "event[instructions]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;", checked: 'checked'}
+        - else
+          %input{name: "event[instructions]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
         - if @event.errors.messages.key?(:instructions)
           %span.error= @event.errors.messages[:instructions].first
         %b I have read the instructions above and I will follow them to complete this form
@@ -184,7 +187,10 @@
 
           .span16{style: "margin-top: 10px; margin-right: 26rem; background: #e6e2d3; width: 833px; margin-left: 6px;"}
             %p
-            %input{name: 'event[code_of_conduct]', type: 'checkbox', value: 'true'}
+            - if @edit
+              %input{name: 'event[code_of_conduct]', type: 'checkbox', value: 'true', checked: 'checked' }
+            - else
+              %input{name: 'event[code_of_conduct]', type: 'checkbox', value: 'true'}
             *I agree to respect and follow
             %a{href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
             We are committed to providing a safe and welcoming environment.

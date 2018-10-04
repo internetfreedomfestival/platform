@@ -73,6 +73,7 @@ class Cfp::EventsController < ApplicationController
     authorize! :submit, Event
     @edit = true
     @event = current_user.person.events.find(params[:id])
+
   end
 
   # POST /cfp/events
@@ -154,9 +155,8 @@ class Cfp::EventsController < ApplicationController
     authorize! :submit, Event
     event_values = prepare_params(form_params)
 
-    @old_event = current_user.person.events.readonly(false).find(params[:id])
-    @event = Event.new(event_values)
-    @event.conference = @conference
+    @event = current_user.person.events.readonly(false).find(params[:id])
+    old_emails_list = @event.other_presenters
 
     valid_presenters = !invalid_presenters?(event_values[:other_presenters])
 
@@ -167,16 +167,15 @@ class Cfp::EventsController < ApplicationController
     travel_assistance_checked = event_values[:travel_assistance] == "true"
     travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistance
-    emails_list = valid_presenters(@event.other_presenters)
-    old_emails_list = @old_event.other_presenters
+    event_valid = valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistance
 
     respond_to do |format|
-      if event_valid && @old_event.update(event_values)
+      if @event.update(event_values) && event_valid
 
-        create_role_if_not_exists(emails_list, @old_event)
+        emails_list = valid_presenters(event_values[:other_presenters])
+        create_role_if_not_exists(emails_list, @event)
         new_emails_list = @event.other_presenters
-        delete_role(old_emails_list, new_emails_list, @old_event)
+        delete_role(old_emails_list, new_emails_list, @event)
 
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
