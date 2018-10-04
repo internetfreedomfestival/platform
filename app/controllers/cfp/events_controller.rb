@@ -325,6 +325,7 @@ class Cfp::EventsController < ApplicationController
     other_presenters = emails_list.map do |email|
       if EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: "collaborator").nil?
           EventPerson.create(person: Person.find_by(email: email), event: event, event_role: "collaborator")
+          EventsMailer.create_event_mail(email, event).deliver_now
       end
     end
   end
