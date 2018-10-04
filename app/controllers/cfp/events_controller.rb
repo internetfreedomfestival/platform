@@ -80,6 +80,7 @@ class Cfp::EventsController < ApplicationController
     authorize! :submit, Event
 
     event_values = prepare_params(form_params)
+    event_values[:other_presenters] = remove_duplicates_of_other_presenters_list(event_values[:other_presenters])
     @event = build_event(event_values)
 
     duplicated_title = duplicated_title?(@event.title)
@@ -153,6 +154,7 @@ class Cfp::EventsController < ApplicationController
   def update
     authorize! :submit, Event
     event_values = prepare_params(form_params)
+    event_values[:other_presenters] = remove_duplicates_of_other_presenters_list(event_values[:other_presenters])
 
     @old_event = current_user.person.events.readonly(false).find(params[:id])
     @event = Event.new(event_values)
@@ -330,8 +332,12 @@ class Cfp::EventsController < ApplicationController
     end
   end
 
+  def remove_duplicates_of_other_presenters_list(list)
+    list.split(/[\s,]/).reject { |c| c.empty? }.uniq.join(',')
+  end
+
   def delete_role(old_emails_list, new_emails_list, event)
-    emails_to_delete = old_emails_list.split(',') - new_emails_list.split(',')
+    emails_to_delete = old_emails_list.split(/[\s,]/) - new_emails_list.split(/[\s,]/)
 
     emails_to_delete.map do |email|
       Rails.logger.info "deleting email #{email}"
