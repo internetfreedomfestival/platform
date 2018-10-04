@@ -3,8 +3,6 @@ dist: trusty
 rvm:
   - 2.3.1
 env:
-  - DB=mysql
-  - DB=postgresql
   - DB=sqlite
 bundler_args: --without capistrano doc production --jobs 2
 before_script:
