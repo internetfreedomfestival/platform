@@ -153,12 +153,9 @@ class Cfp::PeopleController < ApplicationController
        @person.gender.nil? ||
        @person.gender == "" ||
        @person.professional_background == [] ||
-       @person.professional_background.blank? ||
        @person.professional_background == [""] ||
        @person.include_in_mailings == [] ||
-       @person.include_in_mailings.blank? ||
-       @person.invitation_to_mattermost == [] ||
-       @person.invitation_to_mattermost.blank?
+       @person.invitation_to_mattermost == []
       return true
     end
   end
