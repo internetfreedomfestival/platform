@@ -337,11 +337,11 @@ class Cfp::EventsController < ApplicationController
   end
 
   def remove_duplicates_of_other_presenters_list(list)
-    list.split(/[\s,]/).reject { |c| c.empty? }.uniq.join(',')
+    extract_emails_from(list).reject(&:empty?).uniq.join(',')
   end
 
   def delete_role(old_emails_list, new_emails_list, event)
-    emails_to_delete = old_emails_list.split(/[\s,]/) - new_emails_list.split(/[\s,]/)
+    emails_to_delete = extract_emails_from(old_emails_list) - extract_emails_from(new_emails_list)
 
     emails_to_delete.map do |email|
       Rails.logger.info "deleting email #{email}"
@@ -351,7 +351,7 @@ class Cfp::EventsController < ApplicationController
   end
 
   def valid_presenters(presenters)
-    email_list = presenters.split(/[\s,]/)
+    email_list = extract_emails_from(presenters)
 
     email_list.select do |email|
       Person.find_by(email: email)
@@ -361,7 +361,7 @@ class Cfp::EventsController < ApplicationController
   def invalid_presenters?(presenters)
     return false if presenters.nil? || presenters.blank?
 
-    email_list = presenters.split(/[\s,]/)
+    email_list = extract_emails_from(presenters)
 
     email_list.each do |email|
       found = Person.find_by(email: email)
@@ -376,7 +376,7 @@ class Cfp::EventsController < ApplicationController
     return [] if presenters.nil? || presenters.blank?
 
     invalid_list_of_emails = []
-    email_list = presenters.split(/[\s,]/)
+    email_list = extract_emails_from(presenters)
     email_list.each do |email|
       found = Person.find_by(email: email)
       if found.nil?
@@ -385,6 +385,13 @@ class Cfp::EventsController < ApplicationController
     end
 
     return invalid_list_of_emails.reject(&:blank?).join(", ")
+  end
+
+  def extract_emails_from(string)
+    valid_separators = /[\s,]/
+    emails = string.split(valid_separators)
+
+    emails
   end
 
   def duplicated_title?(title)
