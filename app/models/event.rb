@@ -55,14 +55,12 @@ class Event < ActiveRecord::Base
   validates_inclusion_of :projector, in: [true, false]
 
 
-  def is_travel_assistence
-    if @travel_assistance.present?
-      return true
-    end
+  def travel_assistence?
+    self.travel_assistance.present?
   end
 
-  validates :group, presence: true, if: :is_travel_assistence
-  validates :past_travel_assistance, presence: true, if: :is_travel_assistence
+  validates :group, presence: true, if: :travel_assistence?
+  validates :past_travel_assistance, presence: true, if: :travel_assistence?
 
   validates_format_of :recipient_travel_stipend, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
 

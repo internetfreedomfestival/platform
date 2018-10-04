@@ -70,9 +70,9 @@ class Cfp::EventsController < ApplicationController
 
   # GET /cfp/events/1/edit
   def edit
+    authorize! :submit, Event
     @edit = true
     @event = current_user.person.events.find(params[:id])
-    authorize! :submit, Event
   end
 
   # POST /cfp/events
@@ -89,10 +89,10 @@ class Cfp::EventsController < ApplicationController
     code_of_conduct_checked = event_values[:code_of_conduct] == "true"
     understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
     confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
-    travel_assistance_checked = event_values[:travel_assistence] == "true"
-    travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
+    travel_assistance_checked = event_values[:travel_assistance] == "true" || event_values[:travel_assistance] == "1"
+    travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistence
+    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistance
     emails_list = valid_presenters(@event.other_presenters)
 
     respond_to do |format|
@@ -164,10 +164,10 @@ class Cfp::EventsController < ApplicationController
     code_of_conduct_checked = event_values[:code_of_conduct] == "true"
     understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
     confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
-    travel_assistance_checked = event_values[:travel_assistence] == "true"
-    travel_assistence = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
+    travel_assistance_checked = event_values[:travel_assistance] == "true"
+    travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
-    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistence
+    event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistance
     emails_list = valid_presenters(@event.other_presenters)
     old_emails_list = @old_event.other_presenters
 
