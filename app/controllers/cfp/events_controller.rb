@@ -64,8 +64,6 @@ class Cfp::EventsController < ApplicationController
 
     @event = Event.new(time_slots: @conference.default_timeslots)
     @event.recording_license = @conference.default_recording_license
-
-    # redirect_to cfp_person_path
   end
 
   # GET /cfp/events/1/edit
@@ -87,11 +85,11 @@ class Cfp::EventsController < ApplicationController
     duplicated_title = duplicated_title?(@event.title)
     valid_presenters = !invalid_presenters?(@event.other_presenters)
 
-    instructions_checked = event_values[:instructions] == "true"
-    code_of_conduct_checked = event_values[:code_of_conduct] == "true"
-    understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
-    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
-    travel_assistance_checked = event_values[:travel_assistance] == "true" || event_values[:travel_assistance] == "1"
+    instructions_checked = event_values[:instructions] == 'true'
+    code_of_conduct_checked = event_values[:code_of_conduct] == 'true'
+    understand_one_presenter_checked = event_values[:understand_one_presenter] == 'true'
+    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == 'true'
+    travel_assistance_checked = event_values[:travel_assistance] == 'true' || event_values[:travel_assistance] == "1"
     travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
     event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistance
@@ -99,16 +97,13 @@ class Cfp::EventsController < ApplicationController
 
     respond_to do |format|
       if event_valid && @event.save
-
-        event_person = EventPerson.create(person: current_user.person, event: @event, event_role: "submitter")
-
-        other_presenters = emails_list.map do |email|
-          EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: "collaborator")
-          EventsMailer.create_event_mail(email, @event).deliver_now
-        end
-
+        EventPerson.create(person: current_user.person, event: @event, event_role: 'submitter')
         EventsMailer.create_event_mail(current_user.person.email, @event).deliver_now
 
+        emails_list.map do |email|
+          EventPerson.create(person: Person.find_by(email: email), event: @event, event_role: 'collaborator')
+          EventsMailer.create_event_mail(email, @event).deliver_now
+        end
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
@@ -146,6 +141,7 @@ class Cfp::EventsController < ApplicationController
         end
         @form_params = form_params
         @new = true
+
         format.html { render action: 'new' }
       end
     end
@@ -162,23 +158,21 @@ class Cfp::EventsController < ApplicationController
 
     valid_presenters = !invalid_presenters?(event_values[:other_presenters])
 
-    instructions_checked = event_values[:instructions] == "true"
-    code_of_conduct_checked = event_values[:code_of_conduct] == "true"
-    understand_one_presenter_checked = event_values[:understand_one_presenter] == "true"
-    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == "true"
-    travel_assistance_checked = event_values[:travel_assistance] == "true"
+    instructions_checked = event_values[:instructions] == 'true'
+    code_of_conduct_checked = event_values[:code_of_conduct] == 'true'
+    understand_one_presenter_checked = event_values[:understand_one_presenter] == 'true'
+    confirm_not_stipend_checked = event_values[:confirm_not_stipend] == 'true'
+    travel_assistance_checked = event_values[:travel_assistance] == 'true'
     travel_assistance = travel_assistance_checked == false || (travel_assistance_checked == true && understand_one_presenter_checked && confirm_not_stipend_checked)
 
     event_valid = valid_presenters && instructions_checked && code_of_conduct_checked && travel_assistance
 
     respond_to do |format|
       if @event.update(event_values) && event_valid
-
         emails_list = valid_presenters(event_values[:other_presenters])
         create_role_if_not_exists(emails_list, @event)
         new_emails_list = @event.other_presenters
         delete_role(old_emails_list, new_emails_list, @event)
-
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
@@ -214,6 +208,7 @@ class Cfp::EventsController < ApplicationController
                             NOTE: This field is not mandatory and therefore you can add information about your collaborators later."
         end
         @edit = true
+
         format.html { render action: 'edit' }
       end
     end
@@ -327,9 +322,9 @@ class Cfp::EventsController < ApplicationController
   end
 
   def create_role_if_not_exists(emails_list, event)
-    other_presenters = emails_list.map do |email|
-      if EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: "collaborator").nil?
-          EventPerson.create(person: Person.find_by(email: email), event: event, event_role: "collaborator")
+    emails_list.map do |email|
+      if EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: 'collaborator').nil?
+          EventPerson.create(person: Person.find_by(email: email), event: event, event_role: 'collaborator')
           EventsMailer.create_event_mail(email, event).deliver_now
       end
     end
@@ -344,7 +339,7 @@ class Cfp::EventsController < ApplicationController
 
     emails_to_delete.map do |email|
       Rails.logger.info "deleting email #{email}"
-      person = EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: "collaborator")
+      person = EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: 'collaborator')
       person.destroy if person
     end
   end
