@@ -47,6 +47,35 @@ class CfpFormTest < Capybara::Rails::TestCase
     assert_text 'Your proposal was successfully created.'
   end
 
+  test 'call for proposals needs required fields fullfilled' do
+    visit '/'
+
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/cfp/events/new"
+
+    within '#cfp_form' do
+      check('event[instructions]', option: 'true')
+      fill_in 'event[subtitle]', with: 'Subtitle Event'
+      fill_in 'event[description]', with: 'Session description'
+      fill_in 'event[other_presenters]', with: @person.email
+      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[desired_outcome]', with: 'desired_outcome'
+      fill_in 'event[phone_number]', with: 12345678
+      select('Feature', from: 'event[track_id]')
+      select('On the Frontlines', from: 'event[event_type]')
+      choose 'Yes'
+      check('event[iff_before][]', option: '2018')
+      check('event[code_of_conduct]', option: 'true')
+
+      click_on 'Create Proposal'
+    end
+
+    assert_text "can't be blank"
+  end
+
+
+
   test 'an user can edit a call for proposals' do
     visit '/'
 
