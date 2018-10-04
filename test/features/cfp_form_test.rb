@@ -124,6 +124,29 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   end
 
+  test 'an user editing call for proposals cannot use same title than other cfp' do
+    event = create(:event, conference: @conference, title: "Title")
+    create(:event_person, event: event, person: @user.person, event_role: "submitter")
+    create(:event_person, event: event, person: @user.person, event_role: "speaker")
+
+    event2 = create(:event, conference: @conference, title: "Title2")
+    create(:event_person, event: event2, person: @user.person, event_role: "submitter")
+    create(:event_person, event: event2, person: @user.person, event_role: "speaker")
+
+    visit '/'
+
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/cfp/events/#{event2.id}/edit"
+    within '#cfp_form' do
+      fill_in 'event[title]', with: event.title
+
+      click_on 'Update Proposal'
+    end
+
+    assert_text 'There is already a session submitted with this title.'
+  end
+
   test 'an user can edit a call for proposals' do
     visit '/'
 

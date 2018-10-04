@@ -54,7 +54,7 @@ class Event < ActiveRecord::Base
 
   validates_inclusion_of :projector, in: [true, false]
 
-  # validates_uniqueness_of :title, scope: "conference_id"
+  validates_uniqueness_of :title, scope: :conference_id
 
 
   def travel_assistence?

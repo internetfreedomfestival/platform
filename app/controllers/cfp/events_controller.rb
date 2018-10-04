@@ -202,6 +202,10 @@ class Cfp::EventsController < ApplicationController
 
         flash[:danger] = []
 
+        if @event.errors.messages[:title]
+          flash[:danger] << "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted."
+        end
+
         if invalid_presenters?(event_values[:other_presenters])
           @invalid_list_of_emails = invalid_presenters_list(event_values[:other_presenters])
           wrong_emails_alert = "These emails does not exist in our database: " << @invalid_list_of_emails << ". Please, correct this. Remember emails can be separated by , or space."
