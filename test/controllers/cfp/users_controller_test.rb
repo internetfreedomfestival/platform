@@ -16,8 +16,8 @@ class Cfp::UsersControllerTest < ActionController::TestCase
       sign_up_form_params = {
         email: 'new_user@example.com',
         email_confirmation: 'new_user@example.com',
-        password: 'frab123',
-        password_confirmation: 'frab123',
+        password: 'frab1234',
+        password_confirmation: 'frab1234',
         first_name: 'Aretha',
         gender: 'Female',
         country_of_origin: 'United States',

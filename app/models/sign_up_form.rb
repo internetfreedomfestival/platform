@@ -4,6 +4,12 @@ class CustomValidator < ActiveModel::Validator
     if selected_values.length == 0
       form.errors[:professional_background] << "can't be blank"
     end
+    if form.password.length < 8
+      form.errors[:password] << "Your password must contain a minimum of 8 characters."
+    end
+    if form.password != form.password_confirmation
+      form.errors[:password_confirmation] << "The password and confirmation must be the same"
+    end
   end
 end
 class SignUpForm
@@ -37,4 +43,6 @@ class SignUpForm
                 :invitation_to_mattermost
 
   validates_with CustomValidator, fields: [:professional_background]
+  validates_with CustomValidator, fields: [:password]
+  validates_with CustomValidator, fields: [:password_confirmation]
 end

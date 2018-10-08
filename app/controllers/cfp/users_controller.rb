@@ -44,7 +44,6 @@ class Cfp::UsersController < ApplicationController
         return
       end
     end
-
     render action: 'new'
   end
 
