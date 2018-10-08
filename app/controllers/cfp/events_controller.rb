@@ -62,7 +62,7 @@ class Cfp::EventsController < ApplicationController
 
     @person = Person.find_by(user_id: current_user.id)
 
-    @event = Event.new(time_slots: @conference.default_timeslots)
+    @event = Event.new()
     @event.recording_license = @conference.default_recording_license
   end
 
@@ -303,7 +303,7 @@ class Cfp::EventsController < ApplicationController
       :desired_outcome, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
-      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct)
+      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots)
   end
 
   def prepare_params(form_params)
@@ -323,11 +323,6 @@ class Cfp::EventsController < ApplicationController
   def build_event(event_values)
     event = Event.new(event_values)
     event.instructions = event_values[:instructions]
-    if event.track == 'Workshop'
-      event.time_slots = 6
-    else
-      event.time_slots = 3
-    end
     event.conference = @conference
 
     event

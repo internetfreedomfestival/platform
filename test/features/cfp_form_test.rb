@@ -37,6 +37,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')
@@ -62,6 +63,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')
@@ -88,6 +90,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')
@@ -110,6 +113,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')
@@ -163,6 +167,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')
@@ -218,6 +223,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')
@@ -258,6 +264,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
       select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
       choose 'Yes'
       check('event[iff_before][]', option: '2018')
       check('event[code_of_conduct]', option: 'true')

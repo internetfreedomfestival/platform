@@ -53,6 +53,7 @@ class Event < ActiveRecord::Base
   validates :iff_before, presence: true
 
   validates_inclusion_of :projector, in: [true, false]
+  validates_inclusion_of :time_slots, in: [3, 6]
 
   validates_uniqueness_of :title, scope: :conference_id
 

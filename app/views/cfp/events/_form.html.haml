@@ -88,6 +88,20 @@
 
           %p
             %abbr{title: 'required'} *
+            Preferred Session Time
+          - if @event.errors.messages.key?(:time_slots)
+            %span.error= @event.errors.messages[:time_slots].first
+          %div.input
+            %ul.inputs-list
+              = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min"]], :first, :last, {boolean_style: :inline}) do |r|
+                %li
+                  =r.label do
+                    = r.radio_button
+                    %span= r.text
+          %br
+
+          %p
+            %abbr{title: 'required'} *
             We discourage the use of projectors. Having said that, do you need a projector?
           - if @event.errors.messages.key?(:projector)
             %span.error= @event.errors.messages[:projector].first

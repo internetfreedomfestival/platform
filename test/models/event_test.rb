@@ -84,9 +84,9 @@ class EventTest < ActiveSupport::TestCase
   test 'correctly detects overlapping of events' do
     event = create(:event)
     other_event = create(:event)
-    other_event.start_time = event.start_time.ago(30.minutes)
+    other_event.start_time = event.start_time.ago(45.minutes)
     assert event.overlap?(other_event)
-    other_event.start_time = event.start_time.ago(1.hour)
+    other_event.start_time = event.start_time.ago(90.minutes)
     refute event.overlap?(other_event)
   end
 
