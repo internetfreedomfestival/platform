@@ -5,41 +5,41 @@
   .row{style: "margin-left: 1px;"}
     %ul
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
-        %li{style: "color: black; margin-left: 10px; margin-right: 50px;"} Lead a session that will advance Internet Freedom by starting important conversations, promoting knowledge exchange, and/or building skills and capacity.
+        %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Lead a session that will advance Internet Freedom by starting important conversations, promoting knowledge exchange, and/or building skills and capacity.
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
-        %li{style: "color: black; margin-left: 10px; margin-right: 50px;"} Follow the IFF Format Template​and encourage the use of the IFF Session Role Cards​(provided once accepted).
+        %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Follow the <b>IFF Format Template​and</b> encourage the use of the <b>IFF Session Role Cards​</b>(provided once accepted).
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
-        %li{style: "color: black; margin-left: 10px; margin-right: 50px;"} Respect diversity of opinions, experiences and backgrounds. Please review our <a href="https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct">Code of Conduct</a>
+        %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Respect diversity of opinions, experiences and backgrounds. Please review our <a target="_blank" href="https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct">Code of Conduct</a>
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
-        %li{style: "color: black; margin-left: 10px; margin-right: 50px;"} Promote collaboration by inviting different projects or individuals to work on your session, and foster new connections between participants.
+        %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Promote collaboration by inviting different projects or individuals to work on your session, and foster new connections between participants.
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
-        %li{style: "color: black; margin-left: 10px; margin-right: 50px;"} Foster new connections between participants.
+        %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Foster new connections between participants.
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
-        %li{style: "color: black; margin-left: 10px; margin-right: 50px;"} Design your session to fit under one of the IFF Themes (see below), and limit the time to 45 minutes, or 90 minutes for workshops.
+        %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Design your session to fit under one of the IFF Themes (see below), and limit the time to 45 minutes, or 90 minutes for workshops.
 
   %h3 2. Learn about the 2019 IFF Themes:
   .row{style: "margin-left: 7px;"}
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 On the Frontlines
-      %p A space for frontline activists to share stories, skills and knowledge with allies and other frontline defenders.
+      %p{style: "width: 40rem;"} A space for frontline activists to share stories, skills and knowledge with allies and other frontline defenders.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 The Next Net
-      %p A space to capture the collective vision on the future of Internet Freedom, and how to address overarching issues and upcoming threats that could prevent us from getting there.
+      %p{style: "width: 40rem;"} A space to capture the collective vision on the future of Internet Freedom, and how to address overarching issues and upcoming threats that could prevent us from getting there.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Community Resilience
-      %p A space to talk about community opportunities and issues, diversity and inclusion, health, and resilience.
+      %p{style: "width: 40rem;"} A space to talk about community opportunities and issues, diversity and inclusion, health, and resilience.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Journalism & Media
-      %p A space to address the increasing challenges for journalists and media organizations in the Internet Freedom field.
+      %p{style: "width: 40rem;"} A space to address the increasing challenges for journalists and media organizations in the Internet Freedom field.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Hacking the Net
-      %p A space to foster the next generation of security and privacy tools, bringing closer users, designers and technologists.
+      %p{style: "width: 40rem;"} A space for designers and technologists to foster the next generation of security and privacy tools. This theme is spearheaded by Tor and Radically Open Security.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Policy, Advocacy & Research
-      %p A space for civic engagement and collective action for better policies worldwide, and to explore how researchers can take an active part in the conversation.
+      %p{style: "width: 40rem;"} A space for civic engagement and collective action for better policies worldwide, and to explore how researchers can take an active part in the conversation.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Training & Best Practices
-      %p A space for the trainer community to showcase methodologies, exchange resources, and address shared challenges.
+      %p{style: "width: 40rem;"} A space for the trainer community to showcase methodologies, exchange resources, and address shared challenges.
 
   %h3 3. Session Formats
   .row{style: "margin-left: 7px;"}
@@ -204,7 +204,7 @@
             - else
               %input{name: 'event[code_of_conduct]', type: 'checkbox', value: 'true'}
             *I agree to respect and follow
-            %a{href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
+            %a{target: "_blank", href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
             We are committed to providing a safe and welcoming environment.
             All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
             - if @event.errors.messages.key?(:code_of_conduct)
