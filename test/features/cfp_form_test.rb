@@ -21,6 +21,22 @@ class CfpFormTest < Capybara::Rails::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
+  test 'CFP form link is enabled by FeatureToggle' do
+    ENV['NEW_CFP_ENABLED'] = 'false'
+
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/cfp"
+
+    assert_no_text 'Submit a Session for the 2019 IFF'
+
+    ENV['NEW_CFP_ENABLED'] = 'true'
+
+    visit "/#{@conference.acronym}/cfp"
+
+    assert_text 'Submit a Session for the 2019 IFF'
+  end
+
   test 'new user can create a new call for proposals' do
     login_as(@user)
 
