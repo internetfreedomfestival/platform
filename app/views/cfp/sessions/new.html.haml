@@ -17,9 +17,9 @@
     .span8
       %h1 Sign in
       = render "shared/flash", flash: flash
-      = simple_form_for @user, url: session_path, html:{id: 'login'} do |f|
+      = simple_form_for @user, url: session_path, wrapper: :horizontal_string, html: { id: 'login' } do |f|
         %fieldset.inputs
-          = f.input :email
+          = f.input :email, required: false
           = f.input :password
           = f.input :remember_me, as: :inline_boolean
           - if params.key?(:return_to)
