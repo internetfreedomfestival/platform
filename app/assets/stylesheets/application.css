@@ -3,5 +3,6 @@
  *= require jquery-ui-bootstrap
  *= require frab
  *= require iff
+ *= require forms
  *= require_self
 */

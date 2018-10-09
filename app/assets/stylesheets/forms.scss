@@ -1,0 +1,47 @@
+form .form-group  {
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.form-label {
+  border-left: 3px solid black;
+  display: inline-block;
+}
+
+.has-error > .form-label {
+  background-color: #ffbabb;
+}
+
+.form-label > label {
+  float: none;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.form-required__text {
+  font-size: 12px;
+  position: absolute;
+  left: 0rem;
+  bottom: -1.5rem;
+}
+
+.form-help {
+  width: 40rem;
+}
+
+.form-help__text {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 450;
+}
+
+.form-input {
+  margin-top: 24px;
+}
+
+.form-input__error {
+  margin-left: 16px;
+  margin-right: 3px;
+}
