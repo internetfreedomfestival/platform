@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008184713) do
+ActiveRecord::Schema.define(version: 20181009114925) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -372,8 +372,8 @@ ActiveRecord::Schema.define(version: 20181008184713) do
     t.string   "old_attendance_status"
     t.string   "gender_pronoun"
     t.string   "iff_days"
-    t.string   "email_confirm"
     t.boolean  "group"
+    t.text     "iff_goals_previous"
   end
 
   add_index "people", ["email"], name: "index_people_on_email"
