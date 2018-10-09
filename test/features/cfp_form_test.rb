@@ -6,6 +6,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     @conference = create(:conference)
     @event = create(:event)
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
+    @admin_user = create(:user, person: create(:person, public_name: nil), role: 'admin')
     @cfp = create(:call_for_participation, conference: @conference)
     @person = create(:person)
 
@@ -35,6 +36,22 @@ class CfpFormTest < Capybara::Rails::TestCase
     visit "/#{@conference.acronym}/cfp"
 
     assert_text 'Submit a Session for the 2019 IFF'
+  end
+
+  test 'Self-Organized Session button is enabled by FeatureToggle' do
+    ENV['NEW_CFP_ENABLED'] = 'false'
+
+    login_as(@admin_user)
+
+    visit "/#{@conference.acronym}/cfp"
+
+    assert_no_text 'Submit Self-Organized Session'.tr('-', ' ')
+
+    ENV['NEW_CFP_ENABLED'] = 'true'
+
+    visit "/#{@conference.acronym}/cfp"
+
+    assert_text 'Submit Self-Organized Session'.tr('-', ' ')
   end
 
   test 'new user can create a new call for proposals' do
