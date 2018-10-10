@@ -48,7 +48,7 @@ class Event < ActiveRecord::Base
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
   # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
   validates_presence_of :title, :subtitle, :description, :public_type,
-    :desired_outcome, :phone_number, :track, :event_type
+    :desired_outcome, :track, :event_type
 
   validates :iff_before, presence: true
 
