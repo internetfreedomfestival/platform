@@ -17,7 +17,7 @@
       .span16{style: "line-height: 22px; padding: 10px; width: 922px;"}
         %li{style: "width: 40rem; color: black; margin-left: 10px; margin-right: 50px;"} Design your session to fit under one of the IFF Themes (see below), and limit the time to 45 minutes, or 90 minutes for workshops.
 
-  %h3 2. Learn about the 2019 IFF Themes:
+  %h3 2. The 2019 IFF Themes
   .row{style: "margin-left: 7px;"}
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 On the Frontlines
@@ -33,7 +33,7 @@
       %p{style: "width: 40rem;"} A space to address the increasing challenges for journalists and media organizations in the Internet Freedom field.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Hacking the Net
-      %p{style: "width: 40rem;"} A space for designers and technologists to foster the next generation of security and privacy tools. This theme is spearheaded by Tor and Radically Open Security.
+      %p{style: "width: 40rem;"} A space for designers and technologists to foster the next generation of security and privacy tools. This theme is spearheaded by Tor and Radical Open Security.
     .span16{style: "line-height: 22px; width: 922px;"}
       %h5 Policy, Advocacy & Research
       %p{style: "width: 40rem;"} A space for civic engagement and collective action for better policies worldwide, and to explore how researchers can take an active part in the conversation.
@@ -79,7 +79,7 @@
           = f.input :title, label: "Session Title"
           = f.input :subtitle, label: "Goal of the session", hint: "Describe it in just a sentence."
           = f.input :description, label: "Session Description"
-          = f.input :other_presenters, type: "email", label: "Other presenters in this session", hint: "Enter the email addresses they used to register in the platform. You may add other presenters later. Emails can be separated by commas (',') or spaces."
+          = f.input :other_presenters, type: "email", label: "Other presenters in this session", hint: "Enter the email addresses your co-presenters used to register on this platform, separated by a comma. You cannot include your co-presenters until they have registered on the platform, but you can also add them later after the form is submitted. All your submitted sessions will be accessible in your user portal."
           = f.input :public_type, label: "Who is this session for?", hint: "Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?"
           = f.input :desired_outcome, label: "What outcomes do you envision for this session?"
           = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix (e.g., 0034)."
@@ -95,7 +95,7 @@
                 %span.form-input__error= @event.errors.messages[:time_slots].first
             %div.form-input
               %ul.inputs-list
-                = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min"]], :first, :last, {boolean_style: :inline}) do |r|
+                = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
                   %li
                     =r.label do
                       = r.radio_button
@@ -106,7 +106,7 @@
             .form-label
               %label
                 %span.form-required__text Required Field.
-                We discourage the use of projectors. Having said that, do you need a projector?
+                We discourage the use of projectors. However, will you need it?
               - if @event.errors.messages.key?(:projector)
                 %span.form-input__error= @event.errors.messages[:projector].first
             %div.form-input
@@ -145,7 +145,7 @@
 
           .span16{hidden: "hidden", id: "dif_form", style: "width: 55rem;"}
             %div
-              At the IFF we work very hard to raise funds to ensure that voices from underrepresented and marginalized groups have more opportunities to be heard. Because of the huge demand for support, we ask that you don’t request more than what you need to attend– for some, this stipend is the only opportunity they have to participate. If you have other options to support your participation, we encourage you to explore them early on in order to secure your attendance.
+              At the IFF we work very hard to raise funds to ensure the inclusion of voices from underrepresented and marginalized groups. Because of the huge demand for support, we ask that you don’t request more than what you need to attend– for some, this stipend is the only opportunity they have to participate. If you have other options to support your participation, we encourage you to explore them early on in order to secure your attendance.
 
             %br
             %br
@@ -184,13 +184,13 @@
 
             %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}
               %input{name: "event[understand_one_presenter]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
-              I understand that only one presenter per session will be awarded a travel stipend
+              I understand that only one presenter per session can be awarded a travel stipend
             - if @event.errors.messages.key?(:understand_one_presenter)
               %span.form-input__error= @event.errors.messages[:understand_one_presenter].first
 
             %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}
               %input{name: "event[confirm_not_stipend]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
-              I confirm that I am not getting a stipend to participate in the IFF from another organization
+              I confirm that I haven’t already received an stipend to participate in the IFF from another organization
             - if @event.errors.messages.key?(:confirm_not_stipend)
               %span.form-input__error= @event.errors.messages[:confirm_not_stipend].first
 
