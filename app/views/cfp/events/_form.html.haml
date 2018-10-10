@@ -1,6 +1,6 @@
 = simple_form_for([:cfp, @event], html: {multipart: true, id: 'cfp_form'}) do |f|
   %h3 Please, read the following instructions thoroughly before submitting your proposal.
-  <hr />
+  %hr
   %h3 1. As a presenter, you should:
   .row{style: "margin-left: 1px;"}
     %ul
@@ -70,7 +70,6 @@
         - if @event.errors.messages.key?(:instructions)
           %span.form-input__error= @event.errors.messages[:instructions].first
 
-
   %fieldset.inputs
     .offset1
       .row
@@ -93,7 +92,7 @@
                 Preferred Session Time
               - if @event.errors.messages.key?(:time_slots)
                 %span.form-input__error= @event.errors.messages[:time_slots].first
-            %div.form-input
+            .form-input
               %ul.inputs-list
                 = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
                   %li
@@ -109,7 +108,7 @@
                 We discourage the use of projectors. However, will you need it?
               - if @event.errors.messages.key?(:projector)
                 %span.form-input__error= @event.errors.messages[:projector].first
-            %div.form-input
+            .form-input
               %ul.inputs-list
                 = f.collection_radio_buttons(:projector, [[true, "Yes"], [ false, "No"]], :first, :last, {boolean_style: :inline}) do |r|
                   %li
@@ -125,7 +124,7 @@
                 Have you presented at IFF before?
               - if @event.errors.messages.key?(:iff_before)
                 %span.form-input__error= @event.errors.messages[:iff_before].first
-            %div.form-input
+            .form-input
               %ul.inputs-list
                 = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline}) do |c|
                   %li
@@ -139,7 +138,7 @@
             .form-label
               %label
                 Diversity and Inclusion Program for Session Presenters
-            %div.form-input
+            .form-input
               = f.check_box :travel_assistance, id: :travel
               I need travel support to attend the 2019 IFF
 
@@ -157,7 +156,7 @@
               .form-label
                 %label
                   Please choose the type of travel support you need:
-              %div.form-input
+              .form-input
                 %ul.inputs-list
                   = f.collection_check_boxes(:travel_support, [["Hotel", "Hotel"], ["Flight", "Flight"], ["Daily Per Diem", "Daily Per Diem"]], :first, :last, {boolean_style: :inline}) do |c|
                     %li
@@ -172,7 +171,7 @@
                   Have you been awarded a travel stipend from the IFF in the past?
                 - if @event.errors.messages.key?(:past_travel_assistance)
                   %span.form-input__error= @event.errors.messages[:past_travel_assistance].first
-              %div.form-input
+              .form-input
                 %ul.inputs-list
                   = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline}) do |c|
                     %li
