@@ -5,9 +5,14 @@
     .span16
       = simple_form_for(@user, url: cfp_user_path, html: { method: :put }) do |f|
         %fieldset.inputs
-          = f.input :email
-          = f.input :password, hint: t("cfp.password_hint")
-          = f.input :password_confirmation
-        .actions
-          = f.button :submit, t("cfp.update"), class: 'primary'
-          = link_to t("cfp.back"), :back, class: "btn", class: "btn danger"
+          .offset1
+            .row
+              .span24{style: "line-height: 22px; padding: 10px; width: 922px;"}
+                = f.input :email
+                = f.input :password, hint: t("cfp.password_hint")
+                = f.input :password_confirmation
+
+              .span24
+                %br
+                = f.button :submit, t("cfp.update"), class: 'primary'
+                = link_to t("cfp.back"), cfp_root_path, class: "btn", class: "btn danger"

@@ -74,7 +74,7 @@ en:
     looking_for_login_form: "Suchen Sie den Login für Vortragende?"
     no_confirmation_token: "Your confirmation key is not valid. Please check your proposal status in the call for papers interface."
     not_forget_personal_details: "*** Before you can submit a proposal, see schedules, or sign up for the festival you must fill out your personal profile. Click 'edit your personal profile' and add your required info. ***"
-    password_hint: "leave blank if you don't want to change it"
+    password_hint: "Leave blank if you don't want to change it."
     password_updated: "Successfully updated your password."
     person_created_notice: "Profile was successfully created."
     person_updated_notice: "You have successfully updated your profile for the 2019 IFF!"
