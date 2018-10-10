@@ -22,38 +22,66 @@
 
           %br
           .span24
-            %p Do you identify as part of an ethnic, racial or cultural minority group?
-            %br
-            = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: false
+            = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: "Do you identify as part of an ethnic, racial or cultural minority group?"
+
           .span24
-            %p
-              %abbr{title: 'required'} *
-              Check the boxes that most closely describe the work you do
-            - if @form.errors.messages.key?(:professional_background)
-              %span.error= @form.errors.messages[:professional_background].first
-            %div.input
-              %ul.inputs-list
-                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
-                  %li
-                    = c.label do
-                      = c.check_box
-                      %span= c.text
-          %br
+
+            .clearfix.form-group{class: ("has-error" if @form.errors.messages.key?(:professional_background))}
+              .form-label
+                %label
+                  %span.form-required__text Required Field.
+                  Check the boxes that most closely describe the work you do
+                - if @form.errors.messages.key?(:professional_background)
+                  %span.form-input__error= @form.errors.messages[:professional_background].first
+              %div.form-input
+                %ul.inputs-list
+                  = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
+                    %li
+                      =c.label do
+                        = c.check_box
+                        %span= c.text
+
           .span24
             %br
               = f.input :other_background, label: "Professional Title"
               = f.input :organization
               = f.input :project, as: :text
             %br
-              %p
-                %abbr{title: 'required'} *
-                Would you like to subscribe to the IFF Mailing List? Don’t miss important updates and opportunities!
-              = f.input :include_in_mailings, as: :radio_buttons, collection: [[true, "Yes, keep me updated!"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
+              .clearfix.form-group{class: ("has-error" if @form.errors.messages.key?(:include_in_mailings))}
+                .form-label
+                  %label
+                    %span.form-required__text Required Field.
+                    Would you like to subscribe to the IFF Mailing List?
+                    %br
+                    %span{style: "padding-left:5px;"} Don’t miss important updates and opportunities!
+                  - if @form.errors.messages.key?(:include_in_mailings)
+                    %span.form-input__error= @form.errors.messages[:include_in_mailings].first
+                %div.form-input
+                  %ul.inputs-list
+                    = f.collection_radio_buttons(:include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thanks"]], :first, :last, {boolean_style: :inline}) do |r|
+                      %li
+                        =r.label do
+                          = r.radio_button
+                          %span= r.text
+
             %br
-              %p
-                %abbr{title: 'required'} *
-                Would you like to receive a Mattermost invite? Like Slack, but open source! A great way to connect with the IFF community.
-              = f.input :invitation_to_mattermost, as: :radio_buttons, collection: [[true, "Yes, I want an invite"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
+            .clearfix.form-group{class: ("has-error" if @form.errors.messages.key?(:invitation_to_mattermost))}
+              .form-label
+                %label
+                  %span.form-required__text Required Field.
+                  Would you like to receive a Mattermost invite? Like Slack, but open source!
+                  %br
+                  %span{style: "padding-left:5px;"} A great way to connect with the IFF community.
+                - if @form.errors.messages.key?(:invitation_to_mattermost)
+                  %span.form-input__error= @form.errors.messages[:invitation_to_mattermost].first
+              %div.form-input
+                %ul.inputs-list
+                  = f.collection_radio_buttons(:invitation_to_mattermost, [[true, "Yes, I want an invite"], [false, "No, thanks"]], :first, :last, {boolean_style: :inline}) do |r|
+                    %li
+                      =r.label do
+                        = r.radio_button
+                        %span= r.text
+
           %br
           .span24
             %br

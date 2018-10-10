@@ -11,40 +11,76 @@
             %br
           .span24
             = f.input :email, label: "Contact Email"
-            = f.input :email_confirmation, label: "* Confirm Contact Email"
-            = f.input :first_name, label: "* First Name"
+            = f.input :email_confirmation, label: "Confirm Contact Email"
+            = f.input :password
+            = f.input :password_confirmation
+            = f.input :first_name, label: "First Name"
             = f.input :last_name, label: "Last Name"
             = f.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f"
-            = f.input :gender, collection: translated_options(Person::GENDERS), label: "* Gender"
-            = f.input :country_of_origin, label: "* Country of Origin", collection: translated_options(Person::COUNTRIES), error: " "
+            = f.input :gender, collection: translated_options(Person::GENDERS), label: "Gender"
+            = f.input :country_of_origin, collection: translated_options(Person::COUNTRIES), label: "Country of Origin"
 
           %br
           .span24
-            %p Do you identify as part of an ethnic, racial or cultural minority group?
-            %br
-              = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: false
+            = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: "Do you identify as part of an ethnic, racial or cultural minority group?"
+
           .span24
-            %p * Check the boxes that most closely describe the work you do
-            %div.input
-              %ul.inputs-list
-                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
-                  %li
-                    = c.label do
-                      = c.check_box
-                      %span= c.text
-          %br
+
+            .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:professional_background))}
+              .form-label
+                %label
+                  %span.form-required__text Required Field.
+                  Check the boxes that most closely describe the work you do
+                - if @person.errors.messages.key?(:professional_background)
+                  %span.form-input__error= @person.errors.messages[:professional_background].first
+              %div.form-input
+                %ul.inputs-list
+                  = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
+                    %li
+                      =c.label do
+                        = c.check_box
+                        %span= c.text
+
           .span24
             %br
               = f.input :other_background, label: "Professional Title"
               = f.input :organization
               = f.input :project, as: :text
             %br
-              %p * Would you like to subscribe to the IFF Mailing List? Don’t miss important updates and opportunities!
-              = f.input :include_in_mailings, as: :radio_buttons, collection: [[true, "Yes, keep me updated!"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
+              .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:include_in_mailings))}
+                .form-label
+                  %label
+                    %span.form-required__text Required Field.
+                    Would you like to subscribe to the IFF Mailing List?
+                    %br
+                    %span{style: "padding-left:5px;"} Don’t miss important updates and opportunities!
+                  - if @person.errors.messages.key?(:include_in_mailings)
+                    %span.form-input__error= @person.errors.messages[:include_in_mailings].first
+                %div.form-input
+                  %ul.inputs-list
+                    = f.collection_radio_buttons(:include_in_mailings, [[true, "Yes, keep me updated!"], [false, "No, thanks"]], :first, :last, {boolean_style: :inline}) do |r|
+                      %li
+                        =r.label do
+                          = r.radio_button
+                          %span= r.text
+
             %br
-              %p * Would you like to receive a Mattermost invite? Like Slack, but open source! A great way to connect with the IFF community.
-              = f.input :invitation_to_mattermost, as: :radio_buttons, collection: [[true, "Yes, I want an invite"], [false, "No, thanks"]], label_method: :second, value_method: :first, label: false
-          %br
+            .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:invitation_to_mattermost))}
+              .form-label
+                %label
+                  %span.form-required__text Required Field.
+                  Would you like to receive a Mattermost invite? Like Slack, but open source!
+                  %br
+                  %span{style: "padding-left:5px;"} A great way to connect with the IFF community.
+                - if @person.errors.messages.key?(:invitation_to_mattermost)
+                  %span.form-input__error= @person.errors.messages[:invitation_to_mattermost].first
+              %div.form-input
+                %ul.inputs-list
+                  = f.collection_radio_buttons(:invitation_to_mattermost, [[true, "Yes, I want an invite"], [false, "No, thanks"]], :first, :last, {boolean_style: :inline}) do |r|
+                    %li
+                      =r.label do
+                        = r.radio_button
+                        %span= r.text
           .span24
             %br
             -if @first_time
