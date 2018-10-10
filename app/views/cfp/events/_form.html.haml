@@ -93,7 +93,7 @@
             %span.error= @event.errors.messages[:time_slots].first
           %div.input
             %ul.inputs-list
-              = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min"]], :first, :last, {boolean_style: :inline}) do |r|
+              = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
                 %li
                   =r.label do
                     = r.radio_button
@@ -184,13 +184,13 @@
 
                 %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}
                   %input{name: "event[understand_one_presenter]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
-                  I understand that only one presenter per session will be awarded a travel stipend
+                  I understand that only one presenter per session can be awarded a travel stipend
                 - if @event.errors.messages.key?(:understand_one_presenter)
                   %span.error= @event.errors.messages[:understand_one_presenter].first
 
                 %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}
                   %input{name: "event[confirm_not_stipend]", type: 'checkbox', value: 'true', style: "margin: 3px 6px;"}
-                  I confirm that I am not getting a stipend to participate in the IFF from another organization
+                  I confirm that I haven’t already received an stipend to participate in the IFF from another organization
                 - if @event.errors.messages.key?(:confirm_not_stipend)
                   %span.error= @event.errors.messages[:confirm_not_stipend].first
 
