@@ -119,8 +119,8 @@
           - if @event.errors.messages.key?(:iff_before)
             %span.error= @event.errors.messages[:iff_before].first
           %div.input
-            %ul.inputs-list
-              = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline}) do |c|
+            %ul.inputs-list{id: 'iff_before_checkboxes'}
+              = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline} ) do |c|
                 %li
                   =c.label do
                     = c.check_box
@@ -173,7 +173,7 @@
                 - if @event.errors.messages.key?(:past_travel_assistance)
                   %span.error= @event.errors.messages[:past_travel_assistance].first
                 %div.input
-                  %ul.inputs-list
+                  %ul.inputs-list{id: 'past_travel_assistance_checkboxes'}
                     = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline}) do |c|
                       %li
                         =c.label do

@@ -20,4 +20,29 @@ $( document ).ready(function() {
       $(time_6).attr('checked',null);
     }
   })
+
+  $("#iff_before_checkboxes input[type=checkbox]").on("click", function(){
+    if ($(this).attr("id") == "event_iff_before_not_yet") {
+      $("#event_iff_before_2015").attr('checked',null)
+      $("#event_iff_before_2016").attr('checked',null)
+      $("#event_iff_before_2017").attr('checked',null)
+      $("#event_iff_before_2018").attr('checked',null)
+    }
+    else
+    {
+    $("#event_iff_before_not_yet").attr('checked',null)
+    }
+  })
+
+
+  $("#past_travel_assistance_checkboxes input[type=checkbox]").on("click", function(){
+    if ($(this).attr("id") == "event_past_travel_assistance_no") {
+      $("#event_past_travel_assistance_2017").attr('checked',null)
+      $("#event_past_travel_assistance_2018").attr('checked',null)
+    }
+    else
+    {
+    $("#event_past_travel_assistance_no").attr('checked',null)
+    }
+  })
 });
