@@ -1,6 +1,6 @@
-%section
+%section{style: "margin: 20px"}
   .page-header
-    .row
-      .span16
-        %p=t("cfp.personal_details_later")
-        = render 'form'
+    %h1= t("cfp.personal_details_headline")
+  .row
+    .span16
+      = render 'form'
