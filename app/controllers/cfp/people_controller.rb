@@ -64,15 +64,14 @@ class Cfp::PeopleController < ApplicationController
   end
 
   def update
-    new_email = person_params[:email]
+    params = person_params
 
-    if new_email.present? && (new_email != @person.email) && Person.find_by(email: new_email)
-      @person.errors.add(:email, "email is taken")
-      person_params[:email_confirmation] = person_params[:email] = @person.email
+    if params[:email] == @person.email
+      params = person_params.except(:email, :email_confirmation)
     end
 
     respond_to do |format|
-      if @person.update_attributes(person_params)
+      if @person.update_attributes(params)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.person_updated_notice')) }
         format.xml  { head :ok }
       else

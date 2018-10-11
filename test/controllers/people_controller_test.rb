@@ -23,6 +23,8 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test 'should create person' do
+    @person.email = generate(:email)
+
     assert_difference('Person.count') do
       post :create, person: person_params, conference_acronym: @conference.acronym
     end

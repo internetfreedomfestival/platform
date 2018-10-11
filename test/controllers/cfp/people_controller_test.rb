@@ -26,6 +26,8 @@ class Cfp::PeopleControllerTest < ActionController::TestCase
     user.person = nil
     session[:user_id] = user.id
 
+    @cfp_person.email = generate(:email)
+
     assert_difference 'Person.count' do
       post :create, person: cfp_person_params, conference_acronym: @conference.acronym
     end
@@ -38,6 +40,8 @@ class Cfp::PeopleControllerTest < ActionController::TestCase
   end
 
   test 'should update cfp_person' do
+    @cfp_person.email = generate(:email)
+
     put :update, id: @cfp_person.id, person: cfp_person_params, conference_acronym: @conference.acronym
     assert_response :redirect
   end

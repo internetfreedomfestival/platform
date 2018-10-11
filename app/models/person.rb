@@ -103,6 +103,8 @@ class Person < ActiveRecord::Base
 
   validates_confirmation_of :email, message: "doesn't match email"
 
+  validates_uniqueness_of :email
+
   scope :involved_in, ->(conference) {
     joins(events: :conference).where('conferences.id': conference).uniq
   }
