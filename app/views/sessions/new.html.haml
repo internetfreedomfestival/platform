@@ -17,9 +17,9 @@
     .span8
       %h1 Sign in
       = render "shared/flash", flash: flash
-      = simple_form_for @user, url: session_path, html:{id: 'login'} do |f|
+      = simple_form_for @user, url: session_path, wrapper: :horizontal_string, html: { id: 'login' } do |f|
         %fieldset.inputs
-          = f.input :email
+          = f.input :email, required: false
           = f.input :password
           = f.input :remember_me, as: :inline_boolean
           - if params.key?(:return_to)
@@ -34,9 +34,9 @@
         = simple_form_for(@user, url: cfp_user_path) do |f|
           %fieldset.inputs
             = link_to t("cfp.sign_up"), new_cfp_user_path, class: 'btn primary'
-          %p
-            =t("cfp.confirmation_description")
-          = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
+        %p
+          =t("cfp.confirmation_description")
+        = action_button "", t("cfp.confirmation_button"), new_cfp_user_confirmation_path
 
   .page-footer__registration
     %p Please contact <b><a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a></b> for sign-up issues.
