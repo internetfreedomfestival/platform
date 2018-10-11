@@ -3,7 +3,7 @@
     %h1=t("cfp.edit_account")
   .row
     .span16
-      = simple_form_for(@user, url: cfp_user_path, html: { method: :put }) do |f|
+      = simple_form_for(@user, url: cfp_user_path, html: { multipart: true }) do |f|
         %fieldset.inputs
           .offset1
             .row
