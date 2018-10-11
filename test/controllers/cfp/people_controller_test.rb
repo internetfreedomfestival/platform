@@ -27,9 +27,7 @@ class Cfp::PeopleControllerTest < ActionController::TestCase
     session[:user_id] = user.id
 
     assert_difference 'Person.count' do
-      post :create, person: { email: @cfp_person.email,
-                              public_name: @cfp_person.public_name },
-                    conference_acronym: @conference.acronym
+      post :create, person: cfp_person_params, conference_acronym: @conference.acronym
     end
     assert_response :redirect
   end
