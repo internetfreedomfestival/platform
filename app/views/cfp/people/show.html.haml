@@ -9,8 +9,6 @@
         = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
 
     %div{style: "float: right; margin-top: 76px"}
-      - if (@person.old_attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?) && FeatureToggle.new_cfp_enabled?
-        = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
       = action_button "primary", "Edit Profile", edit_cfp_person_path
       = action_button "primary", "Edit Account", edit_cfp_user_path
 

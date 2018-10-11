@@ -38,22 +38,6 @@ class CfpFormTest < Capybara::Rails::TestCase
     assert_text 'Submit a Session for the 2019 IFF'
   end
 
-  test 'Self-Organized Session button is enabled by FeatureToggle' do
-    ENV['NEW_CFP_ENABLED'] = 'false'
-
-    login_as(@admin_user)
-
-    visit "/#{@conference.acronym}/cfp"
-
-    assert_no_text 'Submit Self-Organized Session'.tr('-', ' ')
-
-    ENV['NEW_CFP_ENABLED'] = 'true'
-
-    visit "/#{@conference.acronym}/cfp"
-
-    assert_text 'Submit Self-Organized Session'.tr('-', ' ')
-  end
-
   test 'new user can create a new call for proposals' do
     login_as(@user)
 
