@@ -48,4 +48,10 @@ class Cfp::UsersControllerTest < ActionController::TestCase
     user.reload
     assert_not_equal digest_before, user.password_digest
   end
+
+  test '[:bug] redirect to action edit when validations fail' do
+    login_as(:submitter)
+    put :update, conference_acronym: @conference.acronym, user: { password: '123frab', password_confirmation: '123frab', email: "" }
+    assert_response :success
+  end
 end
