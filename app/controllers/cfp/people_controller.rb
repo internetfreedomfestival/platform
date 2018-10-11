@@ -7,7 +7,7 @@ class Cfp::PeopleController < ApplicationController
 
   def show
     @not_registered = (@person.public_name == "Enter a public name here")
-    @old_account = person_needs_to_upgrade
+    @is_old_account = person_needs_to_update_profile?
     @no_events = @person.events.empty?
     @no_dif = @person.dif.nil?
     @is_fellow = ConferenceUser.exists?(user_id: current_user.id)
@@ -66,19 +66,9 @@ class Cfp::PeopleController < ApplicationController
   def update
     new_email = person_params[:email]
 
-    if new_email.blank?
-      flash[:danger] = "Confirm your email"
-      return redirect_to action: :edit
-    end
-
-    if new_email != @person.email && Person.where(email: new_email).count > 0
-      flash[:danger] = "This email has already been taken"
-      return redirect_to action: :edit
-    end
-
-    if person_invalid_for_update
-      flash[:alert] = "You must fill out all the required fields!"
-      return redirect_to action: :edit
+    if new_email.present? && (new_email != @person.email) && Person.find_by(email: new_email)
+      @person.errors.add(:email, "email is taken")
+      person_params[:email_confirmation] = person_params[:email] = @person.email
     end
 
     respond_to do |format|
@@ -128,34 +118,14 @@ class Cfp::PeopleController < ApplicationController
     )
   end
 
-  def person_invalid_for_update
-    if person_params[:email].nil? ||
-       person_params[:email_confirmation].nil? || person_params[:email] != person_params[:email_confirmation] ||
-       person_params[:first_name] == "" ||
-       person_params[:country_of_origin] == "" ||
-       person_params[:gender] == "" ||
-       person_params[:gender].nil? ||
-       person_params[:professional_background].nil? ||
-       person_params[:professional_background] == [""] ||
-       person_params[:professional_background] == [] ||
-       person_params[:include_in_mailings] == [] ||
-       person_params[:invitation_to_mattermost] == []
-      return true
-    end
-  end
-
-  def person_needs_to_upgrade
-    if @person.email.nil? || @person.email == "" ||
-      @person.first_name.nil? ||
-       @person.first_name == "" ||
-       @person.country_of_origin.nil? ||
-       @person.country_of_origin == "" ||
-       @person.gender.nil? ||
-       @person.gender == "" ||
-       @person.professional_background == [] ||
-       @person.professional_background == [""] ||
-       @person.include_in_mailings == [] ||
-       @person.invitation_to_mattermost == []
+  def person_needs_to_update_profile?
+    if @person.email.blank? ||
+       @person.first_name.blank? ||
+       @person.country_of_origin.blank? ||
+       @person.gender.blank? ||
+       @person.professional_background.blank? ||
+       @person.include_in_mailings.nil? ||
+       @person.invitation_to_mattermost.nil?
       return true
     end
   end

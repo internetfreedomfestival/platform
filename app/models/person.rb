@@ -97,18 +97,11 @@ class Person < ActiveRecord::Base
 
   validates_attachment_content_type :avatar, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
-  validates_presence_of :email
-  #   :email_confirm,
-  #   :first_name,
-  #   :gender,
-  #   :country_of_origin,
-  #   :professional_background,
-  #   :include_in_mailings,
-  #   :invitation_to_mattermost
+  validates_presence_of :email, :first_name, :gender, :country_of_origin, :professional_background
 
-  validates :email, confirmation: true
-  # validates :email_confirmation
+  validates_inclusion_of :include_in_mailings, :invitation_to_mattermost, in: [true, false]
 
+  validates_confirmation_of :email, message: "doesn't match email"
 
   scope :involved_in, ->(conference) {
     joins(events: :conference).where('conferences.id': conference).uniq

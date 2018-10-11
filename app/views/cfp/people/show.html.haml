@@ -1,7 +1,7 @@
 %section
   .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
     .pull-right
-    - if @old_account
+    - if @is_old_account
       %p.alert-message Please update your registration information in order to request an invite to the 2019 IFF.
 
     %div{style: "float: right; clear: both; margin-top: 5px"}
@@ -17,7 +17,7 @@
     =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px; margin-left: 10px;"
     %h2{style: "margin-left: 20px;"} User Portal
 
-  - if @old_account
+  - if @is_old_account
     .row{style: "margin: 10px;"}
       .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
         %div
@@ -27,7 +27,7 @@
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "primary", "Update Profile", edit_cfp_person_path, style: "margin: 10px"
 
-  - if FeatureToggle.new_cfp_enabled? and !@old_account
+  - if FeatureToggle.new_cfp_enabled? and !@is_old_account
     .row{style: "margin: 10px;"}
       .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
         %div
@@ -49,7 +49,7 @@
             %p You don't have an invitation.
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
-          - if @old_account
+          - if @is_old_account
             %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
       .span8{style: "margin-bottom: 30px; height: 200px;"}
         %div{style: "margin:10px;"}
