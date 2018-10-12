@@ -9,8 +9,6 @@
         = link_to "Go to Fellow Admin", conference_home_path, class: "btn primary"
 
     %div{style: "float: right; margin-top: 76px"}
-      - if (@person.old_attendance_status == 'confirmed' || @is_fellow || current_user.is_admin?) && FeatureToggle.new_cfp_enabled?
-        = action_button "primary", t("Submit Self-Organized Session"), new_cfp_event_path
       = action_button "primary", "Edit Profile", edit_cfp_person_path
       = action_button "primary", "Edit Account", edit_cfp_user_path
 
@@ -22,7 +20,7 @@
       .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
         %div
           %h3 Submit a Session for the 2019 IFF
-          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 1st, 2018.
+          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 9, 2018.
           %p Please update your profile in order to submit a session proposal for the 2019 IFF.
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "primary", "Update Profile", edit_cfp_person_path, style: "margin: 10px"
@@ -32,7 +30,7 @@
       .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
         %div
           %h3 Submit a Session for the 2019 IFF
-          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 1st, 2018.
+          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 9, 2018.
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
