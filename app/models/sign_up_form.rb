@@ -1,7 +1,7 @@
 class CustomValidator < ActiveModel::Validator
   def validate(form)
-    selected_values = form.professional_background.reject{|value| value.blank?}
-    if selected_values.length == 0
+    selected_values = form.professional_background
+    if selected_values.nil? 
       form.errors[:professional_background] << "can't be blank"
     end
     if form.password.length < 8

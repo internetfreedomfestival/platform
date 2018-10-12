@@ -126,12 +126,11 @@
                 %span.form-input__error= @event.errors.messages[:iff_before].first
             .form-input
               %ul.inputs-list
-                = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline}) do |c|
+                = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
                   %li
                     =c.label do
                       = c.check_box
                       %span= c.text
-
           %br
 
           .clearfix.form-group
@@ -158,7 +157,7 @@
                   Please choose the type of travel support you need:
               .form-input
                 %ul.inputs-list
-                  = f.collection_check_boxes(:travel_support, [["Hotel", "Hotel"], ["Flight", "Flight"], ["Daily Per Diem", "Daily Per Diem"]], :first, :last, {boolean_style: :inline}) do |c|
+                  = f.collection_check_boxes(:travel_support, [["Hotel", "Hotel"], ["Flight", "Flight"], ["Daily Per Diem", "Daily Per Diem"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
                     %li
                       =c.label do
                         = c.check_box
@@ -173,12 +172,11 @@
                   %span.form-input__error= @event.errors.messages[:past_travel_assistance].first
               .form-input
                 %ul.inputs-list
-                  = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline}) do |c|
+                  = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
                     %li
                       =c.label do
                         = c.check_box
                         %span= c.text
-
             %br
 
             %p{style: "margin-top: 10px; margin-right: 26rem; width: 900px"}

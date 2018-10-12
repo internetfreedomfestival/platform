@@ -310,13 +310,6 @@ class Cfp::EventsController < ApplicationController
     event_values = form_params.merge(
       recording_license: @conference.default_recording_license,
     )
-    event_values[:iff_before] = event_values[:iff_before].reject(&:blank?)
-    event_values[:iff_before] = nil if event_values[:iff_before].empty?
-    event_values[:travel_support] = event_values[:travel_support].reject(&:blank?)
-    event_values[:travel_support] = nil if event_values[:travel_support].empty?
-    event_values[:past_travel_assistance] = event_values[:past_travel_assistance].reject(&:blank?)
-    event_values[:past_travel_assistance] = nil if event_values[:past_travel_assistance].empty?
-
     event_values
   end
 
