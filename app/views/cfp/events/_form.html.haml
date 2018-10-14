@@ -124,7 +124,7 @@
                 Have you presented at IFF before?
               - if @event.errors.messages.key?(:iff_before)
                 %span.form-input__error= @event.errors.messages[:iff_before].first
-            .form-input
+            .form-input{id: "iff_before_checkboxes"}
               %ul.inputs-list
                 = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
                   %li
@@ -170,7 +170,7 @@
                   Have you been awarded a travel stipend from the IFF in the past?
                 - if @event.errors.messages.key?(:past_travel_assistance)
                   %span.form-input__error= @event.errors.messages[:past_travel_assistance].first
-              .form-input
+              .form-input{id: "past_travel_assistance_checkboxes"}
                 %ul.inputs-list
                   = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
                     %li

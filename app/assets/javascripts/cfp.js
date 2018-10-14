@@ -28,9 +28,8 @@ $( document ).ready(function() {
       $("#event_iff_before_2017").attr('checked',null)
       $("#event_iff_before_2018").attr('checked',null)
     }
-    else
-    {
-    $("#event_iff_before_not_yet").attr('checked',null)
+    else{
+      $("#event_iff_before_not_yet").attr('checked',null)
     }
   })
 
@@ -40,9 +39,8 @@ $( document ).ready(function() {
       $("#event_past_travel_assistance_2017").attr('checked',null)
       $("#event_past_travel_assistance_2018").attr('checked',null)
     }
-    else
-    {
-    $("#event_past_travel_assistance_no").attr('checked',null)
+    else{
+      $("#event_past_travel_assistance_no").attr('checked',null)
     }
   })
 });
