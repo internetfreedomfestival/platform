@@ -180,7 +180,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'The user you are trying to invite has already received an invite'
   end
 
-  test 'only users invited by admins can invite other people' do
+  test 'users that requested invitation can not invite other people' do
     create(:call_for_participation, conference: @conference)
 
     login_as(@user)
@@ -191,6 +191,18 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     assert_text 'Your ticket request has been received.'
     click_on 'Logout'
+
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @user.person)
+    click_on 'Accept request'
+    click_on 'Logout'
+
+    login_as(@user)
+    assert_text 'You have 0 invites remaining.'
+  end
+
+  test 'users invited by admin can invite other people' do
+    create(:call_for_participation, conference: @conference)
 
     login_as(@admin)
     go_to_conference_person_profile(@conference, @user.person)
