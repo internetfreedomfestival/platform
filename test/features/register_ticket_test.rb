@@ -16,7 +16,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
   teardown do
     ENV['NEW_TICKETING_SYSTEM_ENABLED'] = @initial_env_value
-    
+
     ActionMailer::Base.deliveries.clear
   end
 
@@ -28,13 +28,13 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
-      fill_in 'person[public_name]', with: 'test'
-      select('she', from: 'person[gender_pronoun]')
-      check('person[iff_before][]', option: '2015')
-      check('person[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
-      check('person[iff_days][]', option: 'Monday, April 1st')
-      check('person[code_of_conduct][]', option: 'true')
+      fill_in 'ticket[public_name]', with: 'test'
+      select('she', from: 'ticket[gender_pronoun]')
+      check('ticket[iff_before][]', option: '2015')
+      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
+      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
+      check('ticket[iff_days][]', option: 'Monday, April 1st')
+      check('ticket[code_of_conduct]')
 
       click_on 'Register'
     end
@@ -51,26 +51,26 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
-      fill_in 'person[public_name]', with: 'test'
-      select('she', from: 'person[gender_pronoun]')
-      check('person[iff_before][]', option: '2015')
-      check('person[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
-      check('person[iff_days][]', option: 'Monday, April 1st')
-      check('person[code_of_conduct][]', option: 'true')
+      fill_in 'ticket[public_name]', with: 'test'
+      select('she', from: 'ticket[gender_pronoun]')
+      check('ticket[iff_before][]', option: '2015')
+      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
+      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
+      check('ticket[iff_days][]', option: 'Monday, April 1st')
+      check('ticket[code_of_conduct]')
 
       click_on 'Register'
     end
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
-      fill_in 'person[public_name]', with: 'test'
-      select('she', from: 'person[gender_pronoun]')
-      check('person[iff_before][]', option: '2015')
-      check('person[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'person[interested_in_volunteer]')
-      check('person[iff_days][]', option: 'Monday, April 1st')
-      check('person[code_of_conduct][]', option: 'true')
+      fill_in 'ticket[public_name]', with: 'test'
+      select('she', from: 'ticket[gender_pronoun]')
+      check('ticket[iff_before][]', option: '2015')
+      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
+      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
+      check('ticket[iff_days][]', option: 'Monday, April 1st')
+      check('ticket[code_of_conduct]')
 
       click_on 'Register'
     end
@@ -89,7 +89,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       click_on 'Register'
     end
 
-    assert_text "You cannot get a ticket without public name, gender pronoun, past editions, goals, attendance days"
+    assert_text "can't be blank"
   end
 
   test 'only reports not filled mandatory fields' do
@@ -100,13 +100,13 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
-      select('she', from: 'person[gender_pronoun]')
-      check('person[iff_before][]', option: '2015')
+      select('she', from: 'ticket[gender_pronoun]')
+      check('ticket[iff_before][]', option: '2015')
 
       click_on 'Register'
     end
 
-    assert_text "You cannot get a ticket without public name, goals, attendance days"
+    assert_text "can't be blank"
   end
 
   test 'admin can view users with ticket' do

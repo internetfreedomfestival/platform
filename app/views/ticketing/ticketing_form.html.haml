@@ -1,21 +1,21 @@
 - if FeatureToggle.new_ticketing_system_enabled?
-  = simple_form_for(@person, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
+  = simple_form_for(@ticket, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
     %fieldset.inputs
     .row
       .offset1
         %h1 2019 IFF Ticket
         %br
         .span24
-          = f.input :public_name, hint: "This is the name that will be displayed in your badge."
+          = f.input :public_name, hint: "This is the name that will be displayed in your badge.", required: true
           = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, required: true, hint: "Your public gender pronoun will be displayed in your badge. Pronoun list written by <a href='https://twitter.com/morganastra'> @morganastra.</a> Visits <a href='https://pronoun.is/'> https://pronoun.is/ </a>for more information."
 
-          .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:iff_before))}
+          .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_before))}
             .form-label
               %label
                 %span.form-required__text Required Field.
                 Have you presented at IFF before?
-              - if @person.errors.messages.key?(:iff_before)
-                %span.form-input__error= @person.errors.messages[:iff_before].first
+              - if @ticket.errors.messages.key?(:iff_before)
+                %span.form-input__error= @ticket.errors.messages[:iff_before].first
             .form-input{id: "iff_before_checkboxes"}
               %ul.inputs-list
                 = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline) do |c|
@@ -24,13 +24,13 @@
                       = c.check_box
                       %span= c.text
 
-          .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:iff_goals))}
+          .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_goals))}
             .form-label
               %label
                 %span.form-required__text Required Field.
                 What are your main goals for attending the 2019 IFF?
-              - if @person.errors.messages.key?(:iff_goals)
-                %span.form-input__error= @person.errors.messages[:iff_goals].first
+              - if @ticket.errors.messages.key?(:iff_goals)
+                %span.form-input__error= @ticket.errors.messages[:iff_goals].first
             .form-input{id: "iff_goals_checkboxes"}
               %ul.inputs-list
                 = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline) do |c|
@@ -45,13 +45,13 @@
           = f.input :interested_in_volunteer, collection: [['Yes, sounds fun!', true], ['No, thank you', false]], required: true, label: "Would you like to hear more about our awesome volunteering opportunities?", default: 0, hint: "Volunteering is a great way to meet people outside of your usual circles!"
 
 
-        .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:iff_days))}
+        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_days))}
           .form-label
             %label
               %span.form-required__text Required Field.
               Which days are you planning to attend?
-            - if @person.errors.messages.key?(:iff_days)
-              %span.form-input__error= @person.errors.messages[:iff_days].first
+            - if @ticket.errors.messages.key?(:iff_days)
+              %span.form-input__error= @ticket.errors.messages[:iff_days].first
           .form-input{id: "iff_days_checkboxes"}
             %ul.inputs-list
               = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline) do |c|
@@ -61,13 +61,13 @@
                     %span= c.text
 
         %br
-        %input{name: 'person[code_of_conduct][]', type: 'checkbox', value: 'true'}
+        = f.check_box :code_of_conduct, value: 'true'
         I agree to respect and follow
         %a{target: "_blank", href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
         We are committed to providing a safe and welcoming environment.
         All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
-        - if @person.errors.messages.key?(:code_of_conduct)
-          %span.error= @person.errors.messages[:code_of_conduct].first
+        - if @ticket.errors.messages.key?(:code_of_conduct)
+          %span.error= @ticket.errors.messages[:code_of_conduct].first
 
     .actions
       = f.button :submit, value: 'Register', class: 'primary'

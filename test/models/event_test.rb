@@ -170,7 +170,7 @@ class EventTest < ActiveSupport::TestCase
     conference.bulk_notification_enabled = true
     conference.ticket_type = 'rt'
     event.state = 'accepting'
-    event.ticket = Ticket.new(object_id: 1, object_type: 'Event', remote_ticket_id: '1')
+    event.ticket = build(:ticket)
 
     assert_not event.notifiable
     create(:event_person, event: event)

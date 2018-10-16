@@ -3,37 +3,30 @@ class TicketingController < ApplicationController
   before_action :check_invitation, except: [:request_invitation]
   before_action :require_same_person, except: [:request_invitation]
   before_action :require_same_conference, except: [:request_invitation]
-
   before_action :no_previous_ticket, only: [:register_ticket]
 
   def ticketing_form
     @invited = Invited.find(params[:id])
     @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
+    @ticket = Ticket.new(conference: @conference, person: @person)
   end
 
   def register_ticket
-    attributes = params[:person]
-
     @invited = Invited.find(params[:id])
     @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
 
-    @person.public_name = attributes['public_name']
-    @person.gender_pronoun = attributes['gender_pronoun']
-    @person.interested_in_volunteer = attributes['interested_in_volunteer']
-    @person.iff_days = attributes['iff_days'].reject { |value| value.blank? }
-    @person.iff_goals = attributes['iff_goals'].reject { |value| value.blank? }
-    @person.iff_before = attributes['iff_before'].reject { |value| value.blank? }
+    @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
 
-    errors = validate_required_ticket_fields(attributes)
-    unless errors.empty?
-      flash[:error] = "You cannot get a ticket without #{errors.join(', ')}"
+    @ticket.iff_before = ticket_params["iff_before"].reject { |value| value.blank? }
+    @ticket.iff_goals = ticket_params["iff_goals"].reject { |value| value.blank? }
+    @ticket.iff_days = ticket_params["iff_days"].reject { |value| value.blank? }
+
+    unless @ticket.save
       render 'ticketing_form'
       return
     end
-
-    @person.save!
 
     if !AttendanceStatus.find_by(person: @person, conference: @conference)
       AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
@@ -43,7 +36,7 @@ class TicketingController < ApplicationController
       status.save
     end
 
-    TicketingMailer.ticketing_mail(@person, @conference).deliver_now
+    TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
 
     redirect_to cfp_root_path, notice: "You've been succesfully registered"
   end
@@ -67,28 +60,16 @@ class TicketingController < ApplicationController
 
   private
 
-  REQUIRED_FIELDS = {
-    public_name: 'public name',
-    gender_pronoun: 'gender pronoun',
-    iff_before: 'past editions',
-    iff_goals: 'goals',
-    iff_days: 'attendance days',
-    code_of_conduct: 'code of conduct'
-  }
 
-  def validate_required_ticket_fields(values)
-    errors = []
-
-    REQUIRED_FIELDS.each do |field, error|
-      value = values[field]
-      value = value.reject { |v| v.blank? } if value.kind_of?(Enumerable)
-
-      if value.nil? || value.blank?
-        errors << error
-      end
-    end
-
-    errors
+  def ticket_params
+    ticket = params.require(:ticket).permit(:public_name,
+                                   :gender_pronoun,
+                                   {iff_before: []},
+                                   {iff_goals: []},
+                                   :interested_in_volunteer,
+                                   {iff_days: []},
+                                   :code_of_conduct
+    )
   end
 
   def check_invitation

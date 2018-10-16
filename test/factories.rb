@@ -285,8 +285,14 @@ FactoryBot.define do
   end
 
   factory :ticket do
-    event
-    remote_ticket_id '1234'
+    public_name { generate(:public_name) }
+    gender_pronoun 'she'
+    iff_before ['2017']
+    iff_goals ['Requesting support with a specific issue']
+    iff_days ['Full week']
+    interested_in_volunteer 'Yes, sounds fun!'
+    person
+    conference
   end
 
   factory :mail_template do
