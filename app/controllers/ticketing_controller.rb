@@ -19,9 +19,9 @@ class TicketingController < ApplicationController
 
     @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
 
-    @ticket.iff_before = ticket_params["iff_before"].reject { |value| value.blank? }
-    @ticket.iff_goals = ticket_params["iff_goals"].reject { |value| value.blank? }
-    @ticket.iff_days = ticket_params["iff_days"].reject { |value| value.blank? }
+    @ticket.iff_before = ticket_params["iff_before"]
+    @ticket.iff_goals = ticket_params["iff_goals"]
+    @ticket.iff_days = ticket_params["iff_days"]
 
     unless @ticket.save
       render 'ticketing_form'

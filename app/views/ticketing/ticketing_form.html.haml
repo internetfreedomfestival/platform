@@ -18,7 +18,7 @@
                 %span.form-input__error= @ticket.errors.messages[:iff_before].first
             .form-input{id: "iff_before_checkboxes"}
               %ul.inputs-list
-                = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline) do |c|
+                = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
                   %li
                     =c.label do
                       = c.check_box
@@ -33,7 +33,7 @@
                 %span.form-input__error= @ticket.errors.messages[:iff_goals].first
             .form-input{id: "iff_goals_checkboxes"}
               %ul.inputs-list
-                = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline) do |c|
+                = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
                   %li
                     =c.label do
                       = c.check_box
@@ -54,7 +54,7 @@
               %span.form-input__error= @ticket.errors.messages[:iff_days].first
           .form-input{id: "iff_days_checkboxes"}
             %ul.inputs-list
-              = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline) do |c|
+              = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
                 %li
                   =c.label do
                     = c.check_box

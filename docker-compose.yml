@@ -4,7 +4,7 @@ services:
     build: .
     command: bash -c "rm -rf tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
-      - NEW_TICKETING_SYSTEM_ENABLED=false
+      - NEW_TICKETING_SYSTEM_ENABLED=true
       - NEW_CFP_ENABLED=true
     volumes:
       - ./Gemfile:/app/Gemfile
