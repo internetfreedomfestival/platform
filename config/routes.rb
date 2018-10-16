@@ -1,6 +1,7 @@
 Frab::Application.routes.draw do
   scope '(:locale)' do
     resource :session
+    resources :charges
 
     get '/conferences/new' => 'conferences#new', as: 'new_conference'
     post '/conferences' => 'conferences#create', as: 'create_conference'

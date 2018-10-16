@@ -6,6 +6,8 @@ services:
     environment:
       - NEW_TICKETING_SYSTEM_ENABLED=true
       - NEW_CFP_ENABLED=true
+      - PUBLISHABLE_KEY=pk_test_TYooMQauvdEDq54NiTphI7jx
+      - SECRET_KEY=sk_test_4eC39HqLyjWDarjtT1zdp7dc
     volumes:
       - ./Gemfile:/app/Gemfile
       - ./Gemfile.lock:/app/Gemfile.lock
