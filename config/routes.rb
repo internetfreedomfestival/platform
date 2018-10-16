@@ -48,6 +48,9 @@ Frab::Application.routes.draw do
           resource :availability
           get :cancel_attendance
           get :confirm_attendance
+          member do
+            post :request_invitation, to: 'invitations#request_invitation'
+          end
         end
 
         post '/send_invitation' => 'invitations#invite', as: 'send_invitation'
@@ -126,7 +129,6 @@ Frab::Application.routes.draw do
         end
         member do
           post :send_invitation
-          post :request_invitation, to: 'ticketing#request_invitation'
           post :accept_request
         end
       end
@@ -134,7 +136,7 @@ Frab::Application.routes.draw do
       scope path: '/invitations/:id' do
         get :ticketing_form, to: 'ticketing#ticketing_form'
         post :register_ticket, to: 'ticketing#register_ticket'
-      end 
+      end
 
       resources :events do
         collection do

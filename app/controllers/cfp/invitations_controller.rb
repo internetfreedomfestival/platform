@@ -1,9 +1,9 @@
 class Cfp::InvitationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_user_is_allowed_to_invite_people
-  before_action :check_email_not_blank
-  before_action :check_user_has_available_invites
-  before_action :check_email_not_invited
+  before_action :check_user_is_allowed_to_invite_people, only: [:invite]
+  before_action :check_email_not_blank, only: [:invite]
+  before_action :check_user_has_available_invites, only: [:invite]
+  before_action :check_email_not_invited, only: [:invite]
 
   def invite
     email = params['email']
@@ -16,6 +16,22 @@ class Cfp::InvitationsController < ApplicationController
 
     flash[:notice] = "We have sent an invite to #{params['email']}"
     redirect_to cfp_root_path
+  end
+
+  def request_invitation
+    @person = current_user.person
+
+    if !AttendanceStatus.find_by(person: @person, conference: @conference)
+      AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REQUESTED)
+    else
+      status = AttendanceStatus.find_by(person: @person, conference: @conference)
+      status.status = AttendanceStatus::REQUESTED
+      status.save
+    end
+
+    InvitationMailer.request_invitation_mail(@person).deliver_now
+
+    redirect_to(cfp_root_path(@person))
   end
 
   private

@@ -41,22 +41,6 @@ class TicketingController < ApplicationController
     redirect_to cfp_root_path, notice: "You've been succesfully registered"
   end
 
-  def request_invitation
-    @person = Person.find_by(id: params[:id])
-    @conference = Conference.find_by(acronym: params[:conference_acronym])
-
-    if !AttendanceStatus.find_by(person: @person, conference: @conference)
-      AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REQUESTED)
-    else
-      status = AttendanceStatus.find_by(person: @person, conference: @conference)
-      status.status = AttendanceStatus::REQUESTED
-      status.save
-    end
-
-    InvitationMailer.request_invitation_mail(@person).deliver_now
-
-    redirect_to(cfp_root_path(@person))
-  end
 
   private
 
