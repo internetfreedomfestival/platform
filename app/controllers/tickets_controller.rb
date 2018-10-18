@@ -18,6 +18,7 @@ class TicketsController < ApplicationController
     @conference = @invited.conference
 
     @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
+    @ticket.status = "pending"
 
     @ticket.iff_before = ticket_params["iff_before"]
     @ticket.iff_goals = ticket_params["iff_goals"]
@@ -28,17 +29,20 @@ class TicketsController < ApplicationController
       return
     end
 
-    if !AttendanceStatus.find_by(person: @person, conference: @conference)
-      AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
+    if ticket_params["amount"] != "0"
+      return redirect_to new_charge_path
     else
-      status = AttendanceStatus.find_by(person: @person, conference: @conference)
-      status.status = AttendanceStatus::REGISTERED
-      status.save
+      if !AttendanceStatus.find_by(person: @person, conference: @conference)
+        AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
+      else
+        status = AttendanceStatus.find_by(person: @person, conference: @conference)
+        status.status = AttendanceStatus::REGISTERED
+        status.save
+      end
+      @ticket.update(status: "completed")
+      TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
+      redirect_to cfp_root_path, notice: "You've been succesfully registered"
     end
-
-    TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
-
-    redirect_to cfp_root_path, notice: "You've been succesfully registered"
   end
 
   def create
@@ -107,7 +111,8 @@ class TicketsController < ApplicationController
                                    {iff_goals: []},
                                    :interested_in_volunteer,
                                    {iff_days: []},
-                                   :code_of_conduct
+                                   :code_of_conduct,
+                                   :amount
     )
   end
 

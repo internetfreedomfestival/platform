@@ -35,6 +35,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
+      fill_in 'ticket[amount]', with: '0'
 
       click_on 'Register'
     end
@@ -58,6 +59,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
+      fill_in 'ticket[amount]', with: '0'
 
       click_on 'Register'
     end
@@ -71,6 +73,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
+      fill_in 'ticket[amount]', with: '0'
 
       click_on 'Register'
     end

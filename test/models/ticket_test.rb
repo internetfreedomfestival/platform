@@ -16,4 +16,12 @@ class TicketTest < ActiveSupport::TestCase
     @event.ticket = ticket
     assert @event.save
   end
+
+  test 'should have a person' do
+    person = create(:person)
+    ticket = create(:ticket, person: person)
+    ticket.reload
+    assert_not_nil ticket.person
+  end
+
 end

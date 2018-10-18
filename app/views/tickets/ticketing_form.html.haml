@@ -69,6 +69,10 @@
         All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
         - if @ticket.errors.messages.key?(:code_of_conduct)
           %span.error= @ticket.errors.messages[:code_of_conduct].first
+        %br
+        %br
+        %br
+        = f.input :amount
 
     .actions
       = f.button :submit, value: 'Register', class: 'primary'

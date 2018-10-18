@@ -1,10 +1,13 @@
 class ChargesController < ApplicationController
   def new
+    @amount = Ticket.where(person_id: current_user.person.id).last.amount
+    #id ticket por url, buscar ^ por id ticket
   end
 
   def create
     # Amount in cents
-    @amount = 500
+    @ticket = Ticket.find_by(person_id: current_user.person.id)
+    @amount = @ticket.amount
 
     customer = Stripe::Customer.create(
       :email => params[:stripeEmail],
@@ -18,6 +21,21 @@ class ChargesController < ApplicationController
       :currency    => 'usd'
     )
 
+  @ticket.update(status: "completed")
+
+  if charge.status == "succeeded"
+    if !AttendanceStatus.find_by(person: @ticket.person, conference: @ticket.conference)
+      AttendanceStatus.create!(person: @ticket.person, conference: @ticket.conference, status: AttendanceStatus::REGISTERED)
+    else
+      status = AttendanceStatus.find_by(person: @ticket.person, conference: @ticket.conference)
+      status.status = AttendanceStatus::REGISTERED
+      status.save
+    end
+
+    TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
+    else
+      redirect_to new_charge_path
+  end
   rescue Stripe::CardError => e
     flash[:error] = e.message
     redirect_to new_charge_path
