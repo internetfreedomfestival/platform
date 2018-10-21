@@ -16,7 +16,6 @@ class TicketsController < ApplicationController
     @invited = Invited.find(params[:id])
     @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
-
     @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
     @ticket.status = "pending"
 
@@ -31,6 +30,7 @@ class TicketsController < ApplicationController
 
     if ticket_params["amount"] != "0"
       return redirect_to new_charge_path
+
     else
       if !AttendanceStatus.find_by(person: @person, conference: @conference)
         AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
@@ -112,7 +112,8 @@ class TicketsController < ApplicationController
                                    :interested_in_volunteer,
                                    {iff_days: []},
                                    :code_of_conduct,
-                                   :amount
+                                   :amount,
+                                   :ticket_option
     )
   end
 

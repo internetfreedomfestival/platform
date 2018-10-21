@@ -23,4 +23,26 @@ $(document).ready(function() {
       $("#ticket_iff_days_full_week").attr('checked',null)
     }
   })
+
+  $("#ticket_option input[type=radio]").on("click", function(){
+    var element = document.getElementById("different_amount");
+    var element850 = document.getElementById("amount850");
+    document.getElementById("custom_amount").value = "";
+
+    if( $("#ticket_ticket_option_free").attr("checked")) {
+      $(element).show()
+      $(element850).hide()
+    }
+    else{
+      $(element850).show()
+      $(element).hide()
+    }
+  })
+
+  $("#custom_amount").keyup(function(){
+    var element = document.getElementById("ticket_amount_amount");
+    var custom_value = document.getElementById("custom_amount").value
+    element.checked = "checked";
+    element.setAttribute("value", custom_value);
+  })
 });

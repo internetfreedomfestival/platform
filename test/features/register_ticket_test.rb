@@ -35,7 +35,9 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
-      fill_in 'ticket[amount]', with: '0'
+
+      choose('Community', visible: false)
+      choose('Not This Time', visible: false)
 
       click_on 'Register'
     end
@@ -51,6 +53,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
+
+
     within '#register_ticket' do
       fill_in 'ticket[public_name]', with: 'test'
       select('she', from: 'ticket[gender_pronoun]')
@@ -59,7 +63,9 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
-      fill_in 'ticket[amount]', with: '0'
+
+      choose('Community', visible: false)
+      choose('Not This Time', visible: false)
 
       click_on 'Register'
     end
@@ -73,7 +79,9 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
-      fill_in 'ticket[amount]', with: '0'
+
+      choose('Community', visible: false)
+      choose('Not This Time', visible: false)
 
       click_on 'Register'
     end

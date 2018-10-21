@@ -61,6 +61,53 @@
                     = c.check_box
                     %span= c.text
 
+        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:ticket_option))}
+          .form-label
+            %label
+              Get your 2019 IFF Ticket
+            - if @ticket.errors.messages.key?(:ticket_option)
+              %span.form-input__error= @ticket.errors.messages[:ticket_option].first
+
+          %p The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included. Please choose your ticket:
+          .form-input{id: "ticket_option"}
+            %ul.inputs-list
+              = f.collection_radio_buttons(:ticket_option, [["USD 850", "Organizational Ticket: "], ["FREE", "Community Ticket: "]], :first, :last, {boolean_style: :inline}) do |r|
+                %li{style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 570px; margin-bottom: 15px; margin-top: 15px;  height: 50px;"}
+
+                  =r.label do
+                    %table
+                      %tr
+                        %td{style: "border: 0px; width: 500px; "}
+                          = r.radio_button
+                          %span{style: "color: white; font-weight: bold;"}= r.text
+                          %span{style: "color: white"}= "For thoose atending..."
+                        %td{style: "border: 0px; width: 70px;"}
+                          %p{style: "position: top; width: 70px; height: 30px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}= r.value
+
+                -if r.text == "Organizational Ticket: "
+                  .span{style: "margin-left: 20px"}
+                    .div{hidden: "hidden", id: "amount850"}
+                      %li{style: "border: 2px solid black; padding: 5px;  border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px;"}
+                        = f.radio_button(:amount, "850", style: "margin-left: 10px")
+                        %span{style: "color: white; font-weight: bold; "}850
+
+                -if r.text == "Community Ticket: "
+                  .span{style: "margin-left: 20px"}
+                    .div{hidden: "hidden", id: "different_amount"}
+                      Please choose a quantity...
+                      %hr{style:"height:1px; margin:5px"}
+                      %table{style: "width: 500px;"}
+                        %tr
+                          = f.collection_radio_buttons(:amount, [["250", "250"], ["100", "100"], ["50", "50"], ["Amount", "Amount"], [0, "Not This Time"]], :first, :last, {boolean_style: :inline}) do |r|
+                            %td{style: "border: 0px;"}
+                              %li{style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px;"}
+                                =r.label do
+                                  = r.radio_button
+                                  -if r.text != "Amount"
+                                    %span{style: "color: white; font-weight: bold; "}= r.text
+                                  -if r.text == "Amount"
+                                    %input{name: :amount, id: "custom_amount", label: "false", type: "number",  min: "0", step: "1", placeholder: "Amount", style: "width: 55px; height: 10px"}
+
         %br
         = f.check_box :code_of_conduct, value: 'true'
         I agree to respect and follow
@@ -72,7 +119,6 @@
         %br
         %br
         %br
-        = f.input :amount
 
     .actions
       = f.button :submit, value: 'Register', class: 'primary'
