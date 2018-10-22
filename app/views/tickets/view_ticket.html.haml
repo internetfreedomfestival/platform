@@ -1,0 +1,58 @@
+= simple_form_for(@ticket, url: view_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'get', multipart: true}) do |f|
+  %section
+    .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
+      .pull-right
+      =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px; margin-left: 10px;"
+
+      %h2 Your 2019 IFF Ticket
+
+      %div{class:"title-view"}
+        %p IFF Ticket Information
+
+      %div{class:"charge-row"}
+        %p 2019 IFF Ticket Option: #{@ticket.ticket_option}
+
+      %div{class: "charge-row-row"}
+        %p IFF ID: #{@ticket.person.id}
+
+      %div{class: "charge-row-row"}
+        %p Public Display Name: #{@ticket.public_name}
+
+      %div{class: "charge-row-row"}
+        %p Preferred Gender Pronoun: #{@ticket.gender_pronoun}
+
+      %div{class: "charge-row-row"}
+        %p
+          Days Attending:
+          - @ticket.iff_days.each do |day|
+            %span{class: "day-boxes"}= day
+
+      %div{class: "charge-row-row"}
+        %p Amount: #{@ticket.amount} $
+
+      %p{class:"ticket-view-bold"} Please don't print your ticket, but you will need to show it at the door so we can check you in
+      %p{class:"ticket-view-p"} You can resend your IFF Ticket info to your e-mail using the button below.
+      = action_button "primary", "Resend Ticket", send_ticket_path
+
+      %p{class: "ticket-view-bold"}Would you like to start connecting with the IFF community ahead of the 2019 IFF?
+      %p{class:"ticket-view-p"} Go to your User Portal to learn more about the different platforms to connect with the IFF Community:
+      = action_button "primary", "IFF Twitter", "http://twitter.com/internetff/", target: :blank
+      = action_button "primary", "IFF Mattermost", "https://community.internetfreedomfestival.org/signup_user_complete/?id=ae9acd5b24f12ad51e158db0cddd97d0", target: :blank
+      = action_button "primary", "IFF Newsletter", "https://lists.ghserv.net/mailman/listinfo/festival", target: :blank
+
+      %p{class: "ticket-view-bold"}Please remember to read our Code of Conduct carefully
+      = action_button "primary", "Code of Conduct", "https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct", target: :blank
+
+      %p{class: "ticket-view-bold"}IFF Venue details section
+      %p{class:"ticket-view-p"}We're looking forward to seeing you in Valencia!
+
+      %br
+      %br
+      %br
+
+      %p{class:"ticket-view-p"}Las Naves
+      %p{class:"ticket-view-p"}Calle de Juan Verdeguer 16,
+      %p{class:"ticket-view-p"}46024 - Valencia (Spain)
+
+      %p{class:"ticket-view-p"}www.lasnaves.com
+      %p{class:"ticket-view-p"}+34 963 910 477

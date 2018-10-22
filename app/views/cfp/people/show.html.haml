@@ -43,10 +43,12 @@
             %p You have been invited to get an IFF Ticket!
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = action_button "success", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
+              = action_button "success", "View Ticket", view_ticket_path(id: @invited.id, conference_acronym: @conference.acronym)
           - else
             %p You don't have an invitation.
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+
           - if @is_old_account
             %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
       .span8{style: "margin-bottom: 30px; height: 200px;"}

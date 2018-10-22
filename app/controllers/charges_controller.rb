@@ -34,7 +34,7 @@ class ChargesController < ApplicationController
     end
 
     TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
-    redirect_to cfp_root_path, notice: "Thanks, you paid #{@ticket.amount} !. You've been succesfully registered"
+    redirect_to cfp_root_path, notice: "Thanks, you've been succesfully registered"
     else
       redirect_to new_charge_path
   end
