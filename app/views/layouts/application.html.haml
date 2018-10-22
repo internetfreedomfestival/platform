@@ -31,6 +31,7 @@
             - if @conference and not @conference.new_record?
               - if can? :administrate, Person
                 %li= link_to t("people", default: "People"), url_for(action: 'index', controller: 'people')
+                %li= link_to t("invites", default: "Invites"), url_for(action: 'new', controller: 'invitations')
               %li= link_to t("events", default: "Events"), events_path
               - if can? :manage, CallForParticipation
                 %li= link_to t("reports", default: "Reports"), reports_path

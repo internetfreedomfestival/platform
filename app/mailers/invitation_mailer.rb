@@ -11,6 +11,18 @@ class InvitationMailer < ApplicationMailer
     )
   end
 
+  def not_registered_invitation_mail(invited)
+    conference = invited.conference
+
+    @link = ticketing_form_url(id: invited.id, conference_acronym: conference.acronym)
+
+    mail(
+      to: invited.email,
+      subject: I18n.t('emails.not_registered_invitation_mail.subject'),
+      locale: :en
+    )
+  end
+
   def additional_invitation_mail(invited)
     person = invited.person
     conference = invited.conference
@@ -36,7 +48,6 @@ class InvitationMailer < ApplicationMailer
   end
 
   def accept_request_mail(invited)
-    person = invited.person
     conference = invited.conference
 
     @first_name = Person.find_by(email: invited.email).first_name

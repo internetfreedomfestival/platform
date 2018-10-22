@@ -88,6 +88,8 @@ en:
         The IFF Team
     invitation_mail:
       subject: "You are invited to the 2019 IFF!"
+    not_registered_invitation_mail:
+      subject: "You are invited to the 2019 IFF!"
     additional_invitation_mail:
       subject: "%{first_name} invited you to the 2019 IFF!"
     ticketing_mail:

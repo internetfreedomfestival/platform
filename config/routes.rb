@@ -181,6 +181,7 @@ Frab::Application.routes.draw do
         end
       end
 
+      resource :invitations, only: [:new, :create]
     end # scope path: "/:conference_acronym"
 
     get '/:conference_acronym' => 'home#index', as: 'conference_home'
