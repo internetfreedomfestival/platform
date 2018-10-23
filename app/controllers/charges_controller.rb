@@ -2,6 +2,8 @@ class ChargesController < ApplicationController
   def new
     @ticket = Ticket.where(person_id: current_user.person.id).last
     @amount = Ticket.where(person_id: current_user.person.id).last.amount
+    @invited = Invited.find_by(person_id: current_user.person.id)
+    @conference = @invited.conference
     #id ticket por url, buscar ^ por id ticket
   end
 
