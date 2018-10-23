@@ -293,6 +293,7 @@ FactoryBot.define do
     interested_in_volunteer 'Yes, sounds fun!'
     person
     conference
+    amount "0"
   end
 
   factory :mail_template do

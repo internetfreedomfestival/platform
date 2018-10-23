@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  $("#amount_input, #organizational_amount, #different_amount").hide()
+
   $("#iff_before_checkboxes input[type=checkbox]").on("click", function(){
     if ($(this).attr("id") == "ticket_iff_before_not_yet") {
       $("#ticket_iff_before_2015").attr('checked',null)
@@ -26,23 +28,15 @@ $(document).ready(function() {
 
   $("#ticket_option input[type=radio]").on("click", function(){
     var element = document.getElementById("different_amount");
-    var element850 = document.getElementById("amount850");
-    document.getElementById("custom_amount").value = "";
+    var organizational_element = document.getElementById("organizational_amount");
 
     if( $("#ticket_ticket_option_free").attr("checked")) {
       $(element).show()
-      $(element850).hide()
+      $(organizational_amount).hide()
     }
     else{
-      $(element850).show()
+      $(organizational_amount).show()
       $(element).hide()
     }
-  })
-
-  $("#custom_amount").keyup(function(){
-    var element = document.getElementById("ticket_amount_amount");
-    var custom_value = document.getElementById("custom_amount").value
-    element.checked = "checked";
-    element.setAttribute("value", custom_value);
   })
 });

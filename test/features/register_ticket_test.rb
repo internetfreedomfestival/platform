@@ -35,9 +35,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
-
-      choose('Community', visible: false)
-      choose('Not This Time', visible: false)
+      choose('Community')
+      click_on 'Not This Time'
 
       click_on 'Register'
     end
@@ -64,8 +63,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
 
-      choose('Community', visible: false)
-      choose('Not This Time', visible: false)
+      choose('Community')
+      click_on 'Not This Time'
 
       click_on 'Register'
     end
@@ -80,8 +79,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
 
-      choose('Community', visible: false)
-      choose('Not This Time', visible: false)
+      choose('Community')
+      click_on 'Not This Time'
 
       click_on 'Register'
     end
@@ -97,6 +96,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
     within '#register_ticket' do
+
       click_on 'Register'
     end
 
