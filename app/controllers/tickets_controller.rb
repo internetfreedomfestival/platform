@@ -40,6 +40,9 @@ class TicketsController < ApplicationController
     @ticket.iff_days = ticket_params["iff_days"]
 
     unless @ticket.save
+      if ticket_params['amount']==""
+        flash[:alert] = "You must enter ticket option!"
+      end
       render 'ticketing_form'
       return
     end

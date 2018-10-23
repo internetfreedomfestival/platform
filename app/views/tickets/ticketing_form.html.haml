@@ -67,13 +67,11 @@
               Get your 2019 IFF Ticket
             - if @ticket.errors.messages.key?(:ticket_option)
               %span.form-input__error= @ticket.errors.messages[:ticket_option].first
-
           %p The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included. Please choose your ticket:
           .form-input{id: "ticket_option"}
             %ul.inputs-list
-              = f.collection_radio_buttons(:ticket_option, [["USD 850", "Organizational Ticket: "], ["FREE", "Community Ticket: "]], :first, :last, {boolean_style: :inline}) do |r|
-                %li{style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 570px; margin-bottom: 15px; margin-top: 15px;  height: 50px;"}
-
+              = f.collection_radio_buttons(:ticket_option, [["FREE", "Community Ticket: "], ["USD 850", "Organizational Ticket: "]], :first, :last, {boolean_style: :inline}) do |r|
+                %li{style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 570px; margin: 10px;  height: 50px;"}
                   =r.label do
                     %table
                       %tr
@@ -86,27 +84,26 @@
 
                 -if r.text == "Organizational Ticket: "
                   .span{style: "margin-left: 20px"}
-                    .div{hidden: "hidden", id: "amount850"}
-                      %li{style: "border: 2px solid black; padding: 5px;  border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px;"}
-                        = f.radio_button(:amount, "850", style: "margin-left: 10px")
-                        %span{style: "color: white; font-weight: bold; "}850
+                    .div#organizational_amount
+                      %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 850}850
 
                 -if r.text == "Community Ticket: "
-                  .span{style: "margin-left: 20px"}
-                    .div{hidden: "hidden", id: "different_amount"}
-                      Please choose a quantity...
-                      %hr{style:"height:1px; margin:5px"}
-                      %table{style: "width: 500px;"}
-                        %tr
-                          = f.collection_radio_buttons(:amount, [["250", "250"], ["100", "100"], ["50", "50"], ["Amount", "Amount"], [0, "Not This Time"]], :first, :last, {boolean_style: :inline}) do |r|
-                            %td{style: "border: 0px;"}
-                              %li{style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px;"}
-                                =r.label do
-                                  = r.radio_button
-                                  -if r.text != "Amount"
-                                    %span{style: "color: white; font-weight: bold; "}= r.text
-                                  -if r.text == "Amount"
-                                    %input{name: :amount, id: "custom_amount", label: "false", type: "number",  min: "0", step: "1", placeholder: "Amount", style: "width: 55px; height: 10px"}
+                  .div{id: "different_amount", style: "margin-left: 20px"}
+                    Please choose a quantity...
+                    %table{style: "width: 530px; margin-left: -10px;"}
+                      %tr
+                        %td{style: "width: 400px"}
+                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 250}250
+                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 100}100
+                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 50}50
+                          %input{ onblur: "update_amount2(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 15px; font-weight: bold;"}
+                        %td{style: "width: 120px"}
+                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 120px; height: 30px; font-weight: bold;", value: 0}Not This Time
+              .div#amount_input
+                = f.input :amount, input_html: {value: "0"}, required: true
+              .div{style: "margin: 10px"}
+                %p You selected to pay:
+                %input{id: "show_amount", disabled: "disabled", style: "margin: 10px; position: top; width: 50px; height: 20px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}
 
         %br
         = f.check_box :code_of_conduct, value: 'true'
@@ -123,3 +120,25 @@
     .actions
       = f.button :submit, value: 'Register', class: 'primary'
       = link_to "Cancel", :back, class: "btn"
+
+:javascript
+
+  function update_amount2(button){
+    if (button.value < 10){
+      alert("The minimum quantity must be 10 USD")
+      button.value = ""
+    }
+    else{
+      this.update_amount(button)
+    }
+  }
+
+  function update_amount(button){
+    var element = document.getElementById("ticket_amount");
+    element.setAttribute("value", button.value);
+
+    var show_amount = document.getElementById("show_amount");
+    show_amount.setAttribute("value", button.value + " USD");
+
+    var register_button = document.getElementById("register");
+  }

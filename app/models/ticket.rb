@@ -15,6 +15,7 @@ class Ticket < ActiveRecord::Base
   validates :iff_before, presence: true
   validates :iff_goals, presence: true
   validates :iff_days, presence: true
+  validates :amount, presence: true
 
 
   def event
