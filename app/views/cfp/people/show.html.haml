@@ -25,28 +25,25 @@
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "primary", "Update Profile", edit_cfp_person_path, style: "margin: 10px"
 
-  - if FeatureToggle.new_cfp_enabled? and !@is_old_account
-    .row{style: "margin: 10px;"}
-      .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
-        %div
-          %h3 Submit a Session for the 2019 IFF
-          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 9, 2018.
-          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
-
   - if FeatureToggle.new_ticketing_system_enabled?
     .row
-      .span8{style: "margin-bottom: 30px; height: 200px;"}
+      .span7{style: "margin-bottom: 30px; margin-left: 36px; height: 200px;"}
         %div{style: "margin:10px;"}
           %h3 Get your 2019 IFF Ticket
-          - if @invited
-            %p You have been invited to get an IFF Ticket!
+          - if @attendance_status && @attendance_status.status == "Holds Ticket"
+            %p Your IFF Ticket is confirmed! No need to print it out, but be ready to show it when we check you in.
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-              = action_button "success", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
+              = action_button "success", "View Ticket", view_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
           - else
-            %p You don't have an invitation.
-            %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-              = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+            - if @invited
+              %p You have been invited to get an IFF Ticket!
+              %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+                = action_button "success", "Get your ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
+            - else
+              %p You don't have an invitation.
+              %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+                = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+
           - if @is_old_account
             %p.alert-message 'Please update your registration information in order to request an invite to the 2019 IFF'
       .span8{style: "margin-bottom: 30px; height: 200px;"}
@@ -69,6 +66,17 @@
               %h3 No invite?
               %p We will me sending out new invites periodically. Request an invite to be considered.
               = submit_tag('Request Invite', class: "btn success")
+
+  .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+
+  - if FeatureToggle.new_cfp_enabled? and !@is_old_account
+    .row{style: "margin: 10px;"}
+      .span7{style: "margin-bottom: 30px; margin-left: 18px; height: 200px;"}
+        %div
+        %h3 Submit a Session for the 2019 IFF
+        %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 9, 2018.
+        %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+          = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
 

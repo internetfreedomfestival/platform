@@ -12,6 +12,22 @@ class TicketsController < ApplicationController
     @ticket = Ticket.new(conference: @conference, person: @person)
   end
 
+  def view_ticket
+    @person = Person.find_by(id: current_user.person)
+    @invited = Invited.find(params[:id])
+    @conference = @invited.conference
+    @ticket = Ticket.find_by(person: @person, conference: @conference)
+  end
+
+  def send_ticket
+    @person = Person.find_by(id: current_user.person)
+    @invited = Invited.find(params[:id])
+    @conference = @invited.conference
+    @ticket = Ticket.find_by(person: @person, conference: @conference)
+    TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
+    redirect_to cfp_root_path, notice: "Succesfully resent. Check your email."
+  end
+
   def register_ticket
     @invited = Invited.find(params[:id])
     @person = Person.find_by(email: @invited.email)

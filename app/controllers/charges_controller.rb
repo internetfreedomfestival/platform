@@ -1,5 +1,6 @@
 class ChargesController < ApplicationController
   def new
+    @ticket = Ticket.where(person_id: current_user.person.id).last
     @amount = Ticket.where(person_id: current_user.person.id).last.amount
     #id ticket por url, buscar ^ por id ticket
   end
@@ -33,6 +34,7 @@ class ChargesController < ApplicationController
     end
 
     TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
+    redirect_to cfp_root_path, notice: "Thanks, you've been succesfully registered"
     else
       redirect_to new_charge_path
   end

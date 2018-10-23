@@ -66,3 +66,75 @@ form .form-group  {
   font-family: inherit;
   line-height: 37px;
 }
+
+.title-view p {
+  font-size: 20px;
+  margin-left: 4px;
+  margin-top: 40px;
+}
+
+.ticket-view-bold {
+  font-size: 16px;
+  margin-top: 40px;
+  margin-left: 4px;
+  font-weight: bold;
+}
+
+.ticket-view-p {
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 4px;
+}
+
+.charge-title {
+  border-left: 3px solid black;
+  display: inline-block;
+}
+
+.charge-title p {
+  font-size: 26px;
+  margin-left: 4px;
+  margin-top: 6px;
+}
+
+.charge-row {
+  border: 2px solid black;
+  margin-top: 20px;
+  border-radius: 10px;
+  background-color: #4544f8;
+  margin-bottom: 5px;
+  height: 50px;
+}
+
+.charge-row p {
+  color: white;
+  font-weight: bold;
+  margin: 15px;
+  font-size: 14px;
+}
+
+.charge-row-row {
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: #f4f0fc;
+  margin-bottom: 5px;
+  height: 50px;
+}
+
+.charge-row-row p {
+  color: black;
+  font-weight: bold;
+  margin: 15px;
+  font-size: 14px;
+}
+
+.charge-row-row span {
+  font-weight: normal;
+}
+
+.day-boxes {
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+}

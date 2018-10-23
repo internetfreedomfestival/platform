@@ -1,15 +1,47 @@
-<%= form_tag charges_path do %>
+<%= form_tag(charges_path, class: "clearfix form-group")  do %>
   <article>
     <% if flash[:error].present? %>
       <div id="error_explanation">
         <p><%= flash[:error] %></p>
       </div>
     <% end %>
-    <label class="amount">
-      <span>Amount: <%= @amount %></span>
-    </label>
   </article>
 
+  <div class="charge-title">
+    <p>IFF Ticket Information </p>
+  </div>
+    <div class="charge-row">
+      <p>2019 IFF Ticket Option: <%= @ticket %></p>
+    </div>
+    <div class="charge-row-row">
+      <p>IFF ID:
+        <span><%= @ticket.person.id %></span>
+      </p>
+    </div>
+    <div class="charge-row-row">
+      <p>Public Display Name:
+        <span><%= @ticket.public_name %></span>
+      </p>
+    </div>
+    <div class="charge-row-row">
+      <p>Preferred Gender Pronoun:
+        <span><%= @ticket.gender_pronoun %></span>
+      </p>
+    </div>
+    <div class="charge-row-row">
+      <p>Days Attending:
+        <% @ticket.iff_days.each do |day| %>
+          <span class="day-boxes"><%= day %></span>
+        <% end %>
+      </p>
+    </div>
+    <div class="charge-row-row">
+      <p>Amount:
+        <span><%= @amount %> $</span>
+      </p>
+    </div>
+<br>
+<br>
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
           data-description="A month's subscription"

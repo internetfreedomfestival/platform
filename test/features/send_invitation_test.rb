@@ -20,6 +20,20 @@ class SendInvitationTest < Capybara::Rails::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
+  test 'admin can invite non platform users' do
+    login_as(@admin)
+
+    click_on 'Invites'
+
+    within '#invitations-form' do
+      fill_in 'email', with: 'user@email.com'
+      click_on 'Send'
+    end
+
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_text 'We have sent an invite to user@email.com'
+  end
+
   test 'admin receives feedback when an invitation is sent' do
     login_as(@admin)
     go_to_conference_person_profile(@conference, @user.person)

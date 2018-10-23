@@ -1,0 +1,8 @@
+.page-header
+  %h1= "Invite people to #{@conference.title}"
+
+.row
+  .span24
+    = form_tag(invitations_path, id: 'invitations-form') do
+      = text_field_tag(:email, '', placeholder: 'email')
+      = submit_tag('Send', class: "btn success")
