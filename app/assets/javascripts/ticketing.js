@@ -1,5 +1,6 @@
 $(document).ready(function() {
   $("#amount_input, #organizational_amount, #different_amount").hide()
+  $("#ticket_amount").attr('value', '')
 
   $("#iff_before_checkboxes input[type=checkbox]").on("click", function(){
     if ($(this).attr("id") == "ticket_iff_before_not_yet") {
