@@ -96,7 +96,7 @@
                           %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 250}250
                           %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 100}100
                           %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 50}50
-                          %input{ onblur: "update_amount2(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 15px; font-weight: bold;"}
+                          %input{ onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 15px; font-weight: bold;"}
                         %td{style: "width: 120px"}
                           %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 120px; height: 30px; font-weight: bold;", value: 0}Not This Time
               .div#amount_input
@@ -123,22 +123,13 @@
 
 :javascript
 
-  function update_amount2(button){
-    if (button.value < 10){
-      alert("The minimum quantity must be 10 USD")
-      button.value = ""
-    }
-    else{
-      this.update_amount(button)
-    }
-  }
-
   function update_amount(button){
-    var element = document.getElementById("ticket_amount");
-    element.setAttribute("value", button.value);
+    if (button.value < 10 && button.value != 0){
+      alert("Ops! We can’t process payments under USD10.")
+      button.value = ""
+      return
+    }
 
-    var show_amount = document.getElementById("show_amount");
-    show_amount.setAttribute("value", button.value + " USD");
-
-    var register_button = document.getElementById("register");
+    $("#ticket_amount").attr('value', button.value)
+    $("#show_amount").attr('value', "USD" + button.value)
   }
