@@ -42,7 +42,7 @@
     </div>
 <br>
 <br>
-  <%= link_to t("cfp.back"), ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), class: "btn danger" %>
+  <%= link_to 'Back', 'javascript:history.go(-1);', {class:'btn danger'} %>
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
