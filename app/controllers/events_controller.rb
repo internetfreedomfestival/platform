@@ -144,7 +144,7 @@ class EventsController < ApplicationController
   # GET /events/2/edit_people
   def edit_people
     @event = Event.find(params[:id])
-    @persons = Person.fullname_options
+    # @persons = Person.fullname_options
 
     authorize! :update, @event
   end
@@ -287,11 +287,19 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(
       :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :public_type, :tech_rider,
-      event_attachments_attributes: %i(id title attachment public _destroy),
+      :desired_outcome, :phone_number, :track_id, {iff_before: []}, :projector, event_attachments_attributes: %i(id title attachment public _destroy),
       ticket_attributes: %i(id remote_ticket_id),
       links_attributes: %i(id title url _destroy),
       event_people_attributes: %i(id person_id event_role role_state notification_subject notification_body _destroy)
     )
+  end
+
+  def form_params
+    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
+      :desired_outcome, :phone_number, :track_id, :event_type,
+      :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
+      :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
+      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots)
   end
 
   # Trying to send email to user for accepted event notification

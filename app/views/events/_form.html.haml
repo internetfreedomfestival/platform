@@ -1,40 +1,90 @@
 = simple_form_for(@event, html: {multipart: true}) do |f|
   %fieldset.inputs
-    %legend Basic information
-    %b Note to ADMIN:
-    %p If you are trying to add/update special, social, or meditation events only use the title, time, public event type and description
-    = f.input :title, label: "Session Title", hint: t("What is the title of your presentation?")
-    <hr />
-    .row
-      %p{style: "margin-left: 3em"} Preferred Session Time
-      .span8.offset2
-        = f.collection_select :time_slots, [[1, "15 min"], [2, "30 min"], [3, "45 min"], [4, "1 hour"], [5, "1.25 hours"], [6, "1.5 hours"], [7, "1.75 hours"], [ 8, "2 hours"], [9, "2.25 hours"], [10, "2.5 hours"], [11, "2.75 hours"], [12, "3 hours"], [13, "3.25 hours"]], :first, :last
-    <hr>
-    .row
-      %p{style: "margin-left: 3em"} Public Event Type
-      .span8.offset2 
-        = f.collection_select :public_type, [[nil, "Normal Event"], ["special", "special"], [ "social", "social"], ["meditation", "meditation"], ["private", "private"] ], :first, :last
-    <hr />
-    .row{style: "border-bottom: dotted"}
-      = f.input :description, label: "Session Description", hint: t("Describe what your presentation will be about.")
-    <br />
-    = f.input :other_presenters
-    = f.input :subtitle
-    = f.input :event_type, collection: Event::TYPES
-    = f.association :track, collection: @conference.tracks
-    = f.input :language, as: :language_select, only: @conference.language_codes
-    = f.input :public, as: :inline_boolean, hint: "Is this event visible in the public schedule?"
+    .offset1
+      .row
+        .span8
+          %h2 Basic information
+          %br
+          %p Note to ADMIN:
+          %br
+          %p If you are trying to add/update special, social, or meditation events only use the title, time, public event type and description
+          %br
+          = f.input :title, label: "Session Title"
+          = f.input :subtitle, label: "Goal of the session", hint: "Describe it in just a sentence."
+          = f.input :description, label: "Session Description"
+          = f.input :other_presenters, type: "email", label: "Other presenters in this session", hint: "Enter the email addresses your co-presenters used to register on this platform, separated by a comma. You cannot include your co-presenters until they have registered on the platform, but you can also add them later after the form is submitted. All your submitted sessions will be accessible in your user portal."
+          = f.input :public_type, label: "Who is this session for?", hint: "Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?"
+          = f.input :desired_outcome, label: "What outcomes do you envision for this session?"
+          = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix (e.g., 0034)."
+          = f.association :track, label: "Session Format", collection: @conference.tracks
+          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
+          .form-label
+            %label
+              Preferred Session Time
+          .form-input
+            = f.collection_select :time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last
+          %br
+          %br
+          %br
+
+          .form-label
+            %label
+              We discourage the use of projectors. However, will you need it?
+          .form-input
+            %ul.inputs-list
+              = f.collection_radio_buttons(:projector, [[true, "Yes"], [ false, "No"]], :first, :last, {boolean_style: :inline}) do |r|
+                %li
+                  =r.label do
+                    = r.radio_button
+                    %span= r.text
+          %br
+          %br
+
+          .form-label
+            %label
+              Have you presented at IFF before?
+          .form-input
+            %ul.inputs-list
+              = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
+                %li
+                  =c.label do
+                    = c.check_box
+                    %span= c.text
+            %br
+            %br
+
+          .form-label
+            %label
+              Public
+          .form-help__text Is this event visible in the public schedule?
+          .form-input
+            = f.check_box :public, label: false
+          %br
+          %br
+          %br
+
+
+      .row{style: "border-bottom: dotted"}
+
   %fieldset.inputs
-    %legend Time and place
-    = f.input :start_time do
-      = f.select :start_time, grouped_options_for_select(@start_time_options, @event.start_time), { include_blank: true }
-    = f.association :room, collection: @conference.rooms
-  %fieldset.inputs
-    %legend Detailed description
-    = f.input :abstract, input_html: {rows: 4}, hint: "One short paragraph that succinctly describes the event. (HTML)"
-  %fieldset.inputs
-    %legend Notes
-    = f.input :note, input_html: {rows: 2}, hint: "visibility: admin only."
-    = f.input :submission_note, input_html: {rows: 2}, hint: "visibiliy: admin and user; additional information."
+    %h2 Time and place
+    %br
+    .span8
+      = f.input :start_time do
+        = f.select :start_time, grouped_options_for_select(@start_time_options, @event.start_time), { include_blank: true }
+      = f.association :room, collection: @conference.rooms
+
+    %h2 Detailed description
+    %br
+    .span8
+      = f.input :abstract, input_html: {rows: 4}, hint: "One short paragraph that succinctly describes the event. (HTML)"
+
+    %h2 Notes
+    %br
+    .span8
+      = f.input :note, input_html: {rows: 2}, hint: "visibility: admin only."
+      = f.input :submission_note, input_html: {rows: 2}, hint: "visibiliy: admin and user; additional information."
+
+
   .actions
     = f.button :submit, class: 'primary'
