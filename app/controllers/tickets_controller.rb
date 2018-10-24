@@ -61,7 +61,7 @@ class TicketsController < ApplicationController
       end
       @ticket.update(status: "completed")
       TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
-      redirect_to cfp_root_path, notice: "You've been succesfully registered"
+      redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
     end
   end
 
