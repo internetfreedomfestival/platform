@@ -42,7 +42,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     end
 
     assert_equal 1, ActionMailer::Base.deliveries.size
-    assert_text "You've been succesfully registered"
+    assert_text "Success: Your IFF Ticket has been issued!"
   end
 
   test 'registered person cannot register twice' do
