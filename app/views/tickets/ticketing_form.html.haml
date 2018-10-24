@@ -71,7 +71,7 @@
           .form-input{id: "ticket_option"}
             %ul.inputs-list
               = f.collection_radio_buttons(:ticket_option, [["FREE", "Community Ticket: "], ["USD 850", "Organizational Ticket: "]], :first, :last, {boolean_style: :inline}) do |r|
-                %li{style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 570px; margin: 10px;  height: 50px;"}
+                %li{style: "border: 2px solid black; border-radius: 10px; background-color: #4544f8; width: 570px; margin: 10px;  height: 50px;"}
                   =r.label do
                     %table
                       %tr
@@ -85,7 +85,7 @@
                 -if r.text == "Organizational Ticket: "
                   .span{style: "margin-left: 20px"}
                     .div#organizational_amount
-                      %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 850}850
+                      %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
 
                 -if r.text == "Community Ticket: "
                   .div{id: "different_amount", style: "margin-left: 20px"}
@@ -93,12 +93,12 @@
                     %table{style: "width: 530px; margin-left: -10px;"}
                       %tr
                         %td{style: "width: 400px"}
-                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 250}250
-                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 100}100
-                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 30px; font-weight: bold;", value: 50}50
-                          %input{ onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 80px; height: 15px; font-weight: bold;"}
+                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
+                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
+                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 50}50
+                          %input{ onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"ticket-input"}
                         %td{style: "width: 120px"}
-                          %button{ onclick: "update_amount(this)", type: "button", class:"btn btn-success primary", style: "border: 2px solid black; border-radius: 10px 10px 10px 10px; background-color: blue; width: 120px; height: 30px; font-weight: bold;", value: 0}Not This Time
+                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 0}Not This Time
               .div#amount_input
                 = f.input :amount, input_html: {value: "0"}, required: true
               .div{style: "margin: 10px"}
