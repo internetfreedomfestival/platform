@@ -11,7 +11,7 @@
     <p>IFF Ticket Information </p>
   </div>
     <div class="charge-row">
-      <p>2019 IFF Ticket Option: <%= @ticket %></p>
+      <p>2019 IFF Ticket Option: <%= @ticket.ticket_option %></p>
     </div>
     <div class="charge-row-row">
       <p>IFF ID:
@@ -42,11 +42,11 @@
     </div>
 <br>
 <br>
-  <%= link_to 'Back', 'javascript:history.go(-1);', {class:'btn danger'} %>
 
   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
           data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-          data-description="A month's subscription"
+          data-description="2019 IFF Ticket"
           data-amount="<%= @amount %>"
           data-locale="auto"></script>
+  <%= link_to 'Back', 'javascript:history.go(-1);', {class:'btn danger'} %>
 <% end %>
