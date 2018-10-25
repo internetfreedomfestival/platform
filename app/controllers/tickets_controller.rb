@@ -25,7 +25,7 @@ class TicketsController < ApplicationController
     @conference = @invited.conference
     @ticket = Ticket.find_by(person: @person, conference: @conference)
     TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
-    redirect_to cfp_root_path, notice: "Succesfully resent. Check your email."
+    redirect_to view_ticket_path, notice: "Succesfully resent. Check your email."
   end
 
   def register_ticket
