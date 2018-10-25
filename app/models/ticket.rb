@@ -15,7 +15,8 @@ class Ticket < ActiveRecord::Base
   validates :iff_before, presence: true
   validates :iff_goals, presence: true
   validates :iff_days, presence: true
-  validates :amount, presence: true
+  validates :ticket_option, presence: {message: "You must select a valid ticket option"}
+  validates :amount, presence: {message: "Please, select an amount"}
 
 
   def event

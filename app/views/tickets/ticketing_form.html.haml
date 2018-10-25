@@ -61,12 +61,16 @@
                     = c.check_box
                     %span= c.text
 
-        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:ticket_option))}
+        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:ticket_option) || @ticket.errors.messages.key?(:amount))}
           .form-label
             %label
+              %span.form-required__text Required Field.
               Get your 2019 IFF Ticket
             - if @ticket.errors.messages.key?(:ticket_option)
               %span.form-input__error= @ticket.errors.messages[:ticket_option].first
+            - if @ticket.errors.messages.key?(:amount)
+              %span.form-input__error= @ticket.errors.messages[:amount].first
+          %br
           %p The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included. Please choose your ticket:
           .form-input{id: "ticket_option"}
             %ul.inputs-list
@@ -99,8 +103,10 @@
                           %input{ onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"ticket-input"}
                         %td{style: "width: 120px"}
                           %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 0}Not This Time
+
               .div#amount_input
                 = f.input :amount, input_html: {value: "0"}, required: true
+
               .div{style: "margin: 10px"}
                 %p You selected to pay:
                 %input{id: "show_amount", disabled: "disabled", style: "margin: 10px; position: top; width: 50px; height: 20px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}
@@ -112,7 +118,7 @@
         We are committed to providing a safe and welcoming environment.
         All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
         - if @ticket.errors.messages.key?(:code_of_conduct)
-          %span.error= @ticket.errors.messages[:code_of_conduct].first
+          %span.form-input__error= @ticket.errors.messages[:code_of_conduct].first
         %br
         %br
         %br

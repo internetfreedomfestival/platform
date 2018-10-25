@@ -41,28 +41,24 @@ class TicketsController < ApplicationController
 
 
     unless @ticket.save
-      if ticket_params['amount']==""
-        flash[:alert] = "You must enter the ticket option!"
-      end
       render 'ticketing_form'
       return
     end
 
     if ticket_params["amount"] != "0"
       return redirect_to new_charge_path
-
-    else
-      if !AttendanceStatus.find_by(person: @person, conference: @conference)
-        AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
-      else
-        status = AttendanceStatus.find_by(person: @person, conference: @conference)
-        status.status = AttendanceStatus::REGISTERED
-        status.save
-      end
-      @ticket.update(status: "completed")
-      TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
-      redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
     end
+
+    if !AttendanceStatus.find_by(person: @person, conference: @conference)
+      AttendanceStatus.create!(person: @person, conference: @conference, status: AttendanceStatus::REGISTERED)
+    else
+      status = AttendanceStatus.find_by(person: @person, conference: @conference)
+      status.status = AttendanceStatus::REGISTERED
+      status.save
+    end
+    @ticket.update(status: "completed")
+    TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
+    redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
   end
 
   def create
@@ -132,8 +128,8 @@ class TicketsController < ApplicationController
                                    :interested_in_volunteer,
                                    {iff_days: []},
                                    :code_of_conduct,
+                                   :ticket_option,
                                    :amount,
-                                   :ticket_option
     )
   end
 

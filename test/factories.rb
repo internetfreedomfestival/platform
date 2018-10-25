@@ -291,9 +291,10 @@ FactoryBot.define do
     iff_goals ['Requesting support with a specific issue']
     iff_days ['Full week']
     interested_in_volunteer 'Yes, sounds fun!'
+    ticket_option 'FREE'
+    amount "0"
     person
     conference
-    amount "0"
   end
 
   factory :mail_template do
