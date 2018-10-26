@@ -40,7 +40,7 @@
               %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
                 = action_button "success", "Get Your Ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
             - else
-              %p You don't have an invitation.
+              %p Request your 2019 IFF Ticket
               %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
                 = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
 
