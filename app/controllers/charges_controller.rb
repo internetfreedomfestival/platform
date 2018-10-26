@@ -1,16 +1,15 @@
 class ChargesController < ApplicationController
   def new
-    @ticket = Ticket.where(person_id: current_user.person.id).last
-    @amount = Ticket.where(person_id: current_user.person.id).last.amount * 100
-    @invited = Invited.find_by(person_id: current_user.person.id)
+    @ticket = Ticket.find(params[:ticket_id])
+    @amount_in_cents = @ticket.amount * 100
+    @invited = Invited.find(params[:id])
     @conference = @invited.conference
-    #id ticket por url, buscar ^ por id ticket
   end
 
   def create
-    # Amount in cents
-    @ticket = Ticket.find_by(person_id: current_user.person.id)
-    @amount = @ticket.amount
+    @ticket = Ticket.find(params[:ticket_id])
+    @amount_in_cents = @ticket.amount * 100
+    @invited = Invited.find(params[:id])
 
     customer = Stripe::Customer.create(
       :email => params[:stripeEmail],
@@ -19,29 +18,29 @@ class ChargesController < ApplicationController
 
     charge = Stripe::Charge.create(
       :customer    => customer.id,
-      :amount      => @amount,
+      :amount      => @amount_in_cents,
       :description => 'Rails Stripe customer',
       :currency    => 'usd'
     )
 
-  @ticket.update(status: "completed")
+    @ticket.update(status: "completed")
 
-  if charge.status == "succeeded"
-    if !AttendanceStatus.find_by(person: @ticket.person, conference: @ticket.conference)
-      AttendanceStatus.create!(person: @ticket.person, conference: @ticket.conference, status: AttendanceStatus::REGISTERED)
+    if charge.status == "succeeded"
+      if !AttendanceStatus.find_by(person: @ticket.person, conference: @ticket.conference)
+        AttendanceStatus.create!(person: @ticket.person, conference: @ticket.conference, status: AttendanceStatus::REGISTERED)
+      else
+        status = AttendanceStatus.find_by(person: @ticket.person, conference: @ticket.conference)
+        status.status = AttendanceStatus::REGISTERED
+        status.save
+      end
+
+      TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
+      redirect_to cfp_root_path, notice: "Thanks, you've been succesfully registered"
     else
-      status = AttendanceStatus.find_by(person: @ticket.person, conference: @ticket.conference)
-      status.status = AttendanceStatus::REGISTERED
-      status.save
+      redirect_to new_charge_path(@invited, @ticket)
     end
-
-    TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
-    redirect_to cfp_root_path, notice: "Thanks, you've been succesfully registered"
-    else
-      redirect_to new_charge_path
-  end
   rescue Stripe::CardError => e
     flash[:error] = e.message
-    redirect_to new_charge_path
+    redirect_to new_charge_path(@invited, @ticket)
   end
 end

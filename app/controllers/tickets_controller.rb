@@ -32,21 +32,28 @@ class TicketsController < ApplicationController
     @invited = Invited.find(params[:id])
     @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
-    @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
-    @ticket.status = "pending"
 
-    @ticket.iff_before = ticket_params["iff_before"]
-    @ticket.iff_goals = ticket_params["iff_goals"]
-    @ticket.iff_days = ticket_params["iff_days"]
+    if Ticket.exists?(conference: @conference, person: @person)
+      @ticket = Ticket.find_by(conference: @conference, person: @person)
+    else
+      @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
+      @ticket.status = "pending"
+    end
 
 
-    unless @ticket.save
+    success = if @ticket.persisted?
+      @ticket.update(ticket_params.merge(status: "pending"))
+    else
+      @ticket.save
+    end
+
+    unless success
       render 'ticketing_form'
       return
     end
 
     if ticket_params["amount"] != "0"
-      return redirect_to new_charge_path
+      return redirect_to new_charge_path(@invited, @ticket)
     end
 
     if !AttendanceStatus.find_by(person: @person, conference: @conference)

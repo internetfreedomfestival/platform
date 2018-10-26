@@ -1,7 +1,6 @@
 Frab::Application.routes.draw do
   scope '(:locale)' do
     resource :session
-    resources :charges
 
     get '/conferences/new' => 'conferences#new', as: 'new_conference'
     post '/conferences' => 'conferences#create', as: 'create_conference'
@@ -139,6 +138,10 @@ Frab::Application.routes.draw do
         post :register_ticket, to: 'tickets#register_ticket'
         get :view_ticket, to: 'tickets#view_ticket'
         get :send_ticket, to: 'tickets#send_ticket'
+
+        scope path: "/tickets/:ticket_id" do
+          resources :charges
+        end
       end
 
       resources :events do
