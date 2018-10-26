@@ -31,7 +31,7 @@ $(document).ready(function() {
     var element = document.getElementById("different_amount");
     var organizational_element = document.getElementById("organizational_amount");
 
-    if( $("#ticket_ticket_option_free").attr("checked")) {
+    if( $("#ticket_ticket_option_community_ticket").attr("checked")) {
       $(element).show()
       $(organizational_amount).hide()
     }

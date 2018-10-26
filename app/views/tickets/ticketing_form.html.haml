@@ -74,24 +74,24 @@
           %p The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included. Please choose your ticket:
           .form-input{id: "ticket_option"}
             %ul.inputs-list
-              = f.collection_radio_buttons(:ticket_option, [["FREE", "Community Ticket: "], ["USD 850", "Organizational Ticket: "]], :first, :last, {boolean_style: :inline}) do |r|
+              = f.collection_radio_buttons(:ticket_option, [["Community Ticket", "FREE"], ["Organizational Ticket", "USD 850"]], :first, :last, {boolean_style: :inline}) do |r|
                 %li{style: "border: 2px solid black; border-radius: 10px; background-color: #4544f8; width: 570px; margin: 10px;  height: 50px;"}
                   =r.label do
                     %table
                       %tr
                         %td{style: "border: 0px; width: 500px; "}
                           = r.radio_button
-                          %span{style: "color: white; font-weight: bold;"}= r.text
+                          %span{style: "color: white; font-weight: bold;"}= r.value + ":"
                           %span{style: "color: white"}= "For thoose atending..."
                         %td{style: "border: 0px; width: 70px;"}
-                          %p{style: "position: top; width: 70px; height: 30px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}= r.value
+                          %p{style: "position: top; width: 70px; height: 30px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}= r.text
 
-                -if r.text == "Organizational Ticket: "
+                -if r.value == "Organizational Ticket"
                   .span{style: "margin-left: 20px"}
                     .div#organizational_amount
                       %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
 
-                -if r.text == "Community Ticket: "
+                -if r.value == "Community Ticket"
                   .div{id: "different_amount", style: "margin-left: 20px"}
                     Please choose a quantity...
                     %table{style: "width: 530px; margin-left: -10px;"}
