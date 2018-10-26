@@ -49,15 +49,16 @@
       .span8{style: "margin-bottom: 30px; height: 200px;"}
         %div{style: "margin:10px;"}
         - if !@invited.nil?
-          %h3 Share your invites!
-          = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
-            %p
-              You have
-              %b= @invites
-              invites remaining.
-            = text_field_tag(:email, '', placeholder: 'email')
-            %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-              = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
+          -if @invites > 0
+            %h3 Share your invites!
+            = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
+              %p
+                You have
+                %b= @invites
+                invites remaining.
+              = text_field_tag(:email, '', placeholder: 'email')
+              %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+                = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
         - else
           - if @attendance_status && @attendance_status.status == "Requested"
             %p Your ticket request has been received.

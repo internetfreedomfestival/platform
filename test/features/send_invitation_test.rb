@@ -145,7 +145,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     login_as(@user)
 
-    assert_text 'You have 0 invites remaining.'
+    assert_no_text 'invites remaining.'
   end
 
   test 'users has a limited number of invites' do
@@ -166,15 +166,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
       end
     end
 
-    assert_text 'You have 0 invites remaining.'
-
-    within '#invitations-form' do
-      fill_in 'email', with: 'three@email.com'
-      click_on 'Send'
-    end
-
-    assert_equal 3, ActionMailer::Base.deliveries.size
-    assert_text 'You have already sent all your available invitations'
+    assert_no_text 'invites remaining.'
   end
 
   test 'users cannot invite people already invited' do
@@ -212,7 +204,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on 'Logout'
 
     login_as(@user)
-    assert_text 'You have 0 invites remaining.'
+    assert_no_text 'invites remaining.'
   end
 
   test 'users invited by admin can invite other people' do
