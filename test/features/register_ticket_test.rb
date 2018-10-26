@@ -38,7 +38,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       choose('Community')
       click_on 'Not This Time'
 
-      click_on 'Get your ticket'
+      click_on 'Get Your Ticket'
     end
 
     assert_equal 1, ActionMailer::Base.deliveries.size
@@ -66,7 +66,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       choose('Community')
       click_on 'Not This Time'
 
-      click_on 'Get your ticket'
+      click_on 'Get Your Ticket'
     end
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
@@ -82,7 +82,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       choose('Community')
       click_on 'Not This Time'
 
-      click_on 'Get your ticket'
+      click_on 'Get Your Ticket'
     end
 
     assert_text "You cannot register to the conference twice"
@@ -109,7 +109,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       choose('Community')
       click_on 'Not This Time'
 
-      click_on 'Get your ticket'
+      click_on 'Get Your Ticket'
     end
 
     assert_text "Success: Your IFF Ticket has been issued!"
@@ -128,7 +128,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
     within '#register_ticket' do
 
-      click_on 'Get your ticket'
+      click_on 'Get Your Ticket'
     end
 
     assert_text "can't be blank"
@@ -145,7 +145,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('she', from: 'ticket[gender_pronoun]')
       check('ticket[iff_before][]', option: '2015')
 
-      click_on 'Get your ticket'
+      click_on 'Get Your Ticket'
     end
 
     assert_text "can't be blank"

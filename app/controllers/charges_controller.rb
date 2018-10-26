@@ -35,7 +35,7 @@ class ChargesController < ApplicationController
       end
 
       TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
-      redirect_to cfp_root_path, notice: "Thanks, you've been succesfully registered"
+      redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
     else
       redirect_to new_charge_path(@invited, @ticket)
     end
