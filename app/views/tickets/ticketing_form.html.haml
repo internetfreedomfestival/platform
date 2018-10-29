@@ -89,7 +89,7 @@
                 -if r.value == "Organizational Ticket"
                   .span{style: "margin-left: 20px"}
                     .div#organizational_amount
-                      %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
+                      %button{id: "ticket-amount", onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
 
                 -if r.value == "Community Ticket"
                   .div{id: "different_amount", style: "margin-left: 20px"}
@@ -97,12 +97,12 @@
                     %table{style: "width: 530px; margin-left: -10px;"}
                       %tr
                         %td{style: "width: 400px"}
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 50}50
-                          %input{ onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"ticket-input"}
+                          %button{ id: "ticket-amount", onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
+                          %button{ id: "ticket-amount",onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
+                          %button{ id: "ticket-amount",onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 50}50
+                          %input{ id: "ticket-amount",onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"ticket-input"}
                         %td{style: "width: 120px"}
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 0}Not This Time
+                          %button{id: "ticket-amount", onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 0}Not This Time
 
               .div#amount_input
                 = f.input :amount, input_html: {value: "0"}, required: true
@@ -125,12 +125,19 @@
 
 :javascript
 
-  function update_amount(button){
-    if (button.value < 10 && button.value != 0){
+  function update_amount(selected_button){
+    if (selected_button.value < 10 && selected_button.value != 0){
       alert("Ops! We can’t process payments under USD10.")
-      button.value = ""
+      selected_button.value = ""
       return
     }
+    $("#ticket_amount").attr('value', selected_button.value)
 
-    $("#ticket_amount").attr('value', button.value)
+    ticket_buttons = document.getElementsByClassName("ticket-button");
+
+    for (button of ticket_buttons) {
+      button.setAttribute("style", "background-color: white")
+    }
+
+    selected_button.setAttribute("style", "background-color: #4544f8")
   }
