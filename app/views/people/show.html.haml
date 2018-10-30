@@ -36,7 +36,7 @@
         %p.alert-message.warning
           Person has no user account yet and cannot login. Click on the user tab to create an account.
   .row
-    .span10
+    .span8
       %h2 Basic information
       %p
         %b Created at:
@@ -93,8 +93,7 @@
         %b Allowed to submit events late:
         = @person.late_event_submit
 
-  .row
-    .span10
+    .span8
       %h2 Bio
       %p
         %b First name:
@@ -115,8 +114,7 @@
         %b Do you identify as part of an ethnic, racial or cultural minority group?:
         = @person.group
 
-  .row
-    .span10
+    .span8
       %h2 Professional
       %p
         %b Professional Background:
@@ -135,6 +133,7 @@
         = @person.title
   .row
     .span10
+      %hr
       %h2 Feedback
       %p
         %b What are your goals for the 2019 IFF? What would you like to achieve?:
@@ -145,6 +144,32 @@
       %p
         %b What resources or tools do you think that the IF community should be aware of?:
         = @person.other_resources
+
+  -if @ticket
+    .row
+      %hr
+      .span8
+        %h2 Payment Details
+        %p
+          %b Registered for:
+          = @ticket.gender_pronoun
+          = @ticket.public_name
+        %p
+          %b Ticket Option:
+          = @ticket.ticket_option
+        -if @ticket.amount > 0
+          %p
+            %b Amount(USD):
+            = @ticket.amount
+          %p
+            %b Payment  ID:
+            = @ticket.payment_id
+        -else
+          %p
+            %b FREE Ticket.
+          %p
+            %b Amount:
+            = "Not This Time"
 
 %section
   - if @person.dif

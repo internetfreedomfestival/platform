@@ -160,6 +160,9 @@ class PeopleController < ApplicationController
     @years_presented = person_presented_before?
     @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
 
+    @ticket = Ticket.find_by(person: @person, conference: @conference)
+    
+
     if @person.user.nil?
       @is_fellow = false
       @user = User.new
