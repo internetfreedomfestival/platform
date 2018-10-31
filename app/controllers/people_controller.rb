@@ -161,7 +161,7 @@ class PeopleController < ApplicationController
     @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
 
     @ticket = Ticket.find_by(person: @person, conference: @conference)
-    
+
 
     if @person.user.nil?
       @is_fellow = false
@@ -473,21 +473,16 @@ class PeopleController < ApplicationController
   end
 
   def person_presented_before?
-    previous_events = []
     years_presented = []
     unless @person.events.empty?
       @person.events.each do |event|
-        previous_events << event.iff_before
+        p event.iff_before
+        years_presented.push(*event.iff_before)
+        p years_presented
       end
     end
-    unless previous_events.empty?
-      previous_events.each do |event|
-        if event.include?("2015") || event.include?("2016") || event.include?("2017")
-          years_presented << event
-        end
-      end
-    end
-    years_presented
+
+    years_presented.uniq!
   end
 
 end

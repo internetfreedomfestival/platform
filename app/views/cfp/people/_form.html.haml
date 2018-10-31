@@ -31,7 +31,7 @@
               %span.form-help__text Check the boxes that most closely describe the work you do.
             .form-input
               %ul.inputs-list
-                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline) do |c|
+                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
                   %li
                     =c.label do
                       = c.check_box

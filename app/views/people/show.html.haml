@@ -64,10 +64,12 @@
         This hasn't been created yet
       %p
         %b Attended Iff Before:
-        = @person.iff_before
+        -if @person.iff_before
+          = @person.iff_before.to_sentence
       %p
         %b Presented at Iff Before:
-        = @years_presented
+        -if @years_presented
+          = @years_presented.to_sentence
       %p
         %b DIF Status:
         - if @person.dif
@@ -118,7 +120,7 @@
       %h2 Professional
       %p
         %b Professional Background:
-        = @person.professional_background
+        = @person.professional_background.to_sentence
       %p
         %b Other Background:
         = @person.other_background

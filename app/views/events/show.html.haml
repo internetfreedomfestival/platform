@@ -74,7 +74,7 @@
             = link_to @event.ticket.remote_ticket_id, get_ticket_view_url( @event.ticket.remote_ticket_id ), target: "_blank"
       %p
         %b Presented IFF Before?:
-        = @event.iff_before
+        = @event.iff_before.to_sentence
       %p
         %b Etherpad URL:
         = @event.etherpad_url
