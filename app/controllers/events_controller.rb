@@ -151,7 +151,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
-    @event = Event.new(event_params)
+    @event = Event.new(form_params)
     @event.conference = @conference
     authorize! :create, @event
     respond_to do |format|
@@ -167,16 +167,45 @@ class EventsController < ApplicationController
 
   # PUT /events/1
   def update
+
+    authorize! :submit, Event
+    event_values = prepare_params(form_params)
+    event_values[:other_presenters] = remove_duplicates_of_other_presenters_list(event_values[:other_presenters])
+
     @event = Event.find(params[:id])
-    authorize! :update, @event
+    # @event = current_user.person.events.readonly(false).find(params[:id])
+    old_emails_list = @event.other_presenters
+
+    event_valid = !invalid_presenters?(event_values[:other_presenters])
+
     respond_to do |format|
-      if @event.update_attributes(event_params)
-        format.html { redirect_to(@event, notice: 'Event was successfully updated.') }
-        format.js   { head :ok }
+      if @event.update(form_params) && event_valid
+        emails_list = valid_presenters(event_values[:other_presenters])
+        create_role_if_not_exists(emails_list, @event, 'collaborator')
+        new_emails_list = @event.other_presenters
+        delete_role(old_emails_list, new_emails_list, @event)
+
+        format.html { redirect_to(event_path(@event), notice: t('cfp.event_updated_notice')) }
+
       else
+        flash[:alert] = "You must fill out all the required fields!"
+
+        flash[:danger] = []
+
+        if @event.errors.messages[:title]
+          flash[:danger] << "There is already a session submitted with this title. Please review your title and make sure that the session is not already submitted."
+        end
+
+        if invalid_presenters?(event_values[:other_presenters])
+          @invalid_list_of_emails = invalid_presenters_list(event_values[:other_presenters])
+          wrong_emails_alert = "These emails does not exist in our database: " << @invalid_list_of_emails << ". Please, correct this. Remember emails can be separated by , or space."
+          flash[:danger] <<  wrong_emails_alert
+          flash[:danger] << "It seems that the e-mail you inserted does not exist in our database. Please be sure the colleagues are registered platform users in order to be able to add them as event collaborators.
+                            NOTE: This field is not mandatory and therefore you can add information about the collaborators later."
+        end
+        @edit = true
         @start_time_options = @event.possible_start_times
         format.html { render action: 'edit' }
-        format.js { render json: @event.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -247,6 +276,87 @@ class EventsController < ApplicationController
 
   private
 
+  def prepare_params(form_params)
+    event_values = form_params.merge(
+      recording_license: @conference.default_recording_license,
+    )
+    event_values
+  end
+
+  def remove_duplicates_of_other_presenters_list(list)
+    return "" if list.nil?
+    extract_emails_from(list).reject(&:empty?).uniq.join(',')
+  end
+
+  def extract_emails_from(string)
+    valid_separators = /[\s,]/
+    emails = string.split(valid_separators)
+
+    emails
+  end
+
+  def invalid_presenters?(presenters)
+    return false if presenters.nil? || presenters.blank?
+
+    email_list = extract_emails_from(presenters)
+
+    email_list.each do |email|
+      found = Person.find_by(email: email)
+      if !found
+        return true
+      end
+    end
+    false
+  end
+
+  def valid_presenters(presenters)
+    email_list = extract_emails_from(presenters)
+
+    email_list.select do |email|
+      Person.find_by(email: email)
+    end
+  end
+
+  def create_role_if_not_exists(emails_list, event, role)
+    emails_list.map do |email|
+      person = Person.find_by(email: email)
+
+      unless EventPerson.exists?(person: person, event: event, event_role: role)
+        register_for_proposal(person, event, role)
+      end
+    end
+  end
+
+  def delete_role(old_emails_list, new_emails_list, event)
+    emails_to_delete = extract_emails_from(old_emails_list) - extract_emails_from(new_emails_list)
+
+    emails_to_delete.map do |email|
+      Rails.logger.info "deleting email #{email}"
+      person = EventPerson.find_by(person: Person.find_by(email: email), event: event, event_role: 'collaborator')
+      person.destroy if person
+    end
+  end
+
+  def register_for_proposal(person, event, role)
+    EventPerson.create(person: person, event: event, event_role: role)
+    EventsMailer.create_event_mail(person.email, event).deliver_now
+  end
+
+  def invalid_presenters_list(presenters)
+    return [] if presenters.nil? || presenters.blank?
+
+    invalid_list_of_emails = []
+    email_list = extract_emails_from(presenters)
+    email_list.each do |email|
+      found = Person.find_by(email: email)
+      if found.nil?
+        invalid_list_of_emails << email
+      end
+    end
+
+    return invalid_list_of_emails.reject(&:blank?).join(", ")
+  end
+
   def restrict_events
     @events = @events.accessible_by(current_ability) unless @events.nil?
   end
@@ -284,22 +394,23 @@ class EventsController < ApplicationController
     @search.result(distinct: true)
   end
 
-  def event_params
-    params.require(:event).permit(
-      :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :public_type, :tech_rider,
-      :desired_outcome, :phone_number, :track_id, {iff_before: []}, :projector, event_attachments_attributes: %i(id title attachment public _destroy),
-      ticket_attributes: %i(id remote_ticket_id),
-      links_attributes: %i(id title url _destroy),
-      event_people_attributes: %i(id person_id event_role role_state notification_subject notification_body _destroy)
-    )
-  end
+  # def event_params
+  #   params.require(:event).permit(
+  #     :id, :title, :subtitle, :event_type, :time_slots, :state, :start_time, :public, :language, :abstract, :description, :logo, :track_id, :room_id, :note, :submission_note, :do_not_record, :recording_license, :other_presenters, :public_type, :tech_rider,
+  #     :desired_outcome, :phone_number, :track_id, {iff_before: []}, :projector, event_attachments_attributes: %i(id title attachment public _destroy),
+  #     ticket_attributes: %i(id remote_ticket_id),
+  #     links_attributes: %i(id title url _destroy),
+  #     event_people_attributes: %i(id person_id event_role role_state notification_subject notification_body _destroy)
+  #   )
+  # end
 
   def form_params
     params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
       :desired_outcome, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
-      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots)
+      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots,
+      :public)
   end
 
   # Trying to send email to user for accepted event notification
