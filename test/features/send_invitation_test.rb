@@ -81,72 +81,72 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'We have sent an invite to user@email.com'
   end
 
-  test 'users can request invitation to the conference' do
-    create(:call_for_participation, conference: @conference)
+  # test 'users can request invitation to the conference' do
+  #   create(:call_for_participation, conference: @conference)
+  #
+  #   login_as(@user)
+  #
+  #   within '#request_invitation' do
+  #     click_on 'Request Invite'
+  #   end
+  #
+  #   assert_equal 1, ActionMailer::Base.deliveries.size
+  #   assert_text 'Your ticket request has been received.'
+  # end
 
-    login_as(@user)
+  # test 'users cannot request invitation to the conference if ticketing system is not enabled' do
+  #   ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'false'
+  #
+  #   create(:call_for_participation, conference: @conference)
+  #
+  #   login_as(@user)
+  #
+  #   assert_no_selector '#request_invitation'
+  # end
 
-    within '#request_invitation' do
-      click_on 'Request Invite'
-    end
+  # test 'admin can accept a request invitation' do
+  #   create(:call_for_participation, conference: @conference)
+  #
+  #   login_as(@user)
+  #
+  #   within '#request_invitation' do
+  #     click_on 'Request Invite'
+  #   end
+  #
+  #   click_on 'Logout'
+  #
+  #   login_as(@admin)
+  #
+  #   go_to_conference_person_profile(@conference, @user.person)
+  #
+  #   click_on 'Accept request'
+  #
+  #   assert_text 'Person was invited.'
+  # end
 
-    assert_equal 1, ActionMailer::Base.deliveries.size
-    assert_text 'Your ticket request has been received.'
-  end
-
-  test 'users cannot request invitation to the conference if ticketing system is not enabled' do
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'false'
-
-    create(:call_for_participation, conference: @conference)
-
-    login_as(@user)
-
-    assert_no_selector '#request_invitation'
-  end
-
-  test 'admin can accept a request invitation' do
-    create(:call_for_participation, conference: @conference)
-
-    login_as(@user)
-
-    within '#request_invitation' do
-      click_on 'Request Invite'
-    end
-
-    click_on 'Logout'
-
-    login_as(@admin)
-
-    go_to_conference_person_profile(@conference, @user.person)
-
-    click_on 'Accept request'
-
-    assert_text 'Person was invited.'
-  end
-
-  test 'users invited by admin that they send a request invitation not have a extra invitations' do
-    create(:call_for_participation, conference: @conference)
-
-    login_as(@user)
-
-    within '#request_invitation' do
-      click_on 'Request Invite'
-    end
-
-    click_on 'Logout'
-
-    login_as(@admin)
-
-    go_to_conference_person_profile(@conference, @user.person)
-
-    click_on 'Accept request'
-
-    click_on 'Logout'
-
-    login_as(@user)
-
-    assert_no_text 'invites remaining.'
-  end
+  # test 'users invited by admin that they send a request invitation not have a extra invitations' do
+  #   create(:call_for_participation, conference: @conference)
+  #
+  #   login_as(@user)
+  #
+  #   within '#request_invitation' do
+  #     click_on 'Request Invite'
+  #   end
+  #
+  #   click_on 'Logout'
+  #
+  #   login_as(@admin)
+  #
+  #   go_to_conference_person_profile(@conference, @user.person)
+  #
+  #   click_on 'Accept request'
+  #
+  #   click_on 'Logout'
+  #
+  #   login_as(@user)
+  #
+  #   assert_no_text 'invites remaining.'
+  # end
 
   test 'users has a limited number of invites' do
     create(:call_for_participation, conference: @conference)
@@ -186,26 +186,26 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'The user you are trying to invite has already received an invite'
   end
 
-  test 'users that requested invitation can not invite other people' do
-    create(:call_for_participation, conference: @conference)
-
-    login_as(@user)
-
-    within '#request_invitation' do
-      click_on 'Request Invite'
-    end
-
-    assert_text 'Your ticket request has been received.'
-    click_on 'Logout'
-
-    login_as(@admin)
-    go_to_conference_person_profile(@conference, @user.person)
-    click_on 'Accept request'
-    click_on 'Logout'
-
-    login_as(@user)
-    assert_no_text 'invites remaining.'
-  end
+  # test 'users that requested invitation can not invite other people' do
+  #   create(:call_for_participation, conference: @conference)
+  #
+  #   login_as(@user)
+  #
+  #   within '#request_invitation' do
+  #     click_on 'Request Invite'
+  #   end
+  #
+  #   assert_text 'Your ticket request has been received.'
+  #   click_on 'Logout'
+  #
+  #   login_as(@admin)
+  #   go_to_conference_person_profile(@conference, @user.person)
+  #   click_on 'Accept request'
+  #   click_on 'Logout'
+  #
+  #   login_as(@user)
+  #   assert_no_text 'invites remaining.'
+  # end
 
   test 'users invited by admin can invite other people' do
     create(:call_for_participation, conference: @conference)
