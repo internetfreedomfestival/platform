@@ -16,55 +16,107 @@
           = f.input :public_type, label: "Who is this session for?", hint: "Describe the target audience for this session. Who would you like to see in the room? Who would benefit the most from your session?"
           = f.input :desired_outcome, label: "What outcomes do you envision for this session?"
           = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix (e.g., 0034)."
-          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
           = f.association :track, label: "Session Format", collection: @conference.tracks
-          .form-label
-            %label
-              Preferred Session Time
-          .form-input
-            %ul.inputs-list
-              = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
-                %li
-                  =r.label do
-                    = r.radio_button
-                    %span= r.text
+          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
+
+          .clearfix.form-group{class: ("has-error" if @event.errors.messages.key?(:time_slots))}
+            .form-label
+              %label
+                %span.form-required__text Required Field.
+                Preferred Session Time
+              - if @event.errors.messages.key?(:time_slots)
+                %span.form-input__error= @event.errors.messages[:time_slots].first
+            .form-input
+              %ul.inputs-list
+                = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
+                  %li
+                    =r.label do
+                      = r.radio_button
+                      %span= r.text
           %br
 
-          .form-label
-            %label
-              We discourage the use of projectors. However, will you need it?
-          .form-input
-            %ul.inputs-list
-              = f.collection_radio_buttons(:projector, [[true, "Yes"], [ false, "No"]], :first, :last, {boolean_style: :inline}) do |r|
-                %li
-                  =r.label do
-                    = r.radio_button
-                    %span= r.text
-          %br
+          .clearfix.form-group{class: ("has-error" if @event.errors.messages.key?(:projector))}
+            .form-label
+              %label
+                %span.form-required__text Required Field.
+                We discourage the use of projectors. However, will you need it?
+              - if @event.errors.messages.key?(:projector)
+                %span.form-input__error= @event.errors.messages[:projector].first
+            .form-input
+              %ul.inputs-list
+                = f.collection_radio_buttons(:projector, [[true, "Yes"], [ false, "No"]], :first, :last, {boolean_style: :inline}) do |r|
+                  %li
+                    =r.label do
+                      = r.radio_button
+                      %span= r.text
           %br
 
-          .form-label
-            %label
-              Have you presented at IFF before?
-          .form-input{id: "iff_before_checkboxes"}
-            %ul.inputs-list
-              = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
-                %li
-                  =c.label do
-                    = c.check_box
-                    %span= c.text
+          .clearfix.form-group{class: ("has-error" if @event.errors.messages.key?(:iff_before))}
+            .form-label
+              %label
+                %span.form-required__text Required Field.
+                Have you presented at IFF before?
+              - if @event.errors.messages.key?(:iff_before)
+                %span.form-input__error= @event.errors.messages[:iff_before].first
+            .form-input{id: "iff_before_checkboxes"}
+              %ul.inputs-list
+                = f.collection_check_boxes(:iff_before, [["2015", "2015"], ["2016", "2016"], ["2017", "2017"], ["2018", "2018"], ["Not yet!", "Not yet!"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
+                  %li
+                    =c.label do
+                      = c.check_box
+                      %span= c.text
+          %br
+
+          .clearfix.form-group
+            .form-label
+              %label
+                Diversity and Inclusion Program for Session Presenters
+            .form-input
+              = f.check_box :travel_assistance, id: :travel
+              I need travel support to attend the 2019 IFF
+
             %br
             %br
 
-          .form-label
-            %label
-              Public
-          .form-help__text Is this event visible in the public schedule?
-          .form-input
-            = f.check_box :public, label: false
-          %br
-          %br
-          %br
+            = f.input :group, label: "Which underrepresented group(s) do you belong to?", required: true
+            = f.input :recipient_travel_stipend, label: "Who should be the recipient of the stipend?", hint: "Only one presenter per session can be awarded a travel stipend for sessions with more than one presenter.", required: false
+
+            .clearfix.form-group
+              .form-label
+                %label
+                  Please choose the type of travel support you need:
+              .form-input
+                %ul.inputs-list
+                  = f.collection_check_boxes(:travel_support, [["Hotel", "Hotel"], ["Flight", "Flight"], ["Daily Per Diem", "Daily Per Diem"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
+                    %li
+                      =c.label do
+                        = c.check_box
+                        %span= c.text
+
+            .clearfix.form-group{class: ("has-error" if @event.errors.messages.key?(:past_travel_assistance))}
+              .form-label
+                %label
+                  %span.form-required__text Required Field.
+                  Have you been awarded a travel stipend from the IFF in the past?
+                - if @event.errors.messages.key?(:past_travel_assistance)
+                  %span.form-input__error= @event.errors.messages[:past_travel_assistance].first
+              .form-input{id: "past_travel_assistance_checkboxes"}
+                %ul.inputs-list
+                  = f.collection_check_boxes(:past_travel_assistance, [["2017", "2017"], ["2018", "2018"], ["No", "No"]], :first, :last, {boolean_style: :inline, :include_hidden => false}) do |c|
+                    %li
+                      =c.label do
+                        = c.check_box
+                        %span= c.text
+            %br
+            .form-label
+              %label
+                Public
+            .form-help__text Is this event visible in the public schedule?
+            .form-input
+              = f.check_box :public, label: false
+            %br
+            %br
+            %br
 
 
       .row{style: "border-bottom: dotted"}
