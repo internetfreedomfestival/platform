@@ -35,8 +35,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
-      choose('Community')
-      click_on 'Not This Time'
+      choose('Individual')
 
       click_on 'Get Your Ticket'
     end
@@ -63,8 +62,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
 
-      choose('Community')
-      click_on 'Not This Time'
+      choose('Individual')
 
       click_on 'Get Your Ticket'
     end
@@ -79,8 +77,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
 
-      choose('Community')
-      click_on 'Not This Time'
+      choose('Individual')
 
       click_on 'Get Your Ticket'
     end
@@ -106,8 +103,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       check('ticket[iff_days][]', option: 'Monday, April 1st')
       check('ticket[code_of_conduct]')
 
-      choose('Community')
-      click_on 'Not This Time'
+      choose('Individual')
 
       click_on 'Get Your Ticket'
     end

@@ -7,8 +7,7 @@
         %br
         .span24
           = f.input :public_name, hint: "This is the name that will be displayed in your badge.", required: true
-          = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, required: true
-          %p "Your public gender pronoun will be displayed in your badge. Pronoun list written by <a href='https://twitter.com/morganastra'> @morganastra.</a> Visits <a href='https://pronoun.is/'> https://pronoun.is/ </a>for more information."
+          = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, required: true, hint: "Your public gender pronoun will be displayed in your badge. Pronoun list written by <a href='https://twitter.com/morganastra'> @morganastra.</a> Visits <a href='https://pronoun.is/'> https://pronoun.is/ </a>for more information.".html_safe
 
           .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_before))}
             .form-label
@@ -71,38 +70,39 @@
             - if @ticket.errors.messages.key?(:amount)
               %span.form-input__error= @ticket.errors.messages[:amount].first
           %br
-          %p The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included. Please choose your ticket:
+          %p The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included. Please choose your ticket below.
           .form-input{id: "ticket_option"}
             %ul.inputs-list
-              = f.collection_radio_buttons(:ticket_option, [["Community Ticket", "FREE"], ["Organizational Ticket", "USD 850"]], :first, :last, {boolean_style: :inline}) do |r|
+              = f.collection_radio_buttons(:ticket_option, [["Individual Ticket", "FREE"], ["Solidarity Ticket", "Varies"], ["Organizational Ticket", "USD 850"]], :first, :last, {boolean_style: :inline}) do |r|
                 %li{style: "border: 2px solid black; border-radius: 10px; background-color: #4544f8; width: 570px; margin: 10px;  height: 50px;"}
                   =r.label do
                     %table
                       %tr
                         %td{style: "border: 0px; width: 500px; "}
                           = r.radio_button
-                          %span{style: "color: white; font-weight: bold;"}= r.value + ":"
-                          %span{style: "color: white"}= "For thoose atending..."
+                          %span{style: "color: white; font-weight: bold;"}= r.value
                         %td{style: "border: 0px; width: 70px;"}
                           %p{style: "position: top; width: 70px; height: 30px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}= r.text
 
                 -if r.value == "Organizational Ticket"
                   .span{style: "margin-left: 20px"}
                     .div#organizational_amount
-                      %button{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
+                      The IFF is a glittery potluck! Contributions from your organizational ticket will go to support our community initiatives.
+                      %table{style: "width: 530px; margin-left: -10px;"}
+                        %tr
+                          %td{style: "width: 400px"}
+                            %button{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
 
-                -if r.value == "Community Ticket"
-                  .div{id: "different_amount", style: "margin-left: 20px"}
-                    Please choose a quantity...
+                -if r.value == "Solidarity Ticket"
+                  .div#solidarity_amount{style: "margin-left: 20px"}
+                    If you would like to support IFF community initiatives with a contribution towards your ticket, please select an amount below.
                     %table{style: "width: 530px; margin-left: -10px;"}
                       %tr
                         %td{style: "width: 400px"}
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
-                          %button{ id: "ticket-amount",onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
                           %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 50}50
-                          %input{ id: "ticket-amount",onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Amount",  class:"ticket-input"}
-                        %td{style: "width: 120px"}
-                          %button{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 0}Not This Time
+                          %button{ id: "ticket-amount",onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
+                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
+                          %input{ id: "ticket-amount",onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Other Amount",  class:"ticket-input"}
 
               .div#amount_input
                 = f.input :amount, input_html: {value: "0"}, required: true
