@@ -124,21 +124,24 @@
 
     / .span4
     /   = image_box @event.logo, :large
-  .row
-    - if @submitter && @submitter.dif
+  %section
+    .row
       .span6
         %h2 DIF
-        %b Status:
-        = @submitter.dif.status
+        %b Need travel assistance to attend the 2019 IFF
+        = @event.travel_assistance
         %br/
-        %b Type of Travel Support Requested:
-        = @submitter.dif.travel_support
+        %b To which group less representative belongs
+        = @event.group
         %br/
-        %b Received travel assistance in the past?:
-        = @submitter.dif.past_travel_assistance
+        %b Who should receive the recipient stipend
+        = @event.recipient_travel_stipend
         %br/
-        %b Willing to Fascilitate?
-        = @submitter.dif.willing_to_facilitate
+        %b Travel Support
+        = @event.travel_support
+        %br/
+        %b Past travel assistance
+        = @event.past_travel_assistance
   .row
     .span10
       %p

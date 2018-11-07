@@ -70,12 +70,7 @@
         %b Presented at Iff Before:
         -if @years_presented
           = @years_presented.to_sentence
-      %p
-        %b DIF Status:
-        - if @person.dif
-          = @person.dif.status
-        - else
-          Has NOT Applied
+
       %p
         %b Volunteer:
         = @person.interested_in_volunteer
@@ -174,28 +169,25 @@
             = "Not This Time"
 
 %section
-  - if @person.dif
-    .row
-      .span6
-        %h2 DIF
-        %b Status:
-        = @person.dif.status
-        %br/
-        %b Type of Travel Support Requested:
-        = @person.dif.travel_support
-        %br/
-        %b Received travel assistance in the past?:
-        = @person.dif.past_travel_assistance
-        %br/
-        %b Willing to Fascilitate?
-        = @person.dif.willing_to_facilitate
-      - unless @person.ticket.nil? or @person.ticket.remote_ticket_id.nil?
-        %p
-          %b Ticket:
-          -if @conference.ticket_server.nil?
-            = @person.ticket.remote_ticket_id
-          -else
-            = link_to @person.ticket.remote_ticket_id, get_ticket_view_url(@person.ticket.remote_ticket_id), target: "_blank"
+  - if @current_events
+    - @current_events.each do |event|
+      .row
+        .span6
+          %h2 DIF
+          %b Need travel assistance to attend the 2019 IFF
+          = event.travel_assistance
+          %br/
+          %b To which group less representative belongs
+          = event.group
+          %br/
+          %b Who should receive the recipient stipend
+          = event.recipient_travel_stipend
+          %br/
+          %b Travel Support
+          = event.travel_support
+          %br/
+          %b Past travel assistance
+          = event.past_travel_assistance
 %section
   .row
     .span16
