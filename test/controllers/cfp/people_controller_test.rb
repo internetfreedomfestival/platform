@@ -2,10 +2,10 @@ require 'test_helper'
 
 class Cfp::PeopleControllerTest < ActionController::TestCase
   setup do
-    @cfp_person = create(:person)
+    user = login_as(:submitter)
+    @cfp_person = user.person
     @call_for_participation = create(:call_for_participation)
     @conference = @call_for_participation.conference
-    login_as(:submitter)
   end
 
   def cfp_person_params
@@ -14,6 +14,16 @@ class Cfp::PeopleControllerTest < ActionController::TestCase
 
   test 'should get new' do
     get :new, conference_acronym: @conference.acronym
+    assert_response :success
+  end
+
+  test '[bug] users with a ticket for old conferences do not require a conference invitation' do
+    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = "true"
+    old_conference = create(:conference, acronym: 'IFF2018')
+    create(:call_for_participation, conference: old_conference)
+    AttendanceStatus.create!(person: @cfp_person, status: "Holds Ticket", conference: old_conference)
+
+    get :show, conference_acronym: old_conference.acronym
     assert_response :success
   end
 

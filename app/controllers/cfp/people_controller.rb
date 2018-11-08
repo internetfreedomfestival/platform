@@ -18,7 +18,7 @@ class Cfp::PeopleController < ApplicationController
     @invites = 0
     @invites = Invited.pending_invites_for(@person) if @person.allowed_to_send_invites?
 
-    @invited = Invited.find_by(email: @person.email)
+    @invited = Invited.find_by(email: @person.email, conference: @conference)
 
     return redirect_to action: 'new' unless @person
 

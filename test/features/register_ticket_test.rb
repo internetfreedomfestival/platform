@@ -51,8 +51,6 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
-
-
     within '#register_ticket' do
       fill_in 'ticket[public_name]', with: 'test'
       select('she', from: 'ticket[gender_pronoun]')
@@ -85,10 +83,9 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     assert_text "You cannot register to the conference twice"
   end
 
-
   test 'tickets not completed can be completed later' do
     invited = create(:invited, email: @user.person.email, conference: @conference)
-    ticket = create(:ticket, person: @user.person, conference: @conference, status: "pending", amount: "850", ticket_option: "Organizational")
+    _ticket = create(:ticket, person: @user.person, conference: @conference, status: "pending", amount: "850", ticket_option: "Organizational")
 
     login_as(@user)
 
