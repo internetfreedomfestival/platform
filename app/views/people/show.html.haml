@@ -172,22 +172,25 @@
   - if @current_events
     - @current_events.each do |event|
       .row
-        .span6
+        .span10
           %h2 DIF
-          %b Need travel assistance to attend the 2019 IFF
-          = event.travel_assistance
-          %br/
-          %b To which group less representative belongs
-          = event.group
-          %br/
-          %b Who should receive the recipient stipend
-          = event.recipient_travel_stipend
-          %br/
-          %b Travel Support
-          = event.travel_support
-          %br/
-          %b Past travel assistance
-          = event.past_travel_assistance
+          %p
+            %b Need travel assistance to attend the 2019 IFF
+            = event.travel_assistance
+          %p
+            %b To which group less representative belongs
+            = event.group
+          %p
+            %b Who should receive the recipient stipend
+            = event.recipient_travel_stipend
+          %p
+            %b Travel Support
+            - if event.travel_support
+              = event.travel_support.to_sentence
+          %p
+            %b Past travel assistance
+            - if event.past_travel_assistance
+              = event.past_travel_assistance.to_sentence
 %section
   .row
     .span16
