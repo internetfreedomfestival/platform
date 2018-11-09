@@ -19,6 +19,21 @@ class TicketsController < ApplicationController
     @ticket = Ticket.find_by(person: @person, conference: @conference)
   end
 
+  def cancel_ticket
+    @person = Person.find_by(id: current_user.person)
+    @invited = Invited.find(params[:id])
+    @conference = @invited.conference
+
+    @ticket = Ticket.find_by(person: @person, conference: @conference)
+    @ticket.update(status: "Canceled")
+
+    status = AttendanceStatus.find_by(person: @person, conference: @conference)
+    status.status = AttendanceStatus::INVITED
+    status.save
+
+    redirect_to cfp_root_path, notice: "You have canceled your ticket"
+  end
+
   def send_ticket
     @person = Person.find_by(id: current_user.person)
     @invited = Invited.find(params[:id])
@@ -37,12 +52,12 @@ class TicketsController < ApplicationController
       @ticket = Ticket.find_by(conference: @conference, person: @person)
     else
       @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
-      @ticket.status = "pending"
+      @ticket.status = "Pending"
     end
 
 
     success = if @ticket.persisted?
-      @ticket.update(ticket_params.merge(status: "pending"))
+      @ticket.update(ticket_params.merge(status: "Pending"))
     else
       @ticket.save
     end
@@ -63,7 +78,7 @@ class TicketsController < ApplicationController
       status.status = AttendanceStatus::REGISTERED
       status.save
     end
-    @ticket.update(status: "completed")
+    @ticket.update(status: "Completed")
     TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
     redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
   end
@@ -160,7 +175,6 @@ class TicketsController < ApplicationController
   def require_same_conference
     invited = Invited.find(params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
-
     unless invited.conference.acronym == conference.acronym
       flash[:error] = 'You cannot register to the conference without an invitation'
       redirect_to cfp_root_path

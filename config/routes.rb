@@ -138,6 +138,7 @@ Frab::Application.routes.draw do
         post :register_ticket, to: 'tickets#register_ticket'
         get :view_ticket, to: 'tickets#view_ticket'
         get :send_ticket, to: 'tickets#send_ticket'
+        get :cancel_ticket, to: 'tickets#cancel_ticket'
 
         scope path: "/tickets/:ticket_id" do
           resources :charges

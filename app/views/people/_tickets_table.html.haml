@@ -9,16 +9,16 @@
           %th= sort_link @search, :email, term: params[:term]
           %th= sort_link @search, :organization, term: params[:term]
           %th= sort_link @search, :country, term: params[:term]
-          %th= sort_link @search, :status, term: params[:term]
-
-          %th
+          %th= sort_link @search, :attendance_status, term: params[:term]
+          %th= sort_link @search, :ticket_status, term: params[:term]
         - else
           %th First name
           %th Last name
           %th Email
           %th Organization
           %th Country
-          %th Status
+          %th Attendance Status
+          %th Ticket Status
 
         %th.last
     %tbody
@@ -31,3 +31,5 @@
           %td= person.organization
           %td= person.country_of_origin
           %td= person.attendance_status.first.status
+          - if Ticket.exists?(person: person)
+            %td= Ticket.find_by(person: person).status

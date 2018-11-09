@@ -149,10 +149,9 @@ FactoryBot.define do
     invitation_to_mattermost true
   end
 
-  factory :attendee do
+  factory :attendance_status do
     person
     conference
-    status 'invited'
   end
 
   factory :invited do

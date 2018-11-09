@@ -22,7 +22,7 @@ class ChargesController < ApplicationController
       :description => 'Rails Stripe customer',
       :currency    => 'usd'
     )
-    @ticket.update(status: "completed")
+    @ticket.update(status: "Completed")
     @ticket.update(payment_id: charge.id)
 
     if charge.status == "succeeded"
