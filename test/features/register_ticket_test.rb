@@ -8,6 +8,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'true'
 
     @conference = create(:conference)
+    create(:call_for_participation, conference: @conference )
     @admin = create(:user, person: create(:person), role: 'admin')
     @person = create(:person)
     @user = create(:user, person: create(:person), role: 'submitter')
@@ -49,34 +50,11 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
 
-    within '#register_ticket' do
-      fill_in 'ticket[public_name]', with: 'test'
-      select('she', from: 'ticket[gender_pronoun]')
-      check('ticket[iff_before][]', option: '2015')
-      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
-      check('ticket[iff_days][]', option: 'Monday, April 1st')
-      check('ticket[code_of_conduct]')
+    register_ticket
 
-      choose('Individual')
-
-      click_on 'Get Your Ticket'
-    end
     visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
 
-    within '#register_ticket' do
-      fill_in 'ticket[public_name]', with: 'test'
-      select('she', from: 'ticket[gender_pronoun]')
-      check('ticket[iff_before][]', option: '2015')
-      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
-      check('ticket[iff_days][]', option: 'Monday, April 1st')
-      check('ticket[code_of_conduct]')
-
-      choose('Individual')
-
-      click_on 'Get Your Ticket'
-    end
+    register_ticket
 
     assert_text "You cannot register to the conference twice"
   end
@@ -88,20 +66,8 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
 
-    within '#register_ticket' do
-      fill_in 'ticket[public_name]', with: 'test'
-      select('she', from: 'ticket[gender_pronoun]')
-      check('ticket[iff_before][]', option: '2015')
-      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
-      check('ticket[iff_days][]', option: 'Monday, April 1st')
-      check('ticket[code_of_conduct]')
-
-      choose('Individual')
-
-      click_on 'Get Your Ticket'
-    end
-
+    register_ticket
+    
     assert_text "Success: Your IFF Ticket has been issued!"
 
     visit "/#{@conference.acronym}/invitations/#{@invited.id}/view_ticket"
@@ -155,26 +121,14 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
   test 'invited person can register ticket and cancel it after' do
     login_as(@user)
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
 
-    within '#register_ticket' do
-      fill_in 'ticket[public_name]', with: 'test'
-      select('she', from: 'ticket[gender_pronoun]')
-      check('ticket[iff_before][]', option: '2015')
-      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
-      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
-      check('ticket[iff_days][]', option: 'Monday, April 1st')
-      check('ticket[code_of_conduct]')
-      choose('Individual')
+    click_on 'Get Your Ticket'
 
-      click_on 'Get Your Ticket'
-    end
+    register_ticket
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/view_ticket"
+    click_on 'View Ticket'
     click_on 'Cancel Ticket'
 
-    ticket = Ticket.last
-    assert_equal "Canceled", ticket.status 
     assert_text "You have canceled your ticket"
   end
 
@@ -188,6 +142,21 @@ class RegisterTicketTest < Capybara::Rails::TestCase
       fill_in 'user_password', with: user.password
 
       click_on 'Sign in'
+    end
+  end
+
+  def register_ticket
+    within '#register_ticket' do
+      fill_in 'ticket[public_name]', with: 'test'
+      select('she', from: 'ticket[gender_pronoun]')
+      check('ticket[iff_before][]', option: '2015')
+      check('ticket[iff_goals][]', option: 'Requesting support with a specific issue')
+      select('Yes, sounds fun!', from: 'ticket[interested_in_volunteer]')
+      check('ticket[iff_days][]', option: 'Monday, April 1st')
+      check('ticket[code_of_conduct]')
+      choose('Individual')
+
+      click_on 'Get Your Ticket'
     end
   end
 end

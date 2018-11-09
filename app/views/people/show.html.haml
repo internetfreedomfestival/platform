@@ -161,12 +161,25 @@
           %p
             %b Payment  ID:
             = @ticket.payment_id
+          - if @ticket.status == "To Refund"
+            %p
+              %b User canceled the ticket. You have to preform the refund manually.
+            %p
+              %b After refund, click here:
+            %p
+              = action_button "danger", "Refunded", refund_ticket_path(conference_acronym: @conference.acronym, id: @ticket.id)
+          - if @ticket.status == "Canceled"
+            %b Ticket Canceled.
+
         -else
           %p
             %b FREE Ticket.
           %p
             %b Amount:
             = "Not This Time"
+          %p
+            - if @ticket.status == "Canceled"
+              %b Ticket Canceled.
 
 %section
   - if @current_events

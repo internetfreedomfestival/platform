@@ -263,7 +263,7 @@ class Person < ActiveRecord::Base
     return false unless Invited.exists?(email: email)
     invited = Invited.find_by(email: email)
     invited_by = invited.person.user
-
+    return false if invited_by.nil?
     invited_by.role == 'admin'
   end
 

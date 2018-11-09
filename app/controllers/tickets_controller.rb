@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_invitation
-  before_action :require_same_person
+  before_action :check_invitation, except:[:refund_ticket]
+  before_action :require_same_person, except:[:refund_ticket]
   before_action :require_same_conference
   before_action :no_previous_ticket, only: [:register_ticket]
 
@@ -23,15 +23,28 @@ class TicketsController < ApplicationController
     @person = Person.find_by(id: current_user.person)
     @invited = Invited.find(params[:id])
     @conference = @invited.conference
-
     @ticket = Ticket.find_by(person: @person, conference: @conference)
-    @ticket.update(status: "Canceled")
+
+    if @ticket.amount == 0
+      @ticket.update(status: "Canceled")
+    else
+      @ticket.update(status: "To Refund")
+    end
 
     status = AttendanceStatus.find_by(person: @person, conference: @conference)
     status.status = AttendanceStatus::INVITED
     status.save
 
     redirect_to cfp_root_path, notice: "You have canceled your ticket"
+  end
+
+  def refund_ticket
+    authorize! :administrate, Person
+
+    @ticket = Ticket.find(params[:id])
+    @ticket.update(status: "Canceled")
+
+    redirect_to(tickets_people_path, alert: "This ticket has been canceled")
   end
 
   def send_ticket
