@@ -229,6 +229,7 @@ class Person < ActiveRecord::Base
     "South Africa",
     "South Georgia and the South Sandwich Islands",
     "South Korea",
+    "South Sudan",
     "Spain",
     "Sri Lanka",
     "Sudan",
