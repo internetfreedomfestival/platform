@@ -5,9 +5,9 @@
       %th= t("Title")
       %th.roles
       %th= t("Roles")
-
       - if @conference.event_state_visible
         %th= t("Status")
+      %th= t("Rating")
       - if @conference.feedback_enabled
         %th
         %th= t(:event_feedback)
@@ -27,6 +27,10 @@
             %td= 'Not Accepted'
           - else
             %td= event.state
+        - if event.average_rating
+          %td= event.average_rating
+        -else
+          %td= 'No Ratings'
         - if @conference.feedback_enabled
           %td
             %b= number_with_precision event.average_feedback, precision: 2
