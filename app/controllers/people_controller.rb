@@ -85,7 +85,10 @@ class PeopleController < ApplicationController
 
   def dif
     authorize! :administrate, Person
-    result = Person.joins(:dif)
+    result = Person.joins(:events).where(
+      events: { conference: @conference, travel_assistance: true },
+      event_people: { event_role: 'submitter' }
+    ).uniq(person_id: true)
     @people = result.paginate page: page_param
     @csv_people = result
 
