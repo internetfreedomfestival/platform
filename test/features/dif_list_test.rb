@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'minitest/rails/capybara'
 
-class DifTest < Capybara::Rails::TestCase
+class DifListTest < Capybara::Rails::TestCase
   setup do
     @conference = FactoryBot.create(:conference)
     FactoryBot.create(:call_for_participation, conference: @conference)
