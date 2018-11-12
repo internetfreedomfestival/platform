@@ -8,8 +8,8 @@
     - else
       = actions_bar do
         = will_paginate collection
-      - if defined?(kind) && kind == :dif
-        = render 'dif_table', collection: collection
+      - if defined?(kind)
+        = render "#{kind.to_s}_table", collection: collection
       - else
         = render 'table', collection: collection
       = actions_bar do
