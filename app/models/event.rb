@@ -359,7 +359,16 @@ class Event < ActiveRecord::Base
   end
 
   def self.to_csv(options = {})
-    attributes = %w{id title state language description theme skill_level presenter gender country_of_origin prof_back other_presenters iff_before time_slot dif past_dif average_rating comments}
+    attributes = %w{id title state subtitle language description
+                    theme event_type skill_level
+                    presenter gender public_type
+                    country_of_origin prof_back
+                    desired_outcome track
+                    other_presenters iff_before
+                    time_slots travel_assistance
+                    projector group recipient_travel_stipend
+                    travel_support past_travel_assistance
+                    average_rating comments}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes
