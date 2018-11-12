@@ -62,6 +62,14 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal(@conference, Invited.first.conference)
   end
 
+  test 'should allow person to submit event out of place' do
+    post :allow_late_submissions, format: @person.to_param, conference_acronym: @conference.acronym
+
+    @person.reload
+
+    assert_equal(@person.late_event_submit, true)
+  end
+
   test 'should accept invitations request' do
     post :accept_request, id: @person.to_param, conference_acronym: @conference.acronym
 

@@ -88,6 +88,15 @@
         -#       %h3 No invite?
         -#       %p We will me sending out new invites periodically. Request an invite to be considered.
         -#       = submit_tag('Request Invite', class: "btn success")
+  - if @person.late_event_submit
+    .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+    .row
+      .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
+        %div{style: "margin:10px;"}
+          %h3 Submit a Session for the 2019 IFF
+          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 19, 2018.
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
 
   - if FeatureToggle.new_cfp_enabled? and !@is_old_account
