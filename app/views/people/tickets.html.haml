@@ -23,4 +23,4 @@
         = link_to "Download CSV of All People", all_people_path(format: "csv")
         <br />
         = link_to "Download XLS of All People", all_people_path(format: "xls")
-    = render 'shared/search_and_tickets_table', collection: @people
+    = render 'shared/search_and_table', collection: @people, kind: :tickets
