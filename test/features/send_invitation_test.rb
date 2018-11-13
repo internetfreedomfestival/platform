@@ -216,7 +216,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on 'Logout'
 
     login_as(@user)
-    assert_text 'You have 3 invites remaining.'
+    assert_text 'You have 5 invites remaining.'
   end
 
   test 'person can access to the invitation link' do

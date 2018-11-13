@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Invited < ActiveRecord::Base
-  MAX_INVITES_PER_USER = 3
+  MAX_INVITES_PER_USER = 5
 
   self.table_name = 'invites'
 
