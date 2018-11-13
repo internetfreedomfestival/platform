@@ -395,11 +395,19 @@ class PeopleController < ApplicationController
 
   def cancel_attendance
     @person = Person.find_by(id: params[:format])
-    if @person.update(old_attendance_status: "canceled")
+
+    if remove_invitation
       return redirect_to(person_path(@person.id), notice: 'You canceled their attendance.')
     else
       return redirect_to(person_path(@person.id), notice: 'There was an error cancelling their attendance.')
     end
+  end
+
+  def remove_invitation
+    @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
+    ticket = Ticket.find_by(person_id: @person.id)
+    ticket.destroy if ticket
+    @attendance_status && @attendance_status.destroy && Invited.find_by(email: @person.email, conference_id: @conference.id).destroy
   end
 
   # will update a 'canceled' attendance status to 'pending attendance' status
