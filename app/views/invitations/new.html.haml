@@ -3,6 +3,8 @@
 
 .row
   .span24
+    %p Enter an email to invite people not registered on the platform.
+  .span24
     = form_tag(invitations_path, id: 'invitations-form') do
       = text_field_tag(:email, '', placeholder: 'email')
       = submit_tag('Send', class: "btn success")

@@ -16,7 +16,13 @@ class InvitationsController < ApplicationController
 
     if email.blank?
       flash[:warning] = 'Email cannot be blank'
-      render :new
+      redirect_to new_invitations_path
+      return
+    end
+
+    if Person.where(email: email).exists?
+      flash[:warning] = 'This email is registered on the platform'
+      redirect_to new_invitations_path
       return
     end
 
