@@ -1,28 +1,69 @@
 = simple_form_for(@person, html: {multipart: true}) do |f|
   %fieldset.inputs
-    %legend Basic
-    = f.input :first_name
-    = f.input :last_name
-    = f.input :public_name, hint: "This is the name that will be shown in the public program."
-    = f.input :gender, collection: Person::GENDERS
-    = image_input_box(f.object.avatar)
-    = f.input :avatar, hint: "Upload a new picture."
-    = f.simple_fields_for :ticket do |ticket|
-      = ticket.input :remote_ticket_id
-    = dynamic_association :languages, "Languages spoken", f
-  %fieldset.inputs
-    %legend Contact Data
-    = f.input :email, hint: "Please enter the email address that should be used as main means of contacting this person."
-    = f.input :email_public, as: :inline_boolean, hint: "If set, this email address will be published in the public program."
-    = f.input :include_in_mailings, hint: "Do you want to receive information about upcoming conferences by mail?"
-    = dynamic_association :phone_numbers, "Phone numbers", f
-    = dynamic_association :im_accounts, "Instant messaging accounts", f
-  %fieldset.inputs
-    %legend Bio
-    = f.input :abstract, input_html: {rows: 4, class: "span6"}, hint: "One short paragraph that succinctly describes this person. (HTML)"
-    = f.input :description, input_html: {class: "span6"}, hint: "A longer description of this person. Use this to give additional details that did not fit in the abstract. (HTML)"
-    = f.input :note, hint: "visibility: admin only."
-    = dynamic_association :links, "Links", f
+    .offset1
+      .row
+        .span24{style: "line-height: 22px; padding: 10px; width: 922px;"}
+          = f.input :first_name, label: "First Name", required: true
+          = f.input :last_name, label: "Last Name"
+          = f.input :pgp_key, label: "PGP Key", as: :string, hint: "Preferable format: 0xf60a89ad6ff97a2f"
+          = f.input :gender, collection: translated_options(Person::GENDERS), label: "Gender", required: true
+          = f.input :country_of_origin, collection: translated_options(Person::COUNTRIES), label: "Country of Origin", required: true
+          = f.input :group, collection: [[''], ['Yes', true], ['No', false]], default: 0, label: "Ethnic, racial or cultural minority group?"
+
+          .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:professional_background))}
+            .form-label
+              %label
+                %span.form-required__text Required Field.
+                Professional Background
+              - if @person.errors.messages.key?(:professional_background)
+                %span.form-input__error= @person.errors.messages[:professional_background].first
+            .form-help
+              %span.form-help__text Check the boxes that most closely describe the work she/he do.
+            .form-input
+              %ul.inputs-list
+                = f.collection_check_boxes(:professional_background, Person::PROFESSIONAL_BACKGROUND, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
+                  %li
+                    =c.label do
+                      = c.check_box
+                      %span= c.text
+
+          = f.input :other_background, label: "Professional Title"
+          = f.input :organization
+          = f.input :project, as: :text
+
+          .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:include_in_mailings))}
+            .form-label
+              %label
+                %span.form-required__text Required Field.
+                Subscribe to the IFF Mailing List?
+              - if @person.errors.messages.key?(:include_in_mailings)
+                %span.form-input__error= @person.errors.messages[:include_in_mailings].first
+            .form-help
+              %span.form-help__text Don’t miss important updates and opportunities!
+            .form-input
+              %ul.inputs-list
+                = f.collection_radio_buttons(:include_in_mailings, [[true, "Yes, keep him/her updated!"], [false, "No, thanks"]], :first, :last, {boolean_style: :inline}) do |r|
+                  %li
+                    =r.label do
+                      = r.radio_button
+                      %span= r.text
+
+          .clearfix.form-group{class: ("has-error" if @person.errors.messages.key?(:invitation_to_mattermost))}
+            .form-label
+              %label
+                %span.form-required__text Required Field.
+                Receive a Mattermost invite?
+              - if @person.errors.messages.key?(:invitation_to_mattermost)
+                %span.form-input__error= @person.errors.messages[:invitation_to_mattermost].first
+            .form-help
+              %span.form-help__text Like Slack, but open source! A great way to connect with the IFF community.
+            .form-input
+              %ul.inputs-list
+                = f.collection_radio_buttons(:invitation_to_mattermost, [[true, "Yes, invite"], [false, "No, thanks"]], :first, :last, {boolean_style: :inline}) do |r|
+                  %li
+                    =r.label do
+                      = r.radio_button
+                      %span= r.text
 
   .actions
     = f.button :submit, class: 'primary'
