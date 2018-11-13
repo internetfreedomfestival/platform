@@ -308,6 +308,7 @@ class Cfp::EventsController < ApplicationController
 
   def prepare_params(form_params)
     event_values = form_params.merge(
+      target_audience: form_params[:public_type],
       recording_license: @conference.default_recording_license,
     )
     event_values
@@ -317,6 +318,7 @@ class Cfp::EventsController < ApplicationController
     event = Event.new(event_values)
     event.instructions = event_values[:instructions]
     event.conference = @conference
+    event.target_audience = event.public_type
 
     event
   end
