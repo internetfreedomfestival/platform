@@ -9,7 +9,7 @@ class DifListTest < Capybara::Rails::TestCase
     @user = FactoryBot.create(:user, role: 'submitter', person: @person)
     @other_speaker = FactoryBot.create(:user, role: 'submitter')
     @admin = FactoryBot.create(:user, role: 'admin')
-    @event = FactoryBot.create(:event, conference: @conference, travel_assistance: true, )
+    @event = FactoryBot.create(:event, conference: @conference, travel_assistance: true, recipient_travel_stipend: @other_speaker.email)
     FactoryBot.create(:event_person, person: @person, event: @event, event_role: 'submitter')
     FactoryBot.create(:event_person, person: @person, event: @event, event_role: 'speaker')
     FactoryBot.create(:event_person, person: @other_speaker.person, event: @event, event_role: 'speaker')
@@ -21,7 +21,11 @@ class DifListTest < Capybara::Rails::TestCase
     click_on 'People'
     click_on 'DIF'
 
-    assert_text @person.email
+    submitter_email = @person.email
+    recipient_of_stipend = @other_speaker.email
+
+    assert_text submitter_email
+    assert_text recipient_of_stipend
   end
 
   private

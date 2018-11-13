@@ -368,7 +368,8 @@ class Event < ActiveRecord::Base
                     time_slots travel_assistance
                     projector group recipient_travel_stipend
                     travel_support past_travel_assistance
-                    average_rating comments}
+                    average_rating comments
+                    start_time track_id room_id}
 
     CSV.generate(headers: true) do |csv|
       csv << attributes

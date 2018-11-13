@@ -8,7 +8,10 @@
     - else
       = actions_bar do
         = will_paginate collection
-      = render 'table', collection: collection
+      - if defined?(kind)
+        = render "#{kind.to_s}_table", collection: collection
+      - else
+        = render 'table', collection: collection
       = actions_bar do
         = will_paginate collection
 
