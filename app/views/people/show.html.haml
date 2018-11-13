@@ -19,6 +19,7 @@
       - if can? :crud, @person
         = action_button "primary", "Edit person", edit_person_path(@person), title: "Edit this person's data."
       - if can? :administrate, Person
+        = action_button "small danger", 'Destroy', @person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}
         -# - if @attendance_status
         -#   = action_button "danger", "Cancel Attendance", cancel_attendance_people_path(@person), title: "Cancel this person's attendance."
         %p
