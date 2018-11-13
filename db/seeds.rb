@@ -82,3 +82,25 @@ person.user_id = test_user.id
 person.save!
 
 puts "Created test user (#{test_user.email}) with password #{password}"
+
+event = Event.new(
+  title: "#{person.public_name}'s event",
+  subtitle: 'Getting started organizing your conference',
+  time_slots: 6,
+  other_presenters: "",
+  start_time: '10:00',
+  description: 'A description of a conference',
+  conference: conference,
+  track: Track.last,
+  iff_before: ['2015'],
+  public_type: "Conferencers",
+  desired_outcome: "Anything",
+  phone_number: 12345678,
+  event_type: "Workshop",
+  projector: true
+)
+event.event_people << EventPerson.new(person: person, event_role: 'submitter')
+event.event_people << EventPerson.new(person: person, event_role: 'speaker')
+event.save!
+
+puts "Created event #{event.title}"
