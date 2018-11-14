@@ -30,6 +30,6 @@
           %td= link_to person.email, person
           %td= person.organization
           %td= person.country_of_origin
-          %td= person.attendance_status.first.status
+          %td= person.attendance_status.where(conference: @conference).first.status
           - if Ticket.exists?(person: person)
             %td= Ticket.find_by(person: person).status
