@@ -292,6 +292,66 @@ class CfpFormTest < Capybara::Rails::TestCase
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
+  test '[MIGRATION] new events have target audience field filled' do
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/cfp/events/new"
+
+    within '#cfp_form' do
+      check('event[instructions]', option: 'true')
+      fill_in 'event[title]', with: 'Session Title'
+      fill_in 'event[subtitle]', with: 'Subtitle Event'
+      fill_in 'event[description]', with: 'Session description'
+      fill_in 'event[other_presenters]', with: @person.email
+      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[desired_outcome]', with: 'desired_outcome'
+      fill_in 'event[phone_number]', with: 12345678
+      select('Feature', from: 'event[track_id]')
+      select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
+      choose 'Yes'
+      check('event[iff_before][]', option: '2018')
+      check('event[code_of_conduct]', option: 'true')
+
+      click_on 'Create Proposal'
+    end
+
+    @event = Event.last
+    assert_equal @event.target_audience, 'Students'
+  end
+
+  test '[MIGRATION] edited events have target audience field filled' do
+    event = create(:event, conference: @conference)
+    create(:event_person, event: event, person: @user.person, event_role: "submitter")
+    create(:event_person, event: event, person: @user.person, event_role: "speaker")
+
+    login_as(@user)
+
+    visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+
+    within '#cfp_form' do
+      check('event[instructions]', option: 'true')
+      fill_in 'event[title]', with: 'Session Title'
+      fill_in 'event[subtitle]', with: 'Subtitle Event'
+      fill_in 'event[description]', with: 'Session description'
+      fill_in 'event[other_presenters]', with: @person.email
+      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[desired_outcome]', with: 'desired_outcome'
+      fill_in 'event[phone_number]', with: 12345678
+      select('Feature', from: 'event[track_id]')
+      select('On the Frontlines', from: 'event[event_type]')
+      choose '45 min'
+      choose 'Yes'
+      check('event[iff_before][]', option: '2018')
+      check('event[code_of_conduct]', option: 'true')
+
+      click_on 'Update Proposal'
+    end
+
+    @event = Event.last
+    assert_equal @event.target_audience, 'Students'
+  end
+
   private
 
   def login_as(user)
