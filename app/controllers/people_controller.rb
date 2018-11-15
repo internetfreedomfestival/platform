@@ -165,7 +165,6 @@ class PeopleController < ApplicationController
 
     @ticket = Ticket.find_by(person: @person, conference: @conference)
 
-
     if @person.user.nil?
       @is_fellow = false
       @user = User.new
@@ -408,6 +407,23 @@ class PeopleController < ApplicationController
     ticket = Ticket.find_by(person_id: @person.id)
     ticket.destroy if ticket
     @attendance_status && @attendance_status.destroy && Invited.find_by(email: @person.email, conference_id: @conference.id).destroy
+  end
+
+  def cancel_ticket
+    @person = Person.find_by(id: params[:format])
+
+    @ticket = Ticket.find_by(person_id: @person, conference: @conference)
+    if @ticket.amount == 0
+      @ticket.update(status: "Canceled")
+    else
+      @ticket.update(status: "To Refund")
+    end
+
+    status = AttendanceStatus.find_by(person: @person, conference: @conference)
+    status.status = AttendanceStatus::INVITED
+    status.save
+
+    return redirect_to(person_path(@person.id), notice: 'You canceled their ticket.')
   end
 
   # will update a 'canceled' attendance status to 'pending attendance' status

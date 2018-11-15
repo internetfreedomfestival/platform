@@ -45,7 +45,7 @@
 
       %p{class:"ticket-view-bold"} Do you need to cancel your attendance?
       %p{class:"ticket-view-p"} Please click on the link below. Careful, that this action can't be undone!
-      = action_button "danger", "Cancel Ticket", cancel_ticket_path
+      = action_button "danger", "Cancel Ticket", cancel_ticket_path, :data => {:confirm => "Are you absolutely sure you want to cancel your ticket? This will be final!"}
 
       %p{class: "ticket-view-bold"}IFF Venue details section
       %p{class:"ticket-view-p"}We're looking forward to seeing you in Valencia!

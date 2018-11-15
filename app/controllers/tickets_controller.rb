@@ -2,7 +2,7 @@ class TicketsController < ApplicationController
   before_action :authenticate_user!
   before_action :check_invitation, except:[:refund_ticket]
   before_action :require_same_person, except:[:refund_ticket]
-  before_action :require_same_conference
+  before_action :require_same_conference, except:[:refund_ticket]
   before_action :no_previous_ticket, only: [:register_ticket]
 
   def ticketing_form

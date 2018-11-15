@@ -116,6 +116,7 @@ Frab::Application.routes.draw do
           get :confirmed_speakers
           get :make_fellow
           get :cancel_attendance
+          get :cancel_ticket
           get :move_to_pending
           get :allow_late_submissions
           get :confirm_user

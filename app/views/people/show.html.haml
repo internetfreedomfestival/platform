@@ -22,6 +22,9 @@
         = action_button "small danger", 'Destroy', @person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}
         -# - if @attendance_status
         -#   = action_button "danger", "Cancel Attendance", cancel_attendance_people_path(@person), title: "Cancel this person's attendance."
+        - if @ticket && @ticket.status != "Canceled"
+          = action_button "danger", "Cancel Ticket", cancel_ticket_people_path(@person), title: "Cancel this person's ticket.", :data => {:confirm => "Are you sure you want to cancel their ticket?"}
+
         %p
         = action_button "add", "Add person", new_person_path, title: "Add a new person."
       - if @person.public_and_accepted_events_as_speaker_in(@conference).present?

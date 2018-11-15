@@ -5,7 +5,7 @@
       .offset1
         %h1 2019 IFF Ticket
         %br
-        .span24
+        .span16
           = f.input :public_name, hint: "This is the name that will be displayed in your badge.", required: true
           = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, required: true
           %p.form-note Your public gender pronoun will be displayed in your badge. Pronoun list written by <a href='https://twitter.com/morganastra'> @morganastra.</a> Visits <a href='https://pronoun.is/'> https://pronoun.is/ </a>for more information.
