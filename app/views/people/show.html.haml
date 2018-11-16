@@ -26,9 +26,6 @@
         = action_button "small danger", 'Destroy', @person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}
         -# - if @attendance_status
         -#   = action_button "danger", "Cancel Attendance", cancel_attendance_people_path(@person), title: "Cancel this person's attendance."
-        - if @ticket && @ticket.status != "Canceled"
-          = action_button "danger", "Cancel Ticket", cancel_ticket_people_path(@person), title: "Cancel this person's ticket.", :data => {:confirm => "Are you sure you want to cancel their ticket?"}
-
         %p
         = action_button "add", "Add person", new_person_path, title: "Add a new person."
       - if @person.public_and_accepted_events_as_speaker_in(@conference).present?
@@ -150,44 +147,55 @@
         %b What resources or tools do you think that the IF community should be aware of?:
         = @person.other_resources
 
-  -if @ticket
-    %hr
-    .row
-      .span{style: "background: #e6e2d3; padding: 10px"}
-        %h2 Payment Details
-        %p
-          %b Registered for:
-          = @ticket.gender_pronoun
-          = @ticket.public_name
-        %p
-          %b Ticket Option:
-          = @ticket.ticket_option
-        -if @ticket.amount > 0
+  -if @ticket_list.length > 0
+    %h2 Tickets Information
+    - @ticket_list.each do |ticket|
+      .row
+        .span6{style: "background: #e6e2d3; padding: 10px"}
+          %h2 Payment Details
           %p
-            %b Amount(USD):
-            = @ticket.amount
+            %b Registered for:
+            = ticket.gender_pronoun
+            = ticket.public_name
           %p
-            %b Payment  ID:
-            = @ticket.payment_id
-          - if @ticket.status == "To Refund"
+            %b Created at:
+            = ticket.created_at
+          %p
+            %b Ticket Option:
+            = ticket.ticket_option
+          -if ticket.amount > 0
             %p
-              %b User canceled the ticket. You have to preform the refund manually.
+              %b Amount(USD):
+              = ticket.amount
             %p
-              %b After refund, click here:
-            %p
-              = action_button "danger", "Refunded", refund_ticket_path(conference_acronym: @conference.acronym, id: @ticket.id)
-          - if @ticket.status == "Canceled"
-            %b Ticket Canceled.
+              %b Payment  ID:
+              = ticket.payment_id
+            - if ticket.status == "Completed"
+              = action_button "danger", "Cancel Ticket", cancel_ticket_people_path(@person), title: "Cancel this person's ticket.", :data => {:confirm => "Are you sure you want to cancel their ticket?"}
 
-        -else
-          %p
-            %b FREE Ticket.
-          %p
-            %b Amount:
-            = "Not This Time"
-          %p
-            - if @ticket.status == "Canceled"
+            - if ticket.status == "To Refund"
+              %p
+                %b User canceled the ticket. You have to preform the refund manually.
+              %p
+                %b After refund, click here:
+              %p
+                = action_button "danger", "Refunded", refund_ticket_path(conference_acronym: @conference.acronym, id: ticket.id)
+            - if ticket.status == "Canceled"
               %b Ticket Canceled.
+
+          -else
+            %p
+              %b FREE Ticket.
+            %p
+              %b Amount:
+              = "Not This Time"
+            %p
+              - if ticket.status == "Completed"
+                = action_button "danger", "Cancel Ticket", cancel_ticket_people_path(@person), title: "Cancel this person's ticket.", :data => {:confirm => "Are you sure you want to cancel their ticket?"}
+              - if ticket.status == "Canceled"
+                %b Ticket Canceled.
+      %hr
+
 
 %section
   - if @current_events

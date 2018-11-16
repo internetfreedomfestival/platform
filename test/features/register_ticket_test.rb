@@ -11,8 +11,9 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     create(:call_for_participation, conference: @conference )
     @admin = create(:user, person: create(:person), role: 'admin')
     @person = create(:person)
-    @user = create(:user, person: create(:person), role: 'submitter')
+    @user = create(:user, person: @person, role: 'submitter')
     @invited = create(:invited, email: @user.person.email, conference: @conference)
+    @attendance_status = create(:attendance_status, person:  @user.person, conference: @conference, status: "Invited")
 
     ActionMailer::Base.deliveries.clear
   end
@@ -67,7 +68,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
 
     register_ticket
-    
+
     assert_text "Success: Your IFF Ticket has been issued!"
 
     visit "/#{@conference.acronym}/invitations/#{@invited.id}/view_ticket"
@@ -130,6 +131,25 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     click_on 'Cancel Ticket'
 
     assert_text "You have canceled your ticket"
+  end
+
+  test 'invited person has posibility to register another ticket after admin cancels its last' do
+    login_as(@user)
+    click_on 'Get Your Ticket'
+    register_ticket
+    click_on 'Logout'
+
+    login_as(@admin)
+
+    visit "/people/#{@person.id}?conference_acronym=#{@conference.acronym}"
+    click_on 'Cancel Ticket'
+
+    assert_text "Ticket Canceled"
+
+    click_on 'Logout'
+    login_as(@user)
+
+    assert_text "Get Your Ticket"
   end
 
   private

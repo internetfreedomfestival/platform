@@ -3,33 +3,35 @@
     %thead
       %tr
         %th.first
-        - if @search
-          %th= sort_link @search, :first_name, term: params[:term]
-          %th= sort_link @search, :last_name, term: params[:term]
-          %th= sort_link @search, :email, term: params[:term]
-          %th= sort_link @search, :organization, term: params[:term]
-          %th= sort_link @search, :country, term: params[:term]
-          %th= sort_link @search, :attendance_status, term: params[:term]
-          %th= sort_link @search, :ticket_status, term: params[:term]
-        - else
-          %th First name
-          %th Last name
-          %th Email
-          %th Organization
-          %th Country
-          %th Attendance Status
-          %th Ticket Status
+
+      - if @search
+        %th= sort_link @search, :person_id, term: params[:term]
+        %th= sort_link @search, :gender_pronoun, term: params[:term]
+        %th= sort_link @search, :public_name, term: params[:term]
+        %th= sort_link @search, :person_email, term: params[:term]
+        %th= sort_link @search, :iff_days, term: params[:term]
+        %th= sort_link @search, :amount, term: params[:term]
+        %th= sort_link @search, :ticket_option, term: params[:term]
+        %th= sort_link @search, :status, term: params[:term]
+      - else
+        %th ID Person
+        %th Gender Pron.
+        %th Public Name
+        %th Email
+        %th Days
+        %th Amount
+        %th Ticket Option
+        %th Ticket Status
 
         %th.last
-    %tbody
-      - collection.each do |person|
-        %tr
-          %td
-          %td= link_to person.first_name, person
-          %td= link_to person.last_name, person
-          %td= link_to person.email, person
-          %td= person.organization
-          %td= person.country_of_origin
-          %td= person.attendance_status.where(conference: @conference).first.status
-          - if Ticket.exists?(person: person)
-            %td= Ticket.find_by(person: person).status
+      %tbody
+        - collection.each do |ticket|
+          %tr
+            %td= link_to ticket.person.id, ticket.person
+            %td= link_to ticket.gender_pronoun, ticket.person
+            %td= link_to ticket.public_name, ticket.person
+            %td= link_to ticket.person.email, ticket.person
+            %td= link_to ticket.iff_days.to_sentence, ticket.person
+            %td= link_to ticket.amount, ticket.person
+            %td= link_to ticket.ticket_option, ticket.person
+            %td= link_to ticket.status, ticket.person

@@ -3,7 +3,6 @@ class PeopleController < ApplicationController
   before_action :not_submitter!
   after_action :restrict_people
 
-  # GET /people
   # GET /people.xml
   def index
     authorize! :administrate, Person
@@ -136,22 +135,26 @@ class PeopleController < ApplicationController
 
   def tickets
     authorize! :administrate, Person
-    result = search Person.joins(:attendance_status).where(attendance_statuses: { conference_id: @conference.id }), params
-    @people = result.paginate page: page_param
-    @csv_people = result
-    @requested_tickets_count = AttendanceStatus.where(
+    ticket_list = search Ticket.where(conference_id: @conference).where.not(status: "Pending"), params
+
+    @ticket_list = ticket_list.paginate page: page_param
+
+    @total_of_ticket_count = Ticket.all.count
+    @canceled_tickets_count = Ticket.where(
       conference: @conference,
-      status: AttendanceStatus::REQUESTED
+      status: "Canceled"
     ).count
-    @registered_tickets_count = AttendanceStatus.where(
+    @registered_tickets_count = Ticket.where(
       conference: @conference,
-      status: AttendanceStatus::REGISTERED
+      status: "Completed"
+    ).count
+    @tickets_count_pendent_to_refund = Ticket.where(
+      conference: @conference,
+      status: "To Refund"
     ).count
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @csv_people.to_csv, filename: "people-#{Date.today}.csv" }
-      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
 
@@ -162,8 +165,7 @@ class PeopleController < ApplicationController
     authorize! :read, @person
     @years_presented = person_presented_before?
     @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
-
-    @ticket = Ticket.find_by(person: @person, conference: @conference)
+    @ticket_list = Ticket.where(person: @person, conference: @conference)
 
     if @person.user.nil?
       @is_fellow = false
@@ -404,26 +406,27 @@ class PeopleController < ApplicationController
 
   def remove_invitation
     @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
-    ticket = Ticket.find_by(person_id: @person.id)
-    ticket.destroy if ticket
+
     @attendance_status && @attendance_status.destroy && Invited.find_by(email: @person.email, conference_id: @conference.id).destroy
   end
 
   def cancel_ticket
     @person = Person.find_by(id: params[:format])
 
-    @ticket = Ticket.find_by(person_id: @person, conference: @conference)
-    if @ticket.amount == 0
-      @ticket.update(status: "Canceled")
-    else
-      @ticket.update(status: "To Refund")
+    @ticket = Ticket.where(person_id: @person, conference: @conference, status: "Completed").last
+    if @ticket
+      if @ticket.amount == 0
+        @ticket.update(status: "Canceled")
+      else
+        @ticket.update(status: "To Refund")
+      end
+      status = AttendanceStatus.find_by(person: @person, conference: @conference)
+      status.status = AttendanceStatus::INVITED
+      status.save
+
+      return redirect_to(person_path(@person.id), notice: 'You canceled their ticket.')
     end
-
-    status = AttendanceStatus.find_by(person: @person, conference: @conference)
-    status.status = AttendanceStatus::INVITED
-    status.save
-
-    return redirect_to(person_path(@person.id), notice: 'You canceled their ticket.')
+    return redirect_to(person_path(@person.id), notice: 'Their ticket is cancelled already.')
   end
 
   # will update a 'canceled' attendance status to 'pending attendance' status

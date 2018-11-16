@@ -16,14 +16,14 @@ class TicketsController < ApplicationController
     @person = Person.find_by(id: current_user.person)
     @invited = Invited.find(params[:id])
     @conference = @invited.conference
-    @ticket = Ticket.find_by(person: @person, conference: @conference)
+    @ticket = Ticket.find_by(person: @person, conference: @conference, status: "Completed")
   end
 
   def cancel_ticket
     @person = Person.find_by(id: current_user.person)
     @invited = Invited.find(params[:id])
     @conference = @invited.conference
-    @ticket = Ticket.find_by(person: @person, conference: @conference)
+    @ticket = Ticket.find_by(person: @person, conference: @conference, status: "Completed")
 
     if @ticket.amount == 0
       @ticket.update(status: "Canceled")
@@ -61,8 +61,8 @@ class TicketsController < ApplicationController
     @person = Person.find_by(email: @invited.email)
     @conference = @invited.conference
 
-    if Ticket.exists?(conference: @conference, person: @person)
-      @ticket = Ticket.find_by(conference: @conference, person: @person)
+    if Ticket.exists?(conference: @conference, person: @person, status: "Pending")
+      @ticket = Ticket.find_by(conference: @conference, person: @person, status: "Pending")
     else
       @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
       @ticket.status = "Pending"
