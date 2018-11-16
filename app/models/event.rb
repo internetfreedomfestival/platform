@@ -47,7 +47,7 @@ class Event < ActiveRecord::Base
   # These presence validations are commented out for now to allow Admin to add social and special events with only required info.
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
   # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
-  validates_presence_of :title, :subtitle, :description, :public_type,
+  validates_presence_of :title, :subtitle, :description, :target_audience,
     :desired_outcome, :track, :event_type
 
   validates :iff_before, presence: true
@@ -361,7 +361,7 @@ class Event < ActiveRecord::Base
   def self.to_csv(options = {})
     attributes = %w{id title state subtitle language description
                     theme event_type skill_level
-                    presenter gender public_type
+                    presenter gender public_type target_audience
                     country_of_origin prof_back
                     desired_outcome track
                     other_presenters iff_before

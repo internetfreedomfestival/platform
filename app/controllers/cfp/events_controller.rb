@@ -292,14 +292,14 @@ class Cfp::EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, :public_type, { iff_before: [] }, :track,
+      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, :target_audience, { iff_before: [] }, :track,
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
   end
 
   def form_params
-    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
+    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :target_audience,
       :desired_outcome, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
@@ -308,7 +308,6 @@ class Cfp::EventsController < ApplicationController
 
   def prepare_params(form_params)
     event_values = form_params.merge(
-      target_audience: form_params[:public_type],
       recording_license: @conference.default_recording_license,
     )
     event_values
@@ -318,7 +317,6 @@ class Cfp::EventsController < ApplicationController
     event = Event.new(event_values)
     event.instructions = event_values[:instructions]
     event.conference = @conference
-    event.target_audience = event.public_type
 
     event
   end

@@ -239,7 +239,7 @@ FactoryBot.define do
     description 'A description of a conference'
     conference { create(:three_day_conference) }
     iff_before ['2015']
-    public_type "Conferencers"
+    target_audience 'Session for students'
     desired_outcome "desired_outcome"
     phone_number  12345678
     event_type "Workshop"

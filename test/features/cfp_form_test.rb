@@ -49,7 +49,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -75,7 +75,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -102,7 +102,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -125,7 +125,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -179,7 +179,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -235,7 +235,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -276,7 +276,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -303,7 +303,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -317,7 +317,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     end
 
     @event = Event.last
-    assert_equal @event.target_audience, 'Students'
+    assert_equal @event.target_audience, 'Session for students'
   end
 
   test '[MIGRATION] edited events have target audience field filled' do
@@ -335,7 +335,7 @@ class CfpFormTest < Capybara::Rails::TestCase
       fill_in 'event[subtitle]', with: 'Subtitle Event'
       fill_in 'event[description]', with: 'Session description'
       fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[public_type]', with: 'Students'
+      fill_in 'event[target_audience]', with: 'Session for students'
       fill_in 'event[desired_outcome]', with: 'desired_outcome'
       fill_in 'event[phone_number]', with: 12345678
       select('Feature', from: 'event[track_id]')
@@ -349,7 +349,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     end
 
     @event = Event.last
-    assert_equal @event.target_audience, 'Students'
+    assert_equal @event.target_audience, 'Session for students'
   end
 
   private
