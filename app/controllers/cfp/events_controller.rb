@@ -102,6 +102,19 @@ class Cfp::EventsController < ApplicationController
           register_for_proposal(person, @event, 'collaborator')
         end
 
+        dif_params = {
+          travel_assistance: @event.travel_assistance,
+          group: @event.group,
+          recipient_travel_stipend: @event.recipient_travel_stipend,
+          travel_support: @event.travel_support,
+          past_travel_assistance: @event.past_travel_assistance,
+          event: @event,
+          person: current_user.person
+        }
+        dif = Dif.new(dif_params)
+        dif.status = "Requested"
+        dif.save
+
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
 
@@ -168,6 +181,18 @@ class Cfp::EventsController < ApplicationController
         new_emails_list = @event.other_presenters
         delete_role(old_emails_list, new_emails_list, @event)
 
+        dif = Dif.find_by(event: @event)
+        dif_params = {
+          travel_assistance: @event.travel_assistance,
+          group: @event.group,
+          recipient_travel_stipend: @event.recipient_travel_stipend,
+          travel_support: @event.travel_support,
+          past_travel_assistance: @event.past_travel_assistance,
+          event: @event,
+          person: current_user.person
+        }
+        dif.update(dif_params)
+        
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
@@ -292,14 +317,14 @@ class Cfp::EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, :public_type, { iff_before: [] }, :track,
+      :title, :subtitle, :event_type, :time_slots, :language, :abstract, :description, :logo, :track_id, :submission_note, :tech_rider, :target_audience_experience, :desired_outcome, :skill_level, :iff_before, :travel_assistance, :other_presenters, :target_audience, { iff_before: [] }, :track,
       event_attachments_attributes: %i(id title attachment public _destroy),
       links_attributes: %i(id title url _destroy)
     )
   end
 
   def form_params
-    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :public_type,
+    params.require(:event).permit(:title, :subtitle, :other_presenters, :description, :target_audience,
       :desired_outcome, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
@@ -308,7 +333,6 @@ class Cfp::EventsController < ApplicationController
 
   def prepare_params(form_params)
     event_values = form_params.merge(
-      target_audience: form_params[:public_type],
       recording_license: @conference.default_recording_license,
     )
     event_values
@@ -318,7 +342,6 @@ class Cfp::EventsController < ApplicationController
     event = Event.new(event_values)
     event.instructions = event_values[:instructions]
     event.conference = @conference
-    event.target_audience = event.public_type
 
     event
   end

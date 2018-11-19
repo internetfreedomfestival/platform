@@ -10,11 +10,12 @@
         %th Group
         %th Travel support
         %th Past travel assistance
+        %th Dif Status
       %th.last
   %tbody
-    - collection.each do |event_person|
-      - event = event_person.event
-      - person = event_person.person
+    - collection.each do |dif|
+      - event = dif.event
+      - person = dif.person
       %tr
         %td
         %td= link_to person.first_name, person
@@ -25,10 +26,11 @@
           - else
             = link_to person.public_name, person
         %td= link_to person.email, person
-        %td= event.recipient_travel_stipend.present? ? event.recipient_travel_stipend : '-'
-        %td= event.group
-        %td= event.travel_support.join(', ')
-        %td= event.past_travel_assistance.join(', ')
+        %td= dif.recipient_travel_stipend.present? ? dif.recipient_travel_stipend : '-'
+        %td= dif.group
+        %td= dif.travel_support.join(', ')
+        %td= dif.past_travel_assistance.is_a?(Array) ? dif.past_travel_assistance.to_sentence : dif.past_travel_assistance
+        %td= dif.status
 
         -# %td.buttons
         -#   - if can? :manage, person

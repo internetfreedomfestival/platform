@@ -154,6 +154,16 @@ FactoryBot.define do
     conference
   end
 
+  factory :dif do
+    person
+    event
+    travel_assistance true
+    group "group"
+    recipient_travel_stipend "test@example.org"
+    travel_support ["Hotel"]
+    past_travel_assistance ["2017"]
+  end
+
   factory :invited do
     person
     conference
@@ -239,7 +249,7 @@ FactoryBot.define do
     description 'A description of a conference'
     conference { create(:three_day_conference) }
     iff_before ['2015']
-    public_type "Conferencers"
+    target_audience 'Session for students'
     desired_outcome "desired_outcome"
     phone_number  12345678
     event_type "Workshop"

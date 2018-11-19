@@ -69,7 +69,11 @@ Frab::Application.routes.draw do
         get '/not_existing' => 'welcome#not_existing', as: 'not_existing'
 
         root to: 'people#show'
-        resource :dif
+        resource :dif do
+          member do
+            get :grant
+          end
+        end
       end # namespace :cfp
 
       get '/recent_changes' => 'recent_changes#index', as: 'recent_changes'

@@ -102,6 +102,7 @@ class EventsController < ApplicationController
   # GET /events/1.xml
   def show
     @event = Event.find(params[:id])
+    @dif = Dif.find_by(event: @event)
     authorize! :read, @event
     event_person = EventPerson.find_by(event_id: @event.id)
     @submitter = Person.find_by(id: event_person.person_id)
@@ -406,7 +407,7 @@ class EventsController < ApplicationController
 
   def form_params
     params.require(:event).permit(:id, :title, :state, :language, :subtitle,
-      :other_presenters, :description, :public_type, :abstract,
+      :other_presenters, :description, :target_audience, :abstract,
       :submission_note, :do_not_record, :recording_license, :tech_rider,
       :desired_outcome, :phone_number, :track_id, :event_type, :start_time, :room_id, :note,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
