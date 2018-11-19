@@ -198,28 +198,38 @@
 
 
 %section
-  - if @current_events
-    - @current_events.each do |event|
+  - if @dif
+    - @dif.each do |d|
       .row
         .span10
           %h2 DIF
           %p
+            %b Event Title
+            = d.event.title
+          %p
             %b Need travel assistance to attend the 2019 IFF
-            = event.travel_assistance
+            = d.travel_assistance
           %p
             %b To which group less representative belongs
-            = event.group
+            = d.group
           %p
             %b Who should receive the recipient stipend
-            = event.recipient_travel_stipend
+            = d.recipient_travel_stipend
           %p
             %b Travel Support
-            - if event.travel_support
-              = event.travel_support.to_sentence
+            - if d.travel_support
+              = d.travel_support
           %p
             %b Past travel assistance
-            - if event.past_travel_assistance
-              = event.past_travel_assistance.to_sentence
+            - if d.past_travel_assistance
+              = d.past_travel_assistance
+          %p
+            %b Dif Status
+            = d.status
+
+          %p
+            %b
+            = action_button "primary", "Grant DIF", grant_cfp_dif_path(conference_acronym: @conference.acronym, id: d.id), :data => {:confirm => "Are you sure you want to grant this DIF?"}
 %section
   .row
     .span16

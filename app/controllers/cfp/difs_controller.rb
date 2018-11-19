@@ -37,7 +37,7 @@ class Cfp::DifsController < ApplicationController
     respond_to do |format|
       if travel_support_blank
         flash[:alert] = "You must fill out all the required fields!"
-        format.html { render action: 'edit' }        
+        format.html { render action: 'edit' }
       elsif @dif.update_attributes(dif_params)
         format.html { redirect_to(cfp_person_path, notice: t('cfp.dif_update_notice')) }
       else
@@ -45,6 +45,13 @@ class Cfp::DifsController < ApplicationController
         format.html { render action: 'edit' }
       end
     end
+  end
+
+  def grant
+    authorize! :administrate, Person
+    dif = Dif.find(params[:id])
+    dif.update(status: "Granted")
+    redirect_to person_path(dif.person)
   end
 
   private

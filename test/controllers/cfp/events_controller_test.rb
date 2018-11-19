@@ -3,6 +3,7 @@ require 'test_helper'
 class Cfp::EventsControllerTest < ActionController::TestCase
   setup do
     @event = create(:event)
+    create(:dif, event: @event)
     @conference = @event.conference
     @user = login_as(:submitter)
   end
@@ -23,7 +24,18 @@ class Cfp::EventsControllerTest < ActionController::TestCase
     assert_difference('Event.count') do
       post :create, event: event_params.merge(title: "titulo nuevo"), conference_acronym: @conference.acronym
     end
+
     assert_redirected_to cfp_person_path
+  end
+
+  test 'should create dif' do
+    assert_difference('Event.count') do
+      post :create, event: event_params.merge(title: "titulo nuevo"), conference_acronym: @conference.acronym
+    end
+
+    dif = Dif.find_by(event: Event.last)
+
+    assert_equal "Requested", dif.status
   end
 
   test 'should validate title' do

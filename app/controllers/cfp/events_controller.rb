@@ -102,6 +102,19 @@ class Cfp::EventsController < ApplicationController
           register_for_proposal(person, @event, 'collaborator')
         end
 
+        dif_params = {
+          travel_assistance: @event.travel_assistance,
+          group: @event.group,
+          recipient_travel_stipend: @event.recipient_travel_stipend,
+          travel_support: @event.travel_support,
+          past_travel_assistance: @event.past_travel_assistance,
+          event: @event,
+          person: current_user.person
+        }
+        dif = Dif.new(dif_params)
+        dif.status = "Requested"
+        dif.save
+
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
 
@@ -168,6 +181,18 @@ class Cfp::EventsController < ApplicationController
         new_emails_list = @event.other_presenters
         delete_role(old_emails_list, new_emails_list, @event)
 
+        dif = Dif.find_by(event: @event)
+        dif_params = {
+          travel_assistance: @event.travel_assistance,
+          group: @event.group,
+          recipient_travel_stipend: @event.recipient_travel_stipend,
+          travel_support: @event.travel_support,
+          past_travel_assistance: @event.past_travel_assistance,
+          event: @event,
+          person: current_user.person
+        }
+        dif.update(dif_params)
+        
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"

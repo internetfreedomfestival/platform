@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181113164035) do
+ActiveRecord::Schema.define(version: 20181119103304) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -142,10 +142,13 @@ ActiveRecord::Schema.define(version: 20181113164035) do
     t.string   "past_travel_assistance"
     t.boolean  "willing_to_facilitate"
     t.string   "status"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.integer  "person_id"
     t.integer  "event_id"
+    t.boolean  "travel_assistance"
+    t.string   "group"
+    t.string   "recipient_travel_stipend"
   end
 
   add_index "difs", ["event_id"], name: "index_difs_on_event_id"

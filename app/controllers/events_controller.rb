@@ -102,6 +102,7 @@ class EventsController < ApplicationController
   # GET /events/1.xml
   def show
     @event = Event.find(params[:id])
+    @dif = Dif.find_by(event: @event)
     authorize! :read, @event
     event_person = EventPerson.find_by(event_id: @event.id)
     @submitter = Person.find_by(id: event_person.person_id)
