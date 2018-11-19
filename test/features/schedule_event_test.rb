@@ -3,6 +3,8 @@ require 'minitest/rails/capybara'
 
 class ScheduleEventTest < Capybara::Rails::TestCase
   setup do
+    ENV['NEW_CFP_ENABLED'] = "true"
+
     @conference = FactoryBot.create(:conference, email: 'info@conference.org')
     FactoryBot.create(:call_for_participation, conference: @conference)
     FactoryBot.create(:notification, conference: @conference)
@@ -20,6 +22,10 @@ class ScheduleEventTest < Capybara::Rails::TestCase
 
     @common_user = create(:user, person: create(:person), role: 'submitter')
     @admin_user = create(:user, person: create(:person, public_name: nil), role: 'admin')
+  end
+
+  teardown do
+    ENV['NEW_CFP_ENABLED'] = "false"
   end
 
   test 'accepted, confirmed and non-private events are shown in public schedule' do
