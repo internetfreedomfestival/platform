@@ -66,16 +66,15 @@ class PeopleController < ApplicationController
 
   def all_confirmed
     authorize! :administrate, Person
-    @conference = Conference.find_by(acronym: params[:conference_acronym])
-    result = Person.
-      joins(:attendance_status).
-      where(
-        attendance_statuses: {
-          conference_id: @conference.id,
-          status: AttendanceStatus::REGISTERED
-        }
-      )
+    result = search_for_attendance AttendanceStatus.
+      includes(:person).
+      where(conference: @conference), params
+
     @people = result.paginate page: page_param
+
+    @holds_ticket = AttendanceStatus.where(conference: @conference, status: 'Holds Ticket' ).count
+    @requested = AttendanceStatus.where(conference: @conference, status: 'Requested' ).count
+    @invited = AttendanceStatus.where(conference: @conference, status: 'Invited' ).count
 
     respond_to do |format|
       format.html
@@ -135,11 +134,16 @@ class PeopleController < ApplicationController
 
   def tickets
     authorize! :administrate, Person
-    ticket_list = search Ticket.where(conference_id: @conference).where.not(status: "Pending"), params
+
+    ticket_list = search_for_tickets Ticket.includes(:person)
+                        .where(conference: @conference)
+                        .where.not(status: "Pending"), params
 
     @ticket_list = ticket_list.paginate page: page_param
 
-    @total_of_ticket_count = Ticket.all.count
+    @total_of_ticket_count = Ticket.where(conference: @conference)
+                                .where.not(status: "Pending")
+                                .count
     @canceled_tickets_count = Ticket.where(
       conference: @conference,
       status: "Canceled"
@@ -483,6 +487,53 @@ class PeopleController < ApplicationController
       @search = people.ransack(params[:q])
     end
 
+    @search.result(distinct: true)
+  end
+
+  def search_for_attendance(people, params)
+    if params.key?(:term) and not params[:term].empty?
+      term = params[:term]
+      sort = begin
+               params[:q][:s]
+             rescue
+               nil
+             end
+      @search = people.ransack(person_first_name_cont: term,
+                               person_last_name_cont: term,
+                               person_public_name_cont: term,
+                               person_email_cont: term,
+                               person_user_email_cont: term,
+                               person_organization_cont: term,
+                               person_country_of_origin_cont: term,
+                               status_cont: term,
+                               m: 'or',
+                               s: sort)
+    else
+      @search = people.ransack(params[:q])
+    end
+    @search.result(distinct: true)
+  end
+
+  def search_for_tickets(tickets, params)
+    if params.key?(:term) and not params[:term].empty?
+      term = params[:term]
+      sort = begin
+               params[:q][:s]
+             rescue
+               nil
+             end
+
+      @search = tickets.ransack(public_name_cont: term,
+                               person_email_cont: term,
+                               person_user_email_cont: term,
+                               iff_days_cont: term,
+                               ticket_option_cont: term,
+                               status_cont: term,
+                               m: 'or',
+                               s: sort)
+    else
+      @search = tickets.ransack(params[:q])
+    end
     @search.result(distinct: true)
   end
 

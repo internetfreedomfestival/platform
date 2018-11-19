@@ -1,0 +1,38 @@
+%table.zebra-striped
+  %thead
+    %tr
+      %th.first
+      - if @search
+        %th= sort_link @search, :first_name, term: params[:term]
+        %th= sort_link @search, :last_name, term: params[:term]
+        %th= sort_link @search, :public_name, term: params[:term]
+        %th= sort_link @search, :email, term: params[:term]
+        %th= sort_link @search, :organization, term: params[:term]
+        %th= sort_link @search, :country_of_origin, term: params[:term]
+        %th= sort_link @search, :attendance_status, term: params[:term]
+        %th
+      - else
+        %th First name
+        %th Last name
+        %th Public name
+        %th Email
+        %th Organization
+        %th Country of Origin
+        %th Attendance Status
+      %th.last
+  %tbody
+    - collection.each do |attendance_status|
+      - person = attendance_status.person
+      %tr
+        %td
+        %td= link_to person.first_name, person
+        %td= link_to person.last_name, person
+        %td
+          - if person.public_name.nil?
+            = "-"
+          - else
+            = link_to person.public_name, person
+        %td= link_to person.email, person
+        %td= person.organization
+        %td= person.country_of_origin
+        %td= attendance_status.status
