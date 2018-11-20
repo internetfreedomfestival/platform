@@ -88,7 +88,9 @@ class Cfp::EventsController < ApplicationController
     instructions_checked = checkbox_accepted?(event_values[:instructions])
     code_of_conduct_checked = checkbox_accepted?(event_values[:code_of_conduct])
     travel_assistance = valid_travel_assistance?(event_values)
-
+    if travel_assistance == true
+      @event.dif_status = "Requested"
+    end
     event_valid = @event.valid? && valid_presenters && instructions_checked && code_of_conduct_checked && !duplicated_title && travel_assistance
     emails_list = valid_presenters(@event.other_presenters)
 
@@ -101,19 +103,6 @@ class Cfp::EventsController < ApplicationController
           person = Person.find_by(email: email)
           register_for_proposal(person, @event, 'collaborator')
         end
-
-        dif_params = {
-          travel_assistance: @event.travel_assistance,
-          group: @event.group,
-          recipient_travel_stipend: @event.recipient_travel_stipend,
-          travel_support: @event.travel_support,
-          past_travel_assistance: @event.past_travel_assistance,
-          event: @event,
-          person: current_user.person
-        }
-        dif = Dif.new(dif_params)
-        dif.status = "Requested"
-        dif.save
 
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_created_notice')) }
       else
@@ -181,18 +170,6 @@ class Cfp::EventsController < ApplicationController
         new_emails_list = @event.other_presenters
         delete_role(old_emails_list, new_emails_list, @event)
 
-        dif = Dif.find_by(event: @event)
-        dif_params = {
-          travel_assistance: @event.travel_assistance,
-          group: @event.group,
-          recipient_travel_stipend: @event.recipient_travel_stipend,
-          travel_support: @event.travel_support,
-          past_travel_assistance: @event.past_travel_assistance,
-          event: @event,
-          person: current_user.person
-        }
-        dif.update(dif_params)
-        
         format.html { redirect_to(cfp_person_path, notice: t('cfp.event_updated_notice')) }
       else
         flash[:alert] = "You must fill out all the required fields!"
@@ -328,7 +305,7 @@ class Cfp::EventsController < ApplicationController
       :desired_outcome, :phone_number, :track_id, :event_type,
       :projector, {iff_before: []}, :instructions, :travel_assistance, :group,
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
-      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots)
+      :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots, :dif_status)
   end
 
   def prepare_params(form_params)

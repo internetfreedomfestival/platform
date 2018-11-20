@@ -35,6 +35,12 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should garantee dif' do
+    get :grant_dif, id: @event.to_param, conference_acronym: @conference.acronym
+    @event.reload
+    assert_equal @event.dif_status, "Granted"
+  end
+
   test 'should get edit' do
     get :edit, id: @event.to_param, conference_acronym: @conference.acronym
     assert_response :success

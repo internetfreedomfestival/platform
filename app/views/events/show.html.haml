@@ -130,30 +130,25 @@
   %section
     .row
       .span10
-        - if @dif
-          %h2 DIF
-          %p
-            %b Need travel assistance to attend the 2019 IFF
-            = @dif.travel_assistance
-          %p
-            %b To which group less representative belongs
-            = @dif.group
-          %p
-            %b Who should receive the recipient stipend
-            = @dif.recipient_travel_stipend
-          %p
-            %b Travel Support
-            - if @dif.travel_support
-              = @dif.travel_support
-          %p
-            %b Past travel assistance
-            - if @dif.past_travel_assistance
-              = @dif.past_travel_assistance
-          %p
-            %b Dif Status
-            = @dif.status
-        - else
-          %h2 DIF
+        .span10
+        %h2 DIF
+        %p
+          %b Need travel assistance to attend the 2019 IFF
+          = @event.travel_assistance
+        %p
+          %b To which group less representative belongs
+          = @event.group
+        %p
+          %b Who should receive the recipient stipend
+          = @event.recipient_travel_stipend
+        %p
+          %b Travel Support
+          - if @event.travel_support
+            = @event.travel_support.to_sentence
+        %p
+          %b Past travel assistance
+          - if @event.past_travel_assistance
+            = @event.past_travel_assistance.to_sentence
   .row
     .span10
       %p

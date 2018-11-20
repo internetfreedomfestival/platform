@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181119103304) do
+ActiveRecord::Schema.define(version: 20181120144328) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 20181119103304) do
     t.string   "travel_support"
     t.string   "past_travel_assistance"
     t.text     "target_audience"
+    t.string   "dif_status"
   end
 
   add_index "events", ["conference_id"], name: "index_events_on_conference_id"

@@ -29,6 +29,13 @@ class EventsController < ApplicationController
     end
   end
 
+  def grant_dif
+    authorize! :administrate, Person
+    event = Event.find(params[:id])
+    event.update(dif_status: "Granted")
+    redirect_to(current_user.person)
+  end
+
   def export_confirmed
     authorize! :read, Event
     @events = @conference.events.is_public.confirmed
@@ -102,7 +109,6 @@ class EventsController < ApplicationController
   # GET /events/1.xml
   def show
     @event = Event.find(params[:id])
-    @dif = Dif.find_by(event: @event)
     authorize! :read, @event
     event_person = EventPerson.find_by(event_id: @event.id)
     @submitter = Person.find_by(id: event_person.person_id)

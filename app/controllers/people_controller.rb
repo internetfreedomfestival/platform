@@ -83,7 +83,10 @@ class PeopleController < ApplicationController
 
   def dif
     authorize! :administrate, Person
-    result = Dif.includes(:person).all
+    result = EventPerson.includes(:person).joins(:event).where(
+      event_role: 'submitter',
+      events: { conference_id: @conference.id, travel_assistance: true }
+    )
 
     @people = result.paginate page: page_param
     @csv_people = result
@@ -181,7 +184,6 @@ class PeopleController < ApplicationController
       end
     end
 
-    @dif = Dif.includes(:person).all
     @current_events = @person.events_as_presenter_in(@conference)
     @other_events = @person.events_as_presenter_not_in(@conference)
     clean_events_attributes

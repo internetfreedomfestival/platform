@@ -5,7 +5,6 @@ class CfpFormTest < Capybara::Rails::TestCase
   setup do
     @conference = create(:conference)
     @event = create(:event)
-    create(:dif, event: @event)
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @admin_user = create(:user, person: create(:person, public_name: nil), role: 'admin')
     @cfp = create(:call_for_participation, conference: @conference)
@@ -144,12 +143,10 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'an user editing call for proposals cannot use same title than other cfp' do
     event = create(:event, conference: @conference, title: "Title")
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
     event2 = create(:event, conference: @conference, title: "Title2")
-    create(:dif, event: event2)
     create(:event_person, event: event2, person: @user.person, event_role: "submitter")
     create(:event_person, event: event2, person: @user.person, event_role: "speaker")
 
@@ -169,7 +166,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'an user can edit a call for proposals' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
@@ -201,7 +197,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'an user can view their call of proposals' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
@@ -214,7 +209,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'an user can delete a call for proposals' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
@@ -229,7 +223,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'a collaborator can edit their call for proposals' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
     login_as(@user)
@@ -260,7 +253,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'a collaborator cannot delete their call for proposals' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
     login_as(@user)
@@ -272,7 +264,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'collaborator recibes an email when user add your email in other collaborator' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
     login_as(@user)
@@ -331,7 +322,6 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test '[MIGRATION] edited events have target audience field filled' do
     event = create(:event, conference: @conference)
-    create(:dif, event: event)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 

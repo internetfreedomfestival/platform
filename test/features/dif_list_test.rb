@@ -3,13 +3,16 @@ require 'minitest/rails/capybara'
 
 class DifListTest < Capybara::Rails::TestCase
   setup do
+    @conference = FactoryBot.create(:conference)
     FactoryBot.create(:call_for_participation, conference: @conference)
-    @admin = create(:user, person: create(:person, public_name: nil), role: 'admin')
-    @event = create(:event)
-    @user = create(:user)
-    @conference = @event.conference
-    @other_person = create(:person)
-    @dif = create(:dif, event: @event, person: @user.person, recipient_travel_stipend: @other_person.email)
+    @person = FactoryBot.create(:person)
+    @user = FactoryBot.create(:user, role: 'submitter', person: @person)
+    @other_speaker = FactoryBot.create(:user, role: 'submitter')
+    @admin = FactoryBot.create(:user, role: 'admin')
+    @event = FactoryBot.create(:event, conference: @conference, travel_assistance: true, recipient_travel_stipend: @other_speaker.email)
+    FactoryBot.create(:event_person, person: @person, event: @event, event_role: 'submitter')
+    FactoryBot.create(:event_person, person: @person, event: @event, event_role: 'speaker')
+    FactoryBot.create(:event_person, person: @other_speaker.person, event: @event, event_role: 'speaker')
   end
 
   test 'DIF table shows DIF requests contained in Events' do
@@ -18,8 +21,8 @@ class DifListTest < Capybara::Rails::TestCase
     click_on 'People'
     click_on 'DIF'
 
-    submitter_email = @user.person.email
-    recipient_of_stipend = @other_person.email
+    submitter_email = @person.email
+    recipient_of_stipend = @other_speaker.email
 
     assert_text submitter_email
     assert_text recipient_of_stipend

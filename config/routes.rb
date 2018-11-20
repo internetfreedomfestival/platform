@@ -69,11 +69,7 @@ Frab::Application.routes.draw do
         get '/not_existing' => 'welcome#not_existing', as: 'not_existing'
 
         root to: 'people#show'
-        resource :dif do
-          member do
-            get :grant
-          end
-        end
+        resource :dif
       end # namespace :cfp
 
       get '/recent_changes' => 'recent_changes#index', as: 'recent_changes'
@@ -168,6 +164,7 @@ Frab::Application.routes.draw do
           put :update_state
           put :update_state_with_email
           post :custom_notification
+          get :grant_dif
         end
         resource :event_rating
         resources :event_feedbacks
