@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Invited < ActiveRecord::Base
+  before_validation :normalize_email
+
   MAX_INVITES_PER_USER = 5
 
   self.table_name = 'invites'
@@ -11,5 +13,9 @@ class Invited < ActiveRecord::Base
     sent_invites = Invited.where(person_id: person.id).count
 
     MAX_INVITES_PER_USER - sent_invites
+  end
+
+  def normalize_email
+    self.email = email.strip
   end
 end

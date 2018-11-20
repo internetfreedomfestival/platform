@@ -34,6 +34,21 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'We have sent an invite to user@email.com'
   end
 
+  test '[BUG] emails from admin invites does not contain blank spaces' do
+    login_as(@admin)
+
+    click_on 'Invites'
+
+    within '#invitations-form' do
+      fill_in 'email', with: ' user@email.com '
+      click_on 'Send'
+    end
+
+    invite = Invited.last
+
+    assert_equal invite.email, 'user@email.com'
+  end
+
   test 'admin receives feedback when an invitation is sent' do
     login_as(@admin)
     go_to_conference_person_profile(@conference, @user.person)
@@ -79,6 +94,21 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert_text 'We have sent an invite to user@email.com'
+  end
+
+  test '[BUG] emails from user invites does not contain blank spaces' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+
+    login_as(@user)
+
+    within '#invitations-form' do
+      fill_in 'email', with: ' user@email.com '
+      click_on 'Send'
+    end
+
+    invite = Invited.last
+    assert_equal invite.email, 'user@email.com'
   end
 
   # test 'users can request invitation to the conference' do
