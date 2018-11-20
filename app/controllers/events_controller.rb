@@ -33,7 +33,8 @@ class EventsController < ApplicationController
     authorize! :administrate, Person
     event = Event.find(params[:id])
     event.update(dif_status: "Granted")
-    redirect_to(current_user.person)
+    person = event.event_people.find_by(event_role: "submitter").person
+    redirect_to(person_path(conference_acronym: @conference.acronym, id: person.id), notice: 'Dif Granted!')
   end
 
   def export_confirmed
