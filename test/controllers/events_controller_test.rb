@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EventsControllerTest < ActionController::TestCase
   setup do
-    @event_person = create(:event_person)
+    @event_person = create(:event_person, event_role: "submitter")
     @event = @event_person.event
     @conference = @event.conference
     login_as(:admin)
