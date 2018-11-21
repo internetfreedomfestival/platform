@@ -104,3 +104,10 @@ event.event_people << EventPerson.new(person: person, event_role: 'speaker')
 event.save!
 
 puts "Created event #{event.title}"
+
+MailTemplate.create(
+  name: "Email de confirmacióin",
+  subject: "Confirmation Email",
+  content: "first_name: #first_name\r\nlast_name: #last_name\r\npublic_name: #public_name\r\nconfirm_attendance: #confirm_attendance\r\nperson_id: #person_id\r\n",
+  conference: conference
+)
