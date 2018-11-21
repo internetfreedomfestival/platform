@@ -556,15 +556,13 @@ class PeopleController < ApplicationController
 
   def person_presented_before?
     years_presented = []
+
     unless @person.events.empty?
       @person.events.each do |event|
-        p event.iff_before
         years_presented.push(*event.iff_before)
-        p years_presented
       end
     end
 
     years_presented.uniq!
   end
-
 end
