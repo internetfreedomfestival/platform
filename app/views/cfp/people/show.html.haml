@@ -108,6 +108,12 @@
           %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 19, 2018.
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
+  - else
+    .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
+    .row
+      .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
+        %div{style: "margin:10px;"}
+          %h3 The 2019 Global Call for Proposals is now closed. Thank you all!
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
 
