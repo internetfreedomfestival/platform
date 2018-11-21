@@ -136,15 +136,15 @@ class PeopleController < ApplicationController
   def tickets
     authorize! :administrate, Person
 
-    ticket_list = search_for_tickets Ticket.includes(:person)
-                        .where(conference: @conference)
-                        .where.not(status: "Pending"), params
+    tickets = Ticket.includes(:person)
+                    .where(conference: @conference)
+                    .where.not(status: "Pending")
+
+    ticket_list = search_for_tickets(tickets, params)
 
     @ticket_list = ticket_list.paginate page: page_param
 
-    @total_of_ticket_count = Ticket.where(conference: @conference)
-                                .where.not(status: "Pending")
-                                .count
+    @total_of_ticket_count = tickets.count
     @canceled_tickets_count = Ticket.where(
       conference: @conference,
       status: "Canceled"
