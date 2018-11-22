@@ -420,6 +420,9 @@ class Person < ActiveRecord::Base
   scope :confirmed, ->(conference) {
     joins(events: :conference).where('conferences.id': conference).where('events.state': %w(confirmed scheduled))
   }
+  scope :with_ticket, ->(conference) {
+    joins(:attendance_status).where(attendance_statuses: {status: "Holds Ticket", conference_id: conference.id})
+  }
 
   def self.fullname_options
     all.sort_by(&:full_name).map do |p|

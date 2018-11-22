@@ -173,4 +173,16 @@ class PersonTest < ActiveSupport::TestCase
 
     assert_equal true, allowed
   end
+
+  test 'knows people who has ticket for a conference' do
+    conference = create(:conference)
+    person_with_ticket = create(:person)
+    create(:attendance_status, person: person_with_ticket, status: "Holds Ticket", conference: conference)
+    person_without_ticket = create(:person)
+
+    people_with_ticket = Person.with_ticket(conference)
+
+    assert_equal people_with_ticket.count, 1
+    assert_includes people_with_ticket, person_with_ticket
+  end
 end

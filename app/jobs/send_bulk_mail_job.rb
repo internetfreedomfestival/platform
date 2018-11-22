@@ -2,12 +2,15 @@ class SendBulkMailJob
   include SuckerPunch::Job
 
   def perform(template, send_filter)
+    conference = template.conference
     people = Person
               .joins(events: :conference)
-              .where('conferences.id': template.conference.id)
+              .where('conferences.id': conference.id)
     case send_filter
     when 'all'
       people = Person.all
+    when 'all_users_holding_ticket'
+      people = Person.with_ticket(conference)
     when 'all_speakers_in_confirmed_events'
       people = people
                 .where('events.state': 'confirmed')
