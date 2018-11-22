@@ -16,7 +16,8 @@ class MailTemplatesController < ApplicationController
     @send_filter_options = [
       ['All users in the platform', :all],
       ['All users holding ticket', :all_users_holding_ticket],
-      
+      ['All confirmed DIF users', :all_confirmed_dif_users],
+
       ['All speakers involved in all confirmed events',   :all_speakers_in_confirmed_events],
       ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events],
       ['All people with pending attendance', :all_pending_attendance_people],

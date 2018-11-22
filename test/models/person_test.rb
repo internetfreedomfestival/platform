@@ -182,7 +182,31 @@ class PersonTest < ActiveSupport::TestCase
 
     people_with_ticket = Person.with_ticket(conference)
 
-    assert_equal people_with_ticket.count, 1
+    assert_equal 1, people_with_ticket.count
     assert_includes people_with_ticket, person_with_ticket
+  end
+
+  test 'knows dif confirmed people for a conference' do
+    conference = create(:conference)
+    submitter_with_dif_granted = create(:person)
+    event = create(:event, travel_assistance: "true", dif_status: "Granted", conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: "submitter")
+    create(:event_person, event: event, event_role: "collaborator")
+
+    people_with_dif_granted = Person.with_dif_granted(conference)
+
+    assert_equal 1, people_with_dif_granted.count
+    assert_includes people_with_dif_granted, submitter_with_dif_granted
+  end
+
+  test 'knows recipient dif confirmed people for a conference' do
+    conference = create(:conference)
+    recipient_dif_granted = create(:person)
+    event = create(:event, travel_assistance: "true", dif_status: "Granted", conference: conference, recipient_travel_stipend: recipient_dif_granted.email)
+
+    people_with_dif_granted = Person.with_dif_travel_stipend_granted(conference)
+
+    assert_equal 1, people_with_dif_granted.count
+    assert_includes people_with_dif_granted, recipient_dif_granted
   end
 end

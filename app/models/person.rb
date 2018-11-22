@@ -423,6 +423,16 @@ class Person < ActiveRecord::Base
   scope :with_ticket, ->(conference) {
     joins(:attendance_status).where(attendance_statuses: {status: "Holds Ticket", conference_id: conference.id})
   }
+  scope :with_dif_granted, ->(conference) {
+    joins(events: :conference)
+          .where(conferences: {id: conference.id} )
+          .where(events: {travel_assistance: true, dif_status: "Granted", recipient_travel_stipend: [nil, ""]} )
+          .where(event_people: {event_role: "submitter"})
+  }
+  scope :with_dif_travel_stipend_granted, ->(conference) {
+    joins("INNER JOIN events ON events.recipient_travel_stipend = people.email AND events.conference_id = #{conference.id}" )
+          .where(events: {travel_assistance: true, dif_status: "Granted"} )
+  }
 
   def self.fullname_options
     all.sort_by(&:full_name).map do |p|
