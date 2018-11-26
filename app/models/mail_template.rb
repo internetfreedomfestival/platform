@@ -8,7 +8,7 @@ class MailTemplate < ActiveRecord::Base
     content
       .gsub('#first_name',  person.first_name)
       .gsub('#last_name',   person.last_name)
-      .gsub('#public_name', person.public_name)
+      .gsub('#public_name', person.public_name.to_s)
       .gsub('#person_id', person.id.to_s)
       .gsub('#confirm_attendance', "https://platform.internetfreedomfestival.org/en/IFF2018/cfp/user/confirmation/confirm_attendance?confirm_attendance_token=#{person.user.confirm_attendance_token}")
   end
