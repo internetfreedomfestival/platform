@@ -23,6 +23,10 @@ class SendBulkMailJob
       people = Person.joins(events: :conference)
               .where('conferences.id': conference.id)
               .where(events: {state: "confirmed"} ).uniq
+    when 'all_rejected_events_presenters'
+      people = Person.joins(events: :conference)
+              .where('conferences.id': conference.id)
+              .where(events: {state: "rejected"} ).uniq
 
     when 'all_speakers_in_confirmed_events'
       people = people
