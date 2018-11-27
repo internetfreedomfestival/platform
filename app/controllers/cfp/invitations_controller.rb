@@ -55,7 +55,7 @@ class Cfp::InvitationsController < ApplicationController
   def check_user_has_available_invites
     person = current_user.person
 
-    if Invited.pending_invites_for(person) == 0
+    if Invited.pending_invites_for(person, @conference) == 0
       flash[:error] = 'You have already sent all your available invitations'
       redirect_to cfp_root_path
     end

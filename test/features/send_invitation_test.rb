@@ -178,13 +178,13 @@ class SendInvitationTest < Capybara::Rails::TestCase
   #   assert_no_text 'invites remaining.'
   # end
 
-  test 'users has a limited number of invites' do
+  test 'users have a limited number of invites' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
 
     login_as(@user)
 
-    number_of_invites = Invited::MAX_INVITES_PER_USER
+    number_of_invites = Invited::REGULAR_INVITES_PER_USER
 
     number_of_invites.times do |iteration|
       pending_invites = number_of_invites - iteration # starts with 0
@@ -195,6 +195,30 @@ class SendInvitationTest < Capybara::Rails::TestCase
         click_on 'Send'
       end
     end
+
+    assert_no_text 'invites remaining.'
+  end
+
+  test 'users can be granted a specific number of invites' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+
+    number_of_invites = 100
+    InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
+
+    login_as(@user)
+
+    assert_text "You have #{number_of_invites} invites remaining."
+  end
+
+  test 'users available invites cannnot be less than zero' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+
+    number_of_invites = -100
+    InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
+
+    login_as(@user)
 
     assert_no_text 'invites remaining.'
   end
