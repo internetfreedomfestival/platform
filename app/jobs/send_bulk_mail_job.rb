@@ -27,12 +27,14 @@ class SendBulkMailJob
       people = Person.joins(events: :conference)
               .where('conferences.id': conference.id)
               .where(events: {state: "rejected"} ).uniq
+    when 'all_users_invited_to_get_a_ticket'
+      people = Person.joins(:attendance_status)
+              .where(attendance_statuses: {status: "Invited", conference_id: conference.id })
 
     when 'all_speakers_in_confirmed_events'
       people = people
                 .where('events.state': 'confirmed')
                 .where('event_people.event_role': 'speaker')
-
     when 'all_speakers_in_unconfirmed_events'
       people = people
                 .where('events.state': 'unconfirmed')

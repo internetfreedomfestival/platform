@@ -18,8 +18,9 @@ class MailTemplatesController < ApplicationController
       ['All users holding ticket', :all_users_holding_ticket],
       ['All confirmed DIF users', :all_confirmed_dif_users],
       ['All 2019 DIF users(excluding confirmed)', :all_dif_users_excluding_confirmed],
-      ['All confirmed events presenters', :all_confirmed_events_presenters],
-      ['All rejected events presenters', :all_rejected_events_presenters],
+      ['All 2019 confirmed events presenters', :all_confirmed_events_presenters],
+      ['All 2019 rejected events presenters', :all_rejected_events_presenters],
+      ['All 2019 users invited to get a ticket', :all_users_invited_to_get_a_ticket],
 
       ['All speakers involved in all confirmed events',   :all_speakers_in_confirmed_events],
       ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events],
