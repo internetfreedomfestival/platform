@@ -19,6 +19,11 @@ class SendBulkMailJob
       people = (
         Person.with_dif_requested(conference) + Person.with_dif_travel_stipend_requested(conference)
       ).uniq { |person| person.id }
+    when 'all_confirmed_events_presenters'
+      people = Person.joins(events: :conference)
+              .where('conferences.id': conference.id)
+              .where(events: {state: "confirmed"} ).uniq
+
     when 'all_speakers_in_confirmed_events'
       people = people
                 .where('events.state': 'confirmed')
