@@ -10,7 +10,7 @@ class MailTemplate < ActiveRecord::Base
       .gsub('#last_name',   person.last_name)
       .gsub('#public_name', person.public_name.to_s)
       .gsub('#person_id', person.id.to_s)
-      .gsub('#confirm_attendance', "https://platform.internetfreedomfestival.org/en/IFF2018/cfp/user/confirmation/confirm_attendance?confirm_attendance_token=#{person.user.confirm_attendance_token}")
+      # .gsub('#confirm_attendance', "https://platform.internetfreedomfestival.org/en/iff/cfp/user/confirmation/confirm_attendance?confirm_attendance_token=#{person.user.confirm_attendance_token}")
   end
 
   def send_sync(filter)

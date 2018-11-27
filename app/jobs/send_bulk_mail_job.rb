@@ -30,37 +30,36 @@ class SendBulkMailJob
     when 'all_users_invited_to_get_a_ticket'
       people = Person.joins(:attendance_status)
               .where(attendance_statuses: {status: "Invited", conference_id: conference.id })
-
-    when 'all_speakers_in_confirmed_events'
-      people = people
-                .where('events.state': 'confirmed')
-                .where('event_people.event_role': 'speaker')
-    when 'all_speakers_in_unconfirmed_events'
-      people = people
-                .where('events.state': 'unconfirmed')
-                .where('event_people.event_role': 'speaker')
-    when 'all_pending_attendance_people'
-      people = Person
-                .where('old_attendance_status': 'pending attendance')
-    when 'all_confirmed_attendance_people'
-      people = Person
-                .where('old_attendance_status': 'confirmed')
-    when 'pending_but_no_email'
-      people = []
-      attending_people = Person
-                .where('old_attendance_status': 'pending attendance')
-      attending_people.each do |person|
-        if person.user.confirm_attendance_email_sent.nil?
-          people << person
-        end
-      end
-    when 'pepe_and_jamie'
-      people = Person
-                .where(email: ['jamie.mackillop.jobs@gmail.com', 'pborras@internetfreedomfestival.org'])
-    when 'just_jamie'
-      people = Person.where(email: 'jamie.mackillop.jobs@gmail.com')
-    when 'just_test_user'
-      people = Person.where(email: 'test@example.org')
+    # when 'all_speakers_in_confirmed_events'
+    #   people = people
+    #             .where('events.state': 'confirmed')
+    #             .where('event_people.event_role': 'speaker')
+    # when 'all_speakers_in_unconfirmed_events'
+    #   people = people
+    #             .where('events.state': 'unconfirmed')
+    #             .where('event_people.event_role': 'speaker')
+    # when 'all_pending_attendance_people'
+    #   people = Person
+    #             .where('old_attendance_status': 'pending attendance')
+    # when 'all_confirmed_attendance_people'
+    #   people = Person
+    #             .where('old_attendance_status': 'confirmed')
+    # when 'pending_but_no_email'
+    #   people = []
+    #   attending_people = Person
+    #             .where('old_attendance_status': 'pending attendance')
+    #   attending_people.each do |person|
+    #     if person.user.confirm_attendance_email_sent.nil?
+    #       people << person
+    #     end
+    #   end
+    # when 'pepe_and_jamie'
+    #   people = Person
+    #             .where(email: ['jamie.mackillop.jobs@gmail.com', 'pborras@internetfreedomfestival.org'])
+    # when 'just_jamie'
+    #   people = Person.where(email: 'jamie.mackillop.jobs@gmail.com')
+    # when 'just_test_user'
+    #   people = Person.where(email: 'test@example.org')
     end
 
     if send_filter == 'all_speakers_in_confirmed_events' || send_filter == 'all_speakers_in_unconfirmed_events'

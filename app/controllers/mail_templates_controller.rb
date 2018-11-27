@@ -20,16 +20,17 @@ class MailTemplatesController < ApplicationController
       ['All 2019 DIF users(excluding confirmed)', :all_dif_users_excluding_confirmed],
       ['All 2019 confirmed events presenters', :all_confirmed_events_presenters],
       ['All 2019 rejected events presenters', :all_rejected_events_presenters],
-      ['All 2019 users invited to get a ticket', :all_users_invited_to_get_a_ticket],
-
-      ['All speakers involved in all confirmed events',   :all_speakers_in_confirmed_events],
-      ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events],
-      ['All people with pending attendance', :all_pending_attendance_people],
-      ['All people with confirmed attendance', :all_confirmed_attendance_people],
-      ['All people with pending attendance BUT NO EMAIL SENT!!!!', :pending_but_no_email],
-      ['Test: Send to Pepe and Jamie only', :pepe_and_jamie],
-      ['Test: Only send to jamie', :just_jamie],
-      ['Test: Only send to test user', :just_test_user]
+      ['All 2019 users invited to get a ticket', :all_users_invited_to_get_a_ticket]
+      # ,
+      #
+      # ['All speakers involved in all confirmed events',   :all_speakers_in_confirmed_events],
+      # ['All speakers involved in all unconfirmed events', :all_speakers_in_unconfirmed_events],
+      # ['All people with pending attendance', :all_pending_attendance_people],
+      # ['All people with confirmed attendance', :all_confirmed_attendance_people],
+      # ['All people with pending attendance BUT NO EMAIL SENT!!!!', :pending_but_no_email],
+      # ['Test: Send to Pepe and Jamie only', :pepe_and_jamie],
+      # ['Test: Only send to jamie', :just_jamie],
+      # ['Test: Only send to test user', :just_test_user]
     ]
   end
 
