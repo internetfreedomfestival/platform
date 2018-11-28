@@ -46,9 +46,12 @@
         = @person.created_at
       %p
         %b Attendance Status:
-        = @attendance_status && @attendance_status.status
+        = @attendance_status&.status
       %p
-        %b Public name:
+        %b Invitations Remaining:
+        = Invited.pending_invites_for(@person, @conference)
+      %p
+        %b Public Name:
         = @person.public_name
       %p
         %b Person Id:
