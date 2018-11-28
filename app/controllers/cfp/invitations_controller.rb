@@ -12,6 +12,20 @@ class Cfp::InvitationsController < ApplicationController
     conference = Conference.find_by(acronym: acronym)
 
     invited = Invited.create(email: email, person: person, conference: conference)
+
+    if Person.exists?(email: invited.email)
+      person = Person.find_by(email: invited.email)
+      attendance_status = AttendanceStatus.find_by(person: person, conference: conference)
+      if attendance_status.nil?
+        AttendanceStatus.create!(person: Person.find_by(email: invited.email), conference: conference, status: AttendanceStatus::INVITED)
+      else
+        if attendance_status.status == AttendanceStatus::REQUESTED
+          attendance_status.update(status: AttendanceStatus::INVITED)
+        end
+      end
+    end
+
+
     InvitationMailer.additional_invitation_mail(invited).deliver_now
 
     flash[:notice] = "We have sent an invite to #{params['email']}"
