@@ -20,15 +20,38 @@ class PersonProfileTest < Capybara::Rails::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
-  test 'number of remaining invites is visible for people with assigned invites' do
+  test 'number of remaining invites is visible for invited people' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@admin)
 
     go_to_conference_person_profile(@conference, @user.person)
 
     assert_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
+  end
+
+  test 'number of remaining invites is visible for people holding a ticket' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    assert_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
+  end
+
+  test 'no number of remaining invites is visible for uninvited people' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    assert_no_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
   end
 
   private
