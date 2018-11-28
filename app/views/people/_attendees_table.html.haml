@@ -10,6 +10,7 @@
         %th= sort_link @search, :organization, term: params[:term]
         %th= sort_link @search, :country_of_origin, term: params[:term]
         %th= sort_link @search, :attendance_status, term: params[:term]
+        %th= sort_link @search, :invited_by, term: params[:term]
         %th
       - else
         %th First name
@@ -19,6 +20,7 @@
         %th Organization
         %th Country of Origin
         %th Attendance Status
+        %th Invited by
       %th.last
   %tbody
     - collection.each do |attendance_status|
@@ -36,3 +38,4 @@
         %td= person.organization
         %td= person.country_of_origin
         %td= attendance_status.status
+        %td= Invited.find_by(email: person.email).person.email
