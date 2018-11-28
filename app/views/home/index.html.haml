@@ -287,6 +287,58 @@
             %b= key + ":"
             = value
 
+    - @person_with_country = Person.all.map(&:country_of_origin)
+    - @tickets_holders = Person.joins(:tickets).where(tickets: {status: "Completed"}).map(&:country_of_origin)
+    - @tickets_all = Ticket.all
+    - @people_with_tickets_completed = Person.joins(:tickets).where(tickets: {status: "Completed"})
+    - @people_with_event = Person.joins(:event_people).where(event_people: {event_role: "speaker"})
+    - @tickets_with_gender = Ticket.all.map(&:gender_pronoun)
+    - @statistics_gender = Hash.new
+    - @statistics_country = Hash.new
+    - @statistics_roles = Hash.new
+    - @statistics_speakers = Hash.new
+    - @pronouns = Person::GENDER_PRONOUN
+    - @countries = Person::COUNTRIES
+    -# - @roles = EventPerson::ROLES
+
+
+    .span8
+      %h2 Tickets
+      %p
+        %h4 Total ticket holders
+        = @tickets_all.count
+      %p
+        %h4 Gender balance of ticket holders:
+        - @pronouns.each do |pronoun|
+          - number = @tickets_with_gender.count{ |gender| gender == pronoun }
+          - @statistics_gender[pronoun] = number
+        - @statistics_gender.each do |key, value|
+          - if value != 0
+            %p
+              %b= key + ":"
+              = value
+      %p
+        %h4 Country breakdown of ticket holders:
+        - @countries.each do |country|
+          - number2 = @tickets_holders.count{ |person| person == country}
+          - @statistics_country[country] = number2
+        - @statistics_country.each do |key, value|
+          - if value != 0
+            %p
+              %b= key + ":"
+              = value
+      %p
+        %h4 How many ticket holders are speakers:
+        %pre= @people_with_tickets_completed
+        %pre= @people_with_event
+
+        %pre= (@people_with_tickets_complete & @people_with_event)
+
+
+
+
+
+
 
 :coffeescript
   update_languages_breakdown = (accepted_only = false) ->
