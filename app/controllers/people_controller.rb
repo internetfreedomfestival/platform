@@ -333,6 +333,25 @@ class PeopleController < ApplicationController
     end
   end
 
+  def add_invitations
+    authorize! :administrate, Person
+    person = Person.find_by(id: params[:id])
+
+    attendance_status = AttendanceStatus.find_by(person: person, conference: @conference)
+
+    unless attendance_status&.invited? || attendance_status&.registered?
+      redirect_to(person_path(person), alert: "It wasn't possible to add the invitations to the person profile. Please make sure is already invited.") and return
+    end
+
+    invitations_to_add = 5
+
+    invites_assignation = InvitesAssignation.find_or_create_by(person: person, conference: @conference)
+    new_assigned_number = (invites_assignation&.number || Invited::REGULAR_INVITES_PER_USER) + invitations_to_add
+    invites_assignation.update(number: new_assigned_number)
+
+    redirect_to(person_path(person), notice: 'The invitations have been successfully added to the person profile.')
+  end
+
   def accept_request
     authorize! :administrate, Person
     person = Person.find_by(id: params[:id])

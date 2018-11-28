@@ -211,6 +211,48 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text "You have #{number_of_invites} invites remaining."
   end
 
+  test 'invited users can be granted packages of 5 additional invitations' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+    click_on 'Assign +5 invitations'
+    click_on 'Logout'
+
+    login_as(@user)
+
+    assert_text 'You have 10 invites remaining.'
+  end
+
+  test 'users holding a ticket can be granted packages of 5 additional invitations' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+    click_on 'Assign +5 invitations'
+    click_on 'Logout'
+
+    login_as(@user)
+
+    assert_text 'You have 10 invites remaining.'
+  end
+
+  test 'uninvited users cannot be granted packages of 5 additional invitations' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    assert_no_text 'Assign +5 invitations'
+  end
+
   test 'users available invites cannnot be less than zero' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)

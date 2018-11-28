@@ -6,7 +6,7 @@ class AttendanceStatusTest < ActiveSupport::TestCase
     @conference = create(:conference)
   end
 
-  test "a person has a attendance status for a conference" do
+  test 'a person has a attendance status for a conference' do
     attendance_status = AttendanceStatus.new(
       person: @person,
       conference: @conference,
@@ -16,7 +16,7 @@ class AttendanceStatusTest < ActiveSupport::TestCase
     assert attendance_status.valid?
   end
 
-  test "a person has different attendance statuses for different conferences" do
+  test 'a person has different attendance statuses for different conferences' do
     other_conference = create(:conference)
     AttendanceStatus.create(
       person: @person,
@@ -33,7 +33,7 @@ class AttendanceStatusTest < ActiveSupport::TestCase
     assert attendance_status.valid?
   end
 
-  test "a person cannot have more than one attendance status for same conference" do
+  test 'a person cannot have more than one attendance status for same conference' do
     AttendanceStatus.create(
       person: @person,
       conference: @conference,
@@ -49,7 +49,7 @@ class AttendanceStatusTest < ActiveSupport::TestCase
     assert !new_attendance_status.valid?
   end
 
-  test "a person cannot have a non supported status" do
+  test 'a person cannot have a non supported status' do
     new_attendance_status = AttendanceStatus.new(
       person: @person,
       conference: @conference,
@@ -57,5 +57,35 @@ class AttendanceStatusTest < ActiveSupport::TestCase
     )
 
     assert !new_attendance_status.valid?
+  end
+
+  test 'an attendance status reports itself as invited when a person has been invited to a conference' do
+    attendance_status = AttendanceStatus.new(
+      person: @person,
+      conference: @conference,
+      status: AttendanceStatus::INVITED
+    )
+
+    assert_equal true, attendance_status.invited?
+  end
+
+  test 'an attendance status reports itself as registered when a person holds a ticket for a conference' do
+    attendance_status = AttendanceStatus.new(
+      person: @person,
+      conference: @conference,
+      status: AttendanceStatus::REGISTERED
+    )
+
+    assert_equal true, attendance_status.registered?
+  end
+
+  test 'an attendance status reports itself as requested when a person has requested a ticket for a conference' do
+    attendance_status = AttendanceStatus.new(
+      person: @person,
+      conference: @conference,
+      status: AttendanceStatus::REQUESTED
+    )
+
+    assert_equal true, attendance_status.requested?
   end
 end

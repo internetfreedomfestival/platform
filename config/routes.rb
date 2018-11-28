@@ -131,6 +131,7 @@ Frab::Application.routes.draw do
         member do
           post :send_invitation
           post :accept_request
+          post :add_invitations
         end
       end
 

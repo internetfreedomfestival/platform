@@ -76,4 +76,18 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal(@person.email, Invited.first.email)
     assert_equal(@conference, Invited.first.conference)
   end
+
+  test 'should add 5 more invitations to an invited person' do
+    post :send_invitation, id: @person.to_param, conference_acronym: @conference.acronym
+
+    assert_difference 'Invited.pending_invites_for(@person, @conference)', +5 do
+      post :add_invitations, id: @person.to_param, conference_acronym: @conference.acronym
+    end
+  end
+
+  test 'should not add 5 more invitations to an uninvited person' do
+    assert_no_difference 'Invited.pending_invites_for(@person, @conference)' do
+      post :add_invitations, id: @person.to_param, conference_acronym: @conference.acronym
+    end
+  end
 end
