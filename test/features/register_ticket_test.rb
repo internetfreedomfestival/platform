@@ -123,7 +123,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   test 'invited person can register ticket and cancel it after' do
     login_as(@user)
 
-    click_on 'Get Your Ticket'
+    click_on 'Claim IFF Ticket'
 
     register_ticket
 
@@ -135,7 +135,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
 
   test 'invited person has posibility to register another ticket after admin cancels its last' do
     login_as(@user)
-    click_on 'Get Your Ticket'
+    click_on 'Claim IFF Ticket'
     register_ticket
     click_on 'Logout'
 
@@ -149,7 +149,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     click_on 'Logout'
     login_as(@user)
 
-    assert_text "Get Your Ticket"
+    assert_text "Claim IFF Ticket"
   end
 
   private
