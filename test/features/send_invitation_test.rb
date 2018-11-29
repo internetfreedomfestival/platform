@@ -81,9 +81,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_no_selector '#invitations-form'
   end
 
-  test 'users can send invitations to the conference by email' do
+  test 'invited users can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@user)
 
@@ -96,9 +97,26 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'We have sent an invite to user@email.com'
   end
 
-  test '[BUG] emails from user invites does not contain blank spaces' do
+  test 'users holding a ticket can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
+
+    login_as(@user)
+
+    within '#invitations-form' do
+      fill_in 'email', with: 'user@email.com'
+      click_on 'Send'
+    end
+
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert_text 'We have sent an invite to user@email.com'
+  end
+
+  test '[BUG] emails in user invites does not contain blank spaces' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@user)
 
@@ -178,9 +196,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
   #   assert_no_text 'invites remaining.'
   # end
 
-  test 'users have a limited number of invites' do
+  test 'invited users have a limited number of invites' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@user)
 
@@ -199,9 +218,45 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_no_text 'invites remaining.'
   end
 
-  test 'users can be granted a specific number of invites' do
+  test 'users holding a ticket have a limited number of invites' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
+
+    login_as(@user)
+
+    number_of_invites = Invited::REGULAR_INVITES_PER_USER
+
+    number_of_invites.times do |iteration|
+      pending_invites = number_of_invites - iteration # starts with 0
+      assert_text "You have #{pending_invites} invites remaining."
+
+      within '#invitations-form' do
+        fill_in 'email', with: "email#{iteration}@email.com"
+        click_on 'Send'
+      end
+    end
+
+    assert_no_text 'invites remaining.'
+  end
+
+  test 'invited users can be granted a specific number of invites' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
+
+    number_of_invites = 100
+    InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
+
+    login_as(@user)
+
+    assert_text "You have #{number_of_invites} invites remaining."
+  end
+
+  test 'users holding a ticket can be granted a specific number of invites' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
     number_of_invites = 100
     InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
@@ -269,6 +324,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     same_email = 'user@email.com'
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
     create(:invited, email: same_email, conference: @conference)
 
     login_as(@user)

@@ -10,6 +10,10 @@ class Invited < ActiveRecord::Base
   belongs_to :conference
 
   def self.pending_invites_for(person, conference)
+    attendance_status = AttendanceStatus.find_by(person: person, conference: conference)
+
+    return 0 unless attendance_status&.invited? || attendance_status&.registered?
+
     sent_invites = Invited.where(person: person, conference: conference).count
     granted_invites = InvitesAssignation.find_by(person: person, conference: conference)
 
