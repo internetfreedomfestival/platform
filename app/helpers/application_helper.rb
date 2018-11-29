@@ -91,7 +91,7 @@ module ApplicationHelper
   end
 
   def by_speakers(event)
-    speakers = event.speakers.map { |p| link_to p.public_name, p }
+    speakers = event.speakers.map { |p| link_to p.public_name || p.email, p }
     if not speakers.empty?
       "by #{speakers.join(', ')}".html_safe
     else
