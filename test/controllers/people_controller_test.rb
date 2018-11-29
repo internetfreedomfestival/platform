@@ -5,7 +5,8 @@ class PeopleControllerTest < ActionController::TestCase
     @user = create(:user)
     @person = @user.person
     @conference = create(:conference)
-    login_as(:admin)
+
+    @admin = login_as(:admin)
   end
 
   def person_params
@@ -60,6 +61,16 @@ class PeopleControllerTest < ActionController::TestCase
 
     assert_equal(@person.email, Invited.first.email)
     assert_equal(@conference, Invited.first.conference)
+  end
+
+  test 'admin can override invitation by send invitation' do
+    invited_person = create(:person)
+    invite = create(:invited, person: @person, conference: @conference, email: invited_person.email)
+
+    post :send_invitation, id: invited_person.to_param, conference_acronym: @conference.acronym
+
+    invite.reload
+    assert_equal(invite.person, @admin.person)
   end
 
   test 'should allow person to submit event out of place' do
