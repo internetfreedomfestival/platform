@@ -305,6 +305,10 @@ class PeopleController < ApplicationController
 
     if Invited.exists?(email: person.email, conference_id: conference.id)
       invited = Invited.find_by(email: person.email, conference_id: conference.id)
+
+      invited.update(person: current_user.person)
+      invited.save
+
       InvitationMailer.invitation_mail(invited).deliver_now
 
       if !AttendanceStatus.find_by(person: person, conference: conference)
