@@ -30,19 +30,22 @@
     .row{style: "margin:10px;"}
       .span7{style: "margin-bottom: 10px; margin-left: 18px;"}
         %div
-          %h3 Get your 2019 IFF Ticket
+          %h3 Claim your 2019 IFF Ticket
           - if @attendance_status && @attendance_status.status == "Holds Ticket"
+            %p We have implemented request-based IFF ticket system to have a better control of the increasing crowd size, as well as to continue providing a safer and more diverse space.
             %p Your IFF Ticket is confirmed! No need to print it out, but be ready to show it when we check you in.
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = action_button "success", "View Ticket", view_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
           - else
             - if @invited
-              %p You have been invited to get an IFF Ticket!
+              %p We have implemented request-based IFF ticket system to have a better control of the increasing crowd size, as well as to continue providing a safer and more diverse space.
+              %p{style:"font-weight: bold;"} You have been invited to claim an IFF Ticket!
               %p Please update your user profile to access the ticketing form.
               %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
                 = action_button "primary", "Edit Profile", edit_cfp_person_path, style: "margin: 10px"
             - else
-              %p Request your 2019 IFF Ticket
+              %p We have implemented request-based IFF ticket system to have a better control of the increasing crowd size, as well as to continue providing a safer and more diverse space.
+              %p{style: "font-weight: bold;"} You will be able to request an IFF Ticket starting December 10!
               %p Please update your user profile to access the ticketing form.
               %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
                 = action_button "primary", "Edit Profile", edit_cfp_person_path, style: "margin: 10px"
@@ -51,7 +54,7 @@
     .row
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
         %div{style: "margin:10px;"}
-          %h3 Get your 2019 IFF Ticket
+          %h3{style: "font-weight: bold;"} Claim your 2019 IFF Ticket
           - if @attendance_status && @attendance_status.status == "Holds Ticket"
             %p Your IFF Ticket is confirmed! No need to print it out, but be ready to show it when we check you in.
             - if @invited
@@ -59,19 +62,26 @@
                 = action_button "success", "View Ticket", view_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
           - else
             - if @invited
-              %p You have been invited to get an IFF Ticket!
+              %p We have implemented request-based IFF ticket system to have a better control of the increasing crowd size, as well as to continue providing a safer and more diverse space.
+              %p{style: "font-weight: bold;"} You have been invited to claim an IFF Ticket!
               %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-                = action_button "success", "Get Your Ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
+                = action_button "success", "Claim IFF Ticket", ticketing_form_path(id: @invited.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
             - else
-              %p Request your 2019 IFF Ticket
+              %p We have implemented request-based IFF ticket system to have a better control of the increasing crowd size, as well as to continue providing a safer and more diverse space.
+              %p Once your request is reviewed, you'll receive an email with instructions on how to claim your 2019 IFF Ticket.
+              %p{style: "font-weight: bold;"} You will be able to request an IFF Ticket starting December 10!
               %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-                = action_button "", "Request your ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+                = action_button "", "Request IFF Ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
 
       .span8{style: "margin-bottom: 30px;"}
         %div{style: "margin:10px;"}
         - if !@invited.nil?
           -if @invites > 0
-            %h3 Share your invites!
+            %h3 Invite others to claim an IFF ticket
+            %p{style:"font-weight: bold;"} Only invited users will be able to claim an IFF Ticket.
+            %p You have the chance to invite others to claim their ticket.
+            %p Please note that invites are not tickets! Invited users will receive an email with detailed instructions on how to claim their IFF Ticket.
+
             = form_tag(cfp_send_invitation_path, id: 'invitations-form') do
               %p
                 You have

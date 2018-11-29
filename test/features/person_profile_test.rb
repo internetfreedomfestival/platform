@@ -54,6 +54,29 @@ class PersonProfileTest < Capybara::Rails::TestCase
     assert_no_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
   end
 
+  test 'when non invited user dont have a updated profile shows an alert' do
+    create(:call_for_participation, conference: @conference)
+
+    @user.person.update_attribute(:gender, '')
+
+    login_as(@user)
+
+    assert_text "You will be able to request an IFF Ticket starting December 10!"
+    assert_text "Please update your user profile to access the ticketing form."
+  end
+
+  test 'when invited user dont have a updated profile shows an alert' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, conference: @conference)
+
+    @user.person.update_attribute(:gender, '')
+
+    login_as(@user)
+
+    assert_text "You have been invited to claim an IFF Ticket!"
+    assert_text "Please update your user profile to access the ticketing form."
+  end
+
   private
 
   def login_as(user)
