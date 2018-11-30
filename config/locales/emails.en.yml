@@ -87,11 +87,11 @@ en:
         Looking forward to seeing you in Valencia!
         The IFF Team
     invitation_mail:
-      subject: "You are invited to the 2019 IFF!"
+      subject: "You are invited to claim an IFF Ticket!"
     not_registered_invitation_mail:
-      subject: "You are invited to the 2019 IFF!"
+      subject: "You are invited to claim an IFF Ticket!"
     additional_invitation_mail:
-      subject: "%{first_name} invited you to the 2019 IFF!"
+      subject: "%{first_name} invited you to get an IFF Ticket!"
     ticketing_mail:
       subject: "Here’s your 2019 IFF Ticket!"
     request_invitation_mail:
