@@ -215,7 +215,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
       end
     end
 
-    assert_no_text 'invites remaining.'
+    assert_text 'invites remaining.'
   end
 
   test 'users holding a ticket have a limited number of invites' do
@@ -237,7 +237,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
       end
     end
 
-    assert_no_text 'invites remaining.'
+    assert_text 'invites remaining.'
   end
 
   test 'invited users can be granted a specific number of invites' do
@@ -308,7 +308,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_no_text 'Assign +5 invitations'
   end
 
-  test 'users available invites cannnot be less than zero' do
+  test 'users available invites can be less than zero' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
 
@@ -317,7 +317,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     login_as(@user)
 
-    assert_no_text 'invites remaining.'
+    assert_text 'invites remaining.'
   end
 
   test 'users cannot invite people already invited' do
