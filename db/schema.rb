@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181127120852) do
+ActiveRecord::Schema.define(version: 20181130183657) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(version: 20181127120852) do
     t.integer "person_id"
     t.integer "conference_id"
     t.string  "email"
+    t.boolean "sharing_allowed"
   end
 
   add_index "invites", ["conference_id"], name: "index_invites_on_conference_id"

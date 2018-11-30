@@ -148,28 +148,29 @@ class PersonTest < ActiveSupport::TestCase
 
   test '#allowed_to_send_invites? return false when person has not been invited' do
     person = create(:person)
+    conference = create(:conference)
 
-    not_allowed = person.allowed_to_send_invites?
-
-    assert_equal false, not_allowed
-  end
-
-  test '#allowed_to_send_invites? return false when person has been invited by a non admin' do
-    person = create(:person)
-    non_admin = create(:person, user: create(:user, role: 'submitter'))
-    create(:invited, email: person.email, person: non_admin)
-
-    not_allowed = person.allowed_to_send_invites?
+    not_allowed = person.allowed_to_send_invites?(conference)
 
     assert_equal false, not_allowed
   end
 
-  test '#allowed_to_send_invites? return true when person has been invited by an admin' do
+  test '#allowed_to_send_invites? return false when the invitation does not allow sharing' do
     person = create(:person)
-    admin = create(:person, user: create(:user, role: 'admin'))
-    create(:invited, email: person.email, person: admin)
+    conference = create(:conference)
+    create(:invited, email: person.email, conference: conference, sharing_allowed: false)
 
-    allowed = person.allowed_to_send_invites?
+    not_allowed = person.allowed_to_send_invites?(conference)
+
+    assert_equal false, not_allowed
+  end
+
+  test '#allowed_to_send_invites? return true when the invitation does allow sharing' do
+    person = create(:person)
+    conference = create(:conference)
+    create(:invited, email: person.email, conference: conference, sharing_allowed: true)
+
+    allowed = person.allowed_to_send_invites?(conference)
 
     assert_equal true, allowed
   end

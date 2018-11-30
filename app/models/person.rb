@@ -586,12 +586,12 @@ class Person < ActiveRecord::Base
     MergePersons.new(keep_last_updated).combine!(self, doppelgaenger)
   end
 
-  def allowed_to_send_invites?
-    return false unless Invited.exists?(email: email)
-    invited = Invited.find_by(email: email)
-    invited_by = invited.person.user
-    return false if invited_by.nil?
-    invited_by.role == 'admin'
+  def allowed_to_send_invites?(conference)
+    invitation = Invited.find_by(email: email, conference: conference)
+
+    return false unless invitation.present?
+
+    invitation.sharing_allowed?
   end
 
   def self.to_csv(options = {})

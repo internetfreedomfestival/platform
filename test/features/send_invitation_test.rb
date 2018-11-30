@@ -83,7 +83,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'invited users can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@user)
@@ -99,7 +99,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'users holding a ticket can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
     login_as(@user)
@@ -115,7 +115,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test '[BUG] emails in user invites does not contain blank spaces' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@user)
@@ -198,7 +198,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'invited users have a limited number of invites' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@user)
@@ -220,7 +220,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'users holding a ticket have a limited number of invites' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
     login_as(@user)
@@ -242,7 +242,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'invited users can be granted a specific number of invites' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     number_of_invites = 100
@@ -255,7 +255,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'users holding a ticket can be granted a specific number of invites' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
     number_of_invites = 100
@@ -268,7 +268,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'invited users can be granted packages of 5 additional invitations' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@admin)
@@ -284,7 +284,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
   test 'users holding a ticket can be granted packages of 5 additional invitations' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
     login_as(@admin)
@@ -323,7 +323,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
   test 'users cannot invite people already invited' do
     same_email = 'user@email.com'
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
     create(:invited, email: same_email, conference: @conference)
 

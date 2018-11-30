@@ -11,7 +11,7 @@ class Cfp::InvitationsController < ApplicationController
     person = current_user.person
     conference = Conference.find_by(acronym: acronym)
 
-    invited = Invited.create(email: email, person: person, conference: conference)
+    invited = Invited.create(email: email, person: person, conference: conference, sharing_allowed: false)
 
     if Person.exists?(email: invited.email)
       person = Person.find_by(email: invited.email)
@@ -53,7 +53,7 @@ class Cfp::InvitationsController < ApplicationController
   def check_user_is_allowed_to_invite_people
     person = current_user.person
 
-    return if person.allowed_to_send_invites?
+    return if person.allowed_to_send_invites?(@conference)
 
     flash[:error] = 'Only users invited by an admin can invite colleagues'
     redirect_to cfp_root_path

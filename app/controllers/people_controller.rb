@@ -306,7 +306,7 @@ class PeopleController < ApplicationController
     if Invited.exists?(email: person.email, conference_id: conference.id)
       invited = Invited.find_by(email: person.email, conference_id: conference.id)
 
-      invited.update(person: current_user.person)
+      invited.update(person: current_user.person, sharing_allowed: true)
       invited.save
 
       InvitationMailer.invitation_mail(invited).deliver_now
@@ -321,7 +321,7 @@ class PeopleController < ApplicationController
 
       redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
     else
-      invited = Invited.create!(email: person.email, person: current_user.person, conference: conference)
+      invited = Invited.create!(email: person.email, person: current_user.person, conference: conference, sharing_allowed: true)
 
       if !AttendanceStatus.find_by(person: person, conference: conference)
         AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
