@@ -20,9 +20,9 @@ class PersonProfileTest < Capybara::Rails::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
-  test 'number of remaining invites is visible for invited people' do
+  test 'the number of remaining invites is visible for invited people when the invitation does allow sharing' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
     login_as(@admin)
@@ -32,9 +32,9 @@ class PersonProfileTest < Capybara::Rails::TestCase
     assert_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
   end
 
-  test 'number of remaining invites is visible for people holding a ticket' do
+  test 'the number of remaining invites is visible for people holding a ticket when the invitation did allow sharing' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
     login_as(@admin)
@@ -42,6 +42,30 @@ class PersonProfileTest < Capybara::Rails::TestCase
     go_to_conference_person_profile(@conference, @user.person)
 
     assert_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
+  end
+
+  test 'no number of remaining invites is visible for invited people when the invitation does not allow sharing' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: false)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    assert_no_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
+  end
+
+  test 'no number of remaining invites is visible for people holding a ticket when the invitation did not allow sharing' do
+    create(:call_for_participation, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: false)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
+
+    login_as(@admin)
+
+    go_to_conference_person_profile(@conference, @user.person)
+
+    assert_no_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
   end
 
   test 'no number of remaining invites is visible for uninvited people' do
@@ -52,29 +76,6 @@ class PersonProfileTest < Capybara::Rails::TestCase
     go_to_conference_person_profile(@conference, @user.person)
 
     assert_no_text "Invitations Remaining: #{Invited::REGULAR_INVITES_PER_USER}"
-  end
-
-  test 'when non invited user dont have a updated profile shows an alert' do
-    create(:call_for_participation, conference: @conference)
-
-    @user.person.update_attribute(:gender, '')
-
-    login_as(@user)
-
-    assert_text "You will be able to request an IFF Ticket starting December 10!"
-    assert_text "Please update your user profile to access the ticketing form."
-  end
-
-  test 'when invited user dont have a updated profile shows an alert' do
-    create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, conference: @conference)
-
-    @user.person.update_attribute(:gender, '')
-
-    login_as(@user)
-
-    assert_text "You have been invited to claim an IFF Ticket!"
-    assert_text "Please update your user profile to access the ticketing form."
   end
 
   private
