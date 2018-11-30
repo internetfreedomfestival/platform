@@ -103,7 +103,7 @@
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
         %div{style: "margin:10px;"}
           %h3 Submit a Session for the 2019 IFF
-          %p{style: "font-weight: bold;"} The Call for Proposals is now open! Send your sessions by November 19, 2018.
+          %p{style: "font-weight: bold;"} The Call for Proposals is exceptionally open for late submissions!
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
@@ -122,7 +122,10 @@
     .row
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
         %div{style: "margin:10px;"}
-          %h3 The 2019 Global Call for Proposals is now closed. Thank you all!
+          %h3 Submit a Session for the 2019 IFF
+          %p{style: "font-weight: bold;"} The 2019 Global Call for Proposals is now closed. Thank you all!
+          %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+            = action_button "", "Submit a Session", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: "disabled"
 
   .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
 

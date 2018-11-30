@@ -29,7 +29,7 @@ class CfpFormTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/cfp"
 
-    assert_no_text 'Submit a Session for the 2019 IFF'
+    assert_text 'The 2019 Global Call for Proposals is now closed'
 
     ENV['NEW_CFP_ENABLED'] = 'true'
 
