@@ -215,7 +215,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
       end
     end
 
-    assert_text 'invites remaining.'
+    assert_text 'You have 0 invites remaining.'
   end
 
   test 'users holding a ticket have a limited number of invites' do
@@ -237,7 +237,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
       end
     end
 
-    assert_text 'invites remaining.'
+    assert_text 'You have 0 invites remaining.'
   end
 
   test 'invited users can be granted a specific number of invites' do
@@ -308,16 +308,16 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_no_text 'Assign +5 invitations'
   end
 
-  test 'users available invites can be less than zero' do
+  test 'user available invites cannot be less than zero' do
     create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
+    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
 
     number_of_invites = -100
     InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
 
     login_as(@user)
 
-    assert_text 'invites remaining.'
+    assert_text 'You have 0 invites remaining.'
   end
 
   test 'users cannot invite people already invited' do
@@ -359,7 +359,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
   #   assert_no_text 'invites remaining.'
   # end
 
-  test 'users invited by admin can invite other people' do
+  test 'users invited from admin panel can invite other people' do
     create(:call_for_participation, conference: @conference)
 
     login_as(@admin)
@@ -369,6 +369,28 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     login_as(@user)
     assert_text 'You have 5 invites remaining.'
+  end
+
+  test 'users invited from user portal cannot invite other people' do
+    create(:call_for_participation, conference: @conference)
+
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @user.person)
+    click_on 'Send invitation'
+    click_on 'Logout'
+
+    other_user = create(:user, person: create(:person))
+
+    login_as(@user)
+    within '#invitations-form' do
+      fill_in 'email', with: other_user.person.email
+      click_on 'Send'
+    end
+    click_on 'Logout'
+
+    login_as(other_user)
+
+    assert_no_selector '#invitations-form'
   end
 
   test 'person can access to the invitation link' do
@@ -440,10 +462,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on person.public_name
   end
 
-  def with_an_invited_person(person)
-    login_as(@admin)
-    go_to_conference_person_profile(@conference, @user.person)
-    click_on 'Send invitation'
-    click_on 'Logout'
+  def go_to_user_portal(conference, person)
+    visit "/#{conference.acronym}/cfp"
   end
 end

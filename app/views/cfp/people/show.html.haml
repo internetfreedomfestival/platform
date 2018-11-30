@@ -75,7 +75,7 @@
 
       .span8{style: "margin-bottom: 30px;"}
         %div{style: "margin:10px;"}
-        - if !@invited.nil?
+        - if @invited.present? && @person.allowed_to_send_invites?(@conference)
           %h3 Invite others to claim an IFF ticket
           %p{style:"font-weight: bold;"} Only invited users will be able to claim an IFF Ticket.
           %p You have the chance to invite others to claim their ticket.
