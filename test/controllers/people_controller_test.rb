@@ -83,7 +83,7 @@ class PeopleControllerTest < ActionController::TestCase
 
   test 'should accept invitations request' do
     post :accept_request, id: @person.to_param, conference_acronym: @conference.acronym
-    
+
     assert_equal(@person.email, Invited.first.email)
     assert_equal(@conference, Invited.first.conference)
   end
@@ -93,7 +93,7 @@ class PeopleControllerTest < ActionController::TestCase
 
     status = AttendanceStatus.find_by(person: @person, conference: @conference)
 
-    assert_equal(status.status, "On hold request")
+    assert_equal(status.status, "On Hold")
   end
 
   test 'should reject the request' do

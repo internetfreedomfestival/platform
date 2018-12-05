@@ -1,11 +1,11 @@
 class AttendanceStatus < ActiveRecord::Base
   INVITED = 'Invited'.freeze
   REQUESTED = 'Requested'.freeze
+  ON_HOLD = 'On Hold'.freeze
   REGISTERED = 'Holds Ticket'.freeze
   REJECTED = 'Rejected'.freeze
-  ON_HOLD = 'On hold request'.freeze
 
-  STATUSES = [INVITED, REQUESTED, REGISTERED, REJECTED, ON_HOLD].freeze
+  STATUSES = [INVITED, REQUESTED, ON_HOLD, REGISTERED, REJECTED].freeze
 
   belongs_to :person
   belongs_to :conference
@@ -21,12 +21,12 @@ class AttendanceStatus < ActiveRecord::Base
     status == REQUESTED
   end
 
-  def registered?
-    status == REGISTERED
-  end
-
   def on_hold?
     status == ON_HOLD
+  end
+
+  def registered?
+    status == REGISTERED
   end
 
   def rejected?
