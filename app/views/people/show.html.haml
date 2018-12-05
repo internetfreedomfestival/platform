@@ -13,7 +13,7 @@
           - if @attendance_status&.requested? || @attendance_status&.on_hold?
             = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request to this person?"}
           - if @attendance_status&.requested?
-            = action_button "success", 'On Hold', on_hold_request_person_path(@person), method: :post
+            = action_button "success", 'Hold request', on_hold_request_person_path(@person), method: :post
           - if @attendance_status&.requested? || @attendance_status&.invited? || @attendance_status&.on_hold?
             = action_button "success", 'Reject', reject_person_path(@person), method: :post
         - unless @user.role == "crew" && @is_fellow.present?
