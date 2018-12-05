@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $("#amount_input, #organizational_amount, #solidarity_amount").hide()
+  $("#organizational_amount, #solidarity_amount, #individual_amount").hide()
   $("#ticket_amount").attr('value', '')
 
   $("#iff_before_checkboxes input[type=checkbox]").on("click", function(){
@@ -28,20 +28,24 @@ $(document).ready(function() {
   })
 
   $("#ticket_option input[type=radio]").on("click", function(){
+    var individual_amount = document.getElementById("individual_amount");
     var solidarity_amount = document.getElementById("solidarity_amount");
     var organizational_element = document.getElementById("organizational_amount");
 
     if($("#ticket_ticket_option_solidarity_ticket").attr("checked")) {
+      $(individual_amount).hide()
       $(organizational_amount).hide()
       $(solidarity_amount).show()
     }
     if($("#ticket_ticket_option_organizational_ticket").attr("checked")){
+      $(individual_amount).hide()
       $(solidarity_amount).hide()
       $(organizational_amount).show()
     }
     if ($("#ticket_ticket_option_individual_ticket").attr("checked")){
       $(solidarity_amount).hide()
       $(organizational_amount).hide()
+      $(individual_amount).show()
       $("#ticket_amount").attr('value', 0)
     }
   })
