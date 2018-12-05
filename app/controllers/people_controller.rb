@@ -407,6 +407,8 @@ class PeopleController < ApplicationController
       AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::REJECTED)
     end
 
+    Invited.find_by(email: person.email, conference: conference)&.destroy
+
     redirect_to(person_path(person), notice: 'You have rejected the request.')
   end
 
@@ -454,22 +456,6 @@ class PeopleController < ApplicationController
       flash[:danger] = "#{@person.public_name} was not confirmed...they may need to complete their registration."
     end
     redirect_to(all_people_path)
-  end
-
-  def cancel_attendance
-    @person = Person.find_by(id: params[:format])
-
-    if remove_invitation
-      return redirect_to(person_path(@person.id), notice: 'You canceled their attendance.')
-    else
-      return redirect_to(person_path(@person.id), notice: 'There was an error cancelling their attendance.')
-    end
-  end
-
-  def remove_invitation
-    @attendance_status = AttendanceStatus.find_by(person: @person, conference: @conference)
-
-    @attendance_status && @attendance_status.destroy && Invited.find_by(email: @person.email, conference_id: @conference.id).destroy
   end
 
   def cancel_ticket

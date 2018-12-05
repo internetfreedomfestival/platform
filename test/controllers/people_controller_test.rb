@@ -104,6 +104,17 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal(status.status, "Rejected")
   end
 
+  test 'should remove the user invitation when the request is rejected' do
+    invited_person = create(:person)
+    invite = create(:invited, person: @person, conference: @conference, email: invited_person.email)
+
+    post :reject, id: invited_person.to_param, conference_acronym: @conference.acronym
+
+    invite = Invited.find_by(email: invited_person.email, conference: @conference)
+
+    assert_nil(invite)
+  end
+
   test 'should add 5 more invitations to an invited person' do
     post :send_invitation, id: @person.to_param, conference_acronym: @conference.acronym
 
