@@ -11,23 +11,21 @@
           - if @attendance_status&.invited? || @attendance_status&.registered?
             = action_button "success", 'Assign +5 invitations', add_invitations_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to assign 5 more invitations to this person?"}
           - if @attendance_status&.requested? || @attendance_status&.on_hold?
-            = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request to this person?"}
+            = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request for this person?"}
           - if @attendance_status&.requested?
-            = action_button "success", 'Hold request', on_hold_request_person_path(@person), method: :post
+            = action_button "success", 'Hold request', on_hold_request_person_path(@person), method: :post, :data => {:confirm => "Are you absolutely sure you want to put this person request on hold?"}
           - if @attendance_status&.requested? || @attendance_status&.invited? || @attendance_status&.on_hold?
-            = action_button "success", 'Reject', reject_person_path(@person), method: :post
+            = action_button "success", 'Reject', reject_person_path(@person), method: :post, :data => {:confirm => "Are you absolutely sure you want to reject this person attendance?"}
         - unless @user.role == "crew" && @is_fellow.present?
-          = action_button "success", "Make this person a Fellow", make_fellow_people_path(@person), title: "This will make this person a fellow."
+          = action_button "success", "Make this person a Fellow", make_fellow_people_path(@person), title: "This will make this person a fellow.", :data => {:confirm => "Are you absolutely sure you want to make a Fellow of this person?"}
         - if @person.late_event_submit == false
-          = action_button "success", "Allow Late Event Submission", allow_late_submissions_people_path(@person), title: "This will allow this person to submit events after the deadline."
+          = action_button "success", "Allow Late Event Submission", allow_late_submissions_people_path(@person), title: "This will allow this person to submit events after the deadline.", :data => {:confirm => "Are you absolutely sure you want to allow late event submission for this person?"}
         - if @user.confirmed_at.nil?
           = action_button "success", "Confirm User", confirm_user_people_path(@person)
       - if can? :crud, @person
         = action_button "primary", "Edit person", edit_person_path(@person), title: "Edit this person's data."
       - if can? :administrate, Person
         = action_button "small danger", 'Destroy', @person, confirm: 'Are you sure?', method: :delete, :data => {:confirm => "Are you absolutely sure you want to delete this person? This will be final!"}
-        -# - if @attendance_status
-        -#   = action_button "danger", "Cancel Attendance", cancel_attendance_people_path(@person), title: "Cancel this person's attendance."
         %p
         = action_button "add", "Add person", new_person_path, title: "Add a new person."
       - if @person.public_and_accepted_events_as_speaker_in(@conference).present?
