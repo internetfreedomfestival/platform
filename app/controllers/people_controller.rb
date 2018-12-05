@@ -363,17 +363,51 @@ class PeopleController < ApplicationController
 
     invited = Invited.create!(email: person.email, person: person, conference: conference)
 
-    if !AttendanceStatus.find_by(person: person, conference: conference)
-      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
-    else
+    if AttendanceStatus.exists?(person: person, conference: conference)
       status = AttendanceStatus.find_by(person: person, conference: conference)
       status.status = AttendanceStatus::INVITED
       status.save
+    else
+      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
     end
 
     InvitationMailer.accept_request_mail(invited).deliver_now
 
     redirect_to(person_path(person), notice: 'Person was invited.')
+  end
+
+  def on_hold_request
+    authorize! :administrate, Person
+    person = Person.find_by(id: params[:id])
+    conference = Conference.find_by(acronym: params[:conference_acronym])
+
+    if AttendanceStatus.exists?(person: person, conference: conference)
+      status = AttendanceStatus.find_by(person: person, conference: conference)
+      status.status = AttendanceStatus::ON_HOLD
+      status.save
+    else
+      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::ON_HOLD)
+    end
+
+    InvitationMailer.on_hold_request_mail(person).deliver_now
+
+    redirect_to(person_path(person), notice: 'The person has been put on hold for the request.')
+  end
+
+  def reject
+    authorize! :administrate, Person
+    person = Person.find_by(id: params[:id])
+    conference = Conference.find_by(acronym: params[:conference_acronym])
+
+    if AttendanceStatus.exists?(person: person, conference: conference)
+      status = AttendanceStatus.find_by(person: person, conference: conference)
+      status.status = AttendanceStatus::REJECTED
+      status.save
+    else
+      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::REJECTED)
+    end
+
+    redirect_to(person_path(person), notice: 'You have rejected the request.')
   end
 
   def move_to_waitlist

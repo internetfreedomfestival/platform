@@ -59,4 +59,14 @@ class InvitationMailer < ApplicationMailer
       locale: :en
     )
   end
+
+  def on_hold_request_mail(person)
+    @first_name = Person.find_by(email: person.email).first_name
+
+    mail(
+      to: person.email,
+      subject: I18n.t('emails.on_hold_request_mail.subject'),
+      locale: :en
+    )
+  end
 end

@@ -100,3 +100,5 @@ en:
       subject: "Here’s your invite to the 2019 IFF!"
     event_mail:
       subject: "Success! 2019 IFF Session Submitted"
+    on_hold_request_mail:
+      subject: "IFF Ticket Request On Hold"

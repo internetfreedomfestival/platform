@@ -55,4 +55,29 @@ class InvitationMailerTest < ActionMailer::TestCase
     assert_equal "#{inviter.first_name} invited you to get an IFF Ticket!", email.subject
     assert_match expected_link, email.body.to_s
   end
+
+  test 'sends accept request mail from a user' do
+    invite = create(:invited)
+    invited = create(:person, email: invite.email)
+
+    email = InvitationMailer.accept_request_mail(invite).deliver_now
+
+    expected_link = "#{invite.conference.acronym}/invitations/#{invite.id}/ticketing_form"
+    assert_not ActionMailer::Base.deliveries.empty?
+    assert_equal [ENV.fetch('FROM_EMAIL')], email.from
+    assert_equal [invited.email], email.to
+    assert_equal "Here’s your invite to the 2019 IFF!", email.subject
+    assert_match expected_link, email.body.to_s
+  end
+
+  test 'sends on hold request mail from a user' do
+    person = create(:person)
+
+    email = InvitationMailer.on_hold_request_mail(person).deliver_now
+
+    assert_not ActionMailer::Base.deliveries.empty?
+    assert_equal [ENV.fetch('FROM_EMAIL')], email.from
+    assert_equal [person.email], email.to
+    assert_equal "IFF Ticket Request On Hold", email.subject
+  end
 end

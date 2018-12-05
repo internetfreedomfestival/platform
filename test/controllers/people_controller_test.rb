@@ -83,9 +83,25 @@ class PeopleControllerTest < ActionController::TestCase
 
   test 'should accept invitations request' do
     post :accept_request, id: @person.to_param, conference_acronym: @conference.acronym
-
+    
     assert_equal(@person.email, Invited.first.email)
     assert_equal(@conference, Invited.first.conference)
+  end
+
+  test 'should puts on hold the request' do
+    post :on_hold_request, id: @person.to_param, conference_acronym: @conference.acronym
+
+    status = AttendanceStatus.find_by(person: @person, conference: @conference)
+
+    assert_equal(status.status, "On hold request")
+  end
+
+  test 'should reject the request' do
+    post :reject, id: @person.to_param, conference_acronym: @conference.acronym
+
+    status = AttendanceStatus.find_by(person: @person, conference: @conference)
+
+    assert_equal(status.status, "Rejected")
   end
 
   test 'should add 5 more invitations to an invited person' do
