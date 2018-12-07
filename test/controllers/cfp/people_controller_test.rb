@@ -17,16 +17,6 @@ class Cfp::PeopleControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '[bug] users with a ticket for old conferences do not require a conference invitation' do
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = "true"
-    old_conference = create(:conference, acronym: 'IFF2018')
-    create(:call_for_participation, conference: old_conference)
-    AttendanceStatus.create!(person: @cfp_person, status: "Holds Ticket", conference: old_conference)
-
-    get :show, conference_acronym: old_conference.acronym
-    assert_response :success
-  end
-
   test 'should create cfp_person' do
     # can't have two persons on one user, so delete the one from login_as
     user = create(

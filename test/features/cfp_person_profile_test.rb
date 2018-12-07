@@ -31,9 +31,10 @@ class CfpPersonProfileTest < Capybara::Rails::TestCase
     assert_text 'Please update your user profile to access the ticketing form.'
   end
 
-  test 'an alert is shown when an invited user does not have an updated' do
+  test 'an alert is shown when an invited user does not have an updated profile' do
     create(:call_for_participation, conference: @conference)
     create(:invited, email: @user.person.email, conference: @conference)
+    create(:attendance_status, person: @user.person, conference: @conference, status: 'Invited')
 
     @user.person.update_attribute(:gender, '')
 
