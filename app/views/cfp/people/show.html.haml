@@ -90,14 +90,14 @@
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
 
-        - if @attendance_status && @attendance_status.status == "Requested"
-          %p Your ticket request has been received.
-        - if !@attendance_status 
-          = form_tag(request_invitation_cfp_person_path, id: 'request_invitation') do
-            %h3 No invite?
-            %p We will me sending out new invites periodically. Request an invite to be considered.
-            = submit_tag('Request Invite', class: "btn success")
-        - else
+        -# - if @attendance_status && @attendance_status.status == "Requested"
+        -#   %p Your ticket request has been received.
+        -# - if !@attendance_status
+        -#   = form_tag(request_invitation_cfp_person_path, id: 'request_invitation') do
+        -#     %h3 No invite?
+        -#     %p We will me sending out new invites periodically. Request an invite to be considered.
+        -#     = submit_tag('Request Invite', class: "btn success")
+        -# - else
 
   - if @person.late_event_submit
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
