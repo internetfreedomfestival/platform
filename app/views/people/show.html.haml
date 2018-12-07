@@ -6,16 +6,15 @@
       - if can? :manage, @user
         - if @user.role == "crew" && @is_fellow.present?
           %h3 Already a Fellow
-        - if FeatureToggle.new_ticketing_system_enabled?
-          = action_button "success", 'Send invitation', send_invitation_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to send an invitation to this person?"}
-          - if @attendance_status&.invited? || @attendance_status&.registered?
-            = action_button "success", 'Assign +5 invitations', add_invitations_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to assign 5 more invitations to this person?"}
-          - if @attendance_status&.requested? || @attendance_status&.on_hold?
-            = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request for this person?"}
-          - if @attendance_status&.requested?
-            = action_button "success", 'Hold request', on_hold_request_person_path(@person), method: :post, :data => {:confirm => "Are you absolutely sure you want to put this person request on hold?"}
-          - if @attendance_status&.requested? || @attendance_status&.invited? || @attendance_status&.on_hold?
-            = action_button "success", 'Reject', reject_person_path(@person), method: :post, :data => {:confirm => "Are you absolutely sure you want to reject this person attendance?"}
+        = action_button "success", 'Send invitation', send_invitation_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to send an invitation to this person?"}
+        - if @attendance_status&.invited? || @attendance_status&.registered?
+          = action_button "success", 'Assign +5 invitations', add_invitations_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to assign 5 more invitations to this person?"}
+        - if @attendance_status&.requested? || @attendance_status&.on_hold?
+          = action_button "success", 'Accept request', accept_request_person_path(@person), confirm: 'Are you sure?', method: :post, :data => {:confirm => "Are you absolutely sure you want to accept a request for this person?"}
+        - if @attendance_status&.requested?
+          = action_button "success", 'Hold request', on_hold_request_person_path(@person), method: :post, :data => {:confirm => "Are you absolutely sure you want to put this person request on hold?"}
+        - if @attendance_status&.requested? || @attendance_status&.invited? || @attendance_status&.on_hold?
+          = action_button "success", 'Reject', reject_person_path(@person), method: :post, :data => {:confirm => "Are you absolutely sure you want to reject this person attendance?"}
         - unless @user.role == "crew" && @is_fellow.present?
           = action_button "success", "Make this person a Fellow", make_fellow_people_path(@person), title: "This will make this person a fellow.", :data => {:confirm => "Are you absolutely sure you want to make a Fellow of this person?"}
         - if @person.late_event_submit == false

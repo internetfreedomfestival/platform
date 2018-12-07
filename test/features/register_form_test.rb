@@ -3,17 +3,9 @@ require "minitest/rails/capybara"
 
 class RegisterFormTest < Capybara::Rails::TestCase
   setup do
-    @initial_env_value = ENV['NEW_TICKETING_SYSTEM_ENABLED']
-
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'true'
-
     @conference = create(:conference)
     @user = create(:user, person: create(:person, public_name: nil), role: 'submitter')
     @cfp = create(:call_for_participation, conference: @conference)
-  end
-
-  teardown do
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = @initial_env_value
   end
 
   test 'new user can complete his profile through to the sign up form' do

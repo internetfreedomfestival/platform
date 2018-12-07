@@ -3,10 +3,6 @@ require "minitest/rails/capybara"
 
 class SendInvitationTest < Capybara::Rails::TestCase
   setup do
-    @initial_env_value = ENV['NEW_TICKETING_SYSTEM_ENABLED']
-
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'true'
-
     @conference = create(:conference)
     @admin = create(:user, person: create(:person), role: 'admin')
     @user = create(:user, person: create(:person), role: 'submitter')
@@ -15,8 +11,6 @@ class SendInvitationTest < Capybara::Rails::TestCase
   end
 
   teardown do
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = @initial_env_value
-
     ActionMailer::Base.deliveries.clear
   end
 
@@ -68,17 +62,6 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     assert_equal 2, ActionMailer::Base.deliveries.size
     assert_text "This person was already invited but we've sent the invitation again."
-  end
-
-  test 'users cannot send invitations to the conference by email if ticketing system is not enabled' do
-    ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'false'
-
-    create(:call_for_participation, conference: @conference)
-    create(:invited, email: @user.person.email, person: @admin.person, conference: @conference)
-
-    login_as(@user)
-
-    assert_no_selector '#invitations-form'
   end
 
   test 'invited users can send invitations to the conference by email' do
@@ -140,16 +123,6 @@ class SendInvitationTest < Capybara::Rails::TestCase
   #
   #   assert_equal 1, ActionMailer::Base.deliveries.size
   #   assert_text 'Your ticket request has been received.'
-  # end
-
-  # test 'users cannot request invitation to the conference if ticketing system is not enabled' do
-  #   ENV['NEW_TICKETING_SYSTEM_ENABLED'] = 'false'
-  #
-  #   create(:call_for_participation, conference: @conference)
-  #
-  #   login_as(@user)
-  #
-  #   assert_no_selector '#request_invitation'
   # end
 
   # test 'admin can accept a request invitation' do

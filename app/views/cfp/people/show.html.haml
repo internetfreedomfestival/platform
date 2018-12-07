@@ -49,7 +49,7 @@
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = action_button "primary", "Edit Profile", edit_cfp_person_path, style: "margin: 10px"
 
-  - if FeatureToggle.new_ticketing_system_enabled? and !@is_old_account
+  - else
     .row
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
         %div{style: "margin:10px;"}

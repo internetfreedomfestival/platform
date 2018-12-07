@@ -1,131 +1,130 @@
-- if FeatureToggle.new_ticketing_system_enabled?
-  = simple_form_for(@ticket, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
-    %fieldset.inputs
-    .row
-      .offset1
-        %h1 2019 IFF Ticket
-        %br
-        .span16
-          = f.input :public_name, hint: "This is the name that will be displayed in your badge.", required: true
-          = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, required: true
-          %p.form-note Your public gender pronoun will be displayed in your badge. Pronoun list written by <a href='https://twitter.com/morganastra'> @morganastra.</a> Visits <a href='https://pronoun.is/'> https://pronoun.is/ </a>for more information.
+= simple_form_for(@ticket, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
+  %fieldset.inputs
+  .row
+    .offset1
+      %h1 2019 IFF Ticket
+      %br
+      .span16
+        = f.input :public_name, hint: "This is the name that will be displayed in your badge.", required: true
+        = f.input :gender_pronoun, collection: Person::GENDER_PRONOUN, required: true
+        %p.form-note Your public gender pronoun will be displayed in your badge. Pronoun list written by <a href='https://twitter.com/morganastra'> @morganastra.</a> Visits <a href='https://pronoun.is/'> https://pronoun.is/ </a>for more information.
 
-          .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_before))}
-            .form-label
-              %label
-                %span.form-required__text Required Field.
-                Have you presented at IFF before?
-              - if @ticket.errors.messages.key?(:iff_before)
-                %span.form-input__error= @ticket.errors.messages[:iff_before].first
-            .form-input#iff_before_checkboxes
-              %ul.inputs-list
-                = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
-                  %li
-                    =c.label do
-                      = c.check_box
-                      %span= c.text
-
-          .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_goals))}
-            .form-label
-              %label
-                %span.form-required__text Required Field.
-                What are your main goals for attending the 2019 IFF?
-              - if @ticket.errors.messages.key?(:iff_goals)
-                %span.form-input__error= @ticket.errors.messages[:iff_goals].first
-            .form-input#iff_goals_checkboxes
-              %ul.inputs-list
-                = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
-                  %li
-                    =c.label do
-                      = c.check_box
-                      %span= c.text
-
-          = f.input :interested_in_volunteer, collection: [['Yes, sounds fun!', true], ['No, thank you', false]], required: true, label: "Would you like to hear more about our awesome volunteering opportunities?", default: 0, hint: "Volunteering is a great way to meet people outside of your usual circles!"
-
-
-        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_days))}
+        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_before))}
           .form-label
             %label
               %span.form-required__text Required Field.
-              Which days are you planning to attend?
-            - if @ticket.errors.messages.key?(:iff_days)
-              %span.form-input__error= @ticket.errors.messages[:iff_days].first
-          .form-input#iff_days_checkboxes
+              Have you presented at IFF before?
+            - if @ticket.errors.messages.key?(:iff_before)
+              %span.form-input__error= @ticket.errors.messages[:iff_before].first
+          .form-input#iff_before_checkboxes
             %ul.inputs-list
-              = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
+              = f.collection_check_boxes(:iff_before, Person::IFF_BEFORE, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
                 %li
                   =c.label do
                     = c.check_box
                     %span= c.text
 
-        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:ticket_option) || @ticket.errors.messages.key?(:amount))}
+        .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_goals))}
           .form-label
             %label
               %span.form-required__text Required Field.
-              Get your 2019 IFF Ticket
-            - if @ticket.errors.messages.key?(:ticket_option)
-              %span.form-input__error= @ticket.errors.messages[:ticket_option].first
-            - if @ticket.errors.messages.key?(:amount)
-              %span.form-input__error= @ticket.errors.messages[:amount].first
-          .form-help
-            %p
-              %span.form-help__text The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included.
-            %p
-              %span.form-help__text While we continue working hard to ensure that IFF’s participation fees are waived for everyone, the new IFF Ticket system makes it easier for individuals and organizations who wish to support the IFF by paying for their ticket. Funds raised will support our community development and diversity initiatives. Please choose your ticket below.
-          .form-input#ticket_option
+              What are your main goals for attending the 2019 IFF?
+            - if @ticket.errors.messages.key?(:iff_goals)
+              %span.form-input__error= @ticket.errors.messages[:iff_goals].first
+          .form-input#iff_goals_checkboxes
             %ul.inputs-list
-              = f.collection_radio_buttons(:ticket_option, [["Individual Ticket", "FREE"], ["Solidarity Ticket", "Varies"], ["Organizational Ticket", "USD 850"]], :first, :last, {boolean_style: :inline}) do |r|
-                %li{style: "border: 2px solid black; border-radius: 10px; background-color: #4544f8; width: 570px; margin: 10px;  height: 50px;"}
-                  =r.label do
-                    %table
-                      %tr
-                        %td{style: "border: 0px; width: 500px; "}
-                          = r.radio_button
-                          %span{style: "color: white; font-weight: bold;"}= r.value
-                        %td{style: "border: 0px; width: 70px;"}
-                          %p{style: "position: top; width: 70px; height: 30px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}= r.text
+              = f.collection_check_boxes(:iff_goals, Person::GOALS, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
+                %li
+                  =c.label do
+                    = c.check_box
+                    %span= c.text
 
-                -if r.value == "Individual Ticket"
-                  .div#individual_amount{style: "margin-left: 20px; margin-bottom: 1rem"}
-                    100% sponsored and free of charge.
+        = f.input :interested_in_volunteer, collection: [['Yes, sounds fun!', true], ['No, thank you', false]], required: true, label: "Would you like to hear more about our awesome volunteering opportunities?", default: 0, hint: "Volunteering is a great way to meet people outside of your usual circles!"
 
-                -if r.value == "Solidarity Ticket"
-                  .div#solidarity_amount{style: "margin-left: 20px; margin-bottom: -0.5rem"}
-                    Support the IFF by assigning your own price to the IFF Ticket.
-                    %table{style: "width: 530px; margin-left: -10px"}
-                      %tr
-                        %td{style: "width: 400px; border: 0px"}
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 50}50
-                          %button#ticket-amount{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
-                          %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
-                          %input#ticket-amount{onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Other Amount",  class:"ticket-input"}
 
-                -if r.value == "Organizational Ticket"
-                  .div#organizational_amount{style: "margin-left: 20px; margin-bottom: -1rem"}
-                    For individuals whose participation is covered by their organization.
-                    %table{style: "width: 530px; margin-left: -10px;"}
-                      %tr
-                        %td{style: "width: 400px; border: 0px"}
-                          %button{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
+      .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:iff_days))}
+        .form-label
+          %label
+            %span.form-required__text Required Field.
+            Which days are you planning to attend?
+          - if @ticket.errors.messages.key?(:iff_days)
+            %span.form-input__error= @ticket.errors.messages[:iff_days].first
+        .form-input#iff_days_checkboxes
+          %ul.inputs-list
+            = f.collection_check_boxes(:iff_days, Person::IFF_DAYS, :to_s, :to_s, boolean_style: :inline, :include_hidden => false) do |c|
+              %li
+                =c.label do
+                  = c.check_box
+                  %span= c.text
 
-              .div#amount_input
-                = f.input :amount, as: :hidden, input_html: {value: "0"}, required: true
+      .clearfix.form-group{class: ("has-error" if @ticket.errors.messages.key?(:ticket_option) || @ticket.errors.messages.key?(:amount))}
+        .form-label
+          %label
+            %span.form-required__text Required Field.
+            Get your 2019 IFF Ticket
+          - if @ticket.errors.messages.key?(:ticket_option)
+            %span.form-input__error= @ticket.errors.messages[:ticket_option].first
+          - if @ticket.errors.messages.key?(:amount)
+            %span.form-input__error= @ticket.errors.messages[:amount].first
+        .form-help
+          %p
+            %span.form-help__text The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included.
+          %p
+            %span.form-help__text While we continue working hard to ensure that IFF’s participation fees are waived for everyone, the new IFF Ticket system makes it easier for individuals and organizations who wish to support the IFF by paying for their ticket. Funds raised will support our community development and diversity initiatives. Please choose your ticket below.
+        .form-input#ticket_option
+          %ul.inputs-list
+            = f.collection_radio_buttons(:ticket_option, [["Individual Ticket", "FREE"], ["Solidarity Ticket", "Varies"], ["Organizational Ticket", "USD 850"]], :first, :last, {boolean_style: :inline}) do |r|
+              %li{style: "border: 2px solid black; border-radius: 10px; background-color: #4544f8; width: 570px; margin: 10px;  height: 50px;"}
+                =r.label do
+                  %table
+                    %tr
+                      %td{style: "border: 0px; width: 500px; "}
+                        = r.radio_button
+                        %span{style: "color: white; font-weight: bold;"}= r.value
+                      %td{style: "border: 0px; width: 70px;"}
+                        %p{style: "position: top; width: 70px; height: 30px; border: 2px solid black; border-radius: 10px 10px 10px 10px; text-color: black;  background-color: white; font-weight: bold; display: flex; align-items: center; justify-content: center;"}= r.text
 
-        %br
-        = f.check_box :code_of_conduct, value: 'true'
-        I agree to respect and follow
-        %a{target: "_blank", href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
-        We are committed to providing a safe and welcoming environment.
-        All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
-        - if @ticket.errors.messages.key?(:code_of_conduct)
-          %span.form-input__error= @ticket.errors.messages[:code_of_conduct].first
-        %br
-        %br
-        %br
+              -if r.value == "Individual Ticket"
+                .div#individual_amount{style: "margin-left: 20px; margin-bottom: 1rem"}
+                  100% sponsored and free of charge.
 
-    .actions
-      = f.button :submit, value: 'Get Your Ticket', class: 'primary'
-      = link_to "Cancel", :back, class: "btn"
+              -if r.value == "Solidarity Ticket"
+                .div#solidarity_amount{style: "margin-left: 20px; margin-bottom: -0.5rem"}
+                  Support the IFF by assigning your own price to the IFF Ticket.
+                  %table{style: "width: 530px; margin-left: -10px"}
+                    %tr
+                      %td{style: "width: 400px; border: 0px"}
+                        %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 50}50
+                        %button#ticket-amount{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 100}100
+                        %button{ onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 250}250
+                        %input#ticket-amount{onblur: "update_amount(this)", type: "number",  min: "10", step: "1", placeholder: "Other Amount",  class:"ticket-input"}
+
+              -if r.value == "Organizational Ticket"
+                .div#organizational_amount{style: "margin-left: 20px; margin-bottom: -1rem"}
+                  For individuals whose participation is covered by their organization.
+                  %table{style: "width: 530px; margin-left: -10px;"}
+                    %tr
+                      %td{style: "width: 400px; border: 0px"}
+                        %button{onclick: "update_amount(this)", type: "button", class:"ticket-button", value: 850}850
+
+            .div#amount_input
+              = f.input :amount, as: :hidden, input_html: {value: "0"}, required: true
+
+      %br
+      = f.check_box :code_of_conduct, value: 'true'
+      I agree to respect and follow
+      %a{target: "_blank", href: 'https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct'} IFF’s Code of Conduct.
+      We are committed to providing a safe and welcoming environment.
+      All participants are encouraged to approach the event with open and positive attitudes, and to engage constructively with others at all times.
+      - if @ticket.errors.messages.key?(:code_of_conduct)
+        %span.form-input__error= @ticket.errors.messages[:code_of_conduct].first
+      %br
+      %br
+      %br
+
+  .actions
+    = f.button :submit, value: 'Get Your Ticket', class: 'primary'
+    = link_to "Cancel", :back, class: "btn"
 
 :javascript
 
