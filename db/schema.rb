@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130183657) do
+ActiveRecord::Schema.define(version: 20181207230638) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
