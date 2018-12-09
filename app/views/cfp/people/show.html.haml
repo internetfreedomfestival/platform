@@ -76,16 +76,17 @@
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
               = action_button "", "Claim IFF Ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
           - else
-            %p We have implemented a request-based IFF ticket system to provide a safer and more diverse space, and meet the growing demand.
-            %p Once your request is reviewed, you will receive an email with instructions on how to claim your #{@conference.alt_title} Ticket.
-            %p{style: "font-weight: bold;"} You will be able to request an IFF Ticket starting December 10!
-            %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-              = action_button "", "Request IFF Ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
             / %p We have implemented a request-based IFF ticket system to provide a safer and more diverse space, and meet the growing demand.
             / %p Once your request is reviewed, you will receive an email with instructions on how to claim your #{@conference.alt_title} Ticket.
-            / %p{style: "font-weight: bold;"} Request your ticket now!
+            / %p{style: "font-weight: bold;"} You will be able to request an IFF Ticket starting December 10!
             / %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            /   = action_button "success", "Request IFF Ticket", request_invitation_cfp_person_path, style: "margin: 10px;"
+            /   = action_button "", "Request IFF Ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+            = form_tag(request_invitation_cfp_person_path, id: 'request_invitation') do
+              %p We have implemented a request-based IFF ticket system to provide a safer and more diverse space, and meet the growing demand.
+              %p Once your request is reviewed, you will receive an email with instructions on how to claim your #{@conference.alt_title} Ticket.
+              %p{style: "font-weight: bold;"} Request your ticket now!
+              %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
+                = submit_tag('Request IFF Ticket', class: "btn success", style: "margin: 10px;")
 
       .span8{style: "margin-bottom: 30px;"}
         %div{style: "margin:10px;"}
