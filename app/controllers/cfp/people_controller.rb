@@ -72,7 +72,7 @@ class Cfp::PeopleController < ApplicationController
 
     respond_to do |format|
       if @person.update_attributes(params)
-        format.html { redirect_to(cfp_person_path, notice: t('cfp.person_updated_notice')) }
+        format.html { redirect_to(cfp_person_path, notice: t('cfp.person_updated_notice', conference_title: @conference.title)) }
         format.xml  { head :ok }
       else
         format.html { render action: 'edit' }
@@ -93,7 +93,7 @@ class Cfp::PeopleController < ApplicationController
 
   def confirm_attendance
     if @person.update(old_attendance_status: "confirmed")
-      flash[:success] = "You are confirmed to attend the 2018 IFF!"
+      flash[:success] = "You are confirmed to attend the #{@conference.alt_title}!"
     else
       flash[:alert] = "There was some issue updating your status. Please contact the IFF team."
     end

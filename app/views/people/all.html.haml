@@ -5,6 +5,7 @@
         = action_button "success", "Generate Confirmation Tokens", generate_confirmation_tokens_people_path, title: "This will generate tokens for users with pending attendance. This will allow them to confirm their attendance via email at a later time."
         = action_button "primary", "Add person", new_person_path, title: "Add a new person."
     %h1 List of people
+
   %ul.tabs
     %li.active= link_to "All people", all_people_path
     %li= link_to "Tickets", tickets_people_path
@@ -16,7 +17,9 @@
     -# %li= link_to "Waitlist", waitlisted_people_path
     -# %li= link_to "Canceled", canceled_people_path
     /%li= link_to "This conference", people_path
-  %h4 There are #{@people.count} total people registered for the IFF 2019.
+
+  %h4 There are #{@people.count} total people registered in the IFF Platform.
+
   .pull-right
     - if can? :administrate, Person
       = link_to "Download CSV of All People", all_people_path(format: "csv")

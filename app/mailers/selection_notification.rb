@@ -14,10 +14,10 @@ class SelectionNotification < ActionMailer::Base
       title: conference.title
     )
   end
-  def invite_notification(person)
+
+  def invite_notification(person, conference)
     @locale = :en
-    @body = I18n.t('emails.waitlist.body')
-    conference = Conference.find(1)
+    @body = I18n.t('emails.waitlist.body', conference_year: conference.year)
 
     mail(
       reply_to: conference.email,
@@ -28,10 +28,9 @@ class SelectionNotification < ActionMailer::Base
     )
   end
 
-  def moved_to_waitlist_notification(person)
+  def moved_to_waitlist_notification(person, conference)
     @locale = :en
-    @body = I18n.t('emails.moved_to_waitlist.body')
-    conference = Conference.find(1)
+    @body = I18n.t('emails.moved_to_waitlist.body', conference_title: conference.title)
 
     mail(
       reply_to: conference.email,

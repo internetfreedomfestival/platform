@@ -4,13 +4,13 @@
       .pull-right
       =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px; margin-left: 10px;"
 
-      %h2 Your 2019 IFF Ticket
+      %h2 Your #{@conference.alt_title} Ticket
 
       %div{class:"title-view"}
         %p IFF Ticket Information
 
       %div{class:"charge-row"}
-        %p 2019 IFF Ticket Option: #{@ticket.ticket_option}
+        %p #{@conference.alt_title} Ticket Option: #{@ticket.ticket_option}
 
       %div{class: "charge-row-row"}
         %p IFF ID: #{@ticket.person.id}
@@ -37,7 +37,7 @@
       %p{class:"ticket-view-p"} You can resend your IFF Ticket info to your e-mail using the button below.
       = action_button "primary", "Resend Ticket", send_ticket_path
 
-      %p{class: "ticket-view-bold"}Would you like to start connecting with the IFF community ahead of the 2019 IFF?
+      %p{class: "ticket-view-bold"}Would you like to start connecting with the IFF community ahead of the #{@conference.alt_title}?
       %p{class:"ticket-view-p"} Go to your User Portal to learn more about the different platforms to connect with the IFF Community:
       = action_button "primary", "IFF Twitter", "http://twitter.com/internetff/", target: :blank
       = action_button "primary", "IFF Mattermost", "https://community.internetfreedomfestival.org/", target: :blank

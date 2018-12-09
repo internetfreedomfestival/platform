@@ -11,7 +11,7 @@ class EventsMailerTest < ActionMailer::TestCase
     assert_not ActionMailer::Base.deliveries.empty?
     assert_equal [ENV.fetch('FROM_EMAIL')], email.from
     assert_equal [person.email], email.to
-    assert_equal "Success! 2019 IFF Session Submitted", email.subject
+    assert_equal "Success! #{event.conference.alt_title} Session Submitted", email.subject
     assert_match session_title, email.body.to_s
   end
   test "sends mail to the collaborators when speaker creates new call for proposal" do
@@ -25,7 +25,7 @@ class EventsMailerTest < ActionMailer::TestCase
     assert_not ActionMailer::Base.deliveries.empty?
     assert_equal [ENV.fetch('FROM_EMAIL')], email.from
     assert_equal [other_presenters.person.email], email.to
-    assert_equal "Success! 2019 IFF Session Submitted", email.subject
+    assert_equal "Success! #{event.conference.alt_title} Session Submitted", email.subject
     assert_match session_title, email.body.to_s
   end
 end

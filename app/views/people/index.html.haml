@@ -4,6 +4,7 @@
       - if can? :administrate, Person
         = action_button "primary", "Add person", new_person_path, title: "Add a new person."
     %h1 List of people
+
   %ul.tabs
     %li= link_to "All people", all_people_path
     %li= link_to "Speakers", speakers_people_path
@@ -14,7 +15,9 @@
     %li= link_to "Confirmed Speakers", confirmed_speakers_people_path
     %li= link_to "Waitlist", waitlisted_people_path
     %li= link_to "Canceled", canceled_people_path
-  %h4 There are #{@people.count} total people who have submitted an event for the IFF 2019.
+
+  %h4 There are #{@people.count} total people who have submitted an event proposal for the #{@conference.title}.
+
   - if params[:term].blank? and @people.all.empty?
     .row
       .span16

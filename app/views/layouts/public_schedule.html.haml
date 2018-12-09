@@ -1,7 +1,7 @@
 !!!
 - if @event
-  - title = @event.title.to_s + ' - IFF 2018 Schedule'
--else 
+  - title = "#{@event.title} - #{@conference.title} Schedule"
+-else
   - title = t('public.schedule.title', title: @conference.title)
 %html
   %head

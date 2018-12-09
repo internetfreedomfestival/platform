@@ -29,13 +29,13 @@ class CfpFormTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/cfp"
 
-    assert_text 'The 2019 Global Call for Proposals is now closed'
+    assert_text "The #{@conference.alt_title} Global Call for Proposals is now closed"
 
     ENV['NEW_CFP_ENABLED'] = 'true'
 
     visit "/#{@conference.acronym}/cfp"
 
-    assert_text 'Submit a Session for the 2019 IFF'
+    assert_text "Submit a Session for the #{@conference.alt_title}"
   end
 
   test 'new user can create a new call for proposals' do

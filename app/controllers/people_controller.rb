@@ -72,9 +72,11 @@ class PeopleController < ApplicationController
 
     @people = result.paginate page: page_param
 
-    @holds_ticket = AttendanceStatus.where(conference: @conference, status: 'Holds Ticket' ).count
-    @requested = AttendanceStatus.where(conference: @conference, status: 'Requested' ).count
-    @invited = AttendanceStatus.where(conference: @conference, status: 'Invited' ).count
+    @requested = AttendanceStatus.where(conference: @conference, status: 'Requested').count
+    @on_hold = AttendanceStatus.where(conference: @conference, status: 'On Hold').count
+    @invited = AttendanceStatus.where(conference: @conference, status: 'Invited').count
+    @holds_ticket = AttendanceStatus.where(conference: @conference, status: 'Holds Ticket').count
+    @rejected = AttendanceStatus.where(conference: @conference, status: 'Rejected').count
 
     respond_to do |format|
       format.html
@@ -289,9 +291,10 @@ class PeopleController < ApplicationController
 
   def invite
     @person = Person.find_by(id: params[:format])
+    @conference = Conference.find_by(acronym: params[:conference_acronym])
     authorize! :manage, @person
     if @person.update(old_attendance_status: "pending attendance")
-      SelectionNotification.invite_notification(@person).deliver_now
+      SelectionNotification.invite_notification(@person, @conference).deliver_now
       redirect_to(waitlisted_people_path, notice: 'Person was successfully invited, attendance status is now: pending attendance.')
     else
       redirect_to(waitlisted_people_path, notice: 'There was an error inviting the person. Check to see if they have fully registered.')
@@ -389,7 +392,7 @@ class PeopleController < ApplicationController
       AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::ON_HOLD)
     end
 
-    InvitationMailer.on_hold_request_mail(person).deliver_now
+    InvitationMailer.on_hold_request_mail(person, conference).deliver_now
 
     redirect_to(person_path(person), notice: 'The person has been put on hold for the request.')
   end
@@ -416,7 +419,7 @@ class PeopleController < ApplicationController
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
     if @person.update(old_attendance_status: 'waitlist')
-      SelectionNotification.moved_to_waitlist_notification(@person).deliver_now
+      SelectionNotification.moved_to_waitlist_notification(@person, @conference).deliver_now
       redirect_to(all_people_path, notice: 'Person was successfully moved from pending attendance to the waitlist')
     else
       redirect_to(all_people_path, notice: 'There was an error moving the pending attendance person to the waitlist. They may not have updated all their registration requirements.')
@@ -451,7 +454,7 @@ class PeopleController < ApplicationController
     @person = Person.find_by(id: params[:format])
     authorize! :manage, @person
     if @person.update(old_attendance_status: 'confirmed')
-      flash[:sucess] = "#{@person.public_name} has been confirmed to attend the 2018 IFF!"
+      flash[:sucess] = "#{@person.public_name} has been confirmed to attend the #{@conference.alt_title}!"
     else
       flash[:danger] = "#{@person.public_name} was not confirmed...they may need to complete their registration."
     end

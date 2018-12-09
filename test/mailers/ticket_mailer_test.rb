@@ -14,7 +14,7 @@ class TicketMailerTest < ActionMailer::TestCase
     assert_not ActionMailer::Base.deliveries.empty?
     assert_equal [ENV.fetch('FROM_EMAIL')], email.from
     assert_equal [person.email], email.to
-    assert_equal "Here’s your 2019 IFF Ticket!", email.subject
+    assert_equal "Here’s your #{conference.alt_title} Ticket!", email.subject
     assert_match "#{first_name}", email.body.to_s
     assert_match "#{id}", email.body.to_s
   end

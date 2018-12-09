@@ -2,7 +2,7 @@
   %fieldset.inputs
   .row
     .offset1
-      %h1 2019 IFF Ticket
+      %h1 #{@conference.alt_title} Ticket
       %br
       .span16
         = f.input :public_name, hint: "This is the name that will be displayed in your badge.", required: true
@@ -28,7 +28,7 @@
           .form-label
             %label
               %span.form-required__text Required Field.
-              What are your main goals for attending the 2019 IFF?
+              What are your main goals for attending the #{@conference.alt_title}?
             - if @ticket.errors.messages.key?(:iff_goals)
               %span.form-input__error= @ticket.errors.messages[:iff_goals].first
           .form-input#iff_goals_checkboxes
@@ -61,14 +61,14 @@
         .form-label
           %label
             %span.form-required__text Required Field.
-            Get your 2019 IFF Ticket
+            Get your #{@conference.alt_title} Ticket
           - if @ticket.errors.messages.key?(:ticket_option)
             %span.form-input__error= @ticket.errors.messages[:ticket_option].first
           - if @ticket.errors.messages.key?(:amount)
             %span.form-input__error= @ticket.errors.messages[:amount].first
         .form-help
           %p
-            %span.form-help__text The 2019 IFF Ticket gives full access to the five days of the 2019 IFF, glitter included.
+            %span.form-help__text The #{@conference.alt_title} Ticket gives full access to the five days of the #{@conference.alt_title}, glitter included.
           %p
             %span.form-help__text While we continue working hard to ensure that IFF’s participation fees are waived for everyone, the new IFF Ticket system makes it easier for individuals and organizations who wish to support the IFF by paying for their ticket. Funds raised will support our community development and diversity initiatives. Please choose your ticket below.
         .form-input#ticket_option

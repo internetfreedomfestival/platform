@@ -43,7 +43,7 @@ class Cfp::InvitationsController < ApplicationController
       status.save
     end
 
-    InvitationMailer.request_invitation_mail(@person).deliver_now
+    InvitationMailer.request_invitation_mail(@person, @conference).deliver_now
 
     redirect_to(cfp_root_path(@person))
   end

@@ -62,7 +62,7 @@ en:
       body:  |
         Dear friend,
 
-        This is an automatic notification to inform you that you have been moved to the IFF 2018 waiting list, as a result of not confirming your attendance.
+        This is an automatic notification to inform you that you have been moved to the %{conference_title} waiting list, as a result of not confirming your attendance.
 
         This action can’t be reversed by any special circumstances.
 
@@ -80,7 +80,7 @@ en:
         Dear friend,
 
         We’re glad to inform you that you have been moved from the waitlist
-        to the attendee list to join us at the Internet Freedom Festival 2018.
+        to the attendee list to join us at the Internet Freedom Festival %{conference_year}.
         If you can no longer attend, please let us know immediately so we can
         transfer your spot to somebody else.
 
@@ -93,12 +93,12 @@ en:
     additional_invitation_mail:
       subject: "%{first_name} invited you to get an IFF Ticket!"
     ticketing_mail:
-      subject: "Here’s your 2019 IFF Ticket!"
+      subject: "Here’s your %{conference_alt_title} Ticket!"
     request_invitation_mail:
-      subject: "IFF 2019 Ticket Request Received"
+      subject: "%{conference_title} Ticket Request Received"
     accept_request_mail:
-      subject: "Here’s your invite to the 2019 IFF!"
+      subject: "Here’s your invite to the %{conference_alt_title}!"
     event_mail:
-      subject: "Success! 2019 IFF Session Submitted"
+      subject: "Success! %{conference_alt_title} Session Submitted"
     on_hold_request_mail:
       subject: "IFF Ticket Request On Hold"

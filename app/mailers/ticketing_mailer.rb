@@ -5,11 +5,12 @@ class TicketingMailer < ApplicationMailer
     @gender_pronoun = ticket.gender_pronoun
     @iff_days = ticket.iff_days
     @id = person.user_id
-    @link = cfp_person_url(conference_acronym: conference.acronym)
+    @conference = conference
+    @link = cfp_person_url(conference_acronym: @conference.acronym)
 
     mail(
       to: person.email,
-      subject: I18n.t('emails.ticketing_mail.subject'),
+      subject: I18n.t('emails.ticketing_mail.subject', conference_alt_title: @conference.alt_title),
       locale: :en
     )
   end

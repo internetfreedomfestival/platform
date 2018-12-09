@@ -373,7 +373,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     visit "/#{@conference.acronym}/invitations/#{invited.id}/ticketing_form"
 
-    assert_text '2019 IFF Ticket'
+    assert_text "#{@conference.alt_title} Ticket"
   end
 
   test 'person cannot access to other conferences with same invitation' do

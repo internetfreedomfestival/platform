@@ -5,6 +5,7 @@
     -#     = action_button "success", "Generate Confirmation Tokens", generate_confirmation_tokens_people_path, title: "This will generate tokens for users with pending attendance. This will allow them to confirm their attendance via email at a later time."
     -#     = action_button "primary", "Add person", new_person_path, title: "Add a new person."
     %h1 Ticket List
+
   %ul.tabs
     %li= link_to "All people", all_people_path
     %li.active= link_to "Tickets", tickets_people_path
@@ -14,9 +15,10 @@
     %li= link_to "Volunteers", volunteers_people_path
     %li= link_to "Confirmed Speakers", confirmed_speakers_people_path
 
-  -# %h4 There are #{@total_of_ticket_count} tickets.
-  %h4 There are #{@registered_tickets_count} tickets completed.
-  %h4 There are #{@tickets_count_pendent_to_refund} tickets pending to refund.
-  %h4 There are #{@canceled_tickets_count} tickets canceled.
+  -#%h4 There are #{@total_of_ticket_count} tickets.
+  %h4 There are #{@registered_tickets_count} tickets completed, #{@tickets_count_pendent_to_refund} tickets pending to refund, and #{@canceled_tickets_count} tickets canceled for the #{@conference.title}.
+
+  %br
+  %br
 
   = render 'shared/search_and_table', collection: @ticket_list, kind: :tickets

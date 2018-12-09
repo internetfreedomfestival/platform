@@ -186,6 +186,14 @@ class Conference < ActiveRecord::Base
     "#{model_name.human}: #{title} (#{acronym})"
   end
 
+  def alt_title
+    title.split.reverse.join(' ')
+  end
+
+  def year
+    title.match(/\d{4}/)[0]
+  end
+
   private
 
   def update_timeslots

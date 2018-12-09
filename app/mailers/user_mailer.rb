@@ -23,6 +23,6 @@ class UserMailer < ActionMailer::Base
     @event = event
     @conference = conference
     @person = Person.find_by(user_id: user.id)
-    mail to: @user.email, subject: "Your 2018 IFF Event has been accepted!"
+    mail to: @user.email, subject: "Your #{@conference.alt_title} Event has been accepted!"
   end
 end

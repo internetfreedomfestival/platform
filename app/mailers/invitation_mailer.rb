@@ -12,9 +12,9 @@ class InvitationMailer < ApplicationMailer
   end
 
   def not_registered_invitation_mail(invited)
-    conference = invited.conference
+    @conference = invited.conference
 
-    @link = ticketing_form_url(id: invited.id, conference_acronym: conference.acronym)
+    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
 
     mail(
       to: invited.email,
@@ -25,10 +25,10 @@ class InvitationMailer < ApplicationMailer
 
   def additional_invitation_mail(invited)
     person = invited.person
-    conference = invited.conference
+    @conference = invited.conference
 
     @first_name = person.first_name
-    @link = ticketing_form_url(id: invited.id, conference_acronym: conference.acronym)
+    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
 
     mail(
       to: invited.email,
@@ -37,31 +37,33 @@ class InvitationMailer < ApplicationMailer
     )
   end
 
-  def request_invitation_mail(person)
-    @first_name = Person.find_by(email: person.email).first_name
+  def request_invitation_mail(person, conference)
+    @first_name = person.first_name
+    @conference = conference
 
     mail(
       to: person.email,
-      subject: I18n.t('emails.request_invitation_mail.subject'),
+      subject: I18n.t('emails.request_invitation_mail.subject', conference_title: @conference.title),
       locale: :en
     )
   end
 
   def accept_request_mail(invited)
-    conference = invited.conference
+    @conference = invited.conference
 
     @first_name = Person.find_by(email: invited.email).first_name
-    @link = ticketing_form_url(id: invited.id, conference_acronym: conference.acronym)
+    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
 
     mail(
       to: invited.email,
-      subject: I18n.t('emails.accept_request_mail.subject'),
+      subject: I18n.t('emails.accept_request_mail.subject', conference_alt_title: @conference.alt_title),
       locale: :en
     )
   end
 
-  def on_hold_request_mail(person)
+  def on_hold_request_mail(person, conference)
     @first_name = Person.find_by(email: person.email).first_name
+    @conference = conference
 
     mail(
       to: person.email,

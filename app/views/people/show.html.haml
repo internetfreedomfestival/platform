@@ -140,7 +140,7 @@
       %hr
       %h2 Feedback
       %p
-        %b What are your goals for the 2019 IFF? What would you like to achieve?:
+        %b What are your goals for the #{@conference.alt_title}? What would you like to achieve?:
         = @person.iff_goals
       %p
         %b What upcoming challenges and/or obstacles do you see either in your region or worldwide in regards to Internet Freedom that you think the community should be aware of?:
@@ -209,7 +209,7 @@
             %b Event Title
             = event.title
           %p
-            %b Need travel assistance to attend the 2019 IFF
+            %b Need travel assistance to attend the #{@conference.alt_title}
             = event.travel_assistance
           %p
             %b To which group less representative belongs
