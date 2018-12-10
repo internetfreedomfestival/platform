@@ -10,8 +10,10 @@ class ConferenceTest < ActiveSupport::TestCase
   should have_many :rooms
   should have_many :tracks
   should have_many :conference_exports
+
   should have_one :call_for_participation
   should have_one :ticket_server
+
   should validate_presence_of :title
   should validate_presence_of :acronym
   should validate_presence_of :default_timeslots
@@ -19,13 +21,23 @@ class ConferenceTest < ActiveSupport::TestCase
   should validate_presence_of :timeslot_duration
   should validate_presence_of :timezone
 
-  test '.current returns the newest conference' do
+  test '.current returns the newest conference when no configuration is present' do
     conferences = [
       create(:conference, created_at: Time.now),
       create(:conference, created_at: Time.now + 1),
       create(:conference, created_at: Time.now + 2)
     ]
     assert_equal conferences.last.id, Conference.current.id
+  end
+
+  test '.current returns the configured conference when some configuration is present' do
+    conference = create(:conference, acronym: 'MYCONF')
+    create(:conference, created_at: Time.now + 1)
+    create(:conference, created_at: Time.now + 2)
+
+    ENV['CURRENT_CONFERENCE'] = 'MYCONF'
+
+    assert_equal conference, Conference.current
   end
 
   test 'returns correct language codes' do
@@ -79,5 +91,4 @@ class ConferenceTest < ActiveSupport::TestCase
     sub_conference.days.destroy_all
     assert_equal sub_conference.days.count, parent_conference.days.count
   end
-
 end

@@ -64,7 +64,7 @@ class Conference < ActiveRecord::Base
   }
 
   def self.current
-    order('created_at DESC').first
+    includes(:parent).find_by(acronym: ENV['CURRENT_CONFERENCE']) || order('created_at DESC').first
   end
 
   alias own_days days
