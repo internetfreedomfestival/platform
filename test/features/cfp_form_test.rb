@@ -10,7 +10,7 @@ class CfpFormTest < Capybara::Rails::TestCase
     @cfp = create(:call_for_participation, conference: @conference)
     @person = create(:person)
 
-    tracks = ["Collaborative Talk", "Workshop", "Panel Discussion", "Feature", "Feedback"]
+    tracks = ['Collaborative Talk', 'Workshop', 'Panel Discussion', 'Feature', 'Feedback']
     tracks.each do |track|
       Track.create!(conference: @conference, name: track)
     end
@@ -24,6 +24,7 @@ class CfpFormTest < Capybara::Rails::TestCase
 
   test 'CFP form link is enabled by FeatureToggle' do
     ENV['NEW_CFP_ENABLED'] = 'false'
+    ENV['CURRENT_CONFERENCE'] = @conference.acronym
 
     login_as(@user)
 
@@ -200,6 +201,8 @@ class CfpFormTest < Capybara::Rails::TestCase
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
+    ENV['CURRENT_CONFERENCE'] = @conference.acronym
+
     login_as(@user)
 
     visit "/#{@conference.acronym}/cfp/person"
@@ -211,6 +214,8 @@ class CfpFormTest < Capybara::Rails::TestCase
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
+
+    ENV['CURRENT_CONFERENCE'] = @conference.acronym
 
     login_as(@user)
 

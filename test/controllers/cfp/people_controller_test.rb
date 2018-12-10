@@ -45,4 +45,14 @@ class Cfp::PeopleControllerTest < ActionController::TestCase
     put :update, id: @cfp_person.id, person: cfp_person_params, conference_acronym: @conference.acronym
     assert_response :redirect
   end
+
+  test 'redirects other conferences to current one' do
+    create(:conference, acronym: 'MYCONF')
+
+    ENV['CURRENT_CONFERENCE'] = 'MYCONF'
+
+    get :show, conference_acronym: @conference.acronym
+
+    assert_redirected_to cfp_root_path(conference_acronym: 'MYCONF')
+  end
 end

@@ -2,6 +2,7 @@ class Cfp::PeopleController < ApplicationController
   layout 'cfp'
 
   before_action :authenticate_user!
+  before_filter :redirect_to_current_conference!
   before_action :obtain_person, except: [:new]
   before_action :check_cfp_open
 
@@ -127,5 +128,10 @@ class Cfp::PeopleController < ApplicationController
        @person.invitation_to_mattermost.nil?
       return true
     end
+  end
+
+  def redirect_to_current_conference!
+    must_redirect = (@conference != Conference.current)
+    redirect_to cfp_root_path(conference_acronym: Conference.current.acronym) if must_redirect
   end
 end
