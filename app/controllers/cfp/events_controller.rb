@@ -2,7 +2,7 @@ class Cfp::EventsController < ApplicationController
   layout 'cfp'
 
   before_action :authenticate_user!, except: :confirm
-
+  before_action :ensure_cfp_is_open!, only: [:new, :create]
 
   # GET /cfp/events
   # GET /cfp/events.xml
@@ -62,7 +62,7 @@ class Cfp::EventsController < ApplicationController
 
     @person = Person.find_by(user_id: current_user.id)
 
-    @event = Event.new()
+    @event = Event.new
     @event.recording_license = @conference.default_recording_license
   end
 
@@ -71,7 +71,6 @@ class Cfp::EventsController < ApplicationController
     authorize! :submit, Event
     @edit = true
     @event = current_user.person.events.find(params[:id])
-
   end
 
   # POST /cfp/events
@@ -421,5 +420,10 @@ class Cfp::EventsController < ApplicationController
       end
     end
     support
+  end
+
+  def ensure_cfp_is_open!
+    must_redirect = (@conference.call_for_participation&.closed? && !current_user.person.late_event_submit?)
+    redirect_to cfp_root_path if must_redirect
   end
 end

@@ -8,4 +8,8 @@ class CallForParticipation < ActiveRecord::Base
   def to_s
     "#{model_name.human}: #{self.conference.title}"
   end
+
+  def closed?
+    Date.today > end_date
+  end
 end

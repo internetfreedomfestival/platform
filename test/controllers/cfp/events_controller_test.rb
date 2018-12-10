@@ -21,7 +21,7 @@ class Cfp::EventsControllerTest < ActionController::TestCase
 
   test 'should create event' do
     assert_difference('Event.count') do
-      post :create, event: event_params.merge(title: "titulo nuevo"), conference_acronym: @conference.acronym
+      post :create, event: event_params.merge(title: 'some title'), conference_acronym: @conference.acronym
     end
 
     assert_redirected_to cfp_person_path
@@ -30,7 +30,7 @@ class Cfp::EventsControllerTest < ActionController::TestCase
   test 'should validate title' do
     post :create, event: event_params, conference_acronym: @conference.acronym
     post :create, event: event_params, conference_acronym: @conference.acronym
-    assert_match "There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted.", @response.body
+    assert_match 'There is already a session submitted with this title. Please review your title and make sure that your session is not already submitted.', @response.body
   end
 
   test 'should get edit' do
@@ -67,5 +67,37 @@ class Cfp::EventsControllerTest < ActionController::TestCase
     assert_response :success
     @event.reload
     assert_equal 'confirmed', @event.state
+  end
+
+  test 'should not get new when the call for proposals is closed' do
+    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday)
+    get :new, conference_acronym: @conference.acronym
+    assert_redirected_to cfp_root_path
+  end
+
+  test 'should not create event when the call for proposals is closed' do
+    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday)
+    assert_no_difference('Event.count') do
+      post :create, event: event_params.merge(title: 'titulo nuevo'), conference_acronym: @conference.acronym
+    end
+
+    assert_redirected_to cfp_root_path
+  end
+
+  test 'should get new when the call for proposals is closed but the person is allowed to submit late' do
+    @user.person.update(late_event_submit: true)
+    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday)
+    get :new, conference_acronym: @conference.acronym
+    assert_response :success
+  end
+
+  test 'should create event when the call for proposals is closed but the person is allowed to submit late' do
+    @user.person.update(late_event_submit: true)
+    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday)
+    assert_difference('Event.count') do
+      post :create, event: event_params.merge(title: 'titulo nuevo'), conference_acronym: @conference.acronym
+    end
+
+    assert_redirected_to cfp_person_path
   end
 end
