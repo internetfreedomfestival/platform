@@ -210,4 +210,134 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 1, people_with_dif_granted.count
     assert_includes people_with_dif_granted, recipient_dif_granted
   end
+
+
+  test '.to_csv' do
+    conference = create(:conference, acronym: 'IFF2019')
+    a_person = create(:person)
+
+    person_with_invitation_and_ticket = create(:person)
+    invited_with_ticket = create(:invited, email: person_with_invitation_and_ticket.email, conference: conference, person: a_person)
+    ticket = create(:ticket, conference: conference, person: person_with_invitation_and_ticket, status: "Completed")
+
+    person_with_invitation_and_event = create(:person)
+    invited = create(:invited, email: person_with_invitation_and_event.email, conference: conference, person: a_person)
+    event = create(:event, conference: conference)
+
+    eventperson = create(:event_person, event: event, event_role: "submitter", person: person_with_invitation_and_event)
+
+    csv_content = Person.to_csv
+    csv =  CSV.parse(csv_content)
+
+    headers = csv[0]
+    assert_equal 'IFF ID', headers[0]
+    assert_equal 'Ticket Status', headers[1]
+    assert_equal 'Ticket ID', headers[2]
+    assert_equal 'Email', headers[3]
+    assert_equal 'PGP Key', headers[4]
+    assert_equal 'Invited By', headers[5]
+    assert_equal 'Public Name', headers[6]
+    assert_equal 'First Name', headers[7]
+    assert_equal 'Last Name', headers[8]
+    assert_equal 'Gender', headers[9]
+    assert_equal 'Public Gender Pronoun', headers[10]
+    assert_equal 'Country', headers[11]
+    assert_equal 'Professional Background', headers[12]
+    assert_equal 'Organization', headers[13]
+    assert_equal 'Project', headers[14]
+    assert_equal 'Title', headers[15]
+    assert_equal 'Attended IFF Before?', headers[16]
+    assert_equal 'Submitted Session 2019', headers[17]
+    assert_equal 'Presenter 2019', headers[18]
+    assert_equal 'Presented Before?', headers[19]
+    assert_equal 'Main goals for attending the 2019 IFF?', headers[20]
+    assert_equal 'Include in Mailing', headers[21]
+    assert_equal 'Invite to Mattermost', headers[22]
+    assert_equal 'Volunteeering Interest 2019', headers[23]
+
+    first_row = csv[1]
+    assert_equal a_person.id.to_s, first_row[0]
+    assert_equal '', first_row[1]
+    assert_equal '', first_row[2]
+    assert_equal a_person.email, first_row[3]
+    assert_equal a_person.pgp_key, first_row[4]
+    assert_equal '', first_row[5]
+    assert_equal a_person.public_name, first_row[6]
+    assert_equal a_person.first_name, first_row[7]
+    assert_equal a_person.last_name, first_row[8]
+    assert_equal a_person.gender, first_row[9]
+    assert_equal '', first_row[10]
+    assert_equal a_person.country_of_origin, first_row[11]
+    assert_equal a_person.professional_background.to_s, first_row[12]
+    assert_equal a_person.organization, first_row[13]
+    assert_equal a_person.project, first_row[14]
+    assert_equal a_person.title, first_row[15]
+    assert_equal a_person.iff_before.to_s, first_row[16]
+    assert_equal 'No', first_row[17]
+    #
+    assert_equal 'No', first_row[18]
+    # 
+    # assert_equal 'Presented Before?', first_row[19]
+    assert_equal '', first_row[20]
+    assert_equal a_person.include_in_mailings.to_s, first_row[21]
+    assert_equal a_person.invitation_to_mattermost.to_s, first_row[22]
+    assert_equal a_person.interested_in_volunteer.to_s, first_row[23]
+
+
+    second_row = csv[2]
+    assert_equal person_with_invitation_and_ticket.id.to_s, second_row[0]
+    assert_equal ticket.status, second_row[1]
+    assert_equal ticket.id.to_s, second_row[2]
+    assert_equal person_with_invitation_and_ticket.email, second_row[3]
+    assert_equal person_with_invitation_and_ticket.pgp_key, second_row[4]
+    assert_equal invited_with_ticket.person_id.to_s, second_row[5]
+    assert_equal person_with_invitation_and_ticket.public_name, second_row[6]
+    assert_equal person_with_invitation_and_ticket.first_name, second_row[7]
+    assert_equal person_with_invitation_and_ticket.last_name, second_row[8]
+    assert_equal person_with_invitation_and_ticket.gender, second_row[9]
+    assert_equal ticket.gender_pronoun, second_row[10]
+    assert_equal person_with_invitation_and_ticket.country_of_origin, second_row[11]
+    assert_equal person_with_invitation_and_ticket.professional_background.to_s, second_row[12]
+    assert_equal person_with_invitation_and_ticket.organization, second_row[13]
+    assert_equal person_with_invitation_and_ticket.project, second_row[14]
+    assert_equal person_with_invitation_and_ticket.title, second_row[15]
+    assert_equal person_with_invitation_and_ticket.iff_before.to_s, second_row[16]
+    assert_equal 'No', second_row[17]
+    #
+    assert_equal 'No', second_row[18]
+    #
+    # assert_equal 'Presented Before?', second_row[19]
+    assert_equal ticket.iff_goals.to_s, second_row[20]
+    assert_equal person_with_invitation_and_ticket.include_in_mailings.to_s, second_row[21]
+    assert_equal person_with_invitation_and_ticket.invitation_to_mattermost.to_s, second_row[22]
+    assert_equal person_with_invitation_and_ticket.interested_in_volunteer.to_s, second_row[23]
+
+    third_row = csv[3]
+    assert_equal person_with_invitation_and_event.id.to_s, third_row[0]
+    assert_equal '', third_row[1]
+    assert_equal '', third_row[2]
+    assert_equal person_with_invitation_and_event.email, third_row[3]
+    assert_equal person_with_invitation_and_event.pgp_key, third_row[4]
+    assert_equal invited.person_id.to_s, third_row[5]
+    assert_equal person_with_invitation_and_event.public_name, third_row[6]
+    assert_equal person_with_invitation_and_event.first_name, third_row[7]
+    assert_equal person_with_invitation_and_event.last_name, third_row[8]
+    assert_equal person_with_invitation_and_event.gender, third_row[9]
+    assert_equal '', third_row[10]
+    assert_equal person_with_invitation_and_event.country_of_origin, third_row[11]
+    assert_equal person_with_invitation_and_event.professional_background.to_s, third_row[12]
+    assert_equal person_with_invitation_and_event.organization, third_row[13]
+    assert_equal person_with_invitation_and_event.project, third_row[14]
+    assert_equal person_with_invitation_and_event.title, third_row[15]
+    assert_equal person_with_invitation_and_event.iff_before.to_s, third_row[16]
+    assert_equal 'Yes', third_row[17]
+    #
+    assert_equal 'Yes', third_row[18]
+    #
+    # assert_equal 'Presented Before?', third_row[19]
+    assert_equal '', third_row[20]
+    assert_equal person_with_invitation_and_event.include_in_mailings.to_s, third_row[21]
+    assert_equal person_with_invitation_and_event.invitation_to_mattermost.to_s, third_row[22]
+    assert_equal person_with_invitation_and_event.interested_in_volunteer.to_s, third_row[23]
+  end
 end

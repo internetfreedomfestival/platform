@@ -594,36 +594,89 @@ class Person < ActiveRecord::Base
     invitation.sharing_allowed?
   end
 
+  def self.csv_headers
+    [
+      'IFF ID',
+      'Ticket Status',
+      'Ticket ID',
+      'Email',
+      'PGP Key',
+      'Invited By',
+      'Public Name',
+      'First Name',
+      'Last Name',
+      'Gender',
+      'Public Gender Pronoun',
+      'Country',
+      'Professional Background',
+      'Organization',
+      'Project',
+      'Title',
+      'Attended IFF Before?',
+      'Submitted Session 2019',
+      'Presenter 2019',
+      'Presented Before?',
+      'Main goals for attending the 2019 IFF?',
+      'Include in Mailing',
+      'Invite to Mattermost',
+      'Volunteeering Interest 2019'
+    ]
+  end
+
+
+  def self.csv_values(person)
+      ticket = Ticket.where(person_id: person.id).last
+      ticket_status = ticket ? ticket.status : ''
+      ticket_id = ticket ? ticket.id : ''
+      public_gender_pronoun = ticket ? ticket.gender_pronoun : ''
+      iff_goals = ticket ? ticket.iff_goals : ''
+
+      times_submitter = EventPerson.where(person_id: person.id, event_role: "submitter").count
+      # times_submitter_in__IFF2019_conference
+      submitted = times_submitter == 0 ? 'No' : 'Yes'
+      times_presenter = EventPerson.where(person_id: person.id).count
+      # times_presenter_in_IFF2019_conference
+      presented = times_presenter == 0 ? 'No' : 'Yes'
+      invited = Invited.where(email: person.email).last
+      invited_by = invited ? invited.person_id : ''
+
+      return [
+        person.id,
+        ticket_status,
+        ticket_id,
+        person.email,
+        person.pgp_key,
+        invited_by,
+        person.public_name,
+        person.first_name,
+        person.last_name,
+        person.gender,
+        public_gender_pronoun,
+        person.country_of_origin,
+        person.professional_background,
+        person.organization,
+        person.project,
+        person.title,
+        person.iff_before,
+        submitted,
+        #
+        presented,
+        #
+        '',
+        # 'Presented Before?',
+        iff_goals,
+        person.include_in_mailings,
+        person.invitation_to_mattermost,
+        person.interested_in_volunteer
+      ]
+  end
+
   def self.to_csv(options = {})
-    attributes = %w{id email public_name
-                      first_name last_name
-                      pgp_key gender
-                      country_of_origin
-                      professional_background
-                      other_background organization
-                      project title
-                      interested_in_volunteer
-                      created_at
-                      include_in_mailings
-                      invitation_to_mattermost}
-
-    non_dif_attributes = %w{id email public_name
-                              first_name
-                              last_name pgp_key
-                              gender country_of_origin
-                              professional_background
-                              other_background organization
-                              project title
-                              interested_in_volunteer
-                              created_at
-                              include_in_mailings
-                              invitation_to_mattermost}
-
     CSV.generate(headers: true) do |csv|
-      csv << attributes
+      csv << csv_headers
 
       all.each do |person|
-        csv << non_dif_attributes.map{ |attr| person.send(attr) }
+        csv << csv_values(person)
       end
     end
   end
