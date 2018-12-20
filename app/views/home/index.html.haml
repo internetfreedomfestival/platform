@@ -288,6 +288,62 @@
             = value
 
 
+
+    .span8
+      <hr />
+      %h2 Tickets
+      %p
+        %h4 Total ticket holders
+        = @tickets_all.count
+      %p
+        %h4 Gender balance of ticket holders:
+        - @pronouns.each do |pronoun|
+          - number = @tickets_with_gender.count{ |gender| gender == pronoun }
+          - @statistics_gender[pronoun] = number
+        - @statistics_gender.each do |key, value|
+          - if value != 0
+            %p
+              %b= key + ":"
+              = (value * 100 / @tickets_with_gender.count).to_s + "%"
+
+      %p
+        %h4 Country breakdown of ticket holders:
+        - @tickets_holders = Person.joins(:tickets).where(tickets: {status: "Completed"}).map(&:country_of_origin)
+        - @countries = Person::COUNTRIES
+
+        - @countries.each do |country|
+          - number = @tickets_holders.count{ |person| person == country}
+          - @statistics_country[country] = number
+        - @statistics_country.each do |key, value|
+          - if value != 0
+            %p
+              %b= key + ":"
+              = value
+      %p
+        %h4 How many ticket holders are speakers:
+        %p= @people_with_ticket_and_be_speaker.count
+
+      %p
+        %h4 Professional background breakdown of ticket holders:
+        - @professional_background.each do |professional_background|
+          - number = @professional_background_of_people.count{ |pb_person| pb_person.include? professional_background}
+          - @statistics_professional_background[professional_background] = number
+        - @statistics_professional_background.each do |key, value|
+          - if value != 0
+            %p
+              %b= key + ":"
+              = value
+
+      %p
+        %h4 Returning vs New attendees of ticket holders:
+        %p= 'Returning Attendees: ' + (@returning_attendees_tickets.count).to_s
+        %p= 'New Attendees: ' + (@new_attendees_tickets.count).to_s
+
+      %p
+        %h4 Amount of paid ticket holders:
+        %p= (@total_tickets_amount.inject(0){|sum, x| sum + x}).to_s + ' USD'
+
+
 :coffeescript
   update_languages_breakdown = (accepted_only = false) ->
     if accepted_only
