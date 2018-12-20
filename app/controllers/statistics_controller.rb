@@ -33,7 +33,6 @@ class StatisticsController < ApplicationController
   def gender_breakdown
     authorize! :read, @conference
     result = @conference.gender_breakdown(params[:accepted_only])
-   
     respond_to do |format|
       format.json { render json: result.to_json }
     end
@@ -71,21 +70,21 @@ class StatisticsController < ApplicationController
 
       if person.professional_background.class == String
         prof_back[person.professional_background] += 1
-      else 
+      else
         person.professional_background.each do |prof|
           prof_back[prof] += 1 unless prof == ""
         end
       end
       if person.iff_before.class == String
         user_iff_before[person.iff_before]
-      else 
+      else
         person.iff_before.each do |year|
           user_iff_before[year] += 1
         end
       end
       if person.country_of_origin.nil?
         person_countries["Not_Yet_Selected"] += 1
-      else 
+      else
         person_countries[person.country_of_origin] += 1
       end
       if !person.events.empty? && person.professional_background.class == String
@@ -101,10 +100,10 @@ class StatisticsController < ApplicationController
     end
 
     @events.each do |event|
-      if event.track 
+      if event.track
         event_formats[event.track.name] += 1
       end
-      
+
       event_themes[event.event_type] += 1
 
       if event.iff_before
@@ -115,7 +114,7 @@ class StatisticsController < ApplicationController
         end
       end
       event_languages[event.language] += 1
-     
+
       e_p = EventPerson.where(event_role: "submitter").find_by(event_id: event.id)
       unless e_p.nil?
         per = Person.find_by(id: e_p.person_id)
@@ -131,7 +130,7 @@ class StatisticsController < ApplicationController
     @all_stats["Total DIF Applicants"] = dif_people_count
     @all_stats["Interested in Volunteering"] = volunteers_count
     user_genders.each do |gender, count|
-      @all_stats[gender] = count    
+      @all_stats[gender] = count
     end
     @all_stats["Professional Background"] = "Totals"
     prof_back.each do |profession, count|
