@@ -1,19 +1,30 @@
-FROM ruby:2.3.1
+ARG appdir=/app
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs file imagemagick git && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+FROM ruby:2.3.1-slim
 
-ENV APP /app
-WORKDIR $APP
+RUN set -ex \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+           build-essential \
+           curl \
+           file \
+           git \
+           gnupg \
+           imagemagick \
+           libmysqlclient-dev \
+           libpq-dev \
+           libsqlite3-dev \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+           nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY Gemfile Gemfile.lock $APP/
-RUN gem install bundler --conservative
+ARG appdir
+WORKDIR $appdir
+
+COPY Gemfile Gemfile.lock $appdir/
 RUN bundle install
 
-COPY . $APP
+CMD ["bash"]
 
-COPY config/database.yml.template $APP/config/database.yml
-
-RUN bundle exec rake db:setup

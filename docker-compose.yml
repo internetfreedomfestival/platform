@@ -1,26 +1,27 @@
-version: '3'
+version: '3.2'
+
 services:
-  web:
-    build: .
-    command: bash -c "rm -rf tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+  iff:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: iff:latest
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+        consistency: delegated
+      - type: volume
+        source: bundle
+        target: /usr/local/bundle
+    ports:
+      - '3000:3000'
     environment:
+      - CURRENT_CONFERENCE=IFF2019
       - NEW_CFP_ENABLED=true
       - PUBLISHABLE_KEY=pk_test_TYooMQauvdEDq54NiTphI7jx
       - SECRET_KEY=sk_test_4eC39HqLyjWDarjtT1zdp7dc
-    volumes:
-      - ./Gemfile:/app/Gemfile
-      - ./Gemfile.lock:/app/Gemfile.lock
-      - ./app:/app/app
-      - ./bin:/app/bin
-      - ./db/migrate:/app/db/migrate
-      - ./db/schema.rb:/app/db/schema.rb
-      - ./db/seeds.rb:/app/db/seeds.rb
-      - ./config/routes.rb:/app/config/routes.rb
-      - ./config/locales:/app/config/locales
-      - ./config/initializers:/app/config/initializers
-      - ./config/environments:/app/config/environments
-      - ./public:/app/public
-      - ./lib:/app/lib
-      - ./test:/app/test
-    ports:
-      - "3000:3000"
+    command: ["tail", "-f", "/dev/null"]
+
+volumes:
+  bundle:
