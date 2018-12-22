@@ -15,8 +15,8 @@ class HomeController < ApplicationController
     @people_with_event = Person.joins(:event_people).where(event_people: {event_role: "speaker"})
     @tickets_with_gender = Ticket.all.map(&:gender_pronoun)
     @total_tickets_amount = Ticket.all.map(&:amount)
-    @new_attendees_tickets = Ticket.where('iff_before LIKE "%Not yet!%"')
-    @returning_attendees_tickets = Ticket.where.not('iff_before LIKE "%Not yet!%"')
+    @new_attendees_tickets = Ticket.where('iff_before LIKE ?', '%Not yet!%')
+    @returning_attendees_tickets = Ticket.where.not('iff_before LIKE ?', '%Not yet!%')
     @statistics_gender = Hash.new
     @statistics_country = Hash.new
     @statistics_roles = Hash.new
