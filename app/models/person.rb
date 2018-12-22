@@ -365,7 +365,7 @@ class Person < ActiveRecord::Base
     'Philanthropic/Grantmaking Organization'
   ].freeze
 
-  has_many :attendance_status, dependent: :destroy
+  has_many :attendance_statuses, dependent: :destroy
   has_many :availabilities, dependent: :destroy
   has_many :attendees, dependent: :destroy
   has_many :event_people, dependent: :destroy
@@ -421,7 +421,7 @@ class Person < ActiveRecord::Base
     joins(events: :conference).where('conferences.id': conference).where('events.state': %w(confirmed scheduled))
   }
   scope :with_ticket, ->(conference) {
-    joins(:attendance_status).where(attendance_statuses: {status: "Holds Ticket", conference_id: conference.id})
+    joins(:attendance_statuses).where(attendance_statuses: {status: "Holds Ticket", conference_id: conference.id})
   }
   scope :with_dif_granted, ->(conference) {
     joins(events: :conference)

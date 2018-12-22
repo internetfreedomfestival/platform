@@ -10,6 +10,10 @@ class PersonTest < ActiveSupport::TestCase
   should have_many :languages
   should have_many :links
   should have_many :phone_numbers
+  should have_many :inviteds
+  should have_many :attendance_statuses
+  should have_many :tickets
+  should have_one :dif
   should belong_to :user
 
   test '#full_name' do
@@ -276,7 +280,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'No', first_row[17]
     #
     assert_equal 'No', first_row[18]
-    # 
+    #
     # assert_equal 'Presented Before?', first_row[19]
     assert_equal '', first_row[20]
     assert_equal a_person.include_in_mailings.to_s, first_row[21]
