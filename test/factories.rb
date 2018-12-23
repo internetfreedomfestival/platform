@@ -300,7 +300,8 @@ FactoryBot.define do
     iff_goals ['Requesting support with a specific issue']
     iff_days ['Full week']
     interested_in_volunteer 'Yes, sounds fun!'
-    ticket_option 'FREE'
+    ticket_option 'Individual Ticket'
+    status 'Completed'
     amount '0'
     code_of_conduct 1
     person

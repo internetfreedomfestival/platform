@@ -16,19 +16,19 @@ class TicketsController < ApplicationController
     @person = Person.find_by(id: current_user.person)
     @invite = Invite.find(params[:id])
     @conference = @invite.conference
-    @ticket = Ticket.find_by(person: @person, conference: @conference, status: "Completed")
+    @ticket = Ticket.find_by(person: @person, conference: @conference, status: Ticket::COMPLETED)
   end
 
   def cancel_ticket
     @person = Person.find_by(id: current_user.person)
     @invite = Invite.find(params[:id])
     @conference = @invite.conference
-    @ticket = Ticket.find_by(person: @person, conference: @conference, status: "Completed")
+    @ticket = Ticket.find_by(person: @person, conference: @conference, status: Ticket::COMPLETED)
 
     if @ticket.amount == 0
-      @ticket.update(status: "Canceled")
+      @ticket.update(status: Ticket::CANCELED)
     else
-      @ticket.update(status: "To Refund")
+      @ticket.update(status: Ticket::TO_REFUND)
     end
 
     status = AttendanceStatus.find_by(person: @person, conference: @conference)
@@ -42,7 +42,7 @@ class TicketsController < ApplicationController
     authorize! :administrate, Person
 
     @ticket = Ticket.find(params[:id])
-    @ticket.update(status: "Canceled")
+    @ticket.update(status: Ticket::CANCELED)
 
     redirect_to(tickets_people_path, alert: "This ticket has been canceled")
   end
@@ -61,16 +61,16 @@ class TicketsController < ApplicationController
     @person = Person.find_by(email: @invite.email)
     @conference = @invite.conference
 
-    if Ticket.exists?(conference: @conference, person: @person, status: "Pending")
-      @ticket = Ticket.find_by(conference: @conference, person: @person, status: "Pending")
+    if Ticket.exists?(conference: @conference, person: @person, status: Ticket::PENDING)
+      @ticket = Ticket.find_by(conference: @conference, person: @person, status: Ticket::PENDING)
     else
       @ticket = Ticket.new(ticket_params.merge(conference: @conference, person: @person))
-      @ticket.status = "Pending"
+      @ticket.status = Ticket::PENDING
     end
 
 
     success = if @ticket.persisted?
-      @ticket.update(ticket_params.merge(status: "Pending"))
+      @ticket.update(ticket_params.merge(status: Ticket::PENDING))
     else
       @ticket.save
     end
@@ -91,7 +91,7 @@ class TicketsController < ApplicationController
       status.status = AttendanceStatus::REGISTERED
       status.save
     end
-    @ticket.update(status: "Completed")
+    @ticket.update(status: Ticket::COMPLETED)
     TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
     redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
   end

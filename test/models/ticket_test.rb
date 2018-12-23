@@ -13,6 +13,8 @@ class TicketTest < ActiveSupport::TestCase
   should validate_presence_of(:ticket_option).with_message(/select a valid ticket option/)
   should validate_presence_of(:amount).with_message(/select an amount/)
   should validate_uniqueness_of(:conference_id).scoped_to(:person_id)
+  should validate_inclusion_of(:status).in_array(Ticket::STATUSES)
+  should validate_inclusion_of(:ticket_option).in_array(Ticket::OPTIONS)
 
   setup do
     @conference = create(:conference)
