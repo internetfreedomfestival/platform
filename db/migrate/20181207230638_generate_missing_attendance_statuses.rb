@@ -5,7 +5,7 @@ class GenerateMissingAttendanceStatuses < ActiveRecord::Migration
     # guarantee of a deterministic outcome.
     conference = Conference.find_by(acronym: 'IFF2019')
 
-    invitees = Invited.where(conference: conference).map { |invite| Person.find_by(email: invite.email.downcase) }.uniq
+    invitees = Invite.where(conference: conference).map { |invite| Person.find_by(email: invite.email.downcase) }.uniq
     attendees = AttendanceStatus.where(conference: conference).map(&:person).uniq
 
     missing_attendees = (invitees - attendees).compact

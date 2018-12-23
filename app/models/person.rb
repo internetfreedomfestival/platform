@@ -377,7 +377,7 @@ class Person < ActiveRecord::Base
   has_many :phone_numbers, dependent: :destroy
   has_many :expenses, dependent: :destroy
   has_many :transport_needs, dependent: :destroy
-  has_many :inviteds, dependent: :destroy
+  has_many :invites, dependent: :destroy
   has_many :tickets, dependent: :destroy
   has_one :dif, dependent: :destroy
 
@@ -587,7 +587,7 @@ class Person < ActiveRecord::Base
   end
 
   def allowed_to_send_invites?(conference)
-    invitation = Invited.find_by(email: email, conference: conference)
+    invitation = Invite.find_by(email: email, conference: conference)
 
     return false unless invitation.present?
 
@@ -637,8 +637,8 @@ class Person < ActiveRecord::Base
       times_presenter = EventPerson.where(person_id: person.id).count
       # times_presenter_in_IFF2019_conference
       presented = times_presenter == 0 ? 'No' : 'Yes'
-      invited = Invited.where(email: person.email).last
-      invited_by = invited ? invited.person_id : ''
+      invite = Invite.where(email: person.email).last
+      invited_by = invite ? invite.person_id : ''
 
       return [
         person.id,

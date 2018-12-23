@@ -306,13 +306,13 @@ class PeopleController < ApplicationController
     person = Person.find_by(id: params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
 
-    if Invited.exists?(email: person.email, conference_id: conference.id)
-      invited = Invited.find_by(email: person.email, conference_id: conference.id)
+    if Invite.exists?(email: person.email, conference_id: conference.id)
+      invite = Invite.find_by(email: person.email, conference_id: conference.id)
 
-      invited.update(person: current_user.person, sharing_allowed: true)
-      invited.save
+      invite.update(person: current_user.person, sharing_allowed: true)
+      invite.save
 
-      InvitationMailer.invitation_mail(invited).deliver_now
+      InvitationMailer.invitation_mail(invite).deliver_now
 
       if !AttendanceStatus.find_by(person: person, conference: conference)
         AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
@@ -324,7 +324,7 @@ class PeopleController < ApplicationController
 
       redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
     else
-      invited = Invited.create!(email: person.email, person: current_user.person, conference: conference, sharing_allowed: true)
+      invite = Invite.create!(email: person.email, person: current_user.person, conference: conference, sharing_allowed: true)
 
       if !AttendanceStatus.find_by(person: person, conference: conference)
         AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
@@ -334,7 +334,7 @@ class PeopleController < ApplicationController
         status.save
       end
 
-      InvitationMailer.invitation_mail(invited).deliver_now
+      InvitationMailer.invitation_mail(invite).deliver_now
 
       redirect_to(person_path(person), notice: 'Person was invited.')
     end
@@ -353,7 +353,7 @@ class PeopleController < ApplicationController
     invitations_to_add = 5
 
     invites_assignation = InvitesAssignation.find_or_create_by(person: person, conference: @conference)
-    new_assigned_number = (invites_assignation&.number || Invited::REGULAR_INVITES_PER_USER) + invitations_to_add
+    new_assigned_number = (invites_assignation&.number || Invite::REGULAR_INVITES_PER_USER) + invitations_to_add
     invites_assignation.update(number: new_assigned_number)
 
     redirect_to(person_path(person), notice: 'The invitations have been successfully added to the person profile.')
@@ -364,7 +364,7 @@ class PeopleController < ApplicationController
     person = Person.find_by(id: params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
 
-    invited = Invited.create!(email: person.email, person: person, conference: conference)
+    invite = Invite.create!(email: person.email, person: person, conference: conference)
 
     if AttendanceStatus.exists?(person: person, conference: conference)
       status = AttendanceStatus.find_by(person: person, conference: conference)
@@ -374,7 +374,7 @@ class PeopleController < ApplicationController
       AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
     end
 
-    InvitationMailer.accept_request_mail(invited).deliver_now
+    InvitationMailer.accept_request_mail(invite).deliver_now
 
     redirect_to(person_path(person), notice: 'Person was invited.')
   end
@@ -410,7 +410,7 @@ class PeopleController < ApplicationController
       AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::REJECTED)
     end
 
-    Invited.find_by(email: person.email, conference: conference)&.destroy
+    Invite.find_by(email: person.email, conference: conference)&.destroy
 
     redirect_to(person_path(person), notice: 'You have rejected the request.')
   end

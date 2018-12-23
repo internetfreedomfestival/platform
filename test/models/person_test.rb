@@ -10,7 +10,7 @@ class PersonTest < ActiveSupport::TestCase
   should have_many :languages
   should have_many :links
   should have_many :phone_numbers
-  should have_many :inviteds
+  should have_many :invites
   should have_many :attendance_statuses
   should have_many :tickets
   should have_one :dif
@@ -162,7 +162,7 @@ class PersonTest < ActiveSupport::TestCase
   test '#allowed_to_send_invites? return false when the invitation does not allow sharing' do
     person = create(:person)
     conference = create(:conference)
-    create(:invited, email: person.email, conference: conference, sharing_allowed: false)
+    create(:invite, email: person.email, conference: conference, sharing_allowed: false)
 
     not_allowed = person.allowed_to_send_invites?(conference)
 
@@ -172,7 +172,7 @@ class PersonTest < ActiveSupport::TestCase
   test '#allowed_to_send_invites? return true when the invitation does allow sharing' do
     person = create(:person)
     conference = create(:conference)
-    create(:invited, email: person.email, conference: conference, sharing_allowed: true)
+    create(:invite, email: person.email, conference: conference, sharing_allowed: true)
 
     allowed = person.allowed_to_send_invites?(conference)
 
@@ -221,11 +221,11 @@ class PersonTest < ActiveSupport::TestCase
     a_person = create(:person)
 
     person_with_invitation_and_ticket = create(:person)
-    invited_with_ticket = create(:invited, email: person_with_invitation_and_ticket.email, conference: conference, person: a_person)
+    invite_with_ticket = create(:invite, email: person_with_invitation_and_ticket.email, conference: conference, person: a_person)
     ticket = create(:ticket, conference: conference, person: person_with_invitation_and_ticket, status: "Completed")
 
     person_with_invitation_and_event = create(:person)
-    invited = create(:invited, email: person_with_invitation_and_event.email, conference: conference, person: a_person)
+    invite = create(:invite, email: person_with_invitation_and_event.email, conference: conference, person: a_person)
     event = create(:event, conference: conference)
 
     eventperson = create(:event_person, event: event, event_role: "submitter", person: person_with_invitation_and_event)
@@ -294,7 +294,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal ticket.id.to_s, second_row[2]
     assert_equal person_with_invitation_and_ticket.email, second_row[3]
     assert_equal person_with_invitation_and_ticket.pgp_key, second_row[4]
-    assert_equal invited_with_ticket.person_id.to_s, second_row[5]
+    assert_equal invite_with_ticket.person_id.to_s, second_row[5]
     assert_equal person_with_invitation_and_ticket.public_name, second_row[6]
     assert_equal person_with_invitation_and_ticket.first_name, second_row[7]
     assert_equal person_with_invitation_and_ticket.last_name, second_row[8]
@@ -322,7 +322,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal '', third_row[2]
     assert_equal person_with_invitation_and_event.email, third_row[3]
     assert_equal person_with_invitation_and_event.pgp_key, third_row[4]
-    assert_equal invited.person_id.to_s, third_row[5]
+    assert_equal invite.person_id.to_s, third_row[5]
     assert_equal person_with_invitation_and_event.public_name, third_row[6]
     assert_equal person_with_invitation_and_event.first_name, third_row[7]
     assert_equal person_with_invitation_and_event.last_name, third_row[8]

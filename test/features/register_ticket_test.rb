@@ -4,12 +4,12 @@ require "minitest/rails/capybara"
 class RegisterTicketTest < Capybara::Rails::TestCase
   setup do
     @conference = create(:conference)
-    create(:call_for_participation, conference: @conference )
+    create(:call_for_participation, conference: @conference)
     @admin = create(:user, person: create(:person), role: 'admin')
     @person = create(:person)
     @user = create(:user, person: @person, role: 'submitter')
-    @invited = create(:invited, email: @user.person.email, conference: @conference)
-    @attendance_status = create(:attendance_status, person:  @user.person, conference: @conference, status: "Invited")
+    @invite = create(:invite, email: @user.person.email, conference: @conference)
+    @attendance_status = create(:attendance_status, person: @user.person, conference: @conference, status: 'Invited')
 
     ActionMailer::Base.deliveries.clear
   end
@@ -21,7 +21,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   test 'invited person can register through to the ticketing form' do
     login_as(@user)
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/ticketing_form"
 
     within '#register_ticket' do
       fill_in 'ticket[public_name]', with: 'test'
@@ -43,40 +43,39 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   test 'registered person cannot register twice' do
     login_as(@user)
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/ticketing_form"
 
     register_ticket
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/ticketing_form"
 
     register_ticket
 
-    assert_text "You cannot register to the conference twice"
+    assert_text 'You cannot register to the conference twice'
   end
 
   test 'tickets not completed can be completed later' do
-    _ticket = create(:ticket, person: @user.person, conference: @conference, status: "pending", amount: "850", ticket_option: "Organizational")
+    _ticket = create(:ticket, person: @user.person, conference: @conference, status: 'Pending', amount: '850', ticket_option: 'Organizational Ticket')
 
     login_as(@user)
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/ticketing_form"
 
     register_ticket
 
-    assert_text "Success: Your IFF Ticket has been issued!"
+    assert_text 'Success: Your IFF Ticket has been issued!'
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/view_ticket"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/view_ticket"
 
-    assert_text "Amount: 0 $"
+    assert_text 'Amount: 0 $'
   end
 
   test 'ticket form has mandatory fields' do
     login_as(@user)
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/ticketing_form"
 
     within '#register_ticket' do
-
       click_on 'Get Your Ticket'
     end
 
@@ -86,7 +85,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
   test 'only reports not filled mandatory fields' do
     login_as(@user)
 
-    visit "/#{@conference.acronym}/invitations/#{@invited.id}/ticketing_form"
+    visit "/#{@conference.acronym}/invitations/#{@invite.id}/ticketing_form"
 
     within '#register_ticket' do
       select('she', from: 'ticket[gender_pronoun]')

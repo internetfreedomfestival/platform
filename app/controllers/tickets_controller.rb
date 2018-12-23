@@ -6,23 +6,23 @@ class TicketsController < ApplicationController
   before_action :no_previous_ticket, only: [:register_ticket]
 
   def ticketing_form
-    @invited = Invited.find(params[:id])
-    @person = Person.find_by(email: @invited.email)
-    @conference = @invited.conference
+    @invite = Invite.find(params[:id])
+    @person = Person.find_by(email: @invite.email)
+    @conference = @invite.conference
     @ticket = Ticket.new(conference: @conference, person: @person)
   end
 
   def view_ticket
     @person = Person.find_by(id: current_user.person)
-    @invited = Invited.find(params[:id])
-    @conference = @invited.conference
+    @invite = Invite.find(params[:id])
+    @conference = @invite.conference
     @ticket = Ticket.find_by(person: @person, conference: @conference, status: "Completed")
   end
 
   def cancel_ticket
     @person = Person.find_by(id: current_user.person)
-    @invited = Invited.find(params[:id])
-    @conference = @invited.conference
+    @invite = Invite.find(params[:id])
+    @conference = @invite.conference
     @ticket = Ticket.find_by(person: @person, conference: @conference, status: "Completed")
 
     if @ticket.amount == 0
@@ -49,17 +49,17 @@ class TicketsController < ApplicationController
 
   def send_ticket
     @person = Person.find_by(id: current_user.person)
-    @invited = Invited.find(params[:id])
-    @conference = @invited.conference
+    @invite = Invite.find(params[:id])
+    @conference = @invite.conference
     @ticket = Ticket.find_by(person: @person, conference: @conference)
     TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
     redirect_to view_ticket_path, notice: "Succesfully resent. Check your email."
   end
 
   def register_ticket
-    @invited = Invited.find(params[:id])
-    @person = Person.find_by(email: @invited.email)
-    @conference = @invited.conference
+    @invite = Invite.find(params[:id])
+    @person = Person.find_by(email: @invite.email)
+    @conference = @invite.conference
 
     if Ticket.exists?(conference: @conference, person: @person, status: "Pending")
       @ticket = Ticket.find_by(conference: @conference, person: @person, status: "Pending")
@@ -81,7 +81,7 @@ class TicketsController < ApplicationController
     end
 
     if ticket_params["amount"] != "0"
-      return redirect_to new_charge_path(@invited, @ticket)
+      return redirect_to new_charge_path(@invite, @ticket)
     end
 
     if !AttendanceStatus.find_by(person: @person, conference: @conference)
@@ -169,15 +169,15 @@ class TicketsController < ApplicationController
   end
 
   def check_invitation
-    unless Invited.exists?(id: params[:id])
+    unless Invite.exists?(id: params[:id])
       flash[:error] = 'You cannot register to the conference without a valid invitation'
       redirect_to cfp_root_path
     end
   end
 
   def require_same_person
-    invited = Invited.find(params[:id])
-    email = invited.email
+    invite = Invite.find(params[:id])
+    email = invite.email
 
     if current_user.person.nil? || email != current_user.person.email
       flash[:error] = 'You cannot register to the conference without a valid invitation'
@@ -186,19 +186,19 @@ class TicketsController < ApplicationController
   end
 
   def require_same_conference
-    invited = Invited.find(params[:id])
+    invite = Invite.find(params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
-    unless invited.conference.acronym == conference.acronym
+    unless invite.conference.acronym == conference.acronym
       flash[:error] = 'You cannot register to the conference without an invitation'
       redirect_to cfp_root_path
     end
   end
 
   def no_previous_ticket
-    invited = Invited.find(params[:id])
+    invite = Invite.find(params[:id])
 
-    person = Person.find_by(email: invited.email)
-    conference = invited.conference
+    person = Person.find_by(email: invite.email)
+    conference = invite.conference
 
     if AttendanceStatus.exists?(
         person_id: person.id,

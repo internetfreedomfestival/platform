@@ -59,13 +59,13 @@ class PeopleControllerTest < ActionController::TestCase
   test 'should invite persons to a conference' do
     post :send_invitation, id: @person.to_param, conference_acronym: @conference.acronym
 
-    assert_equal(@person.email, Invited.first.email)
-    assert_equal(@conference, Invited.first.conference)
+    assert_equal(@person.email, Invite.first.email)
+    assert_equal(@conference, Invite.first.conference)
   end
 
   test 'admin can override invitation by send invitation' do
     invited_person = create(:person)
-    invite = create(:invited, person: @person, conference: @conference, email: invited_person.email)
+    invite = create(:invite, person: @person, conference: @conference, email: invited_person.email)
 
     post :send_invitation, id: invited_person.to_param, conference_acronym: @conference.acronym
 
@@ -84,8 +84,8 @@ class PeopleControllerTest < ActionController::TestCase
   test 'should accept invitations request' do
     post :accept_request, id: @person.to_param, conference_acronym: @conference.acronym
 
-    assert_equal(@person.email, Invited.first.email)
-    assert_equal(@conference, Invited.first.conference)
+    assert_equal(@person.email, Invite.first.email)
+    assert_equal(@conference, Invite.first.conference)
   end
 
   test 'should puts on hold the request' do
@@ -106,11 +106,11 @@ class PeopleControllerTest < ActionController::TestCase
 
   test 'should remove the user invitation when the request is rejected' do
     invited_person = create(:person)
-    invite = create(:invited, person: @person, conference: @conference, email: invited_person.email)
+    invite = create(:invite, person: @person, conference: @conference, email: invited_person.email)
 
     post :reject, id: invited_person.to_param, conference_acronym: @conference.acronym
 
-    invite = Invited.find_by(email: invited_person.email, conference: @conference)
+    invite = Invite.find_by(email: invited_person.email, conference: @conference)
 
     assert_nil(invite)
   end
@@ -118,13 +118,13 @@ class PeopleControllerTest < ActionController::TestCase
   test 'should add 5 more invitations to an invited person' do
     post :send_invitation, id: @person.to_param, conference_acronym: @conference.acronym
 
-    assert_difference 'Invited.pending_invites_for(@person, @conference)', +5 do
+    assert_difference 'Invite.pending_invites_for(@person, @conference)', +5 do
       post :add_invitations, id: @person.to_param, conference_acronym: @conference.acronym
     end
   end
 
   test 'should not add 5 more invitations to an uninvited person' do
-    assert_no_difference 'Invited.pending_invites_for(@person, @conference)' do
+    assert_no_difference 'Invite.pending_invites_for(@person, @conference)' do
       post :add_invitations, id: @person.to_param, conference_acronym: @conference.acronym
     end
   end

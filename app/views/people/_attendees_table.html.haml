@@ -25,7 +25,7 @@
   %tbody
     - collection.each do |attendance_status|
       - person = attendance_status.person
-      - invited = Invited.find_by(email: person.email)
+      - invite = Invite.find_by(email: person.email)
 
       %tr
         %td
@@ -41,7 +41,7 @@
         %td= person.country_of_origin
         %td= attendance_status.status
         %td
-          - if invited.nil?
+          - if invite.nil?
             = "-"
           - else
-            = invited.person.email
+            = invite.person.email

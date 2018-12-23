@@ -1,37 +1,37 @@
 class InvitationMailer < ApplicationMailer
-  def invitation_mail(invited)
-    @first_name = Person.find_by(email: invited.email).first_name
-    @conference = invited.conference
-    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
+  def invitation_mail(invite)
+    @first_name = Person.find_by(email: invite.email).first_name
+    @conference = invite.conference
+    @link = ticketing_form_url(id: invite.id, conference_acronym: @conference.acronym)
 
     mail(
-      to: invited.email,
+      to: invite.email,
       subject: I18n.t('emails.invitation_mail.subject'),
       locale: :en
     )
   end
 
-  def not_registered_invitation_mail(invited)
-    @conference = invited.conference
+  def not_registered_invitation_mail(invite)
+    @conference = invite.conference
 
-    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
+    @link = ticketing_form_url(id: invite.id, conference_acronym: @conference.acronym)
 
     mail(
-      to: invited.email,
+      to: invite.email,
       subject: I18n.t('emails.not_registered_invitation_mail.subject'),
       locale: :en
     )
   end
 
-  def additional_invitation_mail(invited)
-    person = invited.person
-    @conference = invited.conference
+  def additional_invitation_mail(invite)
+    person = invite.person
+    @conference = invite.conference
 
     @first_name = person.first_name
-    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
+    @link = ticketing_form_url(id: invite.id, conference_acronym: @conference.acronym)
 
     mail(
-      to: invited.email,
+      to: invite.email,
       subject: I18n.t('emails.additional_invitation_mail.subject', first_name: @first_name),
       locale: :en
     )
@@ -48,14 +48,14 @@ class InvitationMailer < ApplicationMailer
     )
   end
 
-  def accept_request_mail(invited)
-    @conference = invited.conference
+  def accept_request_mail(invite)
+    @conference = invite.conference
 
-    @first_name = Person.find_by(email: invited.email).first_name
-    @link = ticketing_form_url(id: invited.id, conference_acronym: @conference.acronym)
+    @first_name = Person.find_by(email: invite.email).first_name
+    @link = ticketing_form_url(id: invite.id, conference_acronym: @conference.acronym)
 
     mail(
-      to: invited.email,
+      to: invite.email,
       subject: I18n.t('emails.accept_request_mail.subject', conference_alt_title: @conference.alt_title),
       locale: :en
     )

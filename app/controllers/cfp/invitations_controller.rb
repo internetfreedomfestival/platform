@@ -11,13 +11,13 @@ class Cfp::InvitationsController < ApplicationController
     person = current_user.person
     conference = Conference.find_by(acronym: acronym)
 
-    invited = Invited.create(email: email, person: person, conference: conference, sharing_allowed: false)
+    invite = Invite.create(email: email, person: person, conference: conference, sharing_allowed: false)
 
-    if Person.exists?(email: invited.email)
-      person = Person.find_by(email: invited.email)
+    if Person.exists?(email: invite.email)
+      person = Person.find_by(email: invite.email)
       attendance_status = AttendanceStatus.find_by(person: person, conference: conference)
       if attendance_status.nil?
-        AttendanceStatus.create!(person: Person.find_by(email: invited.email), conference: conference, status: AttendanceStatus::INVITED)
+        AttendanceStatus.create!(person: Person.find_by(email: invite.email), conference: conference, status: AttendanceStatus::INVITED)
       else
         if attendance_status.status == AttendanceStatus::REQUESTED
           attendance_status.update(status: AttendanceStatus::INVITED)
@@ -26,7 +26,7 @@ class Cfp::InvitationsController < ApplicationController
     end
 
 
-    InvitationMailer.additional_invitation_mail(invited).deliver_now
+    InvitationMailer.additional_invitation_mail(invite).deliver_now
 
     flash[:notice] = "We have sent an invite to #{params['email']}"
     redirect_to cfp_root_path
@@ -69,14 +69,14 @@ class Cfp::InvitationsController < ApplicationController
   def check_user_has_available_invites
     person = current_user.person
 
-    if Invited.pending_invites_for(person, @conference) == 0
+    if Invite.pending_invites_for(person, @conference) == 0
       flash[:error] = 'You have already sent all your available invitations'
       redirect_to cfp_root_path
     end
   end
 
   def check_email_not_invited
-    if Invited.exists?(email: params['email'])
+    if Invite.exists?(email: params['email'])
       flash[:error] = 'The user you are trying to invite has already received an invite'
       redirect_to cfp_root_path
     end

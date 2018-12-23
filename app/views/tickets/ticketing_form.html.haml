@@ -1,4 +1,4 @@
-= simple_form_for(@ticket, url: register_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
+= simple_form_for(@ticket, url: register_ticket_path(id: @invite.id, conference_acronym: @conference.acronym), html: {method: 'post', multipart: true, id: 'register_ticket'}) do |f|
   %fieldset.inputs
   .row
     .offset1

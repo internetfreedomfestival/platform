@@ -26,9 +26,9 @@ class InvitationsController < ApplicationController
       return
     end
 
-    invited = Invited.create(email: email, person: invited_by, conference: conference)
-    InvitationMailer.not_registered_invitation_mail(invited).deliver_now
+    invite = Invite.create(email: email, person: invited_by, conference: conference)
+    InvitationMailer.not_registered_invitation_mail(invite).deliver_now
 
-    redirect_to new_invitations_path, notice: "We have sent an invite to #{invited.email}"
+    redirect_to new_invitations_path, notice: "We have sent an invite to #{invite.email}"
   end
 end

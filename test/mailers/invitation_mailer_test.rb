@@ -2,7 +2,7 @@ require 'test_helper'
 
 class InvitationMailerTest < ActionMailer::TestCase
   test 'sends invitation mail to the invited email with the ticket links' do
-    invitation = create(:invited)
+    invitation = create(:invite)
     create(:person, email: invitation.email)
 
     email = InvitationMailer.invitation_mail(invitation).deliver_now
@@ -16,7 +16,7 @@ class InvitationMailerTest < ActionMailer::TestCase
   end
 
   test 'send the invitation to the user who made the request for the ticket' do
-    invitation = create(:invited)
+    invitation = create(:invite)
     create(:person, email: invitation.email)
 
     email = InvitationMailer.accept_request_mail(invitation).deliver_now
@@ -30,7 +30,7 @@ class InvitationMailerTest < ActionMailer::TestCase
   end
 
   test 'sends invitation mail to non registered users' do
-    invitation = create(:invited)
+    invitation = create(:invite)
 
     email = InvitationMailer.not_registered_invitation_mail(invitation).deliver_now
 
@@ -43,7 +43,7 @@ class InvitationMailerTest < ActionMailer::TestCase
   end
 
   test 'sends invitation mail from a regular user' do
-    invitation = create(:invited)
+    invitation = create(:invite)
     inviter = invitation.person
 
     email = InvitationMailer.additional_invitation_mail(invitation).deliver_now
@@ -57,7 +57,7 @@ class InvitationMailerTest < ActionMailer::TestCase
   end
 
   test 'sends accept request mail from a user' do
-    invitation = create(:invited)
+    invitation = create(:invite)
     invitee = create(:person, email: invitation.email)
 
     email = InvitationMailer.accept_request_mail(invitation).deliver_now

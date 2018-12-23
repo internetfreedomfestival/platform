@@ -164,7 +164,7 @@ FactoryBot.define do
     past_travel_assistance ["2017"]
   end
 
-  factory :invited do
+  factory :invite do
     person
     conference
     email { generate(:email) }

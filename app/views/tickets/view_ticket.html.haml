@@ -1,4 +1,4 @@
-= simple_form_for(@ticket, url: view_ticket_path(id: @invited.id, conference_acronym: @conference.acronym), html: {method: 'get', multipart: true}) do |f|
+= simple_form_for(@ticket, url: view_ticket_path(id: @invite.id, conference_acronym: @conference.acronym), html: {method: 'get', multipart: true}) do |f|
   %section
     .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
       .pull-right

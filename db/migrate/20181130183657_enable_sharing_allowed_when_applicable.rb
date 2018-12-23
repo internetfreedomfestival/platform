@@ -5,7 +5,7 @@ class EnableSharingAllowedWhenApplicable < ActiveRecord::Migration
     # guarantee of a deterministic outcome.
 
     conference = Conference.find_by(acronym: 'IFF2019')
-    invitations = Invited.where(conference: conference)
+    invitations = Invite.where(conference: conference)
 
     invitations.each do |invitation|
       inviter = invitation.person

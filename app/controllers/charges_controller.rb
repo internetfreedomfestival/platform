@@ -2,14 +2,14 @@ class ChargesController < ApplicationController
   def new
     @ticket = Ticket.find(params[:ticket_id])
     @amount_in_cents = @ticket.amount * 100
-    @invited = Invited.find(params[:id])
-    @conference = @invited.conference
+    @invite = Invite.find(params[:id])
+    @conference = @invite.conference
   end
 
   def create
     @ticket = Ticket.find(params[:ticket_id])
     @amount_in_cents = @ticket.amount * 100
-    @invited = Invited.find(params[:id])
+    @invite = Invite.find(params[:id])
 
     customer = Stripe::Customer.create(
       :email => params[:stripeEmail],
@@ -37,10 +37,10 @@ class ChargesController < ApplicationController
       TicketingMailer.ticketing_mail(@ticket, @ticket.person, @ticket.conference).deliver_now
       redirect_to cfp_root_path, notice: "Success: Your IFF Ticket has been issued!"
     else
-      redirect_to new_charge_path(@invited, @ticket)
+      redirect_to new_charge_path(@invite, @ticket)
     end
   rescue Stripe::CardError => e
     flash[:error] = e.message
-    redirect_to new_charge_path(@invited, @ticket)
+    redirect_to new_charge_path(@invite, @ticket)
   end
 end
