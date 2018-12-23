@@ -6,7 +6,7 @@ class SetDifStatusToRequested < ActiveRecord::Migration
     events.each do |event|
       Rails.logger.info "Updating event: #{event.id}. Add value: Requested, to dif_status"
       event.dif_status = "Requested"
-      event.save
+      event.save!
     end
   end
 

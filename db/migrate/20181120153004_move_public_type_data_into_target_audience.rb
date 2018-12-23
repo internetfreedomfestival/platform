@@ -8,7 +8,7 @@ class MovePublicTypeDataIntoTargetAudience < ActiveRecord::Migration
 
       event.target_audience = event.public_type if event.target_audience.nil? || event.target_audience.empty?
       event.public_type = nil
-      event.save
+      event.save!
     end
   end
 

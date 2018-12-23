@@ -12,7 +12,7 @@ class GenerateMissingAttendanceStatuses < ActiveRecord::Migration
 
     missing_attendees.each do |attendee|
       Rails.logger.info "Creating attendance status '#{AttendanceStatus::INVITED}' for person id ##{attendee.id} on conference '#{conference.acronym}'"
-      AttendanceStatus.create(person: attendee, conference: conference, status: AttendanceStatus::INVITED)
+      AttendanceStatus.create!(person: attendee, conference: conference, status: AttendanceStatus::INVITED)
     end
   end
 

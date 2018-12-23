@@ -14,7 +14,7 @@ class EnableSharingAllowedWhenApplicable < ActiveRecord::Migration
       Rails.logger.info "Updating invitation: #{invitation.inspect}"
       Rails.logger.info "  Inviter ##{inviter.id} has role \"#{inviter.user.role}\": setting sharing_allowed to #{value} for invitation ##{invitation.id}"
 
-      invitation.update(sharing_allowed: value)
+      invitation.update!(sharing_allowed: value)
     end
   end
 
