@@ -1,7 +1,12 @@
 require 'test_helper'
 
 class AttendanceStatusTest < ActiveSupport::TestCase
-  def setup
+  should belong_to :conference
+  should belong_to :person
+  should validate_uniqueness_of(:conference_id).scoped_to(:person_id)
+  should validate_inclusion_of(:status).in_array(AttendanceStatus::STATUSES)
+
+  setup do
     @person = create(:person)
     @conference = create(:conference)
   end
