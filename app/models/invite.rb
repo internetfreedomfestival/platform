@@ -2,6 +2,8 @@
 class Invite < ActiveRecord::Base
   before_validation :normalize_email
 
+  validates_uniqueness_of :email, scope: :conference_id
+
   REGULAR_INVITES_PER_USER = 5
 
   belongs_to :person
@@ -23,6 +25,6 @@ class Invite < ActiveRecord::Base
   end
 
   def normalize_email
-    self.email = email.strip
+    self.email = email.strip.downcase
   end
 end
