@@ -9,15 +9,17 @@ class Ticket < ActiveRecord::Base
 
   validates_presence_of :public_name,
                         :gender_pronoun,
-                        :interested_in_volunteer
+                        :interested_in_volunteer,
+                        :iff_before,
+                        :iff_goals,
+                        :iff_days
 
-  validates :code_of_conduct, acceptance: true
-  validates :iff_before, presence: true
-  validates :iff_goals, presence: true
-  validates :iff_days, presence: true
-  validates :ticket_option, presence: {message: "You must select a valid ticket option"}
-  validates :amount, presence: {message: "Please, select an amount"}
+  validates :ticket_option, presence: { message: 'You must select a valid ticket option' }
+  validates :amount, presence: { message: 'Please, select an amount' }
 
+  validates_acceptance_of :code_of_conduct
+
+  validates_uniqueness_of :conference_id, scope: :person_id
 
   def event
     self.object if self.object_type == "Event"
