@@ -20,7 +20,11 @@ class Generate2018TicketDataFromPeople < ActiveRecord::Migration
   end
 
   def down
-    raise ActiveRecord::Rollback, 'ERROR: Cannot revert the migration'
+    # ALERT!
+    # This is highly dependent on the actual database values, so there is no
+    # guarantee of a deterministic outcome.
+    AttendanceStatus.where(conference: conference, created_at: '2018-03-10'.to_time).delete_all
+    Ticket.where(conference: conference, created_at: '2018-03-10'.to_time).delete_all
   end
 
   private
