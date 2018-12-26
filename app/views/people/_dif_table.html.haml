@@ -4,7 +4,6 @@
       %th.first
         %th First name
         %th Last name
-        %th Public name
         %th Email
         %th Recipient
         %th Group
@@ -16,17 +15,13 @@
     - collection.each do |event_person|
       - event = event_person.event
       - person = event_person.person
+      - recipient = Person.find_by(email: event.recipient_travel_stipend)
       %tr
         %td
         %td= link_to person.first_name, person
         %td= link_to person.last_name, person
-        %td
-          - if person.public_name.nil?
-            = "-"
-          - else
-            = link_to person.public_name, person
         %td= link_to person.email, person
-        %td= event.recipient_travel_stipend.present? ? event.recipient_travel_stipend : '-'
+        %td= recipient ? link_to(recipient.email, recipient) : ''
         %td= event.group
         %td= event.travel_support.join(', ')
         %td= event.past_travel_assistance.join(', ')

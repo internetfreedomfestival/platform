@@ -3,16 +3,16 @@ require 'minitest/rails/capybara'
 
 class DifListTest < Capybara::Rails::TestCase
   setup do
-    @conference = FactoryBot.create(:conference)
-    FactoryBot.create(:call_for_participation, conference: @conference)
-    @person = FactoryBot.create(:person)
-    @user = FactoryBot.create(:user, role: 'submitter', person: @person)
-    @other_speaker = FactoryBot.create(:user, role: 'submitter')
-    @admin = FactoryBot.create(:user, role: 'admin')
-    @event = FactoryBot.create(:event, conference: @conference, travel_assistance: true, recipient_travel_stipend: @other_speaker.email)
-    FactoryBot.create(:event_person, person: @person, event: @event, event_role: 'submitter')
-    FactoryBot.create(:event_person, person: @person, event: @event, event_role: 'speaker')
-    FactoryBot.create(:event_person, person: @other_speaker.person, event: @event, event_role: 'speaker')
+    @conference = create(:conference)
+    create(:call_for_participation, conference: @conference)
+    @person = create(:person)
+    @user = create(:user, role: 'submitter', person: @person)
+    @other_speaker = create(:user, role: 'submitter')
+    @admin = create(:user, role: 'admin')
+    @event = create(:event, conference: @conference, travel_assistance: true, recipient_travel_stipend: @other_speaker.person.email)
+    create(:event_person, person: @person, event: @event, event_role: 'submitter')
+    create(:event_person, person: @person, event: @event, event_role: 'speaker')
+    create(:event_person, person: @other_speaker.person, event: @event, event_role: 'speaker')
   end
 
   test 'DIF table shows DIF requests contained in Events' do
@@ -22,7 +22,7 @@ class DifListTest < Capybara::Rails::TestCase
     click_on 'DIF'
 
     submitter_email = @person.email
-    recipient_of_stipend = @other_speaker.email
+    recipient_of_stipend = @other_speaker.person.email
 
     assert_text submitter_email
     assert_text recipient_of_stipend

@@ -90,13 +90,13 @@ class PeopleController < ApplicationController
       events: { conference_id: @conference.id, travel_assistance: true }
     )
 
-    @people = result.paginate page: page_param
-    @csv_people = result
+    @submissions = result.paginate page: page_param
+    @csv_submissions = result
 
     respond_to do |format|
       format.html
-      format.csv { send_data @csv_people.to_csv, filename: "dif-#{@conference.acronym}-#{Date.today}.csv" }
-      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
+      format.csv { send_data @csv_submissions.to_csv, filename: "dif-#{@conference.acronym}-#{Date.today}.csv" }
+      format.xls { send_data @csv_submissions.to_csv(col_sep: "\t"), filename: "dif-#{@conference.acronym}-#{Date.today}.xls" }
     end
   end
 

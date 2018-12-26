@@ -95,36 +95,30 @@ class EventPerson < ActiveRecord::Base
     "#{model_name.human}: #{self.person.full_name} (#{self.event_role})"
   end
 
+  def serialize
+    recipient_email = event.recipient_travel_stipend.blank? ? nil : event.recipient_travel_stipend
+
+    {
+      'IFF ID' => person.id,
+      'First Name' => person.first_name,
+      'Last Name' => person.last_name,
+      'Email' => person.email,
+      'Recipient' => recipient_email,
+      'Group' => event.group,
+      'Travel Support' => event.travel_support.join(', '),
+      'Past Travel Assistance' => event.past_travel_assistance.join(', '),
+      'DIF Status' => event.dif_status
+    }
+  end
+
   def self.to_csv(options = {})
-    attributes = %w{id email public_name
-                      first_name last_name
-                      pgp_key gender
-                      country_of_origin
-                      professional_background
-                      other_background organization
-                      project title
-                      interested_in_volunteer
-                      created_at
-                      include_in_mailings
-                      invitation_to_mattermost}
+    options = options.merge(headers: true)
 
-    non_dif_attributes = %w{id email public_name
-                              first_name
-                              last_name pgp_key
-                              gender country_of_origin
-                              professional_background
-                              other_background organization
-                              project title
-                              interested_in_volunteer
-                              created_at
-                              include_in_mailings
-                              invitation_to_mattermost}
+    CSV.generate(options) do |csv|
+      csv << EventPerson.first.serialize.keys
 
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
-
-      all.map(&:person).each do |person|
-        csv << non_dif_attributes.map{ |attr| person.send(attr) }
+      all.each do |event_person|
+        csv << event_person.serialize
       end
     end
   end
