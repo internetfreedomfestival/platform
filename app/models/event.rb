@@ -43,27 +43,18 @@ class Event < ActiveRecord::Base
 
   validates_attachment_content_type :logo, content_type: [/jpg/, /jpeg/, /png/, /gif/]
 
-
   # These presence validations are commented out for now to allow Admin to add social and special events with only required info.
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
   # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
   validates_presence_of :title, :subtitle, :description, :target_audience,
-    :desired_outcome, :track, :event_type
-
-  validates :iff_before, presence: true
+    :desired_outcome, :track, :event_type, :iff_before
 
   validates_inclusion_of :projector, in: [true, false]
-  validates_inclusion_of :time_slots, in: [3, 6]
 
   validates_uniqueness_of :title, scope: :conference_id
 
-
-  def travel_assistence?
-    self.travel_assistance.present?
-  end
-
-  validates :group, presence: true, if: :travel_assistence?
-  validates :past_travel_assistance, presence: true, if: :travel_assistence?
+  validates :group, presence: true, if: :travel_assistance?
+  validates :past_travel_assistance, presence: true, if: :travel_assistance?
 
   validates_format_of :recipient_travel_stipend, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
 

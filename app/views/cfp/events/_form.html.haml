@@ -92,7 +92,8 @@
                 %span.form-input__error= @event.errors.messages[:time_slots].first
             .form-input
               %ul.inputs-list
-                = f.collection_radio_buttons(:time_slots, [[3, "45 min"], [6, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
+                / We use 4 and 8 slots instead of the nominal 3 and 6 to allow for extra time in the schedule
+                = f.collection_radio_buttons(:time_slots, [[4, "45 min"], [8, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
                   %li
                     =r.label do
                       = r.radio_button
