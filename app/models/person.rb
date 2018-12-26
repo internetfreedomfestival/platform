@@ -630,7 +630,9 @@ class Person < ActiveRecord::Base
   end
 
   def self.to_csv(conference, options = {})
-    CSV.generate(headers: true) do |csv|
+    options = options.merge(headers: true)
+
+    CSV.generate(options) do |csv|
       csv << Person.first.serialize(conference).keys
 
       all.find_each do |person|
