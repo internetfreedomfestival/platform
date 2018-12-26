@@ -25,7 +25,7 @@ class PeopleController < ApplicationController
       @people = result.paginate page: page_param
       @csv_people = result
 
-      format.csv  { send_data @csv_people.to_csv, filename: "speakers-#{Date.today}.csv" }
+      format.csv { send_data @csv_people.to_csv, filename: "speakers-#{@conference.acronym}-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
@@ -46,7 +46,7 @@ class PeopleController < ApplicationController
       @people = result.paginate page: page_param
       @csv_people = result
 
-      format.csv  { send_data @csv_people.to_csv, filename: "speakers-#{Date.today}.csv" }
+      format.csv { send_data @csv_people.to_csv, filename: "confirmed_speakers-#{@conference.acronym}-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
@@ -95,7 +95,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @csv_people.to_csv, filename: "dif-#{Date.today}.csv" }
+      format.csv { send_data @csv_people.to_csv, filename: "dif-#{@conference.acronym}-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
@@ -108,7 +108,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @csv_people.to_csv, filename: "volunteers-#{Date.today}.csv" }
+      format.csv { send_data @csv_people.to_csv, filename: "volunteers-#{@conference.acronym}-#{Date.today}.csv" }
       format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
     end
   end
@@ -120,7 +120,7 @@ class PeopleController < ApplicationController
     @csv_people = result
     respond_to do |format|
       format.html
-      format.csv  { send_data @csv_people.to_csv, filename: "Waitlist-#{Date.today}.csv" }
+      format.csv { send_data @csv_people.to_csv, filename: "waitlist-#{@conference.acronym}-#{Date.today}.csv" }
     end
   end
 
@@ -131,7 +131,7 @@ class PeopleController < ApplicationController
     @csv_people = result
     respond_to do |format|
       format.html
-      format.csv  { send_data @csv_people.to_csv, filename: "canceled-#{Date.today}.csv" }
+      format.csv { send_data @csv_people.to_csv, filename: "canceled-#{@conference.acronym}-#{Date.today}.csv" }
     end
   end
 
