@@ -102,7 +102,7 @@ class PeopleController < ApplicationController
 
   def volunteers
     authorize! :administrate, Person
-    result = Person.where(interested_in_volunteer: true)
+    result = Person.joins(:tickets).where(tickets: { conference: @conference, interested_in_volunteer: ['true', 't'] })
     @people = result.paginate page: page_param
     @csv_people = result
 

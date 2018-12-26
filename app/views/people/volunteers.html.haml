@@ -17,8 +17,7 @@
     -# %li= link_to "Canceled", canceled_people_path
     /%li= link_to "This conference", people_path
 
-  -# %h4 There are #{@people.count} people interested in volunteering for the #{@conference.title}.
-  %h4{style: "color: red;"} The information in this table is referring to the 2018 conference, if you want to consult the updated information you must enter within the user's profile.
+  %h4 There are #{@people.count} people interested in volunteering for the #{@conference.title}.
 
   .pull-right
     - if can? :administrate, Person
