@@ -299,10 +299,10 @@ FactoryBot.define do
     iff_before ['2017']
     iff_goals ['Requesting support with a specific issue']
     iff_days ['Full week']
-    interested_in_volunteer 'Yes, sounds fun!'
+    interested_in_volunteer false
     ticket_option 'Individual Ticket'
     status 'Completed'
-    amount '0'
+    amount 0
     code_of_conduct 1
     person
     conference

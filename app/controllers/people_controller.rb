@@ -59,8 +59,8 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv  { send_data @csv_people.to_csv, filename: "people-#{Date.today}.csv" }
-      format.xls { send_data @csv_people.to_csv(col_sep: "\t") }
+      format.csv { send_data @csv_people.to_csv(@conference), filename: "people-#{@conference.acronym}-#{Date.today}.csv" }
+      format.xls { send_data @csv_people.to_csv(@conference, col_sep: "\t") }
     end
   end
 

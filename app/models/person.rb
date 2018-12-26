@@ -594,89 +594,47 @@ class Person < ActiveRecord::Base
     invitation.sharing_allowed?
   end
 
-  def self.csv_headers
-    [
-      'IFF ID',
-      'Ticket Status',
-      'Ticket ID',
-      'Email',
-      'PGP Key',
-      'Invited By',
-      'Public Name',
-      'First Name',
-      'Last Name',
-      'Gender',
-      'Public Gender Pronoun',
-      'Country',
-      'Professional Background',
-      'Organization',
-      'Project',
-      'Title',
-      'Attended IFF Before?',
-      'Submitted Session 2019',
-      'Presenter 2019',
-      'Presented Before?',
-      'Main goals for attending the 2019 IFF?',
-      'Include in Mailing',
-      'Invite to Mattermost',
-      'Volunteeering Interest 2019'
-    ]
+  def serialize(conference)
+    ticket = tickets.find_by(conference: conference)
+    invite = Invite.find_by(conference: conference, email: email)
+    current_submissions = events.where(conference: conference).count
+    current_presentations = events.where(conference: conference).accepted.count
+    previous_presentations = events.where.not(conference: conference).accepted.count
+
+    {
+      'IFF ID' => id,
+      'Ticket Status' => ticket&.status,
+      'Ticket ID' => ticket&.id,
+      'Email' => email,
+      'PGP Key' => pgp_key.blank? ? nil : pgp_key,
+      'Invited By' => invite&.person&.email,
+      'Public Name' => ticket&.public_name,
+      'First Name' => first_name.blank? ? nil : first_name,
+      'Last Name' => last_name.blank? ? nil : last_name,
+      'Gender' => gender,
+      'Public Gender Pronoun' => ticket&.gender_pronoun,
+      'Country' => country_of_origin,
+      'Professional Background' => professional_background&.reject(&:blank?),
+      'Organization' => organization.blank? ? nil : organization,
+      'Project' => project.blank? ? nil : project,
+      'Title' => title.blank? ? nil : title,
+      'Attended IFF Before?' => ticket&.iff_before&.reject(&:blank?),
+      'Submitted Session' => current_submissions.zero? ? 'No' : 'Yes',
+      'Presenter' => current_presentations.zero? ? 'No' : 'Yes',
+      'Presented Before?' => previous_presentations.zero? ? 'No' : 'Yes',
+      'Main goals for attending the IFF?' => ticket&.iff_goals&.reject(&:blank?),
+      'Include in Mailing' => include_in_mailings? ? 'Yes' : 'No',
+      'Invite to Mattermost' => invitation_to_mattermost? ? 'Yes' : 'No',
+      'Volunteeering Interest' => ['true', 't'].include?(ticket&.interested_in_volunteer) ? 'Yes' : 'No'
+    }
   end
 
-
-  def self.csv_values(person)
-      ticket = Ticket.where(person_id: person.id).last
-      ticket_status = ticket ? ticket.status : ''
-      ticket_id = ticket ? ticket.id : ''
-      public_gender_pronoun = ticket ? ticket.gender_pronoun : ''
-      iff_goals = ticket ? ticket.iff_goals : ''
-
-      times_submitter = EventPerson.where(person_id: person.id, event_role: "submitter").count
-      # times_submitter_in__IFF2019_conference
-      submitted = times_submitter == 0 ? 'No' : 'Yes'
-      times_presenter = EventPerson.where(person_id: person.id).count
-      # times_presenter_in_IFF2019_conference
-      presented = times_presenter == 0 ? 'No' : 'Yes'
-      invite = Invite.where(email: person.email).last
-      invited_by = invite ? invite.person_id : ''
-
-      return [
-        person.id,
-        ticket_status,
-        ticket_id,
-        person.email,
-        person.pgp_key,
-        invited_by,
-        person.public_name,
-        person.first_name,
-        person.last_name,
-        person.gender,
-        public_gender_pronoun,
-        person.country_of_origin,
-        person.professional_background,
-        person.organization,
-        person.project,
-        person.title,
-        person.iff_before,
-        submitted,
-        #
-        presented,
-        #
-        '',
-        # 'Presented Before?',
-        iff_goals,
-        person.include_in_mailings,
-        person.invitation_to_mattermost,
-        person.interested_in_volunteer
-      ]
-  end
-
-  def self.to_csv(options = {})
+  def self.to_csv(conference, options = {})
     CSV.generate(headers: true) do |csv|
-      csv << csv_headers
+      csv << Person.first.serialize(conference).keys
 
-      all.each do |person|
-        csv << csv_values(person)
+      all.find_each do |person|
+        csv << person.serialize(conference)
       end
     end
   end
