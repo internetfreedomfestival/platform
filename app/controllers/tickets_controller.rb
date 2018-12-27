@@ -68,7 +68,6 @@ class TicketsController < ApplicationController
       @ticket.status = Ticket::PENDING
     end
 
-
     success = if @ticket.persisted?
       @ticket.update(ticket_params.merge(status: Ticket::PENDING))
     else

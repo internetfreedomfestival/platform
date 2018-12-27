@@ -20,9 +20,10 @@ class Ticket < ActiveRecord::Base
   belongs_to :conference
   belongs_to :person
 
+  validates_uniqueness_of :conference_id, scope: :person_id
+
   validates_presence_of :public_name,
                         :gender_pronoun,
-                        :interested_in_volunteer,
                         :iff_before,
                         :iff_goals,
                         :iff_days
@@ -30,12 +31,11 @@ class Ticket < ActiveRecord::Base
   validates :ticket_option, presence: { message: 'You must select a valid ticket option' }
   validates :amount, presence: { message: 'Please, select an amount' }
 
-  validates_acceptance_of :code_of_conduct
-
-  validates_uniqueness_of :conference_id, scope: :person_id
-
   validates_inclusion_of :status, in: STATUSES
   validates_inclusion_of :ticket_option, in: OPTIONS
+  validates_inclusion_of :interested_in_volunteer, in: [true, false]
+
+  validates_acceptance_of :code_of_conduct
 
   def event
     self.object if self.object_type == "Event"

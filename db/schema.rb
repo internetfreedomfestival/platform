@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181227091307) do
+ActiveRecord::Schema.define(version: 20181227104712) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -457,7 +457,7 @@ ActiveRecord::Schema.define(version: 20181227091307) do
     t.integer  "amount"
     t.string   "ticket_option"
     t.string   "payment_id"
-    t.string   "interested_in_volunteer"
+    t.boolean  "interested_in_volunteer"
   end
 
   add_index "tickets", ["object_id"], name: "index_tickets_on_object_id"

@@ -625,7 +625,7 @@ class Person < ActiveRecord::Base
       'Main goals for attending the IFF?' => ticket&.iff_goals&.reject(&:blank?)&.join(', '),
       'Include in Mailing' => include_in_mailings? ? 'Yes' : 'No',
       'Invite to Mattermost' => invitation_to_mattermost? ? 'Yes' : 'No',
-      'Volunteeering Interest' => ['true', 't'].include?(ticket&.interested_in_volunteer) ? 'Yes' : 'No'
+      'Volunteeering Interest' => ticket&.interested_in_volunteer? ? 'Yes' : 'No'
     }
   end
 
