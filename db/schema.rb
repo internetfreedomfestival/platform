@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181226230102) do
+ActiveRecord::Schema.define(version: 20181227091307) do
 
   create_table "attendance_statuses", force: :cascade do |t|
     t.string   "status"
@@ -451,14 +451,13 @@ ActiveRecord::Schema.define(version: 20181226230102) do
     t.string   "iff_before"
     t.string   "iff_goals"
     t.string   "iff_days"
-    t.string   "interested_in_volunteer"
-    t.string   "code_of_conduct"
     t.integer  "person_id"
     t.integer  "conference_id"
     t.string   "status"
     t.integer  "amount"
     t.string   "ticket_option"
     t.string   "payment_id"
+    t.string   "interested_in_volunteer"
   end
 
   add_index "tickets", ["object_id"], name: "index_tickets_on_object_id"

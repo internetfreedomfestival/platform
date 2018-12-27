@@ -303,7 +303,6 @@ FactoryBot.define do
     ticket_option 'Individual Ticket'
     status 'Completed'
     amount 0
-    code_of_conduct 1
     person
     conference
   end
