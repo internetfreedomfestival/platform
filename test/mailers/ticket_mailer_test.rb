@@ -14,5 +14,6 @@ class TicketMailerTest < ActionMailer::TestCase
     assert_equal "Here’s your #{conference.alt_title} Ticket!", email.subject
     assert_match "Hi #{person.first_name}", email.body.to_s
     assert_match "IFF ID: #{person.id}", email.body.to_s
+    assert_match "Ticket ID: #{ticket.id}", email.body.to_s
   end
 end
