@@ -5,7 +5,7 @@ class ScheduleEventTest < Capybara::Rails::TestCase
   setup do
     ENV['NEW_CFP_ENABLED'] = "true"
 
-    @conference = FactoryBot.create(:conference, email: 'info@conference.org')
+    @conference = FactoryBot.create(:conference, email: 'info@conference.org', title: 'CONF 2019')
     FactoryBot.create(:call_for_participation, conference: @conference)
     FactoryBot.create(:notification, conference: @conference)
     [

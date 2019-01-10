@@ -10,4 +10,20 @@ class EventsMailer < ApplicationMailer
       locale: :en
     )
   end
+
+  def accepted_event_email(event)
+    email = event.submitter.email
+
+    @conference = event.conference
+    @first_name = event.submitter.first_name
+    @title = event.title
+    @theme = event.event_type
+    @time_slots = event.time_slots
+
+    mail(
+      to: email,
+      subject: "Congrats! You’ll be presenting at the #{@conference.alt_title}",
+      locale: :en
+    )
+  end
 end

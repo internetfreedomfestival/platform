@@ -164,6 +164,10 @@ class Event < ActiveRecord::Base
     self.update_attributes(average_rating: average(:event_ratings))
   end
 
+  def submitter
+    self.event_people.find_by(event_role: :submitter).person
+  end
+
   def speakers
     self.event_people.presenter.includes(:person).all.map(&:person)
   end

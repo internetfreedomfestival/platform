@@ -1,0 +1,59 @@
+<p>
+  **Please read the following information carefully**
+</p>
+
+<p>
+  Hello <%= @first_name %>,
+</p>
+
+<p>
+  Congratulations! Your proposal "<%= @title %>" has been selected for the "<%= @theme %>" theme of the <%= @conference.year %> Internet Freedom Festival!
+</p>
+
+<p>
+  Your session has been selected because we believe it will contribute to creating dynamic and important conversations about Internet Freedom during the IFF. Make sure to use this opportunity wisely, keeping in mind that this is one of the few times during the year where Internet Freedom community members can meet in person.
+</p>
+
+<p>
+  A quick checklist of things to complete:
+</p>
+
+<ul>
+  <li>
+    Notify and Include Other Presenters. If there is more than one presenter in your session, please notify them that this session was accepted. They MUST register on the IFF Community Platform as soon as possible, you should include them in this session under “Other presenters in this session”, and they should request an IFF ticket. Their spot at the IFF is not be guaranteed until they do this and we approve their request.
+  </li>
+  <br>
+
+  <li>
+    Check Your Session Time. Due to space limitations, your session time may have been modified. The allocated time for this session is: <%= @time_slots %> (4 = 1 hour | 8 = 2 hours).
+  </li>
+  <br>
+
+  <li>
+    Confirm Your Availability to Present. Find your session at the bottom section of your user portal home page and click the 'confirm' button next to your event. Login to the IFF Community Platform here: <a href="https://platform.internetfreedomfestival.org/">https://platform.internetfreedomfestival.org</a>.
+  </li>
+</ul>
+
+<p>
+  You will be notified about the specific day, time and room for your session when the schedule is published in the next weeks.
+</p>
+
+<p>
+  Can't present? Please contact us as soon as possible at <a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a>.
+</p>
+
+<p>
+  With much glitter!
+</p>
+
+<p>
+  The IFF Team
+</p>
+
+<p>
+  <%= @conference.alt_title %>: Valencia (Spain), April 1 - 5
+  <br/>
+  <a href="mailto:team@internetfreedomfestival.org">team@internetfreedomfestival.org</a>
+  <br/>
+  0xF60A89AD6FF97A2F
+</p>

@@ -17,12 +17,4 @@ class UserMailer < ActionMailer::Base
   def bulk_mail(user, template)
     mail to: user.email, subject: template.subject, body: template.content_for(user)
   end
-
-  def send_event_accepted_conf(user, event, conference)
-    @user = user
-    @event = event
-    @conference = conference
-    @person = Person.find_by(user_id: user.id)
-    mail to: @user.email, subject: "Your #{@conference.alt_title} Event has been accepted!"
-  end
 end

@@ -225,15 +225,19 @@ class EventsController < ApplicationController
     authorize! :update, @event
 
     if params[:send_mail]
+      # We're managing our own emails, so we prevent the use of the integrated mailing for notifications
+      params[:send_mail] = false
 
-      # If integrated mailing is used, take care that a notification text is present.
-      if @event.conference.notifications.empty?
-        return redirect_to edit_conference_path, alert: 'No notification text present. Please change the default text for your needs, before accepting/ rejecting events.'
-      end
+      # # If integrated mailing is used, take care that a notification text is present.
+      # if @event.conference.notifications.empty?
+      #   return redirect_to edit_conference_path, alert: 'No notification text present. Please change the default text for your needs, before accepting/ rejecting events.'
+      # end
 
-      return redirect_to(@event, alert: 'Cannot send mails: Please specify an email address for this conference.') unless @conference.email
+      # return redirect_to(@event, alert: 'Cannot send mails: Please specify an email address for this conference.') unless @conference.email
 
-      return redirect_to(@event, alert: 'Cannot send mails: Not all speakers have email addresses.') unless @event.speakers.all?(&:email)
+      # return redirect_to(@event, alert: 'Cannot send mails: Not all speakers have email addresses.') unless @event.speakers.all?(&:email)
+
+      EventsMailer.accepted_event_email(@event).deliver_now
     end
 
     begin
@@ -421,10 +425,5 @@ class EventsController < ApplicationController
       :recipient_travel_stipend, {travel_support: []}, {past_travel_assistance: []},
       :understand_one_presenter, :confirm_not_stipend, :code_of_conduct, :time_slots,
       :public)
-  end
-
-  # Trying to send email to user for accepted event notification
-  def send_event_accepted_confirmation(user, event, conference)
-    UserMailer.send_event_accepted_conf(user, event, conference).deliver_now
   end
 end
