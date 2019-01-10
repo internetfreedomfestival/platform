@@ -4,7 +4,7 @@ class TicketingMailer < ApplicationMailer
     @public_name = ticket.public_name
     @gender_pronoun = ticket.gender_pronoun
     @iff_days = ticket.iff_days
-    @id = person.user_id
+    @person_id = person.id
     @conference = conference
     @link = cfp_person_url(conference_acronym: @conference.acronym)
 
