@@ -587,7 +587,7 @@ class Person < ActiveRecord::Base
   end
 
   def allowed_to_send_invites?(conference)
-    invitation = Invite.find_by(email: email, conference: conference)
+    invitation = Invite.find_by(email: email.downcase, conference: conference)
 
     return false unless invitation.present?
 
@@ -596,7 +596,7 @@ class Person < ActiveRecord::Base
 
   def serialize(conference)
     ticket = tickets.find_by(conference: conference)
-    invite = Invite.find_by(conference: conference, email: email)
+    invite = Invite.find_by(conference: conference, email: email.downcase)
     current_submissions = events.where(conference: conference).count
     current_presentations = events.where(conference: conference).accepted.count
     previous_presentations = events.where.not(conference: conference).accepted.count

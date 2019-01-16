@@ -36,7 +36,7 @@ class Cfp::UsersController < ApplicationController
       conference = Conference.find_by_acronym(params[:conference_acronym])
 
       if user.save
-        if Invite.find_by(email: user.email, conference: conference)
+        if Invite.find_by(email: user.person.email.downcase, conference: conference)
           AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
         end
         user.send_confirmation_instructions(conference)

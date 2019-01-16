@@ -309,7 +309,7 @@ class PeopleController < ApplicationController
     conference = Conference.find_by(acronym: params[:conference_acronym])
 
     if Invite.exists?(email: person.email, conference_id: conference.id)
-      invite = Invite.find_by(email: person.email, conference_id: conference.id)
+      invite = Invite.find_by(email: person.email.downcase, conference_id: conference.id)
 
       invite.update(person: current_user.person, sharing_allowed: true)
       invite.save
@@ -412,7 +412,7 @@ class PeopleController < ApplicationController
       AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::REJECTED)
     end
 
-    Invite.find_by(email: person.email, conference: conference)&.destroy
+    Invite.find_by(email: person.email.downcase, conference: conference)&.destroy
 
     redirect_to(person_path(person), notice: 'You have rejected the request.')
   end

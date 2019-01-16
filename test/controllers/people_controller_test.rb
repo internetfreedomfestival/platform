@@ -110,7 +110,7 @@ class PeopleControllerTest < ActionController::TestCase
 
     post :reject, id: invited_person.to_param, conference_acronym: @conference.acronym
 
-    invite = Invite.find_by(email: invited_person.email, conference: @conference)
+    invite = Invite.find_by(email: invited_person.email.downcase, conference: @conference)
 
     assert_nil(invite)
   end

@@ -25,7 +25,7 @@
   %tbody
     - collection.each do |attendance_status|
       - person = attendance_status.person
-      - invite = Invite.find_by(email: person.email)
+      - invite = Invite.find_by(email: person.email.downcase)
 
       %tr
         %td
