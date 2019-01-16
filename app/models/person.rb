@@ -167,7 +167,7 @@ class Person < ActiveRecord::Base
     "Montserrat",
     "Morocco",
     "Mozambique",
-    "Myanmar [Burma]",
+    "Myanmar",
     "Namibia",
     "Nauru",
     "Nepal",
