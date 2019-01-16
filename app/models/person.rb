@@ -595,6 +595,7 @@ class Person < ActiveRecord::Base
   end
 
   def serialize(conference)
+    attendance_status = attendance_statuses.find_by(conference: conference)
     ticket = tickets.find_by(conference: conference)
     invite = Invite.find_by(conference: conference, email: email.downcase)
     current_submissions = events.where(conference: conference).count
@@ -603,6 +604,7 @@ class Person < ActiveRecord::Base
 
     {
       'IFF ID' => id,
+      'Attendance Status' => attendance_status&.status,
       'Ticket Status' => ticket&.status,
       'Ticket ID' => ticket&.id,
       'Email' => email,

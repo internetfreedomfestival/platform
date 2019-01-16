@@ -223,6 +223,7 @@ class PersonTest < ActiveSupport::TestCase
     person_with_invitation_and_ticket = create(:person)
     invite_with_ticket = create(:invite, email: person_with_invitation_and_ticket.email, conference: conference, person: person)
     ticket = create(:ticket, conference: conference, person: person_with_invitation_and_ticket, status: "Completed")
+    attendance_status = create(:attendance_status, conference: conference, person: person_with_invitation_and_ticket, status: 'Holds Ticket')
 
     person_with_invitation_and_event = create(:person)
     invite = create(:invite, email: person_with_invitation_and_event.email, conference: conference, person: person)
@@ -232,13 +233,14 @@ class PersonTest < ActiveSupport::TestCase
     csv_content = Person.to_csv(conference)
     csv = CSV.parse(csv_content)
 
-    IFF_ID, TICKET_STATUS, TICKET_ID, EMAIL, PGP_KEY, INVITED_BY, PUBLIC_NAME, FIRST_NAME, LAST_NAME, GENDER, GENDER_PRONOUN,
+    IFF_ID, ATTENDANCE_STATUS, TICKET_STATUS, TICKET_ID, EMAIL, PGP_KEY, INVITED_BY, PUBLIC_NAME, FIRST_NAME, LAST_NAME, GENDER, GENDER_PRONOUN,
       COUNTRY, PROFESSIONAL_BACKGROUND, ORGANIZATION, PROJECT, TITLE, ATTENDED_BEFORE, CURRENT_SUBMITTER, CURRENT_PRESENTER,
       PREVIOUS_PRESENTER, GOALS, MAILING, MATTERMOST, VOLUNTEER \
-      = (0..23).to_a
+      = (0..24).to_a
 
     headers = csv[0]
     assert_equal 'IFF ID', headers[IFF_ID]
+    assert_equal 'Attendance Status', headers[ATTENDANCE_STATUS]
     assert_equal 'Ticket Status', headers[TICKET_STATUS]
     assert_equal 'Ticket ID', headers[TICKET_ID]
     assert_equal 'Email', headers[EMAIL]
@@ -265,6 +267,7 @@ class PersonTest < ActiveSupport::TestCase
 
     first_row = csv[1]
     assert_equal person.id.to_s, first_row[IFF_ID]
+    assert_nil first_row[ATTENDANCE_STATUS]
     assert_nil first_row[TICKET_STATUS]
     assert_nil first_row[TICKET_ID]
     assert_equal person.email, first_row[EMAIL]
@@ -291,6 +294,7 @@ class PersonTest < ActiveSupport::TestCase
 
     second_row = csv[2]
     assert_equal person_with_invitation_and_ticket.id.to_s, second_row[IFF_ID]
+    assert_equal attendance_status.status, second_row[ATTENDANCE_STATUS]
     assert_equal ticket.status, second_row[TICKET_STATUS]
     assert_equal ticket.id.to_s, second_row[TICKET_ID]
     assert_equal person_with_invitation_and_ticket.email, second_row[EMAIL]
@@ -317,6 +321,7 @@ class PersonTest < ActiveSupport::TestCase
 
     third_row = csv[3]
     assert_equal person_with_invitation_and_event.id.to_s, third_row[IFF_ID]
+    assert_nil third_row[ATTENDANCE_STATUS]
     assert_nil third_row[TICKET_STATUS]
     assert_nil third_row[TICKET_ID]
     assert_equal person_with_invitation_and_event.email, third_row[EMAIL]
