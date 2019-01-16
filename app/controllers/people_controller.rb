@@ -366,7 +366,7 @@ class PeopleController < ApplicationController
     person = Person.find_by(id: params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
 
-    invite = Invite.create!(email: person.email, person: person, conference: conference)
+    invite = Invite.create!(email: person.email, person: person, conference: conference, sharing_allowed: false)
 
     if AttendanceStatus.exists?(person: person, conference: conference)
       status = AttendanceStatus.find_by(person: person, conference: conference)
