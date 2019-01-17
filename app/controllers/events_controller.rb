@@ -236,14 +236,16 @@ class EventsController < ApplicationController
       # return redirect_to(@event, alert: 'Cannot send mails: Please specify an email address for this conference.') unless @conference.email
 
       # return redirect_to(@event, alert: 'Cannot send mails: Not all speakers have email addresses.') unless @event.speakers.all?(&:email)
-
-      EventsMailer.accepted_event_email(@event).deliver_now
     end
 
     begin
       @event.send(:"#{params[:transition]}!", send_mail: params[:send_mail], coordinator: current_user.person)
     rescue => ex
       return redirect_to(@event, alert: "Cannot update state: #{ex}.")
+    end
+
+    if params[:transition] == "accept"
+      EventsMailer.accepted_event_email(@event).deliver_now
     end
 
     if params[:transition] == "confirm"
