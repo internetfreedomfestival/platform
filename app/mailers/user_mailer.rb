@@ -13,8 +13,4 @@ class UserMailer < ActionMailer::Base
     # I18n.t('Account Activation')
     mail to: @user.email, subject: I18n.t('mailers.user_mailer.confirmation_instructions')
   end
-
-  def bulk_mail(user, template)
-    mail to: user.email, subject: template.subject, body: template.content_for(user)
-  end
 end

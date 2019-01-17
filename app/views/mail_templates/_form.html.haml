@@ -1,13 +1,31 @@
 %p
-  The following place holders may be used in the
+  The following placeholders may be used in the
   %code content
   section of each template.
   %ul
+    %li #iff_id
     %li #first_name
-    %li #last_name
+
+%p
+  The following placeholders may be used in the
+  %code content
+  section only on templates addressed to users holding a ticket.
+  %ul
     %li #public_name
+    %li #gender_pronoun
+    %li #ticket_id
     -# %li #confirm_attendance
-    %li #person_id
+
+%p
+  The following placeholders may be used in the
+  %code content
+  section only on templates addressed to people with one confirmed event.
+  %ul
+    %li #session_title
+    %li #other_presenters
+    %li #room
+    %li #time_slots
+    %li #etherpad_url
 
 = simple_form_for @mail_template do |f|
   %fieldset.inputs

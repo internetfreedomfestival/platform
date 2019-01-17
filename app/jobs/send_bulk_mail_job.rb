@@ -70,18 +70,18 @@ class SendBulkMailJob
       # Update user's confirm_attendance_email_sent if they have pending attendance status
       # Note: this will currently update any emails sent to this demographic
       if send_filter == 'all_pending_attendance_people' || send_filter == 'pending_but_no_email' || send_filter == 'pepe_and_jamie'
-        if UserMailer.bulk_mail(p, template).deliver_now
+        if PeopleMailer.bulk_mail(p, template).deliver_now
           p.user.update(confirm_attendance_email_sent: Time.now)
           Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
         end
       #elsif updates email timestamp for confirmed people only
       elsif send_filter == 'all_confirmed_attendance_people'
-        if UserMailer.bulk_mail(p, template).deliver_now
+        if PeopleMailer.bulk_mail(p, template).deliver_now
           p.user.update(email_sent_to_confirmed_only: Time.now)
           Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
         end
       else # Perform original bulk mail function for all non pending attendance people
-        UserMailer.bulk_mail(p, template).deliver_now
+        PeopleMailer.bulk_mail(p, template).deliver_now
         Rails.logger.info "Mail template #{template.name} delivered to #{p.first_name} #{p.last_name} (#{p.email})"
       end
     end

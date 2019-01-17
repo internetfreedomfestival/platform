@@ -72,7 +72,7 @@ class MailTemplatesController < ApplicationController
   def create
     t = MailTemplate.new(mail_template_params)
     @conference.mail_templates << t
-    redirect_to(mail_templates_path, notice: 'Transport need was successfully added.')
+    redirect_to(mail_templates_path, notice: 'Mail template was successfully added.')
   end
 
   def destroy

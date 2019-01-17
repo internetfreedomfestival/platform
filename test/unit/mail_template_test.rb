@@ -6,13 +6,17 @@ class MailTemplateTest < ActiveSupport::TestCase
   setup do
     ActionMailer::Base.deliveries = []
     @event = create(:event, state: 'confirmed')
+
     @mail_template = create(:mail_template, conference: @event.conference)
+
     @user = create(:user)
     @speaker = @user.person
     @speaker.include_in_mailings = true
     @speaker.first_name = 'Frederick'
     @speaker.last_name = 'Besendorf'
     @speaker.save
+
+    @ticket = create(:ticket, person: @speaker, conference: @event.conference, status: Ticket::COMPLETED)
 
     create(:event_person, event: @event, person: @speaker, event_role: 'speaker', role_state: 'confirmed')
   end
@@ -34,6 +38,6 @@ class MailTemplateTest < ActiveSupport::TestCase
     assert m.subject == @mail_template.subject
     assert m.body.include? "|first_name #{@speaker.first_name}|"
     assert m.body.include? "|last_name #{@speaker.last_name}|"
-    assert m.body.include? "|public_name #{@speaker.public_name}|"
+    assert m.body.include? "|public_name #{@ticket.public_name}|"
   end
 end
