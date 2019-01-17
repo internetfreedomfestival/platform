@@ -38,13 +38,15 @@ class MailTemplatesController < ApplicationController
     @mail_template = @conference.mail_templates.find(params[:id])
     send_filter = params[:send_filter]
 
-    if Rails.env.production?
-      @mail_template.send_async(send_filter)
-      redirect_to(@mail_template, notice: 'Mail deliveries queued.')
-    else
+    # There's no feedback about job errors, so the users prefer to have the job done synchronously
+
+    # if Rails.env.production?
+    #   @mail_template.send_async(send_filter)
+    #   redirect_to(@mail_template, notice: 'Mail deliveries queued.')
+    # else
       @mail_template.send_sync(send_filter)
       redirect_to(@mail_template, notice: 'Mails delivered.')
-    end
+    # end
   end
 
   def index
