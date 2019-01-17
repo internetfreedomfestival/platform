@@ -14,7 +14,7 @@
     #bottom-banner {
         width: 100%;
         height: 40px;
-        background-color: #f74c33;
+        background-color: #1d1d1a;
         position: fixed;
         z-index: 1001;
         bottom: 0;
@@ -32,11 +32,29 @@
       cursor: pointer;
       float: right;
       width: 100px;
+      background-color: transparent;
+      transition-property: color;
+      transition: 0.2s;
+    }
+
+    #BTT-button:hover {
+      background-color: white;
+      transition-property: color;
+      transition: 0.2s;
     }
 
     #BTT-button a {
       color: white;
       text-decoration: none;
+      transition-property: color;
+      transition: 0.2s;
+    }
+
+    #BTT-button a:hover {
+      color: #1d1d1a;
+      text-decoration: none;
+      transition-property: color;
+      transition: 0.2s;
     }
 
     #bottom-banner-text {
@@ -48,16 +66,17 @@
       color: white;
     }
 
-    .venue_map{
+    .venue_map {
       margin-top: 15px;
       font-size: 15px;
     }
-    .venue_map a{
-      color: #f74c33;
+
+    .venue_map a {
+      color: #6060ef;
       font-weight: bold;
     }
 
-    body{
+    body {
       font: normal 12px roboto, verdana, sans-serif;
     }
 
@@ -75,7 +94,7 @@
       margin-right: 0px;
     }
 
-    .flex_buttons{
+    .flex_buttons {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
@@ -90,12 +109,12 @@
                       See http://bugzil.la/731886 for more info.) */
       transition: width 0.7s ease-out;
     }
-    #navigation, #header{
+    #navigation, #header {
       display: none;
     }
 
-    #header_container{
-      background-color: black;
+    #header_container {
+      background-color: #1d1d1a;
       display: table;
       width:100%;
       padding-left: 3%;
@@ -104,7 +123,7 @@
       padding-bottom:20px;
     }
 
-    #main_header{
+    #main_header {
       font-size: 20px;
       font-family: 'Roboto Slab', verdana, sans-serif;
       color: white;
@@ -117,16 +136,16 @@
       float: left;
     }
 
-    #header_logo{
+    #header_logo {
       max-width: 200px;
       display: table-cell;
       float: left;
       margin-right: 20px;
     }
 
-    .day_button{
+    .day_button {
       padding: 15px 35px;
-      background-color: #f74c33;
+      background-color: #6060ef;
       font-size: 16px;
       border: 0px;
       color: white;
@@ -135,70 +154,84 @@
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
+      border-bottom: 4px solid #343488;
     }
+
     .day_button:hover {
-      background-color: #f74c33cc;
+      background-color: #343488;
       -webkit-transition: 0.2s;
       transition: 0.2s;
     }
 
-    .top_border{
+    .top_border {
       margin-top: 20px;
-      border-top: 3px solid #f74c33;
+      border-top: 3px solid #6060ef;
     }
 
-    .selected_day{
+    .selected_day {
       font-size: 30px;
-      color: #f74c33;
+      color: #6060ef;
     }
 
     .event_block {
-      background-color: #fde1d4;
+      background-color: #6060ef;
       margin-bottom: 20px;
       margin-left: 0%;
       margin-right: 2%;
       padding: 30px;
-      border-left: 5px solid #f74c33;
+      border-left: 5px solid #343488;
       cursor: pointer;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
-      height:160px;
-      transition-property: border;
-      transition: 0.2s;
-      width: 48% !important;
-    }
-
-    .event_block:hover {
-      border-left: 25px solid #f74c33;
-      -webkit-transition: 0.2s;
-      transition: 0.2s;
-      background-color: #ffeee6;
-    }
-
-
-    .special_event_block{
-      background-color: #1ba5ab;
-      margin-bottom: 20px;
-      margin-left: 0%;
-      margin-right: 2%;
-      padding: 30px;
-      cursor: pointer;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-      height:160px;
+      height: 160px;
       transition-property: border;
       transition: 0.2s;
       width: 48% !important;
       color: white;
+    }
+
+    .event_block:hover {
+      border-left: 25px solid #343488;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      background-color: #6060efe6;
+    }
+
+    .special_event_block {
+      background-color: white !important;
+      margin-bottom: 20px;
+      margin-left: 0%;
+      margin-right: 2%;
+      padding: 30px;
+      cursor: pointer;
       -webkit-border-radius: 2px;
       -moz-border-radius: 2px;
       border-radius: 2px;
+      height: 160px;
+      transition-property: border;
+      transition: 0.2s;
+      width: 48% !important;
+      color: #6060ef !important;
+      border: 10px solid #6060ef;
     }
 
-    .special_event_block:hover{
-      background-color: #1ba5abcc;
+    .special_event_block:hover {
+      background-color: white !important;;
+      margin-bottom: 20px;
+      margin-left: 0%;
+      margin-right: 2%;
+      padding: 30px;
+      cursor: pointer;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      height: 160px;
+      transition-property: border;
+      transition: 0.2s;
+      width: 48% !important;
+      color: #6060ef !important;
+      border: 20px solid #6060ef;
     }
 
     .social_event_block{
@@ -245,18 +278,18 @@
       border-radius: 2px;
     }
 
-    .meditation_event_block:hover{
+    .meditation_event_block:hover {
       background-color: #1ba5abcc;
     }
 
-    .time_slot_header{
-      border-bottom: 1px dotted #f74c33;
+    .time_slot_header {
+      border-bottom: 1px dotted #1d1d1a;
       padding-bottom: 8px;
-      color: #f74c33;
+      color: #1d1d1a;
       font-size: 16px;
     }
 
-    .session_titles{
+    .session_titles {
       font-size: 18px;
       font-family: 'Roboto Slab', verdana, sans-serif;
       font-weight: 400;
@@ -265,14 +298,15 @@
       text-decoration: inherit;
     }
 
-    .no_link_effect{
+    .no_link_effect {
       height: 100%;
       width: 100%;
       display: block;
       text-decoration: inherit;
       color: inherit
     }
-    .no_link_effect:hover{
+
+    .no_link_effect:hover {
       color: inherit;
     }
 
@@ -289,7 +323,7 @@
         margin-right: 0px;
       }
 
-      #main-content{
+      #main-content {
         border-width: 0px;
         margin: 0;
         padding-left: 0em;
@@ -304,7 +338,7 @@
         margin-top: 0px;
       }
 
-      .meditation_event_block{
+      .meditation_event_block {
         width: auto !important;
       }
 
@@ -314,19 +348,19 @@
         margin-left: 0px;
         padding:16px;
       }
-      .meditation_event_block{
+      .meditation_event_block {
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
         padding:16px;
       }
-      .social_event_block{
+      .social_event_block {
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
         padding:16px;
       }
-      .special_event_block{
+      .special_event_block {
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
@@ -379,17 +413,19 @@
         border-left: 5px solid #f74c33;
       }
 
-      .meditation_event_block{
+      .meditation_event_block {
         height: auto;
         margin-left: 4px;
         padding: 10px;
       }
-      .social_event_block{
+
+      .social_event_block {
         height: auto;
         margin-left: 4px;
         padding: 10px;
       }
-      .special_event_block{
+
+      .special_event_block {
         height: auto;
         margin-left: 4px;
         padding: 10px;
@@ -465,17 +501,17 @@
         border-left: 5px solid #f74c33;
       }
 
-      .meditation_event_block{
+      .meditation_event_block {
         height: auto;
         margin-left: 5px;
         padding: 10px;
       }
-      .social_event_block{
+      .social_event_block {
         height: auto;
         margin-left: 5px;
         padding: 10px;
       }
-      .special_event_block{
+      .special_event_block {
         height: auto;
         margin-left: 5px;
         padding: 10px;
