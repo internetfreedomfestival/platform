@@ -191,7 +191,11 @@ class Conference < ActiveRecord::Base
   end
 
   def year
-    title.match(/\d{4}/)[0]
+    year_match = title.match(/\d{4}/)
+
+    return '' unless year_match
+
+    year_match[0]
   end
 
   private
