@@ -248,6 +248,10 @@ class EventsController < ApplicationController
       EventsMailer.accepted_event_email(@event).deliver_now
     end
 
+    if params[:transition] == "reject"
+      EventsMailer.rejected_event_email(@event).deliver_now
+    end
+
     if params[:transition] == "confirm"
       @event.update!(etherpad_url: "pad.internetfreedomfestival.org/p/#{@event.id}")
     end

@@ -26,4 +26,18 @@ class EventsMailer < ApplicationMailer
       locale: :en
     )
   end
+
+  def rejected_event_email(event)
+    email = event.submitter.email
+
+    @conference = event.conference
+    @first_name = event.submitter.first_name
+    @title = event.title
+
+    mail(
+      to: email,
+      subject: "Your IFF Session Review",
+      locale: :en
+    )
+  end
 end
