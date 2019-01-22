@@ -7,7 +7,7 @@ class TicketsController < ApplicationController
 
   def ticketing_form
     @invite = Invite.find(params[:id])
-    @person = Person.find_by(email: @invite.email)
+    @person = Person.find_by('lower(email) = ?', @invite.email)
     @conference = @invite.conference
     @ticket = Ticket.new(conference: @conference, person: @person)
   end
@@ -58,7 +58,7 @@ class TicketsController < ApplicationController
 
   def register_ticket
     @invite = Invite.find(params[:id])
-    @person = Person.find_by(email: @invite.email)
+    @person = Person.find_by('lower(email) = ?', @invite.email)
     @conference = @invite.conference
 
     if Ticket.exists?(conference: @conference, person: @person, status: Ticket::PENDING)
@@ -178,7 +178,7 @@ class TicketsController < ApplicationController
     invite = Invite.find(params[:id])
     email = invite.email
 
-    if current_user.person.nil? || email != current_user.person.email
+    if current_user.person.nil? || email != current_user.person.email.downcase
       flash[:error] = 'You cannot register to the conference without a valid invitation'
       redirect_to cfp_root_path
     end
@@ -194,16 +194,9 @@ class TicketsController < ApplicationController
   end
 
   def no_previous_ticket
-    invite = Invite.find(params[:id])
+    ticket = Ticket.find_by(person: current_user.person, conference: @conference, status: Ticket::COMPLETED)
 
-    person = Person.find_by(email: invite.email)
-    conference = invite.conference
-
-    if AttendanceStatus.exists?(
-        person_id: person.id,
-        conference_id: conference.id,
-        status: AttendanceStatus::REGISTERED
-      )
+    if ticket
       flash[:error] = 'You cannot register to the conference twice'
       redirect_to cfp_root_path
     end

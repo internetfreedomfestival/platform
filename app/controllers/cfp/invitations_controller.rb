@@ -13,11 +13,12 @@ class Cfp::InvitationsController < ApplicationController
 
     invite = Invite.create(email: email, person: person, conference: conference, sharing_allowed: false)
 
-    if Person.exists?(email: invite.email)
-      person = Person.find_by(email: invite.email)
+    person = Person.find_by('lower(email) = ?', invite.email)
+
+    if person
       attendance_status = AttendanceStatus.find_by(person: person, conference: conference)
       if attendance_status.nil?
-        AttendanceStatus.create!(person: Person.find_by(email: invite.email), conference: conference, status: AttendanceStatus::INVITED)
+        AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
       else
         if attendance_status.status == AttendanceStatus::REQUESTED
           attendance_status.update(status: AttendanceStatus::INVITED)

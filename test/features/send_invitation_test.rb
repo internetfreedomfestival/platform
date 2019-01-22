@@ -28,13 +28,13 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'We have sent an invite to user@email.com'
   end
 
-  test '[BUG] emails from admin invites does not contain blank spaces' do
+  test 'emails from admin invites do not contain neither blank spaces nor capital letters' do
     login_as(@admin)
 
     click_on 'Invites'
 
     within '#invitations-form' do
-      fill_in 'email', with: ' user@email.com '
+      fill_in 'email', with: ' uSeR@email.com '
       click_on 'Send'
     end
 
@@ -96,7 +96,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_text 'We have sent an invite to user@email.com'
   end
 
-  test '[BUG] emails in user invites does not contain blank spaces' do
+  test 'emails in user invites do not contain neither blank spaces nor capital letters' do
     create(:call_for_participation, conference: @conference)
     create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
@@ -104,7 +104,7 @@ class SendInvitationTest < Capybara::Rails::TestCase
     login_as(@user)
 
     within '#invitations-form' do
-      fill_in 'email', with: ' user@email.com '
+      fill_in 'email', with: ' uSeR@email.com '
       click_on 'Send'
     end
 

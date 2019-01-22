@@ -6,7 +6,7 @@ class RegisterTicketTest < Capybara::Rails::TestCase
     @conference = create(:conference)
     create(:call_for_participation, conference: @conference)
     @admin = create(:user, person: create(:person), role: 'admin')
-    @person = create(:person)
+    @person = create(:person, email: 'sOmEcOnVoLuTeD@email.com')
     @user = create(:user, person: @person, role: 'submitter')
     @invite = create(:invite, email: @user.person.email, conference: @conference)
     @attendance_status = create(:attendance_status, person: @user.person, conference: @conference, status: 'Invited')
