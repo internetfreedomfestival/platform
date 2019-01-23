@@ -8,7 +8,8 @@ db/*.sqlite3*
 log/*.log
 tmp/*
 tmp/**/*
-public/system
+public/system/
+public/assets/
 index
 *.swp
 rerun.txt
@@ -19,6 +20,7 @@ bundler/
 cache/
 gems/
 specifications/
+vendor/bundle/
 *~
 .vagrant
 doc/
