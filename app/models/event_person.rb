@@ -104,9 +104,9 @@ class EventPerson < ActiveRecord::Base
       'Last Name' => person.last_name,
       'Email' => person.email,
       'Recipient' => recipient_email,
-      'Group' => event.group,
-      'Travel Support' => event.travel_support.join(', '),
-      'Past Travel Assistance' => event.past_travel_assistance.join(', '),
+      'Underrepresented Group' => event.group,
+      'Travel Assistance Needs' => event.travel_support.reject(&:blank?).join("\n"),
+      'Past Travel Assistance' => event.past_travel_assistance.reject(&:blank?).join("\n"),
       'DIF Status' => event.dif_status
     }
   end
@@ -115,7 +115,7 @@ class EventPerson < ActiveRecord::Base
     options = options.merge(headers: true)
 
     CSV.generate(options) do |csv|
-      csv << EventPerson.first.serialize.keys
+      csv << all.first.serialize.keys
 
       all.each do |event_person|
         csv << event_person.serialize

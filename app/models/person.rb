@@ -616,15 +616,15 @@ class Person < ActiveRecord::Base
       'Gender' => gender,
       'Public Gender Pronoun' => ticket&.gender_pronoun,
       'Country' => country_of_origin,
-      'Professional Background' => professional_background&.reject(&:blank?)&.join(', '),
+      'Professional Background' => professional_background&.reject(&:blank?)&.join("\n"),
       'Organization' => organization.blank? ? nil : organization,
       'Project' => project.blank? ? nil : project,
       'Title' => title.blank? ? nil : title,
-      'Attended IFF Before?' => ticket&.iff_before&.reject(&:blank?)&.join(', '),
+      'Attended IFF Before?' => ticket&.iff_before&.reject(&:blank?)&.join("\n"),
       'Submitted Session' => current_submissions.zero? ? 'No' : 'Yes',
       'Presenter' => current_presentations.zero? ? 'No' : 'Yes',
       'Presented Before?' => previous_presentations.zero? ? 'No' : 'Yes',
-      'Main goals for attending the IFF?' => ticket&.iff_goals&.reject(&:blank?)&.join(', '),
+      'Main goals for attending the IFF?' => ticket&.iff_goals&.reject(&:blank?)&.join("\n"),
       'Include in Mailing' => include_in_mailings? ? 'Yes' : 'No',
       'Invite to Mattermost' => invitation_to_mattermost? ? 'Yes' : 'No',
       'Volunteeering Interest' => ticket&.interested_in_volunteer? ? 'Yes' : 'No'
@@ -635,7 +635,7 @@ class Person < ActiveRecord::Base
     options = options.merge(headers: true)
 
     CSV.generate(options) do |csv|
-      csv << Person.first.serialize(conference).keys
+      csv << all.first.serialize(conference).keys
 
       all.find_each do |person|
         csv << person.serialize(conference)
