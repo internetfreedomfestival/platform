@@ -353,30 +353,54 @@ class Event < ActiveRecord::Base
     possible
   end
 
+  def serialize
+    submitter_ticket = Ticket.find_by(conference: conference, person: submitter)
+
+    {
+      'Event ID' => id,
+      'State' => state,
+      'Title' => title,
+      'Subtitle' => subtitle,
+      'Theme' => event_type,
+      'Description' => description,
+      'Target Audience' => target_audience,
+      'Skill Level' => skill_level,
+      'Presenter' => submitter.email,
+      'Presenter Public Name' => submitter_ticket&.public_name,
+      'Presenter Gender' => submitter_ticket&.gender_pronoun,
+      'Presenter Country' => submitter.country_of_origin,
+      'Presenter Professional Background' => submitter.professional_background.reject(&:blank?).join("\n"),
+      'Presenter Before' => iff_before.reject(&:blank?).join("\n"),
+      'Presenter Confirmed' => event_people.find_by(event_role: :submitter).role_state,
+      'Other Presenters' => other_presenters.split(',').join("\n"),
+      'Other Presenters All Confirmed' => event_people.where(event_role: :collaborator).all? { |ep| ep.role_state == 'confirmed' } ? 'Yes' : 'No',
+      'Desired Outcome' => desired_outcome,
+      'Projector Needed' => projector ? 'Yes' : 'No',
+      'Track ID' => track.id,
+      'Track Name' => track.name,
+      'Time Slots' => time_slots,
+      'Start Time' => start_time,
+      'Room ID' => room&.id,
+      'Room Name' => room&.name,
+      'Travel Assistance' => travel_assistance ? 'Yes' : 'No',
+      'Travel Assistance Recipient' => recipient_travel_stipend,
+      'Travel Assistance Before' => past_travel_assistance.reject(&:blank?).join("\n"),
+      'Travel Assistance Needs' => travel_support.reject(&:blank?).join("\n"),
+      'Travel Assistance Underrepresented Group' => group,
+      'Travel Assistance Status' => dif_status,
+      'Average Rating' => average_rating ? '%.2f' % average_rating : nil,
+      'Comments' => comments.reject(&:blank?).join("\n\n")
+    }
+  end
+
   def self.to_csv(options = {})
-    attributes = %w{id title state subtitle language description
-                    theme event_type skill_level
-                    presenter gender public_type target_audience
-                    country_of_origin prof_back
-                    desired_outcome track
-                    other_presenters iff_before
-                    time_slots travel_assistance
-                    projector group recipient_travel_stipend
-                    travel_support past_travel_assistance
-                    average_rating comments
-                    start_time track_id room_id}
+    options = options.merge(headers: true)
 
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
+    CSV.generate(options) do |csv|
+      csv << all.first.serialize.keys
 
-      all.each do |event|
-        csv << attributes.map do |attribute|
-          if attribute == "theme"
-            event.send("event_type")
-          else
-            event.send(attribute)
-          end
-        end
+      all.find_each do |event|
+        csv << event.serialize
       end
     end
   end
@@ -392,63 +416,6 @@ class Event < ActiveRecord::Base
       comments << event_rating.comment
     end
     comments
-  end
-
-
-  def presenter
-    main_presenter(id)
-  end
-
-  def main_presenter(event_id)
-    event_presenter = EventPerson.find_by(event_id: event_id)
-    if event_presenter
-      event_person = Person.find(event_presenter.person_id)
-      return event_person.public_name
-    else
-      return "Original Submitter Inactive"
-    end
-  end
-
-  def gender
-    main_presenter_gender(id)
-  end
-
-  def main_presenter_gender(event_id)
-    event_presenter = EventPerson.find_by(event_id: event_id)
-    if event_presenter
-      event_person = Person.find(event_presenter.person_id)
-      return event_person.gender
-    else
-      return "Original Submitter Inactive"
-    end
-  end
-
-  def country_of_origin
-    main_presenter_country_of_origin(id)
-  end
-
-  def main_presenter_country_of_origin(event_id)
-    event_presenter = EventPerson.find_by(event_id: event_id)
-    if event_presenter
-      event_person = Person.find(event_presenter.person_id)
-      return event_person.country_of_origin
-    else
-      return "Original Submitter Inactive"
-    end
-  end
-
-  def prof_back
-    main_presenter_professional_background(id)
-  end
-
-  def main_presenter_professional_background(event_id)
-    event_presenter = EventPerson.find_by(event_id: event_id)
-    if event_presenter
-      event_person = Person.find(event_presenter.person_id)
-      return event_person.professional_background
-    else
-      return "Original Submitter Inactive"
-    end
   end
 
   def time_slot

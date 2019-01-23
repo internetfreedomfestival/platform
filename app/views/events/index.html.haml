@@ -11,6 +11,8 @@
       %p
       - if can? :administrate, Person
         = link_to "Download CSV of All Events", events_path(format: "csv")
+        <br />
+        = link_to "Download XLS of All Events", events_path(format: "xls")
   %ul.tabs
     %li.active= link_to "All Events", events_path
     %li= link_to "My Events", my_events_path
