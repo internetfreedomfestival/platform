@@ -33,7 +33,7 @@
         %td= link_to person.last_name, person
         %td
           - if person.public_name.nil?
-            = "-"
+            = ''
           - else
             = link_to person.public_name, person
         %td= link_to person.email, person
@@ -42,6 +42,9 @@
         %td= attendance_status.status
         %td
           - if invite.nil?
-            = "-"
+            = ''
           - else
-            = invite.person.email
+            - if invite.person.email == person.email
+              = ''
+            - else
+              = invite.person.email

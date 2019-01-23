@@ -609,7 +609,7 @@ class Person < ActiveRecord::Base
       'Ticket ID' => ticket&.id,
       'Email' => email,
       'PGP Key' => pgp_key.blank? ? nil : pgp_key,
-      'Invited By' => invite&.person&.email,
+      'Invited By' => invite&.person&.email == email ? nil : invite&.person&.email,
       'Public Name' => ticket&.public_name,
       'First Name' => first_name.blank? ? nil : first_name,
       'Last Name' => last_name.blank? ? nil : last_name,

@@ -28,7 +28,7 @@
         %td= link_to person.last_name, person
         %td
           - if person.public_name.nil?
-            = "-"
+            = ''
           - else
             = link_to person.public_name, person
         %td= link_to person.email, person
