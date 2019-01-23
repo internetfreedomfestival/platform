@@ -96,15 +96,19 @@ class EventPerson < ActiveRecord::Base
   end
 
   def serialize
-    recipient_email = event.recipient_travel_stipend.blank? ? nil : event.recipient_travel_stipend
+    recipient = event.recipient_travel_stipend.blank? ? person : Person.find_by(email: event.recipient_travel_stipend)
 
     {
-      'IFF ID' => person.id,
-      'First Name' => person.first_name,
-      'Last Name' => person.last_name,
-      'Email' => person.email,
-      'Recipient' => recipient_email,
-      'Underrepresented Group' => event.group,
+      'Submitter IFF ID' => person.id,
+      'Submitter' => person.email,
+      'Submitter First Name' => person.first_name,
+      'Submitter Last Name' => person.last_name,
+      'Recipient IFF ID' => recipient&.id,
+      'Recipient' => recipient&.email || event.recipient_travel_stipend,
+      'Recipient First Name' => recipient&.first_name,
+      'Recipient Last Name' => recipient&.last_name,
+      'Recipient Professional Background' => recipient&.professional_background&.reject(&:blank?)&.join("\n"),
+      'Recipient Underrepresented Group' => event.group,
       'Travel Assistance Needs' => event.travel_support.reject(&:blank?).join("\n"),
       'Past Travel Assistance' => event.past_travel_assistance.reject(&:blank?).join("\n"),
       'DIF Status' => event.dif_status
