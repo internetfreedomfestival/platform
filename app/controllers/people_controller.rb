@@ -308,38 +308,27 @@ class PeopleController < ApplicationController
     person = Person.find_by(id: params[:id])
     conference = Conference.find_by(acronym: params[:conference_acronym])
 
-    if Invite.exists?(email: person.email, conference_id: conference.id)
-      invite = Invite.find_by(email: person.email.downcase, conference_id: conference.id)
+    invite = Invite.find_by(email: person.email.downcase, conference: conference)
+    attendance_status = AttendanceStatus.find_by(person: person, conference: conference)
 
+    if invite
       invite.update(person: current_user.person, sharing_allowed: true)
-      invite.save
-
-      InvitationMailer.invitation_mail(invite).deliver_now
-
-      if !AttendanceStatus.find_by(person: person, conference: conference)
-        AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
-      else
-        status = AttendanceStatus.find_by(person: person, conference: conference)
-        status.status = AttendanceStatus::INVITED
-        status.save
-      end
-
-      redirect_to(person_path(person), alert: "This person was already invited but we've sent the invitation again.")
+      flash_options = { alert: "This person was already invited but we've sent the invitation again." }
     else
       invite = Invite.create!(email: person.email, person: current_user.person, conference: conference, sharing_allowed: true)
-
-      if !AttendanceStatus.find_by(person: person, conference: conference)
-        AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
-      else
-        status = AttendanceStatus.find_by(person: person, conference: conference)
-        status.status = AttendanceStatus::INVITED
-        status.save
-      end
-
-      InvitationMailer.invitation_mail(invite).deliver_now
-
-      redirect_to(person_path(person), notice: 'Person was invited.')
+      flash_options = { notice: 'Person was invited.' }
     end
+
+    if attendance_status
+      already_invited = (attendance_status.status == AttendanceStatus::INVITED || attendance_status.status == AttendanceStatus::REGISTERED)
+      attendance_status.update(status: AttendanceStatus::INVITED) unless already_invited
+    else
+      AttendanceStatus.create!(person: person, conference: conference, status: AttendanceStatus::INVITED)
+    end
+
+    InvitationMailer.invitation_mail(invite).deliver_now
+
+    redirect_to(person_path(person), flash_options)
   end
 
   def add_invitations

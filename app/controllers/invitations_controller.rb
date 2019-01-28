@@ -20,7 +20,7 @@ class InvitationsController < ApplicationController
       return
     end
 
-    if Person.where(email: email).exists?
+    if Person.find_by('lower(email) = ?', email.downcase)
       flash[:warning] = 'This email is registered on the platform'
       redirect_to new_invitations_path
       return

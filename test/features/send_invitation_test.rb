@@ -112,6 +112,19 @@ class SendInvitationTest < Capybara::Rails::TestCase
     assert_equal invite.email, 'user@email.com'
   end
 
+  test 'users holding a ticket keep their attendance status if invited by admin' do
+    create(:call_for_participation, conference: @conference)
+    create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
+
+    login_as(@admin)
+    go_to_conference_person_profile(@conference, @user.person)
+
+    click_on 'Send invitation'
+
+    assert_equal AttendanceStatus::REGISTERED, AttendanceStatus.find_by(person: @user.person, conference: @conference).status
+  end
+
   # test 'users can request invitation to the conference' do
   #   create(:call_for_participation, conference: @conference)
   #

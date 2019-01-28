@@ -77,7 +77,7 @@ class Cfp::InvitationsController < ApplicationController
   end
 
   def check_email_not_invited
-    if Invite.exists?(email: params['email'])
+    if Invite.exists?(email: params['email'], conference: @conference)
       flash[:error] = 'The user you are trying to invite has already received an invite'
       redirect_to cfp_root_path
     end
