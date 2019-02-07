@@ -17,7 +17,7 @@
           = f.input :desired_outcome, label: "What outcomes do you envision for this session?"
           = f.input :phone_number, label: "Contact Phone", type: "tel", hint: "We want to be in touch with you for scheduling purposes. Share the number you use for Signal/Whatsapp/SMS. Please include the country prefix (e.g., 0034)."
           = f.association :track, label: "Session Format", collection: @conference.tracks
-          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES
+          = f.input :event_type, label: "Choose the IFF Theme that better represents your session", collection: Event::TYPES + [ "Special Event", "Self-Organized"]
 
           .clearfix.form-group{class: ("has-error" if @event.errors.messages.key?(:time_slots))}
             .form-label
@@ -28,8 +28,8 @@
                 %span.form-input__error= @event.errors.messages[:time_slots].first
             .form-input
               %ul.inputs-list
-                / We use 4 and 8 slots instead of the nominal 3 and 6 to allow for extra time in the schedule
-                = f.collection_radio_buttons(:time_slots, [[4, "45 min"], [8, "90 min (Workshop only)"]], :first, :last, {boolean_style: :inline}) do |r|
+                / We use 4, 8 and 12 slots instead of the nominal 3, 6 and 8 to allow for extra time in the schedule
+                = f.collection_radio_buttons(:time_slots, [[4, "45 min"], [8, "90 min (Workshop only)"], [12, "Special"]], :first, :last, {boolean_style: :inline}) do |r|
                   %li
                     =r.label do
                       = r.radio_button

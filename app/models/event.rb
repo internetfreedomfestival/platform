@@ -46,10 +46,11 @@ class Event < ActiveRecord::Base
   # These presence validations are commented out for now to allow Admin to add social and special events with only required info.
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
   # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
-  validates_presence_of :title, :subtitle, :description, :target_audience,
-    :desired_outcome, :track, :event_type, :iff_before
+  validates_presence_of :title, :description, :event_type
 
-  validates_inclusion_of :projector, in: [true, false]
+  validates_presence_of :subtitle, :target_audience, :desired_outcome, :track, :iff_before, unless: :special_event?
+
+  validates_inclusion_of :projector, in: [true, false], unless: :special_event?
 
   validates_uniqueness_of :title, scope: :conference_id
 
@@ -519,5 +520,9 @@ class Event < ActiveRecord::Base
   def conflict_person_not_available(event_person)
     return if event_person.available_between?(self.start_time, self.end_time)
     Conflict.create(event: self, person: event_person.person, conflict_type: 'person_unavailable', severity: 'warning')
+  end
+
+  def special_event?
+    public_type == 'special'
   end
 end

@@ -162,7 +162,13 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(form_params)
     @event.conference = @conference
+
+    if special_event?(form_params)
+      @event.public_type = "special"
+    end
+
     authorize! :create, @event
+
     respond_to do |format|
       if @event.save
         EventPerson.create(event_id: @event.id, person_id: current_user.person.id)
@@ -176,13 +182,18 @@ class EventsController < ApplicationController
 
   # PUT /events/1
   def update
-
     authorize! :submit, Event
+
     event_values = prepare_params(form_params)
     event_values[:other_presenters] = remove_duplicates_of_other_presenters_list(event_values[:other_presenters])
 
     @event = Event.find(params[:id])
     # @event = current_user.person.events.readonly(false).find(params[:id])
+
+    if special_event?(form_params)
+      @event.public_type = "special"
+    end
+
     old_emails_list = @event.other_presenters
 
     event_valid = !invalid_presenters?(event_values[:other_presenters])
@@ -312,6 +323,10 @@ class EventsController < ApplicationController
     emails = string.split(valid_separators)
 
     emails
+  end
+
+  def special_event?(params)
+    params['event_type'] == 'Special Event' ||  params['event_type'] == 'Self-Organized'
   end
 
   def invalid_presenters?(presenters)
