@@ -311,9 +311,9 @@
     }
 
     .session_info {
-      width: 41.66666667%;
+      width: 100%;
       margin-bottom: 8px;
-      font-size: 12px;
+      font-size: 14px;
       padding-left: 10px !important;
     }
 
@@ -370,7 +370,7 @@
       .session_info {
         width: 100%;
         margin-bottom: 2px;
-        font-size: 12px;
+        font-size: 14px;
         padding-left: 10px !important;
       }
     }
@@ -621,13 +621,6 @@
                             (<%= event.time_slots / 4.0 %>h)
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
-                          <% if event.language && event.language == "en" %>
-                            English
-                          <% elsif event.language && event.language == "es" %>
-                            Español
-                          <% end %>
-                        </div>
                         <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <% if event.event_type && event.event_type.include?("Internet")%>
                             IF: Present and Future</div>
@@ -717,22 +710,21 @@
                             (<%= events[0].time_slots / 4.0 %>h)
                           <% end %>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
-                          <% if events[0].language && events[0].language == "en" %>
-                            English
-                          <% elsif events[0].language && events[0].language == "es" %>
-                            Español
-                          <% end %>
-                        </div>
+                      </div>
+                      <div class="row">
                         <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           <% if events[0].event_type && events[0].event_type.include?("Internet")%>
-                            IF: Present and Future</div>
+                            IF: Present and Future
                           <% elsif events[0].event_type && events[0].event_type.include?("Journalism") %>
-                            Journalism, Media and Comms</div>
+                            Journalism, Media and Comms
                           <% elsif events[0].event_type %>
-                            <%= events[0].event_type %></div>
+                            <%= events[0].event_type %>
                           <% end %>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %>
+                        </div>
                       </div>
                     </div>
                   <% end %>
@@ -749,6 +741,8 @@
                             (<%= events[0].time_slots / 4.0 %>h)
                           <% end %>
                         </div>
+                      </div>
+                      <div class="row">
                         <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                       </div>
                     </div>
@@ -766,6 +760,8 @@
                               (<%= events[0].time_slots / 4.0 %>h)
                             <% end %>
                           </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                         </div>
                       </div>
@@ -783,6 +779,8 @@
                               (<%= events[0].time_slots / 4.0 %>h)
                             <% end %>
                           </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                         </div>
                       </div>
@@ -803,22 +801,21 @@
                             (<%= events[1].time_slots / 4.0 %>h)
                           <% end %>
                           </div>
-                          <div class="col-md-3 session_info"><i class="fa fa-language" aria-hidden="true"></i>
-                            <% if events[1].language && events[1].language == "en" %>
-                              English
-                            <% elsif events[1].language && events[1].language == "es" %>
-                              Español
-                            <% end %>
-                          </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             <% if events[1].event_type && events[1].event_type.include?("Internet")%>
-                              IF: Present and Future</div>
+                              IF: Present and Future
                             <% elsif events[1].event_type && events[1].event_type.include?("Journalism") %>
-                              Journalism, Media and Comms</div>
+                              Journalism, Media and Comms
                             <% elsif events[1].event_type %>
-                              <%= events[1].event_type %></div>
+                              <%= events[1].event_type %>
                             <% end %>
-                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %>
+                          </div>
                         </div>
                       </div>
                     <% end %>
@@ -835,6 +832,8 @@
                             (<%= events[1].time_slots / 4.0 %>h)
                           <% end %>
                           </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
@@ -853,6 +852,8 @@
                             (<%= events[1].time_slots / 4.0 %>h)
                           <% end %>
                           </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
@@ -870,6 +871,8 @@
                             (<%= events[1].time_slots / 4.0 %>h)
                           <% end %>
                           </div>
+                        </div>
+                        <div class="row">
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                         </div>
                       </div>
