@@ -48,8 +48,21 @@ class Public::ScheduleController < ApplicationController
 
   def custom_show
     @event = Event.find(params[:id])
-    e_p = EventPerson.find_by(event_id: @event.id)
-    @presenter = Person.find(e_p.person_id)
+    @presenter = @event.submitter
+    @presenter_public_name = @presenter.tickets.find_by(conference: @event.conference).public_name
+    @presenter_public_name = @presenter.first_name if @presenter_public_name.blank?
+    @other_presenters_public_names = @event.other_presenters.split(',')
+      .map { |email| Person.find_by('lower(email) = ?', email.downcase) }
+      .map { |person| person&.tickets&.find_by(conference: @event.conference)&.public_name }
+      .join(', ')
+    @other_presenters_public_names = 'No other presenters' if @other_presenters_public_names.blank?
+    @target_audience = @event.target_audience
+    @target_audience = 'Not specified' if @target_audience.blank?
+    @desired_outcome = @event.desired_outcome
+    @desired_outcome = 'Not specified' if @desired_outcome.blank?
+    @goal = @event.subtitle
+    @goal = 'Not specified' if @goal.blank?
+    @day_id = @event.conference.days.find { |day| @event.start_time >= day.start_date && @event.start_time <= day.end_date }&.id
   end
 
   def day

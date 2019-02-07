@@ -1,6 +1,7 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     .container {
@@ -17,9 +18,9 @@
     }
 
     body{
-      font-family: font-family: 'Open Sans', sans-serif;
+      font-family: 'Open Sans', sans-serif;
       line-height: 1.6em;
-      background-color: #fde1d4;
+      background-color: #6060ef;
     }
 
     body a {
@@ -85,6 +86,7 @@
     #main-content {
       border-width: 0px;
       margin: 0;
+      margin-bottom: 2.25em;
       padding-left: 0em;
       background-color: #6060ef;
       color: white;
@@ -254,37 +256,73 @@
   <% else %>
     <div class="container">
       <div class="row">
-        <h1 class="session_title"><%= @event.title %></h1>
+        <h1 class="session_title">
+          <%= @event.title %>
+        </h1>
       </div>
-        <div class="session_info"><strong>Date:</strong> <%= @event.end_time.strftime("%A, %B %e, %Y") %>
-        </div>
-        <div class="session_info"><strong>Time:</strong> <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
-        </div>
-        <div class="session_info"><strong>Room:</strong> <%= @event.room.name %>
-        </div>
-        <div class="session_info"><strong>Notes:</strong> <a href="https://<%= @event.etherpad_url %>" target="_blank" class="notes_link"><%= @event.etherpad_url %></a></div>
-        <div class="session_info"><strong>Skill Level:</strong> <%= @event.skill_level %>
-        </div>
-        <div class="session_info"><strong>Language:</strong>
-          <% if @event.language == "en" %>
-            English
-          <% else %>
-            Español
-          <% end %>
-        </div>
-        <div class="session_info"><strong>Duration:</strong> <%= @event.time_slots / 4 %> hour(s)</div>
-        <div class="session_info"><strong>Format:</strong> <%= @event.event_type %></div>
-        <div class="session_info"><strong>Presenter:</strong> <%= @presenter.public_name %></div>
-        <div class="session_info"><strong>Other Presenters:</strong> <%= @event.other_presenters %></div>
-        <div><strong>Description:</strong></div>
-        <div class="session_info"><%= @event.description %></div>
-        <div><strong>Target Audience:</strong></div>
-        <div class="session_info"><%= @event.target_audience_experience %></div>
-        <div><strong>Desired Outcome:</strong></div>
-        <div class="session_info"><%= @event.desired_outcome %></div>
-        <br>
+      <div class="session_info">
+        <strong>Date:</strong>
+        <%= @event.end_time.strftime("%A, %B %e, %Y") %>
+      </div>
+      <div class="session_info">
+        <strong>Time:</strong>
+        <%= @event.start_time.strftime("%I:%M") %> - <%= @event.end_time.strftime("%I:%M %p") %>
+      </div>
+      <div class="session_info">
+        <strong>Room:</strong>
+        <%= @event.room.name %>
+      </div>
+      <div class="session_info">
+        <strong>Notes:</strong>
+        <a href="https://<%= @event.etherpad_url %>" target="_blank" class="notes_link"><%= @event.etherpad_url %></a>
+      </div>
+      <div class="session_info">
+        <strong>Duration:</strong>
+        <%= @event.time_slots / 4 %> hour(s)
+      </div>
+      <div class="session_info">
+        <strong>Format:</strong>
+        <%= @event.track.name %>
+      </div>
+      <div class="session_info">
+        <strong>Theme:</strong>
+        <%= @event.event_type %>
+      </div>
+      <div class="session_info">
+        <strong>Presenter:</strong>
+        <%= @presenter_public_name %>
+      </div>
+      <div class="session_info">
+        <strong>Other Presenters:</strong>
+        <%= @other_presenters_public_names %>
+      </div>
+      <div>
+        <strong>Description:</strong>
+      </div>
+      <div class="session_info">
+        <%= @event.description %>
+      </div>
+      <div>
+        <strong>Target Audience:</strong>
+      </div>
+      <div class="session_info">
+        <%= @target_audience %>
+      </div>
+      <div>
+        <strong>Goal of the session:</strong>
+      </div>
+      <div class="session_info">
+        <%= @goal %>
+      </div>
+      <div>
+        <strong>Desired Outcome:</strong>
+      </div>
+      <div class="session_info">
+        <%= @desired_outcome %>
+      </div>
+      <br>
       <div class="row">
-        <%= link_to("← Back to Program", public_custom_path, class: "back_button") %>
+        <%= link_to("← Back to Program", public_custom_path(day: @day_id), class: "back_button") %>
       </div>
     </div>
   <% end %>
