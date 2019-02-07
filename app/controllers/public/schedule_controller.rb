@@ -17,14 +17,12 @@ class Public::ScheduleController < ApplicationController
     @themes = Event::TYPES
     # Select first day if no button clicked
     if params.keys.include?("day")
-      @day_index = params[:day].to_i
-      @days = @conference.days.where(id: params[:day])
+      @day = @conference.days.find_by(id: params[:day])
     else
-      @days = @conference.days.where(id: 1)
-      @day_index = 1
+      @day = @conference.days.first
     end
 
-    setup_day_ivars
+    setup_day_ivars(@day)
 
     @days_events = []
     # Get Events for the day
@@ -89,14 +87,13 @@ class Public::ScheduleController < ApplicationController
     authenticate_user! unless @conference.schedule_public
   end
 
-  def setup_day_ivars
-    @day = @conference.days[@day_index - 1]
+  def setup_day_ivars(day)
     all_rooms = @conference.rooms_including_subs
     @rooms = []
     @events = {}
     @skip_row = {}
     all_rooms.each do |room|
-      events = room.events.confirmed.is_public.scheduled_on(@day).order(:start_time).to_a
+      events = room.events.confirmed.is_public.scheduled_on(day).order(:start_time).to_a
       # Removed .no_conlicts from the above string to escape "Person availabilities model"
       next if events.empty?
       @events[room] = events

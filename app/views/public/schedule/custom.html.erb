@@ -589,7 +589,7 @@
           </p>
         </div>
         <div class="venue_map"><p>Can't find a room? Check out the <a href="https://internetfreedomfestival.org/#venue-map" target="_blank">venue map here</a>.</p></div>
-        <h2 class="selected_day"><%= @days[0].nil? ? "" : @days[0].start_date.strftime("%A, %B %e %Y") %></h2>
+        <h2 class="selected_day"><%= @day.nil? ? "" : @day.start_date.strftime("%A, %B %e %Y") %></h2>
       </div>
     </div>
     <div> <!-- Contains all events -->
