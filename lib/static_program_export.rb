@@ -97,8 +97,8 @@ class StaticProgramExport
 
   def static_query_paths
     [
-      { source: 'speakers', target: 'speakers.html' },
-      { source: 'speakers.json', target: 'speakers.json' },
+      #{ source: 'speakers', target: 'speakers.html' },
+      #{ source: 'speakers.json', target: 'speakers.json' },
       { source: 'schedule/style.css', target: 'style.css' }
     ]
   end
@@ -106,9 +106,9 @@ class StaticProgramExport
   def query_paths
     paths = static_query_paths
 
-    Person.publicly_speaking_at(@conference).confirmed(@conference).each do |speaker|
-      paths << { source: "speakers/#{speaker.id}", target: "speakers/#{speaker.id}.html" }
-    end
+    # Person.publicly_speaking_at(@conference).confirmed(@conference).each do |speaker|
+    #   paths << { source: "speakers/#{speaker.id}", target: "speakers/#{speaker.id}.html" }
+    # end
 
     paths
   end

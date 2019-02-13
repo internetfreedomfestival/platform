@@ -23,9 +23,9 @@ Frab::Application.routes.draw do
         get '/schedule/:day' => 'schedule#day', as: 'schedule'
         get '/events' => 'schedule#events', as: 'events'
         get '/events/:id' => 'schedule#event', as: 'event'
-        get '/speakers' => 'schedule#speakers', as: 'speakers'
-        get '/speakers/:id' => 'schedule#speaker', as: 'speaker'
-        get '/qrcode' => 'schedule#qrcode', as: 'qrcode'
+        #get '/speakers' => 'schedule#speakers', as: 'speakers'
+        #get '/speakers/:id' => 'schedule#speaker', as: 'speaker'
+        #get '/qrcode' => 'schedule#qrcode', as: 'qrcode'
 
         resources :events do
           resource :feedback, controller: :feedback

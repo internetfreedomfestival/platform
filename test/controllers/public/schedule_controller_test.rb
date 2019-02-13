@@ -25,15 +25,15 @@ class Public::ScheduleControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
-  test 'displays speakers list' do
-    get :speakers, conference_acronym: @conference.acronym
-    assert_response :success
-    get :speakers, conference_acronym: @conference.acronym, format: :xls
-    assert_response :success
-  end
+  # test 'displays speakers list' do
+  #   get :speakers, conference_acronym: @conference.acronym
+  #   assert_response :success
+  #   get :speakers, conference_acronym: @conference.acronym, format: :xls
+  #   assert_response :success
+  # end
 
-  test 'display a speaker' do
-    get :speakers, id: 1, conference_acronym: @conference.acronym
-    assert_response :success
-  end
+  # test 'display a speaker' do
+  #   get :speakers, id: 1, conference_acronym: @conference.acronym
+  #   assert_response :success
+  # end
 end
