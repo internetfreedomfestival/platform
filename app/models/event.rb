@@ -46,16 +46,13 @@ class Event < ActiveRecord::Base
   # These presence validations are commented out for now to allow Admin to add social and special events with only required info.
   # Uncomment after all events have been made and added to public schedule (so next year Events have all required info) ===>
   # :target_audience_experience, :desired_outcome, :event_type, :language, :track, :skill_level, :skill_level,
-  validates_presence_of :title, :description, :event_type
-
+  validates_presence_of :title, :description, :event_type, :time_slots
   validates_presence_of :subtitle, :target_audience, :desired_outcome, :track, :iff_before, unless: :special_event?
+  validates_presence_of :group, :past_travel_assistance, if: :travel_assistance?
 
   validates_inclusion_of :projector, in: [true, false], unless: :special_event?
 
   validates_uniqueness_of :title, scope: :conference_id
-
-  validates :group, presence: true, if: :travel_assistance?
-  validates :past_travel_assistance, presence: true, if: :travel_assistance?
 
   validates_format_of :recipient_travel_stipend, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, allow_blank: true
 
