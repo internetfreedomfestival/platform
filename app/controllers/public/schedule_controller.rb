@@ -49,7 +49,7 @@ class Public::ScheduleController < ApplicationController
   def custom_show
     @event = Event.find(params[:id])
     @presenter = @event.submitter
-    @presenter_public_name = @presenter.tickets.find_by(conference: @event.conference).public_name
+    @presenter_public_name = @presenter.tickets.find_by(conference: @event.conference)&.public_name
     @presenter_public_name = @presenter.first_name if @presenter_public_name.blank?
     @other_presenters_public_names = @event.other_presenters.split(',')
       .map { |email| Person.find_by('lower(email) = ?', email.downcase) }
