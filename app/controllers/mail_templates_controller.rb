@@ -17,10 +17,11 @@ class MailTemplatesController < ApplicationController
       ['All users in the platform', :all],
       ['All users holding ticket', :all_users_holding_ticket],
       ['All confirmed DIF users', :all_confirmed_dif_users],
-      ["All #{@conference.year} DIF users(excluding confirmed)", :all_dif_users_excluding_confirmed],
-      ["All #{@conference.year} confirmed events presenters", :all_confirmed_events_presenters],
-      ["All #{@conference.year} rejected events presenters", :all_rejected_events_presenters],
-      ["All #{@conference.year} users invited to get a ticket", :all_users_invited_to_get_a_ticket]
+      ["All DIF users (excluding confirmed)", :all_dif_users_excluding_confirmed],
+      ["All confirmed events presenters", :all_confirmed_events_presenters],
+      ["All rejected events presenters", :all_rejected_events_presenters],
+      ["All users invited to get a ticket", :all_users_invited_to_get_a_ticket],
+      ["All users who requested a ticket", :all_users_who_requested_a_ticket]
       # ,
       #
       # ['All speakers involved in all confirmed events',   :all_speakers_in_confirmed_events],
