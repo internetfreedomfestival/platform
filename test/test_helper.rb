@@ -1,7 +1,10 @@
 ENV['RAILS_ENV'] ||= 'test'
+
 require File.expand_path('../../config/environment', __FILE__)
+
 require 'rails/test_help'
 require 'minitest/pride'
+require 'minitest/mock'
 require 'database_cleaner'
 require 'sucker_punch/testing/inline'
 
@@ -36,5 +39,17 @@ class ActiveSupport::TestCase
 
   def teardown
     DatabaseCleaner.clean
+  end
+
+  def with_user_invites_enabled
+    FeatureToggle.stub :user_invites_enabled?, true do
+      yield
+    end
+  end
+
+  def with_user_invites_disabled
+    FeatureToggle.stub :user_invites_enabled?, false do
+      yield
+    end
   end
 end

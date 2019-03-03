@@ -587,11 +587,7 @@ class Person < ActiveRecord::Base
   end
 
   def allowed_to_send_invites?(conference)
-    invitation = Invite.find_by(email: email.downcase, conference: conference)
-
-    return false unless invitation.present?
-
-    invitation.sharing_allowed?
+    FeatureToggle.user_invites_enabled? && Invite.sharing_allowed_for?(self, conference)
   end
 
   def serialize(conference)

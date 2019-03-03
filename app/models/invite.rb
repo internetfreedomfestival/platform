@@ -18,10 +18,18 @@ class Invite < ActiveRecord::Base
     granted_invites = InvitesAssignation.find_by(person: person, conference: conference)&.number
 
     if granted_invites.blank?
-      granted_invites = person.allowed_to_send_invites?(conference) ? REGULAR_INVITES_PER_USER : 0
+      granted_invites = sharing_allowed_for?(person, conference) ? REGULAR_INVITES_PER_USER : 0
     end
 
     [0, (granted_invites - sent_invites)].max
+  end
+
+  def self.sharing_allowed_for?(person, conference)
+    invitation = Invite.find_by(email: person.email.downcase, conference: conference)
+
+    return false unless invitation.present?
+
+    invitation.sharing_allowed?
   end
 
   def normalize_email

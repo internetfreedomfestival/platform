@@ -69,31 +69,46 @@ class SendInvitationTest < Capybara::Rails::TestCase
     create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
-    login_as(@user)
+    with_user_invites_enabled do
+      login_as(@user)
 
-    within '#invitations-form' do
-      fill_in 'email', with: 'user@email.com'
-      click_on 'Send'
+      within '#invitations-form' do
+        fill_in 'email', with: 'user@email.com'
+        click_on 'Send'
+      end
+
+      assert_equal 1, ActionMailer::Base.deliveries.size
+      assert_text 'We have sent an invite to user@email.com'
     end
-
-    assert_equal 1, ActionMailer::Base.deliveries.size
-    assert_text 'We have sent an invite to user@email.com'
   end
 
-  test 'users holding a ticket can send invitations to the conference by email' do
+  test 'invited users holding a ticket can send invitations to the conference by email' do
     create(:call_for_participation, conference: @conference)
     create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
-    login_as(@user)
+    with_user_invites_enabled do
+      login_as(@user)
 
-    within '#invitations-form' do
-      fill_in 'email', with: 'user@email.com'
-      click_on 'Send'
+      within '#invitations-form' do
+        fill_in 'email', with: 'user@email.com'
+        click_on 'Send'
+      end
+
+      assert_equal 1, ActionMailer::Base.deliveries.size
+      assert_text 'We have sent an invite to user@email.com'
     end
+  end
 
-    assert_equal 1, ActionMailer::Base.deliveries.size
-    assert_text 'We have sent an invite to user@email.com'
+  test 'users cannot send invites if the user invites are disabled' do
+    create(:call_for_participation, conference: @conference)
+    create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
+    create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
+
+    with_user_invites_disabled do
+      login_as(@user)
+      assert_no_selector '#invitations-form'
+    end
   end
 
   test 'emails in user invites do not contain neither blank spaces nor capital letters' do
@@ -101,11 +116,13 @@ class SendInvitationTest < Capybara::Rails::TestCase
     create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
-    login_as(@user)
+    with_user_invites_enabled do
+      login_as(@user)
 
-    within '#invitations-form' do
-      fill_in 'email', with: ' uSeR@email.com '
-      click_on 'Send'
+      within '#invitations-form' do
+        fill_in 'email', with: ' uSeR@email.com '
+        click_on 'Send'
+      end
     end
 
     invite = Invite.last
@@ -187,21 +204,23 @@ class SendInvitationTest < Capybara::Rails::TestCase
     create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
 
-    login_as(@user)
-
     number_of_invites = Invite::REGULAR_INVITES_PER_USER
 
-    number_of_invites.times do |iteration|
-      pending_invites = number_of_invites - iteration # starts with 0
-      assert_text "You have #{pending_invites} invites remaining."
+    with_user_invites_enabled do
+      login_as(@user)
 
-      within '#invitations-form' do
-        fill_in 'email', with: "email#{iteration}@email.com"
-        click_on 'Send'
+      number_of_invites.times do |iteration|
+        pending_invites = number_of_invites - iteration # starts with 0
+        assert_text "You have #{pending_invites} invites remaining."
+
+        within '#invitations-form' do
+          fill_in 'email', with: "email#{iteration}@email.com"
+          click_on 'Send'
+        end
       end
-    end
 
-    assert_text 'You have 0 invites remaining.'
+      assert_text 'You have 0 invites remaining.'
+    end
   end
 
   test 'users holding a ticket have a limited number of invites' do
@@ -209,21 +228,23 @@ class SendInvitationTest < Capybara::Rails::TestCase
     create(:invite, email: @user.person.email, person: @admin.person, conference: @conference, sharing_allowed: true)
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::REGISTERED)
 
-    login_as(@user)
-
     number_of_invites = Invite::REGULAR_INVITES_PER_USER
 
-    number_of_invites.times do |iteration|
-      pending_invites = number_of_invites - iteration # starts with 0
-      assert_text "You have #{pending_invites} invites remaining."
+    with_user_invites_enabled do
+      login_as(@user)
 
-      within '#invitations-form' do
-        fill_in 'email', with: "email#{iteration}@email.com"
-        click_on 'Send'
+      number_of_invites.times do |iteration|
+        pending_invites = number_of_invites - iteration # starts with 0
+        assert_text "You have #{pending_invites} invites remaining."
+
+        within '#invitations-form' do
+          fill_in 'email', with: "email#{iteration}@email.com"
+          click_on 'Send'
+        end
       end
-    end
 
-    assert_text 'You have 0 invites remaining.'
+      assert_text 'You have 0 invites remaining.'
+    end
   end
 
   test 'invited users can be granted a specific number of invites' do
@@ -234,9 +255,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     number_of_invites = 100
     InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
 
-    login_as(@user)
-
-    assert_text "You have #{number_of_invites} invites remaining."
+    with_user_invites_enabled do
+      login_as(@user)
+      assert_text "You have #{number_of_invites} invites remaining."
+    end
   end
 
   test 'users holding a ticket can be granted a specific number of invites' do
@@ -247,9 +269,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     number_of_invites = 100
     InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
 
-    login_as(@user)
-
-    assert_text "You have #{number_of_invites} invites remaining."
+    with_user_invites_enabled do
+      login_as(@user)
+      assert_text "You have #{number_of_invites} invites remaining."
+    end
   end
 
   test 'invited users can be granted packages of 5 additional invitations' do
@@ -263,9 +286,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on 'Assign +5 invitations'
     click_on 'Logout'
 
-    login_as(@user)
-
-    assert_text 'You have 10 invites remaining.'
+    with_user_invites_enabled do
+      login_as(@user)
+      assert_text 'You have 10 invites remaining.'
+    end
   end
 
   test 'users holding a ticket can be granted packages of 5 additional invitations' do
@@ -279,9 +303,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on 'Assign +5 invitations'
     click_on 'Logout'
 
-    login_as(@user)
-
-    assert_text 'You have 10 invites remaining.'
+    with_user_invites_enabled do
+      login_as(@user)
+      assert_text 'You have 10 invites remaining.'
+    end
   end
 
   test 'uninvited users cannot be granted packages of 5 additional invitations' do
@@ -301,9 +326,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     number_of_invites = -100
     InvitesAssignation.create(person: @user.person, conference: @conference, number: number_of_invites)
 
-    login_as(@user)
-
-    assert_text 'You have 0 invites remaining.'
+    with_user_invites_enabled do
+      login_as(@user)
+      assert_text 'You have 0 invites remaining.'
+    end
   end
 
   test 'users cannot invite people already invited' do
@@ -313,15 +339,17 @@ class SendInvitationTest < Capybara::Rails::TestCase
     create(:attendance_status, person: @user.person, conference: @conference, status: AttendanceStatus::INVITED)
     create(:invite, email: same_email, conference: @conference)
 
-    login_as(@user)
+    with_user_invites_enabled do
+      login_as(@user)
 
-    within '#invitations-form' do
-      fill_in 'email', with: same_email
-      click_on 'Send'
+      within '#invitations-form' do
+        fill_in 'email', with: same_email
+        click_on 'Send'
+      end
+
+      assert_equal 0, ActionMailer::Base.deliveries.size
+      assert_text 'The user you are trying to invite has already received an invite'
     end
-
-    assert_equal 0, ActionMailer::Base.deliveries.size
-    assert_text 'The user you are trying to invite has already received an invite'
   end
 
   # test 'users that requested invitation can not invite other people' do
@@ -353,8 +381,10 @@ class SendInvitationTest < Capybara::Rails::TestCase
     click_on 'Send invitation'
     click_on 'Logout'
 
-    login_as(@user)
-    assert_text 'You have 5 invites remaining.'
+    with_user_invites_enabled do
+      login_as(@user)
+      assert_text 'You have 5 invites remaining.'
+    end
   end
 
   test 'users invited from user portal cannot invite other people' do
@@ -367,16 +397,18 @@ class SendInvitationTest < Capybara::Rails::TestCase
 
     other_user = create(:user, person: create(:person))
 
-    login_as(@user)
-    within '#invitations-form' do
-      fill_in 'email', with: other_user.person.email
-      click_on 'Send'
+    with_user_invites_enabled do
+      login_as(@user)
+      within '#invitations-form' do
+        fill_in 'email', with: other_user.person.email
+        click_on 'Send'
+      end
+      click_on 'Logout'
+
+      login_as(other_user)
+
+      assert_no_selector '#invitations-form'
     end
-    click_on 'Logout'
-
-    login_as(other_user)
-
-    assert_no_selector '#invitations-form'
   end
 
   test 'person can access to the invitation link' do

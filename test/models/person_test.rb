@@ -174,9 +174,21 @@ class PersonTest < ActiveSupport::TestCase
     conference = create(:conference)
     create(:invite, email: person.email, conference: conference, sharing_allowed: true)
 
-    allowed = person.allowed_to_send_invites?(conference)
+    FeatureToggle.stub :user_invites_enabled?, true do
+      allowed = person.allowed_to_send_invites?(conference)
+      assert_equal true, allowed
+    end
+  end
 
-    assert_equal true, allowed
+  test '#allowed_to_send_invites? return false when the feature flag is disabled' do
+    person = create(:person)
+    conference = create(:conference)
+    create(:invite, email: person.email, conference: conference, sharing_allowed: true)
+
+    FeatureToggle.stub :user_invites_enabled?, false do
+      allowed = person.allowed_to_send_invites?(conference)
+      assert_equal false, allowed
+    end
   end
 
   test 'knows people who has ticket for a conference' do
