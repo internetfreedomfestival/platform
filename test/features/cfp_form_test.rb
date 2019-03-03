@@ -23,20 +23,19 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
   test 'CFP form link is enabled by FeatureToggle' do
-    ENV['NEW_CFP_ENABLED'] = 'false'
     ENV['CURRENT_CONFERENCE'] = @conference.acronym
 
     login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp"
+    with_cfp_disabled do
+      visit "/#{@conference.acronym}/cfp"
+      assert_text "The #{@conference.alt_title} Global Call for Proposals is now closed"
+    end
 
-    assert_text "The #{@conference.alt_title} Global Call for Proposals is now closed"
-
-    ENV['NEW_CFP_ENABLED'] = 'true'
-
-    visit "/#{@conference.acronym}/cfp"
-
-    assert_text "Submit a Session for the #{@conference.alt_title}"
+    with_cfp_enabled do
+      visit "/#{@conference.acronym}/cfp"
+      assert_text "Submit a Session for the #{@conference.alt_title}"
+    end
   end
 
   test 'new user can create a new call for proposals' do

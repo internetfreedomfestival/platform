@@ -1,7 +1,7 @@
 class FeatureToggle
   class << self
-    def new_cfp_enabled?
-      ENV['NEW_CFP_ENABLED'] == "true"
+    def cfp_enabled?
+      ENV['CFP_ENABLED'] == "true"
     end
 
     def user_invites_enabled?

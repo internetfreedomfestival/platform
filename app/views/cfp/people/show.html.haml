@@ -116,7 +116,7 @@
             = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
 
-  - if FeatureToggle.new_cfp_enabled? and !@is_old_account
+  - if FeatureToggle.cfp_enabled? and !@is_old_account
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
     .row
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}

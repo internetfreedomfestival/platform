@@ -41,6 +41,18 @@ class ActiveSupport::TestCase
     DatabaseCleaner.clean
   end
 
+  def with_cfp_enabled
+    FeatureToggle.stub :cfp_enabled?, true do
+      yield
+    end
+  end
+
+  def with_cfp_disabled
+    FeatureToggle.stub :cfp_enabled?, false do
+      yield
+    end
+  end
+
   def with_user_invites_enabled
     FeatureToggle.stub :user_invites_enabled?, true do
       yield

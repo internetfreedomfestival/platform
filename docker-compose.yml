@@ -18,7 +18,7 @@ services:
       - '3000:3000'
     environment:
       - CURRENT_CONFERENCE=IFF2019
-      - NEW_CFP_ENABLED=true
+      - CFP_ENABLED=true
       - USER_INVITES_ENABLED=true
       - PUBLISHABLE_KEY=pk_test_TYooMQauvdEDq54NiTphI7jx
       - SECRET_KEY=sk_test_4eC39HqLyjWDarjtT1zdp7dc

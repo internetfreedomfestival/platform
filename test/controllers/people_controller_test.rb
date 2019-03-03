@@ -73,7 +73,7 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal(invite.person, @admin.person)
   end
 
-  test 'should allow person to submit event out of place' do
+  test 'should allow person to submit event after deadline' do
     post :allow_late_submissions, format: @person.to_param, conference_acronym: @conference.acronym
 
     @person.reload
