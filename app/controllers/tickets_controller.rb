@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_invitation, except:[:refund_ticket]
+  before_action :check_invitation, except:[:refund_ticket, :update_ticket_public_name]
   before_action :require_same_person, except:[:refund_ticket]
   before_action :require_same_conference, except:[:refund_ticket]
   before_action :no_previous_ticket, only: [:register_ticket]
@@ -17,6 +17,19 @@ class TicketsController < ApplicationController
     @invite = Invite.find(params[:id])
     @conference = @invite.conference
     @ticket = Ticket.find_by(person: @person, conference: @conference, status: Ticket::COMPLETED)
+  end
+
+  def update_ticket_public_name
+    ticket_params = params.require(:ticket).permit(:public_name)
+
+    person = Person.find_by(id: current_user.person)
+    invite = Invite.find(params[:id])
+    conference = invite.conference
+    ticket = Ticket.find_by(person: person, conference: conference, status: Ticket::COMPLETED)
+
+    ticket.update(public_name: ticket_params[:public_name])
+
+    redirect_to view_ticket_path, notice: "Your Public Display Name has been updated successfully"
   end
 
   def cancel_ticket
@@ -52,7 +65,9 @@ class TicketsController < ApplicationController
     @invite = Invite.find(params[:id])
     @conference = @invite.conference
     @ticket = Ticket.find_by(person: @person, conference: @conference)
+
     TicketingMailer.ticketing_mail(@ticket, @person, @conference).deliver_now
+
     redirect_to view_ticket_path, notice: "Succesfully resent. Check your email."
   end
 

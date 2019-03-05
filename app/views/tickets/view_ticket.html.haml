@@ -1,38 +1,44 @@
-= simple_form_for(@ticket, url: view_ticket_path(id: @invite.id, conference_acronym: @conference.acronym), html: {method: 'get', multipart: true}) do |f|
-  %section
-    .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
-      .pull-right
-      =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px; margin-left: 10px;"
+%section
+  .page-header{style: "border-bottom: 2px solid; margin: 10px;"}
+    .pull-right
+    =image_tag "iff-logos.png", :style => "max-width: 20em; margin-bottom: 25px; margin-left: 10px;"
 
-      %h2 Your #{@conference.alt_title} Ticket
+    %h2 Your #{@conference.alt_title} Ticket
 
-      %div{class:"title-view"}
-        %p IFF Ticket Information
+    %div{class:"title-view"}
+      %p IFF Ticket Information
 
-      %div{class:"charge-row"}
-        %p #{@conference.alt_title} Ticket Option: #{@ticket.ticket_option}
+    %div{class:"charge-row"}
+      %p #{@conference.alt_title} Ticket Option: #{@ticket.ticket_option}
 
-      %div{class: "charge-row-row"}
-        %p IFF ID: #{@ticket.person.id}
+    %div{class: "charge-row-row"}
+      %p IFF ID: #{@ticket.person.id}
 
-      %div{class: "charge-row-row"}
-        %p Ticket ID: #{@ticket.id}
+    %div{class: "charge-row-row"}
+      %p Ticket ID: #{@ticket.id}
 
-      %div{class: "charge-row-row"}
-        %p Public Display Name: #{@ticket.public_name}
+    %div{class: "charge-row-row"}
+      %p Public Display Name: #{@ticket.public_name}
 
-      %div{class: "charge-row-row"}
-        %p Preferred Gender Pronoun: #{@ticket.gender_pronoun}
+    %div{class: "charge-row-row"}
+      %p Preferred Gender Pronoun: #{@ticket.gender_pronoun}
 
-      %div{class: "charge-row-row"}
-        %p
-          Days Attending:
-          - @ticket.iff_days.each do |day|
-            %span{class: "day-boxes"}= day
+    %div{class: "charge-row-row"}
+      %p
+        Days Attending:
+        - @ticket.iff_days.each do |day|
+          %span{class: "day-boxes"}= day
 
-      %div{class: "charge-row-row"}
-        %p Amount: #{@ticket.amount} $
+    %div{class: "charge-row-row"}
+      %p Amount: #{@ticket.amount} $
 
+    %p{class:"ticket-view-bold"} Remember that your Public Display Name will be printed on your badge and will be published in the IFF schedule if you are a presenter
+    %p{class:"ticket-view-p"} You can update your Public Display Name using the form below.
+    = simple_form_for(@ticket, url: update_ticket_public_name_path(id: @invite.id, conference_acronym: @conference.acronym), html: { id: 'update_ticket_public_name' }) do |f|
+      = f.input :public_name, required: true, label: false, wrapper: false, input_html: { style: 'margin-top: -1em; margin-bottom: 1em'}
+      = f.button :submit, "Update Public Display Name", class: 'primary'
+
+    = simple_form_for(@ticket, url: view_ticket_path(id: @invite.id, conference_acronym: @conference.acronym), html: {method: 'get', multipart: true}) do |f|
       %p{class:"ticket-view-bold"} Please don't print your ticket, but you will need to show it at the door so we can check you in
       %p{class:"ticket-view-p"} You can resend your IFF Ticket info to your e-mail using the button below.
       = action_button "primary", "Resend Ticket", send_ticket_path
@@ -50,19 +56,20 @@
       %p{class:"ticket-view-p"} Please click on the link below. Careful, that this action can't be undone!
       = action_button "danger", "Cancel Ticket", cancel_ticket_path, :data => {:confirm => "Are you absolutely sure you want to cancel your ticket? This will be final!"}
 
-      %p{class: "ticket-view-bold"}IFF Venue details section
-      %p{class:"ticket-view-p"}We're looking forward to seeing you in Valencia!
+    %p{class: "ticket-view-bold"}IFF Venue details section
+    %p{class:"ticket-view-p"}We're looking forward to seeing you in Valencia!
 
-      %br
-      %br
+    %p{class:"ticket-view-p"}Las Naves
+    %p{class:"ticket-view-p"}Calle de Juan Verdeguer 16,
+    %p{class:"ticket-view-p"}46024 - Valencia (Spain)
 
-      %p{class:"ticket-view-p"}Las Naves
-      %p{class:"ticket-view-p"}Calle de Juan Verdeguer 16,
-      %p{class:"ticket-view-p"}46024 - Valencia (Spain)
+    %p{class:"ticket-view-p"}www.lasnaves.com
+    %p{class:"ticket-view-p"}+34 963 910 477
 
-      %p{class:"ticket-view-p"}www.lasnaves.com
-      %p{class:"ticket-view-p"}+34 963 910 477
+    %br
+    %br
 
-      = action_button "danger", "Back", cfp_root_path
-      %br
-      %br
+    = action_button "danger", "Back", cfp_root_path
+
+    %br
+    %br
