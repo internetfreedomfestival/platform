@@ -16,6 +16,7 @@ class Event < ActiveRecord::Base
 
   TYPES = ["On the Frontlines", "The Next Net", "Community Resilience", "Journalism & Media", "Hacking the Net", "Policy, Advocacy & Research", "Training & Best Practices"].freeze
   ACCEPTED = %w(accepting unconfirmed confirmed scheduled).freeze
+  CONFIRMED = %w(confirmed scheduled).freeze
 
   has_one :ticket, as: :object, dependent: :destroy
   has_many :conflicts_as_conflicting, class_name: 'Conflict', foreign_key: 'conflicting_event_id', dependent: :destroy
@@ -58,10 +59,10 @@ class Event < ActiveRecord::Base
 
   after_save :update_conflicts
 
-  scope :accepted, -> { where(self.arel_table[:state].in(ACCEPTED)) }
+  scope :accepted, -> { where(state: ACCEPTED) }
   scope :associated_with, ->(person) { joins(:event_people).where("event_people.person_id": person.id) }
   scope :candidates, -> { where(state: %w(new review accepting unconfirmed confirmed scheduled)) }
-  scope :confirmed, -> { where(state: %w(confirmed scheduled)) }
+  scope :confirmed, -> { where(state: CONFIRMED) }
   scope :no_conflicts, -> { includes(:conflicts).where("conflicts.event_id": nil) }
   scope :is_public, -> { where(public: true) }
   scope :scheduled_on, ->(day) { where(self.arel_table[:start_time].gteq(day.start_date.to_datetime)).where(self.arel_table[:start_time].lteq(day.end_date.to_datetime)).where(self.arel_table[:room_id].not_eq(nil)) }
@@ -111,6 +112,7 @@ class Event < ActiveRecord::Base
       transitions to: :rejecting, from: [:new, :review], on_transition: :process_rejection, :guard => lambda {|*args| args[0].conference.bulk_notification_enabled }
     end
   end
+  STATES = state_machine.states.map(&:name).map(&:to_s)
 
   def self.ids_by_least_reviewed(conference, reviewer)
     # FIXME native SQL
