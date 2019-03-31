@@ -14,14 +14,14 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html do
-        result = search Person.involved_in(@conference), params
+        result = search Person.involved_in(@conference).where('event_people.event_role': EventPerson::SPEAKER), params
         @people = result.paginate page: page_param
       end
       format.text do
-        @people = Person.speaking_at(@conference).accessible_by(current_ability)
+        @people = Person.involved_in(@conference).where('event_people.event_role': EventPerson::SPEAKER).accessible_by(current_ability)
         render text: @people.map(&:email).join("\n")
       end
-      result = search Person.involved_in(@conference), params
+      result = search Person.involved_in(@conference).where('event_people.event_role': EventPerson::SPEAKER), params
       @people = result.paginate page: page_param
       @csv_people = result
 
@@ -35,14 +35,14 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html do
-        result = search Person.confirmed(@conference), params
+        result = search Person.confirmed(@conference).where('event_people.event_role': EventPerson::SPEAKER), params
         @people = result.paginate page: page_param
       end
       format.text do
-        @people = Person.confirmed(@conference).accessible_by(current_ability)
+        @people = Person.confirmed(@conference).where('event_people.event_role': EventPerson::SPEAKER).accessible_by(current_ability)
         render text: @people.map(&:email).join("\n")
       end
-      result = search Person.confirmed(@conference), params
+      result = search Person.confirmed(@conference).where('event_people.event_role': EventPerson::SPEAKER), params
       @people = result.paginate page: page_param
       @csv_people = result
 
