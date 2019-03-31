@@ -30,6 +30,7 @@ module Frab
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/lib/ticket_server_adapters)
     config.autoload_paths += %W(#{config.root}/app/inputs)
+    config.autoload_paths += %W(#{config.root}/app/stats)
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = 'utf-8'

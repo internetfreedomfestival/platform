@@ -40,158 +40,158 @@ class StatisticsController < ApplicationController
 
   def all_stats
     authorize! :administrate, Person
-    @all_stats = Hash.new(0)
-    @people = Person.all
-    @events = Event.all
 
-    dif_people_count = 0
-    volunteers_count = 0
-    user_genders = Hash.new(0)
-    prof_back = Hash.new(0)
-    user_iff_before = Hash.new(0)
-    person_countries = Hash.new(0)
-    event_countries = Hash.new(0)
-    event_formats = Hash.new(0)
-    event_themes = Hash.new(0)
-    event_person_prof = Hash.new(0)
-    presented_before = Hash.new(0)
-    event_languages = Hash.new(0)
-    event_gender = Hash.new(0)
-    event_states = Hash.new(0)
+    # stats logic
+    user_stats = UserStats.new
+    attendee_stats = AttendeeStats.new(@conference)
+    event_stats = EventStats.new(@conference)
 
-    @people.each do |person|
-      if person.dif
-        dif_people_count += 1
-      end
-      if person.interested_in_volunteer == true
-        volunteers_count += 1
-      end
-      user_genders[person.gender] += 1 unless person.gender.nil?
+    # output data
+    output = OutputData.new
 
-      if person.professional_background.class == String
-        prof_back[person.professional_background] += 1
-      else
-        person.professional_background.each do |prof|
-          prof_back[prof] += 1 unless prof == ""
-        end
-      end
-      if person.iff_before.class == String
-        user_iff_before[person.iff_before]
-      else
-        person.iff_before.each do |year|
-          user_iff_before[year] += 1
-        end
-      end
-      if person.country_of_origin.nil?
-        person_countries["Not_Yet_Selected"] += 1
-      else
-        person_countries[person.country_of_origin] += 1
-      end
-      if !person.events.empty? && person.professional_background.class == String
-        event_person_prof[person.professional_background] += 1
-      elsif !person.events.empty?
-        person.professional_background.each do |prof|
-          event_person_prof[prof] += 1
-        end
-      end
-      if !person.events.empty?
-        event_countries[person.country_of_origin] += 1
-      end
-    end
+    output
+      .add(['PLATFORM', nil])
 
-    @events.each do |event|
-      if event.track
-        event_formats[event.track.name] += 1
+    output
+      .add_separator
+      .add(['User Metrics', 'Users'])
+      .add(['  Total users', user_stats.total_users])
+
+    output
+      .add(['Professional Background', 'Users'])
+      user_stats.professional_backgrounds_breakdown.each do |background, users|
+        output.add(["  #{background || 'N/A'}", users])
       end
 
-      event_themes[event.event_type] += 1
-
-      if event.iff_before
-        if event.iff_before.include?("2015") || event.iff_before.include?("2016") || event.iff_before.include?("2017")
-          presented_before["Already Presented"] += 1
-        else
-          presented_before["First Presentation"] += 1
-        end
+    output
+      .add(['Countries of Origin', 'Users'])
+      user_stats.countries_of_origin_breakdown.each do |country, users|
+        output.add(["  #{country || 'N/A'}", users])
       end
-      event_languages[event.language] += 1
 
-      e_p = EventPerson.where(event_role: "submitter").find_by(event_id: event.id)
-      unless e_p.nil?
-        per = Person.find_by(id: e_p.person_id)
-        event_gender[per.gender] += 1
+    output
+      .add_separator
+      .add(['CONFERENCE', nil])
+
+    output
+      .add_separator
+      .add(['Attendee Metrics', 'Attendees'])
+      .add(['  Total attendees', attendee_stats.total_attendees])
+      .add(['  Are new attendees', attendee_stats.new_attendees])
+      .add(['  Are returning attendees', attendee_stats.returning_attendees])
+      .add(['  Are interested in volunteer', attendee_stats.total_volunteers])
+      .add(['  Have requested DIF', attendee_stats.total_requested_dif])
+      .add(['  Have been granted DIF', attendee_stats.total_granted_dif])
+      .add(['  Have not been granted DIF', attendee_stats.total_pending_dif])
+      .add(['  Have applied to be presenters', attendee_stats.total_speakers])
+      .add(['  Are confirmed presenters', attendee_stats.total_confirmed_speakers])
+
+    output
+      .add(['Ticket Types', 'Attendees'])
+      attendee_stats.ticket_types_breakdown.each do |ticket_type, attendees|
+        output.add(["  #{ticket_type || 'N/A'}", attendees])
       end
-      event_states[event.state] += 1
-    end
 
+    output
+      .add(['Gender Balance', 'Attendees'])
+      attendee_stats.gender_options_breakdown.each do |gender, attendees|
+        output.add(["  #{gender || 'N/A'}", attendees])
+      end
 
-    @all_stats["Users"] = "Totals"
-    @all_stats["Total Users"] = @people.count
-    @all_stats["Total Attendees"] = "Not Yet Created!"
-    @all_stats["Total DIF Applicants"] = dif_people_count
-    @all_stats["Interested in Volunteering"] = volunteers_count
-    user_genders.each do |gender, count|
-      @all_stats[gender] = count
-    end
-    @all_stats["Professional Background"] = "Totals"
-    prof_back.each do |profession, count|
-      @all_stats[profession] = count
-    end
-    @all_stats["Returning vs New"] = "Totals"
-    user_iff_before.each do |year, count|
-      @all_stats[year] = count
-    end
-    @all_stats["Countries of Origin"] = "Totals"
-    person_countries.each do |country, count|
-      @all_stats[country] = count
-    end
-    @all_stats["Events"] = "Events"
-    @all_stats["By Format"] = "Totals"
-    event_formats.each do |format, count|
-      @all_stats[format] = count
-    end
+    output
+      .add(['Professional Background', 'Attendees'])
+      attendee_stats.professional_backgrounds_breakdown.each do |background, attendees|
+        output.add(["  #{background || 'N/A'}", attendees])
+      end
 
-    @all_stats["By Theme"] = "Totals"
-    event_themes.each do |theme, count|
-      @all_stats[theme] = count
-    end
+    output
+      .add(['Countries of Origin', 'Attendees'])
+      attendee_stats.countries_of_origin_breakdown.each do |country, attendees|
+        output.add(["  #{country || 'N/A'}", attendees])
+      end
 
-    @all_stats["By Professional Background of Presenter"] = "Totals"
-    event_person_prof.each do |prof, count|
-      @all_stats[prof + ":"] = count
-    end
-    @all_stats["Presenters"] = "Totals"
-    presented_before.each do |status, count|
-      @all_stats[status] = count
-    end
-    @all_stats["Events By Language"] = "Totals"
-    event_languages.each do |lang, count|
-      @all_stats[lang] = count
-    end
-    @all_stats["Events By Gender"] = "Totals"
-    event_gender.each do |gender, count|
-      @all_stats[gender + ":"] = count
-    end
-    @all_stats["Events By State"] = "Totals"
-    event_states.each do |state, count|
-      @all_stats[state] = count
-    end
-    @all_stats["Events By Country"] = "Totals"
-    event_countries.each do |country, count|
-      @all_stats[country + ":"] = count
-    end
+    output
+      .add_separator
+      .add(['Session Metrics', 'Sessions'])
+      .add(['  Proposed sessions', event_stats.total_events])
+      .add(['  Accepted sessions', event_stats.total_accepted_events])
+      .add(['  Confirmed sessions', event_stats.total_confirmed_events])
+      .add(['  Confirmed sessions with DIF request', event_stats.confirmed_events_with_dif_request])
+      .add(['  Confirmed sessions with granted DIF request', event_stats.confirmed_events_with_granted_dif_request])
+      .add(['  Confirmed sessions with non-granted DIF request', event_stats.confirmed_events_with_pending_dif_request])
+      .add(['  Confirmed sessions with first time presenters', event_stats.confirmed_events_with_first_time_speakers])
+      .add(['  Confirmed sessions with returning presenters', event_stats.confirmed_events_with_returning_speakers])
+
+    output
+      .add(['Session States', 'Sessions'])
+      event_stats.event_states_breakdown.each do |state, events|
+        output.add(["  #{state || 'N/A'}", events])
+      end
+
+    output
+      .add(['Session Formats', 'Sessions'])
+      event_stats.confirmed_event_formats_breakdown.each do |format, events|
+        output.add(["  #{format || 'N/A'}", events])
+      end
+
+    output
+      .add(['Session Themes', 'Sessions'])
+      event_stats.confirmed_event_themes_breakdown.each do |theme, events|
+        output.add(["  #{theme || 'N/A'}", events])
+      end
+
+    output
+      .add_separator
+      .add(['Presenter Metrics', 'Presenters'])
+      .add(['  Presenter applications', event_stats.total_proposed_speakers])
+      .add(['  Total presenters', event_stats.total_confirmed_speakers])
+      .add(['  Presenters holding ticket', event_stats.confirmed_speakers_holding_ticket])
+      .add(['  Presenters not holding ticket', event_stats.confirmed_speakers_not_holding_ticket])
+
+    output
+      .add(['Gender Balance', 'Presenters'])
+      event_stats.gender_options_breakdown_for_confirmed_speakers.each do |gender, presenters|
+        output.add(["  #{gender || 'N/A'}", presenters])
+      end
+
+    output
+      .add(['Professional Background', 'Presenters'])
+      event_stats.professional_backgrounds_breakdown_for_confirmed_speakers.each do |background, presenters|
+        output.add(["  #{background || 'N/A'}", presenters])
+      end
+
+    output
+      .add(['Countries of Origin', 'Presenters'])
+      event_stats.countries_of_origin_breakdown_for_confirmed_speakers.each do |country, presenters|
+        output.add(["  #{country || 'N/A'}", presenters])
+      end
 
     respond_to do |format|
-      format.csv  { send_data to_csv_stats(@all_stats), filename: "people-user-stats-#{Date.today}.csv" }
+      format.csv  { send_data output.to_csv, filename: "people-user-stats-#{Date.today}.csv" }
     end
   end
 
-  private
+  class OutputData
+    def initialize
+      @data = []
+    end
 
-  def to_csv_stats(stats_object)
-    CSV.generate(headers: true) do |csv|
-      stats_object.each do |key, value|
-        csv << [key, value]
+    def add(line)
+      @data << line
+      self
+    end
+
+    def add_separator
+      add([nil, nil])
+    end
+
+    def to_csv
+      CSV.generate do |csv|
+        @data.each do |key, value|
+          csv << [key, value]
+        end
       end
     end
   end
+  private_constant :OutputData
 end

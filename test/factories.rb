@@ -256,7 +256,7 @@ FactoryBot.define do
     projector true
     track
     group "group"
-    recipient_travel_stipend "test@example.org"
+    recipient_travel_stipend nil
     travel_support ["Hotel"]
     past_travel_assistance ["2017"]
   end

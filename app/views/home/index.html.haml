@@ -48,375 +48,278 @@
         - else
           = render "recent_changes/table"
           %p
-  - @people = Person.all
+
   .row
     .span16
       %h2 Statistics
-      - if @conference.events.count == 0
-        .blank-slate
-          %p
-            Once you created some events for this conference,
-            or gathered submissions through a call for papers,
-            you will find some statistics about them here.
-      - else
-        %h4 Events by state
-        %p
-          = link_to "All", "#", id: "events_all_types"
-          |
-          = link_to "lectures only", "#", id: "events_lectures_only"
-          |
-          = link_to "workshops only", "#", id: "events_workshops_only"
-          |
-          = link_to "others only", "#", id: "events_others_only"
-        #event_state_graph(style="width:600px;height:300px;")
-        %table.zebra-stripe
-          %thead
-            %tr
-              %th new
-              %th review
-              %th withdrawn
-              %th accepting
-              %th unconfirmed
-              %th confirmed
-              %th scheduled
-              %th canceled
-              %th rejecting
-              %th rejected
-              %th total
-          %tbody
-            %tr
-              %td= @conference.events.where(state: :new).count
-              %td= @conference.events.where(state: :review).count
-              %td= @conference.events.where(state: :withdrawn).count
-              %td= @conference.events.where(state: :accepting).count
-              %td= @conference.events.where(state: :unconfirmed).count
-              %td= @conference.events.where(state: :confirmed).count
-              %td= @conference.events.where(state: :scheduled).count
-              %td= @conference.events.where(state: :canceled).count
-              %td= @conference.events.where(state: :rejecting).count
-              %td= @conference.events.where(state: :rejected).count
-              %td= @conference.events.count
-      - if @conference.languages.count > 1
-        %h4 Events by language
-        %p
-          = link_to "All", "#", id: "languages_all_events"
-          |
-          = link_to "Accepted only", "#", id: "languages_accepted_events_only"
-        .row
-          .span3
-            %b English:
-            = @conference.events.where(language: "en").count
-          .span3
-            %b Spanish:
-            = @conference.events.where(language: "es").count
-        #event_language_graph(style="width:400px;height:300px;")
+      %h3 PLATFORM
 
-      - if @conference.gender_breakdown.count > 1
-        %h4 Events by gender
-        %p
-          = link_to "All", "#", id: "gender_all_events"
-          |
-          = link_to "Accepted only", "#", id: "gender_accepted_events_only"
-        .row
-          - @event_people = []
-          - @people_from_events = []
-          - @event_countries = Hash.new(0)
-          - @presented_before = 0
-          - @first_presentation = 0
-
-          - @conference.events.each do |event|
-            - @event_people << EventPerson.find_by(event_id: event.id)
-            - if event.iff_before
-              - if event.iff_before.include?("2015") || event.iff_before.include?("2016") || event.iff_before.include?("2017")
-                - @presented_before += 1
-              - else @first_presentation += 1
-            - else
-              - @first_presentation += 1
-          - @event_people.each do |ep|
-            - unless ep.nil?
-              - person = Person.find_by(id: ep.person.id)
-              - @people_from_events << Person.find_by(id: ep.person_id)
-              - @event_countries[person.country_of_origin] += 1
-          - @event_people_genders = Hash.new(0)
-          - @people_from_events.each do |person|
-            - @event_people_genders[person.gender] += 1
-          .span3
-            %b Female:
-            = @event_people_genders["Female"]
-          .span3
-            %b Male:
-            = @event_people_genders["Male"]
-          .span3
-            %b Gender Nonconforming:
-            = @event_people_genders["Gender Nonconforming"]
-          .span3
-            %b Other:
-            = @event_people_genders["Other"]
-        #event_gender_graph(style="width:400px;height:300px;")
-  / Inline logic for stats b/c difficult to pass variables via JSON
-  - @dif_people = []
-  - @volunteers = []
-  - @countries = Hash.new(0)
-  - @prof_back  = Hash.new(0)
-  - @iff_before = Hash.new(0)
-  - @event_people_proffesions = Hash.new(0)
-  - @event_people_dif = Hash.new(0)
-
-  - @people.each do |person|
-    - if person.dif
-      - @dif_people << person
-    - if person.interested_in_volunteer == true
-      - @volunteers << person
-    - if person.country_of_origin.nil?
-      - @countries["Not_Yet_Selected"] += 1
-    - else @countries[person.country_of_origin] += 1
-    - if person.professional_background.class == String
-      - @prof_back[person.professional_background] += 1
-    - else
-      - person.professional_background.each do |prof|
-        - @prof_back[prof] += 1 unless prof == ""
-    - if person.iff_before.class == String
-      - @iff_before[person.iff_before] += 1
-    - else
-      - person.iff_before.each do |year|
-        - @iff_before[year] += 1
-    - if !person.events.empty? && person.professional_background.class == String
-      - @event_people_proffesions[person.professional_background] += 1
-    - elsif !person.events.empty?
-      -person.professional_background.each do |prof|
-        - @event_people_proffesions[prof] += 1
-    - if person.events
-      - if person.dif
-        - @event_people_dif['Applied for DIF'] += 1
   .row
     .span8
-      %h2 Users
-      %p
-        %b= "Total Users:"
-        = @people.count
-      %p
-        %b= "Total Attendees:"
-        This has not been created yet
-      %p
-        %b= "Total Dif:"
-        = @dif_people.count
-      %p
-        %b= "Total Volunteers:"
-        = @volunteers.count
-      %p
-        %b Female:
-        = @people.where(gender: "Female").count
-      %p
-        %b Male:
-        = @people.where(gender: "Male").count
-      %p
-        %b Gender Nonconforming:
-        = @people.where(gender: "Gender Nonconforming").count
-      %p
-        %b Other (Gender):
-        = @people.where(gender: "Other").count
+      %h4 Users
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Metric
+            %th Users
+        %tbody
+          %tr
+            %td Total users
+            %td= number_with_delimiter(@user_stats.total_users)
 
-      <hr />
-      %h2 Professional Background
-      %p
-        - @prof_back.each do |key, value|
-          %p
-            %b= key + ":"
-            = value
-      <hr />
-      %h2 Returning Vs New
-      %p
-        - @iff_before = @iff_before.sort_by{|k, v| k}
-        - @iff_before.each do |key, value|
-          %p
-            %b= key + ":" unless key == ""
-            = value unless key == ""
-      <hr />
-      %h2 Events
-      %h4 By Format
-      - @formats = Hash.new(0)
-      - @themes = Hash.new(0)
-      - @conference.events.each do |event|
-        - if event.track
-          - @formats[event.track.name] += 1
-        - @themes[event.event_type] += 1
-      %p
-        - @formats.each do |key, value|
-          %p
-            %b= key
-            = value
-      %h4 Events by Theme
-      %p
-        - @themes.each do |key, value|
-          %p
-            %b= key
-            = value
-      %h4 By Professional Background of Presenter
-      - @event_people_proffesions.each do |key, value|
-        %p
-          %b= key + ":" unless key == ""
-          = value unless key == ""
-      %h4 Events by DIF
-      %p
-        %b Total Events:
-        = @conference.events.count
-      - @event_people_dif.each do |key, value|
-        %p
-          %b= key + ":"
-          = value
+      %h4
+        Professional Background
+        %span{style: 'font-size: 0.75em'} (of users, can have more than one)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Background
+            %th Users
+        %tbody
+        - @user_stats.professional_backgrounds_breakdown.each do |background, users|
+          %tr
+            %td= background || "N/A"
+            %td= number_with_delimiter(users)
+    .span8
+      %h4
+        Country of Origin
+        %span{style: 'font-size: 0.75em'} (of users)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Country
+            %th Users
+        %tbody
+        - @user_stats.countries_of_origin_breakdown.each do |country, users|
+          %tr
+            %td= country || "N/A"
+            %td= number_with_delimiter(users)
+
+  .row
+    .span16
+      %h3 CONFERENCE
+
+  .row
+    .span8
+      %h4 Attendees
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Metric
+            %th Attendees
+        %tbody
+          %tr
+            %td Total attendees
+            %td= number_with_delimiter(@attendee_stats.total_attendees)
+          %tr
+            %td Are new attendees
+            %td= number_with_delimiter(@attendee_stats.new_attendees)
+          %tr
+            %td Are returning attendees
+            %td= number_with_delimiter(@attendee_stats.returning_attendees)
+          %tr
+            %td Are interested in volunteer
+            %td= number_with_delimiter(@attendee_stats.total_volunteers)
+          %tr
+            %td Have requested DIF
+            %td= number_with_delimiter(@attendee_stats.total_requested_dif)
+          %tr
+            %td Have been granted DIF
+            %td= number_with_delimiter(@attendee_stats.total_granted_dif)
+          %tr
+            %td Have not been granted DIF
+            %td= number_with_delimiter(@attendee_stats.total_pending_dif)
+          %tr
+            %td Have applied to be presenters
+            %td= number_with_delimiter(@attendee_stats.total_speakers)
+          %tr
+            %td Are confirmed presenters
+            %td= number_with_delimiter(@attendee_stats.total_confirmed_speakers)
+
+      %h4 Tickets
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Ticket type
+            %th Attendees
+        %tbody
+        - @attendee_stats.ticket_types_breakdown.each do |ticket_type, attendees|
+          %tr
+            %td= ticket_type || "N/A"
+            %td= number_with_delimiter(attendees)
+
+      %h4
+        Gender Balance
+        %span{style: 'font-size: 0.75em'} (of attendees)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Gender option
+            %th Attendees
+        %tbody
+        - @attendee_stats.gender_options_breakdown.each do |gender, attendees|
+          %tr
+            %td= gender || "N/A"
+            %td= number_with_delimiter(attendees)
+
+      %h4
+        Professional Background
+        %span{style: 'font-size: 0.75em'} (of attendees, can have more than one)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Background
+            %th Attendees
+        %tbody
+        - @attendee_stats.professional_backgrounds_breakdown.each do |background, attendees|
+          %tr
+            %td= background || "N/A"
+            %td= number_with_delimiter(attendees)
+
+    .span8
+      %h4
+        Country of Origin
+        %span{style: 'font-size: 0.75em'} (of attendees)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Country
+            %th Attendees
+        %tbody
+        - @attendee_stats.countries_of_origin_breakdown.each do |country, attendees|
+          %tr
+            %td= country || "N/A"
+            %td= number_with_delimiter(attendees)
+
+  .row
+    .span8
+      %h4 Sessions
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Metric
+            %th Sessions
+        %tbody
+          %tr
+            %td Proposed sessions
+            %td= number_with_delimiter(@event_stats.total_events)
+          %tr
+            %td Accepted sessions
+            %td= number_with_delimiter(@event_stats.total_accepted_events)
+          %tr
+            %td Confirmed sessions
+            %td= number_with_delimiter(@event_stats.total_confirmed_events)
+          %tr
+            %td Confirmed sessions with DIF request
+            %td= number_with_delimiter(@event_stats.confirmed_events_with_dif_request)
+          %tr
+            %td Confirmed sessions with granted DIF request
+            %td= number_with_delimiter(@event_stats.confirmed_events_with_granted_dif_request)
+          %tr
+            %td Confirmed sessions with non-granted DIF request
+            %td= number_with_delimiter(@event_stats.confirmed_events_with_pending_dif_request)
+          %tr
+            %td Confirmed sessions with first time presenters
+            %td= number_with_delimiter(@event_stats.confirmed_events_with_first_time_speakers)
+          %tr
+            %td Confirmed sessions with returning presenters
+            %td= number_with_delimiter(@event_stats.confirmed_events_with_returning_speakers)
+
+      %h4 States
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} State
+            %th Sessions
+        %tbody
+        - @event_stats.event_states_breakdown.each do |state, events|
+          %tr
+            %td= state || "N/A"
+            %td= number_with_delimiter(events)
+
+      %h4 Formats
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Format
+            %th Sessions
+        %tbody
+        - @event_stats.confirmed_event_formats_breakdown.each do |format, events|
+          %tr
+            %td= format || "N/A"
+            %td= number_with_delimiter(events)
+
+      %h4 Themes
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Theme
+            %th Sessions
+        %tbody
+        - @event_stats.confirmed_event_themes_breakdown.each do |theme, events|
+          %tr
+            %td= theme || "N/A"
+            %td= number_with_delimiter(events)
+
       %h4 Presenters
-      %p
-        %b Already Presented:
-        = @presented_before
-      %p
-        %b 1st Time Presenters:
-        = @first_presentation
-      %h4 Events By Country:
-      - @event_countries ||= Hash.new(0)
-      - @event_countries.each do |country, count|
-        %p
-          %b= country + ":"
-          = count
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Metric
+            %th Presenters
+        %tbody
+          %tr
+            %td Presenter applications
+            %td= number_with_delimiter(@event_stats.total_proposed_speakers)
+          %tr
+            %td Total presenters
+            %td= number_with_delimiter(@event_stats.total_confirmed_speakers)
+          %tr
+            %td Presenters holding ticket
+            %td= number_with_delimiter(@event_stats.confirmed_speakers_holding_ticket)
+          %tr
+            %td Presenters not holding ticket
+            %td= number_with_delimiter(@event_stats.confirmed_speakers_not_holding_ticket)
 
+      %h4
+        Gender Balance
+        %span{style: 'font-size: 0.75em'} (of presenters)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Gender option
+            %th Presenters
+        %tbody
+        - @event_stats.gender_options_breakdown_for_confirmed_speakers.each do |gender, presenters|
+          %tr
+            %td= gender || "N/A"
+            %td= number_with_delimiter(presenters)
+
+      %h4
+        Professional Background
+        %span{style: 'font-size: 0.75em'} (of presenters, can have more than one)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Background
+            %th Presenters
+        %tbody
+        - @event_stats.professional_backgrounds_breakdown_for_confirmed_speakers.each do |background, presenters|
+          %tr
+            %td= background || "N/A"
+            %td= number_with_delimiter(presenters)
 
     .span8
-      %h2 Countries of Origin
-      %p
-        - @countries.each do |key, value|
-          %p
-            %b= key + ":"
-            = value
-
-
-
-    .span8
-      <hr />
-      %h2 Tickets
-      %p
-        %h4 Total ticket holders
-        = @tickets_all.count
-      %p
-        %h4 Gender balance of ticket holders:
-        - @pronouns.each do |pronoun|
-          - number = @tickets_with_gender.count{ |gender| gender == pronoun }
-          - @statistics_gender[pronoun] = number
-        - @statistics_gender.each do |key, value|
-          - if value != 0
-            %p
-              %b= key + ":"
-              = (value * 100 / @tickets_with_gender.count).to_s + "%"
-
-      %p
-        %h4 Country breakdown of ticket holders:
-        - @tickets_holders = Person.joins(:tickets).where(tickets: {status: "Completed"}).map(&:country_of_origin)
-        - @countries = Person::COUNTRIES
-
-        - @countries.each do |country|
-          - number = @tickets_holders.count{ |person| person == country}
-          - @statistics_country[country] = number
-        - @statistics_country.each do |key, value|
-          - if value != 0
-            %p
-              %b= key + ":"
-              = value
-      %p
-        %h4 How many ticket holders are speakers:
-        %p= @people_with_ticket_and_be_speaker.count
-
-      %p
-        %h4 Professional background breakdown of ticket holders:
-        - @professional_background.each do |professional_background|
-          - number = @professional_background_of_people.count{ |pb_person| pb_person.include? professional_background}
-          - @statistics_professional_background[professional_background] = number
-        - @statistics_professional_background.each do |key, value|
-          - if value != 0
-            %p
-              %b= key + ":"
-              = value
-
-      %p
-        %h4 Returning vs New attendees of ticket holders:
-        %p= 'Returning Attendees: ' + (@returning_attendees_tickets.count).to_s
-        %p= 'New Attendees: ' + (@new_attendees_tickets.count).to_s
-
-      %p
-        %h4 Amount of paid ticket holders:
-        %p= (@total_tickets_amount.inject(0){|sum, x| sum + x}).to_s + ' USD'
-
-
-:coffeescript
-  update_languages_breakdown = (accepted_only = false) ->
-    if accepted_only
-      params = {"accepted_only": 1}
-    else
-      params = {}
-    $.ajax(
-      url: "#{language_breakdown_statistics_path}",
-      type: "GET",
-      dataType: "json",
-      data: params,
-      success: (data) ->
-        $.plot($("#event_language_graph"), data, {series: {pie: {show: true}}})
-    )
-
-  update_gender_breakdown = (accepted_only = false) ->
-    if accepted_only
-      params = {"accepted_only": 1}
-    else
-      params = {}
-    $.ajax(
-      url: "#{gender_breakdown_statistics_path}",
-      type: "GET",
-      dataType: "json",
-      data: params,
-      success: (data) ->
-        $.plot($("#event_gender_graph"), data, {series: {pie: {show: true}}})
-    )
-
-  update_events_breakdown = (type = "") ->
-    if type
-      params = {"type": type}
-    else
-      params = {}
-    $.ajax(
-      url: "#{events_by_state_statistics_path}",
-      type: "GET",
-      data: params,
-      dataType: "json",
-      success: (data) ->
-        $.plot($("#event_state_graph"), data, {
-          series: {
-            bars: { show: true, barWidth: 1 }
-          },
-          xaxis: {
-            ticks: [[0.5, "undecided"], [1.5,"accepted"], [2.5, "rejected"], [3.5, "withdrawn/canceled"]]
-          }
-        })
-    )
-
-  $ ->
-    $("#events_all_types").click (event) ->
-      update_events_breakdown()
-    $("#events_lectures_only").click (event) ->
-      update_events_breakdown("lectures")
-    $("#events_workshops_only").click (event) ->
-      update_events_breakdown("workshops")
-    $("#events_others_only").click (event) ->
-      update_events_breakdown("others")
-    update_events_breakdown()
-
-    $("#languages_all_events").click (event) ->
-      update_languages_breakdown()
-      event.preventDefault()
-    $("#languages_accepted_events_only").click (event) ->
-      update_languages_breakdown(true)
-      event.preventDefault()
-    update_languages_breakdown()
-
-    $("#gender_all_events").click (event) ->
-      update_gender_breakdown()
-      event.preventDefault()
-    $("#gender_accepted_events_only").click (event) ->
-      update_gender_breakdown(true)
-      event.preventDefault()
-    update_gender_breakdown()
+      %h4
+        Country of Origin
+        %span{style: 'font-size: 0.75em'} (of presenters)
+      %table.zebra-stripe
+        %thead
+          %tr
+            %th{width: "70%"} Country
+            %th Presenters
+        %tbody
+        - @event_stats.countries_of_origin_breakdown_for_confirmed_speakers.each do |country, presenters|
+          %tr
+            %td= country || "N/A"
+            %td= number_with_delimiter(presenters)

@@ -64,4 +64,8 @@ class ActiveSupport::TestCase
       yield
     end
   end
+
+  def remove_voids_from(hash_result)
+    hash_result.reject { |_,value| value == 0 || value.blank? }
+  end
 end
