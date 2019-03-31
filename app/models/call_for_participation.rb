@@ -1,7 +1,7 @@
 class CallForParticipation < ActiveRecord::Base
   belongs_to :conference
 
-  validates_presence_of :start_date, :end_date
+  validates_presence_of :start_date, :end_date, :hard_deadline
 
   has_paper_trail
 
@@ -10,6 +10,9 @@ class CallForParticipation < ActiveRecord::Base
   end
 
   def closed?
-    Date.today > end_date
+    closing_date = end_date
+    closing_date = hard_deadline if FeatureToggle.self_sessions_enabled?
+
+    Date.current > closing_date
   end
 end

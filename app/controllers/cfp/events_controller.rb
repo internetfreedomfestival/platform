@@ -81,6 +81,10 @@ class Cfp::EventsController < ApplicationController
     event_values[:other_presenters] = remove_duplicates_of_other_presenters_list(event_values[:other_presenters])
     @event = build_event(event_values)
 
+    if self_organized_event?(form_params)
+      @event.public_type = "special"
+    end
+
     duplicated_title = duplicated_title?(@event.title)
     valid_presenters = !invalid_presenters?(@event.other_presenters)
 
@@ -153,6 +157,10 @@ class Cfp::EventsController < ApplicationController
 
     @event = current_user.person.events.readonly(false).find(params[:id])
     old_emails_list = @event.other_presenters
+
+    if self_organized_event?(form_params)
+      @event.public_type = "special"
+    end
 
     valid_presenters = !invalid_presenters?(event_values[:other_presenters])
 
@@ -272,6 +280,10 @@ class Cfp::EventsController < ApplicationController
   end
 
   private
+
+  def self_organized_event?(params)
+    params['event_type'] == 'Self-Organized'
+  end
 
   def register_for_proposal(person, event, role)
     EventPerson.create(person: person, event: event, event_role: role)

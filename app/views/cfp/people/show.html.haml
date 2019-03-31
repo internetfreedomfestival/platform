@@ -122,9 +122,13 @@
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
         %div{style: "margin:10px;"}
           %h3 Submit a Session for the #{@conference.alt_title}
-          %p{style: "font-weight: bold;"} The #{@conference.alt_title} Global Call for Proposals is now open! Send your sessions by #{@conference.call_for_participation.end_date.strftime('%B %d, %Y')}.
+          %p{style: "font-weight: bold;"}
+            - if FeatureToggle.self_sessions_enabled?
+              The #{@conference.alt_title} is now open for Self-Organized session proposals! Send them by #{@conference.call_for_participation.hard_deadline.strftime('%B %d, %Y')}.
+            - else
+              The #{@conference.alt_title} Global Call for Proposals is now open! Send your sessions by #{@conference.call_for_participation.end_date.strftime('%B %d, %Y')}.
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-            = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
+            = action_button "primary", FeatureToggle.self_sessions_enabled? ? "Submit a Self-Organized Session" : "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
   - else
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
     .row

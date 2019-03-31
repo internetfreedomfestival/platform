@@ -33,115 +33,232 @@ class CfpFormTest < Capybara::Rails::TestCase
     end
 
     with_cfp_enabled do
-      visit "/#{@conference.acronym}/cfp"
-      assert_text "Submit a Session for the #{@conference.alt_title}"
+      with_self_sessions_disabled do
+        visit "/#{@conference.acronym}/cfp"
+        assert_text "Submit a Session for the #{@conference.alt_title}"
+      end
     end
   end
 
-  test 'new user can create a new call for proposals' do
-    login_as(@user)
+  test 'users can create a new session proposal' do
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/new"
+      visit "/#{@conference.acronym}/cfp/events/new"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Create Proposal'
+        click_on 'Create Proposal'
+      end
+
+      assert_text 'Your proposal was successfully created.'
     end
-
-    assert_text 'Your proposal was successfully created.'
   end
 
-  test 'call for proposals needs required fields fullfilled' do
-    login_as(@user)
+  test 'users can create a new self-organized session proposal' do
+    with_self_sessions_enabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/new"
+      visit "/#{@conference.acronym}/cfp/events/new"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Create Proposal'
+        click_on 'Create Self-Organized Proposal'
+      end
+
+      assert_text 'Your proposal was successfully created.'
     end
-
-    assert_text "can't be blank"
   end
 
-  test 'an user cannot create two call for proposals with the same title' do
-    login_as(@user)
+  test 'session proposals need required fields fullfilled' do
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/new"
+      visit "/#{@conference.acronym}/cfp/events/new"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Create Proposal'
+        click_on 'Create Proposal'
+      end
+
+      assert_text "can't be blank"
     end
-
-    assert_text 'Your proposal was successfully created.'
-
-    visit "/#{@conference.acronym}/cfp/events/new"
-
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
-
-      click_on 'Create Proposal'
-    end
-
-    assert_text 'There is already a session submitted with this title.'
   end
 
-  test 'an user editing call for proposals cannot use same title than other cfp' do
+  test 'self-organized session proposals need required fields fullfilled' do
+    with_self_sessions_enabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/new"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Create Self-Organized Proposal'
+      end
+
+      assert_text "can't be blank"
+    end
+  end
+
+  test 'a user cannot create two session proposals with the same title' do
+    with_self_sessions_disabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/new"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Create Proposal'
+      end
+
+      assert_text 'Your proposal was successfully created.'
+
+      visit "/#{@conference.acronym}/cfp/events/new"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Create Proposal'
+      end
+
+      assert_text 'There is already a session submitted with this title.'
+    end
+  end
+
+    test 'a user cannot create two self-organized session proposals with the same title' do
+    with_self_sessions_enabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/new"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Create Self-Organized Proposal'
+      end
+
+      assert_text 'Your proposal was successfully created.'
+
+      visit "/#{@conference.acronym}/cfp/events/new"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Create Self-Organized Proposal'
+      end
+
+      assert_text 'There is already a session submitted with this title.'
+    end
+  end
+
+  test 'a user editing a session proposal cannot use same title of another proposal' do
     event = create(:event, conference: @conference, title: "Title")
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
@@ -150,52 +267,110 @@ class CfpFormTest < Capybara::Rails::TestCase
     create(:event_person, event: event2, person: @user.person, event_role: "submitter")
     create(:event_person, event: event2, person: @user.person, event_role: "speaker")
 
-    visit '/'
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    login_as(@user)
+      visit "/#{@conference.acronym}/cfp/events/#{event2.id}/edit"
+      within '#cfp_form' do
+        fill_in 'event[title]', with: event.title
 
-    visit "/#{@conference.acronym}/cfp/events/#{event2.id}/edit"
-    within '#cfp_form' do
-      fill_in 'event[title]', with: event.title
+        click_on 'Update Proposal'
+      end
 
-      click_on 'Update Proposal'
+      assert_text 'There is already a session submitted with this title.'
     end
-
-    assert_text 'There is already a session submitted with this title.'
   end
 
-  test 'an user can edit a call for proposals' do
+  test 'a user editing a self-organized session proposals cannot use same title of another proposal' do
+    event = create(:event, conference: @conference, title: "Title")
+    create(:event_person, event: event, person: @user.person, event_role: "submitter")
+    create(:event_person, event: event, person: @user.person, event_role: "speaker")
+
+    event2 = create(:event, conference: @conference, title: "Title2")
+    create(:event_person, event: event2, person: @user.person, event_role: "submitter")
+    create(:event_person, event: event2, person: @user.person, event_role: "speaker")
+
+    with_self_sessions_enabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/#{event2.id}/edit"
+      within '#cfp_form' do
+        fill_in 'event[title]', with: event.title
+
+        click_on 'Update Self-Organized Proposal'
+      end
+
+      assert_text 'There is already a session submitted with this title.'
+    end
+  end
+
+  test 'users can edit their session proposals' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
-    login_as(@user)
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Update Proposal'
+        click_on 'Update Proposal'
+      end
+
+      assert_text 'Your proposal was successfully updated.'
     end
-
-    assert_text 'Your proposal was successfully updated.'
   end
 
-  test 'an user can view their call of proposals' do
+   test 'users can edit their self-organized session proposals' do
+    event = create(:event, conference: @conference)
+    create(:event_person, event: event, person: @user.person, event_role: "submitter")
+    create(:event_person, event: event, person: @user.person, event_role: "speaker")
+
+    with_self_sessions_enabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Update Self-Organized Proposal'
+      end
+
+      assert_text 'Your proposal was successfully updated.'
+    end
+  end
+
+  test 'users can view their session proposals' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
@@ -209,7 +384,7 @@ class CfpFormTest < Capybara::Rails::TestCase
   end
 
 
-  test 'an user can delete a call for proposals' do
+  test 'users can delete their session proposals' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
@@ -225,37 +400,71 @@ class CfpFormTest < Capybara::Rails::TestCase
     assert_text "Your proposal: '#{event.title}' has been deleted"
   end
 
-  test 'a collaborator can edit their call for proposals' do
+  test 'collaborators can edit their session proposals' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
-    login_as(@user)
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Update Proposal'
+        click_on 'Update Proposal'
+      end
+
+      assert_text 'Your proposal was successfully updated.'
     end
-
-    assert_text 'Your proposal was successfully updated.'
   end
 
-  test 'a collaborator cannot delete their call for proposals' do
+  test 'collaborators can edit their self-organized session proposals' do
+    event = create(:event, conference: @conference)
+    create(:event_person, event: event, person: @user.person, event_role: "collaborator")
+
+    with_self_sessions_enabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Update Self-Organized Proposal'
+      end
+
+      assert_text 'Your proposal was successfully updated.'
+    end
+  end
+
+  test 'collaborators cannot delete their session proposals' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
@@ -266,94 +475,132 @@ class CfpFormTest < Capybara::Rails::TestCase
     assert_no_text 'Delete'
   end
 
-  test 'collaborator recibes an email when user add your email in other collaborator' do
+  test 'collaborators receive an email when added to a session by other collaborator' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
-    login_as(@user)
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Update Proposal'
+        click_on 'Update Proposal'
+      end
+
+      assert_equal 1, ActionMailer::Base.deliveries.size
     end
-
-    assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
-  test '[MIGRATION] new events have target audience field filled' do
-    login_as(@user)
+  test 'collaborators receive an email when added to a self-organized session by other collaborator' do
+    event = create(:event, conference: @conference)
+    create(:event_person, event: event, person: @user.person, event_role: "collaborator")
 
-    visit "/#{@conference.acronym}/cfp/events/new"
+    with_self_sessions_enabled do
+      login_as(@user)
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
 
-      click_on 'Create Proposal'
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('Self-Organized', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Update Self-Organized Proposal'
+      end
+
+      assert_equal 1, ActionMailer::Base.deliveries.size
     end
-
-    @event = Event.last
-    assert_equal @event.target_audience, 'Session for students'
   end
 
-  test '[MIGRATION] edited events have target audience field filled' do
+  test '[MIGRATION] new events have target audience field fulfilled' do
+    with_self_sessions_disabled do
+      login_as(@user)
+
+      visit "/#{@conference.acronym}/cfp/events/new"
+
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
+
+        click_on 'Create Proposal'
+      end
+
+      @event = Event.last
+      assert_equal @event.target_audience, 'Session for students'
+    end
+  end
+
+  test '[MIGRATION] edited events have target audience field fulfilled' do
     event = create(:event, conference: @conference)
     create(:event_person, event: event, person: @user.person, event_role: "submitter")
     create(:event_person, event: event, person: @user.person, event_role: "speaker")
 
-    login_as(@user)
+    with_self_sessions_disabled do
+      login_as(@user)
 
-    visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
+      visit "/#{@conference.acronym}/cfp/events/#{event.id}/edit"
 
-    within '#cfp_form' do
-      check('event[instructions]', option: 'true')
-      fill_in 'event[title]', with: 'Session Title'
-      fill_in 'event[subtitle]', with: 'Subtitle Event'
-      fill_in 'event[description]', with: 'Session description'
-      fill_in 'event[other_presenters]', with: @person.email
-      fill_in 'event[target_audience]', with: 'Session for students'
-      fill_in 'event[desired_outcome]', with: 'desired_outcome'
-      fill_in 'event[phone_number]', with: 12345678
-      select('Feature', from: 'event[track_id]')
-      select('On the Frontlines', from: 'event[event_type]')
-      choose '45 min'
-      choose 'Yes'
-      check('event[iff_before][]', option: '2018')
-      check('event[code_of_conduct]', option: 'true')
+      within '#cfp_form' do
+        check('event[instructions]', option: 'true')
+        fill_in 'event[title]', with: 'Session Title'
+        fill_in 'event[subtitle]', with: 'Subtitle Event'
+        fill_in 'event[description]', with: 'Session description'
+        fill_in 'event[other_presenters]', with: @person.email
+        fill_in 'event[target_audience]', with: 'Session for students'
+        fill_in 'event[desired_outcome]', with: 'desired_outcome'
+        fill_in 'event[phone_number]', with: 12345678
+        select('Feature', from: 'event[track_id]')
+        select('On the Frontlines', from: 'event[event_type]')
+        choose '45 min'
+        choose 'Yes'
+        check('event[iff_before][]', option: '2018')
+        check('event[code_of_conduct]', option: 'true')
 
-      click_on 'Update Proposal'
+        click_on 'Update Proposal'
+      end
+
+      @event = Event.last
+      assert_equal @event.target_audience, 'Session for students'
     end
-
-    @event = Event.last
-    assert_equal @event.target_audience, 'Session for students'
   end
 
   private

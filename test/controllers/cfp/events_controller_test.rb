@@ -70,15 +70,21 @@ class Cfp::EventsControllerTest < ActionController::TestCase
   end
 
   test 'should not get new when the call for proposals is closed' do
-    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday)
-    get :new, conference_acronym: @conference.acronym
-    assert_redirected_to cfp_root_path
+    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday, hard_deadline: Date.tomorrow)
+
+    with_self_sessions_disabled do
+      get :new, conference_acronym: @conference.acronym
+      assert_redirected_to cfp_root_path
+    end
   end
 
   test 'should not create event when the call for proposals is closed' do
-    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday)
+    @conference.create_call_for_participation(start_date: Date.yesterday - 1, end_date: Date.yesterday, hard_deadline: Date.tomorrow)
+
     assert_no_difference('Event.count') do
-      post :create, event: event_params.merge(title: 'titulo nuevo'), conference_acronym: @conference.acronym
+      with_self_sessions_disabled do
+        post :create, event: event_params.merge(title: 'titulo nuevo'), conference_acronym: @conference.acronym
+      end
     end
 
     assert_redirected_to cfp_root_path

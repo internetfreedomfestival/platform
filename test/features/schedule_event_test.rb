@@ -26,9 +26,11 @@ class ScheduleEventTest < Capybara::Rails::TestCase
     title = 'Detachment is not a dirty word'
 
     with_cfp_enabled do
-      login_as(@common_user)
-      create_new_proposal_with(title)
-      logout()
+      with_self_sessions_disabled do
+        login_as(@common_user)
+        create_new_proposal_with(title)
+        logout()
+      end
     end
 
     login_as(@admin_user)

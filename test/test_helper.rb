@@ -65,6 +65,18 @@ class ActiveSupport::TestCase
     end
   end
 
+  def with_self_sessions_enabled
+    FeatureToggle.stub :self_sessions_enabled?, true do
+      yield
+    end
+  end
+
+  def with_self_sessions_disabled
+    FeatureToggle.stub :self_sessions_enabled?, false do
+      yield
+    end
+  end
+
   def remove_voids_from(hash_result)
     hash_result.reject { |_,value| value == 0 || value.blank? }
   end

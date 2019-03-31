@@ -208,6 +208,7 @@ FactoryBot.define do
   factory :call_for_participation do
     start_date { Date.today.ago(1.days) }
     end_date { Date.today.since(6.days) }
+    hard_deadline { Date.today.since(60.days) }
     conference
   end
 
