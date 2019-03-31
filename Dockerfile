@@ -3,6 +3,7 @@ ARG appdir=/app
 FROM ruby:2.3.1-slim
 
 RUN set -ex \
+    && echo "deb http://deb.debian.org/debian jessie main\ndeb http://security.debian.org jessie/updates main" > /etc/apt/sources.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
            build-essential \
