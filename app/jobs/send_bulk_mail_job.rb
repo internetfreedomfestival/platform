@@ -13,11 +13,11 @@ class SendBulkMailJob
       people = Person.with_ticket(conference)
     when 'all_confirmed_dif_users'
       people = (
-        Person.with_dif_granted(conference) + Person.with_dif_travel_stipend_granted(conference)
+        Person.with_dif_granted(conference)
       ).uniq { |person| person.id }
     when 'all_dif_users_excluding_confirmed'
       people = (
-        Person.with_dif_requested(conference) + Person.with_dif_travel_stipend_requested(conference)
+        Person.with_dif_pending(conference)
       ).uniq { |person| person.id }
     when 'all_confirmed_events_presenters'
       people = Person.joins(events: :conference)

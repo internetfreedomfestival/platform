@@ -409,39 +409,70 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :email
 
   scope :involved_in, ->(conference) {
-    joins(events: :conference).where('conferences.id': conference).uniq
+    joins(:events)
+      .where(events: { conference: conference })
+      .distinct
   }
   scope :speaking_at, ->(conference) {
-    joins(events: :conference).where('conferences.id': conference).where('event_people.event_role': EventPerson::SPEAKER).where('events.state': Event::ACCEPTED).uniq
+    joins(:events)
+      .where(events: { conference: conference, state: Event::CONFIRMED })
+      .where(event_people: { event_role: EventPerson::SPEAKER })
+      .distinct
   }
   scope :publicly_speaking_at, ->(conference) {
-    joins(events: :conference).where('conferences.id': conference).where('event_people.event_role': EventPerson::SPEAKER).where('events.public': true).where('events.state': Event::ACCEPTED).uniq
+    joins(:events)
+      .where(events: { conference: conference, state: Event::CONFIRMED, public: true })
+      .where(event_people: { event_role: EventPerson::SPEAKER })
+      .distinct
   }
   scope :confirmed, ->(conference) {
-    joins(events: :conference).where('conferences.id': conference).where('events.state': %w(confirmed scheduled))
+    joins(:events)
+      .where(events: { conference: conference, state: Event::CONFIRMED })
+      .distinct
   }
   scope :with_ticket, ->(conference) {
-    joins(:attendance_statuses).where(attendance_statuses: {status: "Holds Ticket", conference_id: conference.id})
-  }
-  scope :with_dif_granted, ->(conference) {
-    joins(events: :conference)
-          .where(conferences: {id: conference.id} )
-          .where(events: {travel_assistance: true, dif_status: "Granted", recipient_travel_stipend: [nil, ""]} )
-          .where(event_people: {event_role: "submitter"})
-  }
-  scope :with_dif_travel_stipend_granted, ->(conference) {
-    joins("INNER JOIN events ON events.recipient_travel_stipend = people.email AND events.conference_id = #{conference.id}" )
-          .where(events: {travel_assistance: true, dif_status: "Granted"} )
+    joins(:tickets)
+      .where(tickets: { conference: conference, status: Ticket::COMPLETED })
   }
   scope :with_dif_requested, ->(conference) {
-    joins(events: :conference)
-          .where(conferences: {id: conference.id} )
-          .where(events: {travel_assistance: true, dif_status: "Requested", recipient_travel_stipend: [nil, ""]} )
-          .where(event_people: {event_role: "submitter"})
+    submitters_with_dif_requested = joins(:events)
+      .where(event_people: { event_role: EventPerson::SUBMITTER })
+      .where(events: { conference: conference, travel_assistance: true })
+      .where("events.recipient_travel_stipend = '' OR events.recipient_travel_stipend IS NULL OR events.recipient_travel_stipend = people.email")
+
+    collaborators_with_dif_requested = joins(:events)
+      .where(event_people: { event_role: EventPerson::COLLABORATOR })
+      .where(events: { conference: conference, travel_assistance: true })
+      .where("events.recipient_travel_stipend = people.email")
+
+    where("id IN (#{submitters_with_dif_requested.select(:id).to_sql} UNION #{collaborators_with_dif_requested.select(:id).to_sql})")
   }
-  scope :with_dif_travel_stipend_requested, ->(conference) {
-    joins("INNER JOIN events ON events.recipient_travel_stipend = people.email AND events.conference_id = #{conference.id}" )
-          .where(events: {travel_assistance: true, dif_status: "Requested"} )
+  scope :with_dif_granted, ->(conference) {
+    submitters_with_dif_granted = joins(:events)
+      .where(event_people: { event_role: EventPerson::SUBMITTER })
+      .where(events: { conference: conference, travel_assistance: true, dif_status: 'Granted' })
+      .where("events.recipient_travel_stipend = '' OR events.recipient_travel_stipend IS NULL OR events.recipient_travel_stipend = people.email")
+
+    collaborators_with_dif_granted = joins(:events)
+      .where(event_people: { event_role: EventPerson::COLLABORATOR })
+      .where(events: { conference: conference, travel_assistance: true, dif_status: 'Granted' })
+      .where("events.recipient_travel_stipend = people.email")
+
+    where("id IN (#{submitters_with_dif_granted.select(:id).to_sql} UNION #{collaborators_with_dif_granted.select(:id).to_sql})")
+  }
+  scope :with_dif_pending, ->(conference) {
+    submitters_with_dif_pending = joins(:events)
+      .where(event_people: { event_role: EventPerson::SUBMITTER })
+      .where(events: { conference: conference, travel_assistance: true, dif_status: ['Requested', nil] })
+      .where("events.recipient_travel_stipend = '' OR events.recipient_travel_stipend IS NULL OR events.recipient_travel_stipend = people.email")
+
+    collaborators_with_dif_pending = joins(:events)
+      .where(event_people: { event_role: EventPerson::COLLABORATOR })
+      .where(events: { conference: conference, travel_assistance: true, dif_status: ['Requested', nil] })
+      .where("events.recipient_travel_stipend = people.email")
+
+    where("id IN (#{submitters_with_dif_pending.select(:id).to_sql} UNION #{collaborators_with_dif_pending.select(:id).to_sql}) " \
+          "AND NOT id IN (#{with_dif_granted(conference).select(:id).to_sql})")
   }
 
   def self.fullname_options

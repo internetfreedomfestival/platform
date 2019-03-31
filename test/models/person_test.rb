@@ -194,7 +194,8 @@ class PersonTest < ActiveSupport::TestCase
   test 'knows people who has ticket for a conference' do
     conference = create(:conference)
     person_with_ticket = create(:person)
-    create(:attendance_status, person: person_with_ticket, status: "Holds Ticket", conference: conference)
+    create(:attendance_status, person: person_with_ticket, status: 'Holds Ticket', conference: conference)
+    create(:ticket, conference: conference, person: person_with_ticket)
     person_without_ticket = create(:person)
 
     people_with_ticket = Person.with_ticket(conference)
@@ -203,28 +204,147 @@ class PersonTest < ActiveSupport::TestCase
     assert_includes people_with_ticket, person_with_ticket
   end
 
-  test 'knows dif confirmed people for a conference' do
+  test 'knows dif pending people for a conference' do
     conference = create(:conference)
+
+    submitter_with_dif_pending = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_pending = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: recipient_with_dif_pending.email)
+    create(:event_person, event: event, person: submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_pending, event_role: 'collaborator')
+
+    another_submitter_with_dif_pending = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: nil, conference: conference, recipient_travel_stipend: another_submitter_with_dif_pending.email)
+    create(:event_person, event: event, person: another_submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    submitter_with_dif_both_pending_and_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_both_pending_and_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_both_pending_and_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_both_pending_and_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: recipient_with_dif_both_pending_and_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_both_pending_and_granted, event_role: 'collaborator')
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: recipient_with_dif_both_pending_and_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_both_pending_and_granted, event_role: 'collaborator')
+
+    people_with_dif_pending = Person.with_dif_pending(conference)
+
+    assert_equal 3, people_with_dif_pending.count
+    assert_includes people_with_dif_pending, submitter_with_dif_pending
+    assert_includes people_with_dif_pending, recipient_with_dif_pending
+  end
+
+  test 'knows dif granted people for a conference' do
+    conference = create(:conference)
+
     submitter_with_dif_granted = create(:person)
-    event = create(:event, travel_assistance: "true", dif_status: "Granted", conference: conference, recipient_travel_stipend: nil)
-    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: "submitter")
-    create(:event_person, event: event, event_role: "collaborator")
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    another_submitter_with_dif_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: another_submitter_with_dif_granted.email)
+    create(:event_person, event: event, person: another_submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: recipient_with_dif_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_granted, event_role: 'collaborator')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    submitter_with_dif_both_pending_and_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_both_pending_and_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: nil)
+    create(:event_person, event: event, person: submitter_with_dif_both_pending_and_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_both_pending_and_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: recipient_with_dif_both_pending_and_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_both_pending_and_granted, event_role: 'collaborator')
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: recipient_with_dif_both_pending_and_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_both_pending_and_granted, event_role: 'collaborator')
 
     people_with_dif_granted = Person.with_dif_granted(conference)
 
-    assert_equal 1, people_with_dif_granted.count
+    assert_equal 5, people_with_dif_granted.count
     assert_includes people_with_dif_granted, submitter_with_dif_granted
+    assert_includes people_with_dif_granted, recipient_with_dif_granted
   end
 
-  test 'knows recipient dif confirmed people for a conference' do
+  test 'knows people who requested dif for a conference' do
     conference = create(:conference)
-    recipient_dif_granted = create(:person)
-    event = create(:event, travel_assistance: "true", dif_status: "Granted", conference: conference, recipient_travel_stipend: recipient_dif_granted.email)
 
-    people_with_dif_granted = Person.with_dif_travel_stipend_granted(conference)
+    submitter_without_dif_request = create(:person)
+    event = create(:event, conference: conference)
+    create(:event_person, event: event, person: submitter_without_dif_request, event_role: 'submitter')
 
-    assert_equal 1, people_with_dif_granted.count
-    assert_includes people_with_dif_granted, recipient_dif_granted
+    submitter_with_dif_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    another_submitter_with_dif_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: another_submitter_with_dif_granted.email)
+    create(:event_person, event: event, person: another_submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: recipient_with_dif_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_granted, event_role: 'collaborator')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    submitter_with_dif_pending = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference)
+    create(:event_person, event: event, person: submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    another_submitter_with_dif_pending = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: another_submitter_with_dif_pending.email)
+    create(:event_person, event: event, person: another_submitter_with_dif_pending, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_pending = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: recipient_with_dif_pending.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_pending, event_role: 'collaborator')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    submitter_with_dif_both_pending_and_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference)
+    create(:event_person, event: event, person: submitter_with_dif_both_pending_and_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference)
+    create(:event_person, event: event, person: submitter_with_dif_both_pending_and_granted, event_role: 'submitter')
+    create(:event_person, event: event, event_role: 'collaborator')
+
+    recipient_with_dif_both_pending_and_granted = create(:person)
+    event = create(:event, travel_assistance: true, dif_status: 'Requested', conference: conference, recipient_travel_stipend: recipient_with_dif_both_pending_and_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_both_pending_and_granted, event_role: 'collaborator')
+    event = create(:event, travel_assistance: true, dif_status: 'Granted', conference: conference, recipient_travel_stipend: recipient_with_dif_both_pending_and_granted.email)
+    create(:event_person, event: event, person: submitter_with_dif_granted, event_role: 'submitter')
+    create(:event_person, event: event, person: recipient_with_dif_both_pending_and_granted, event_role: 'collaborator')
+
+    people_with_dif_requested = Person.with_dif_requested(conference)
+
+    assert_equal 8, people_with_dif_requested.count
   end
 
   test '.to_csv' do
