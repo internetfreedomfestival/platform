@@ -12,16 +12,14 @@ class Public::ScheduleController < ApplicationController
 
     @all_days = @conference.days
 
-    days = [@all_days.first]
-    days = [@all_days.find_by(id: day_id) || @all_days.first] if day_id
-    days = @all_days if search_terms
+    days_to_consider = search_terms ? @all_days : [(day_id && @all_days.find_by(id: day_id)) || default_day]
 
     @events_by_day_and_time = {}
 
     all_rooms = @conference.rooms_including_subs
     all_events = {}
 
-    days.each do |day|
+    days_to_consider.each do |day|
       day_events = []
       all_rooms.each do |room|
         day_events += room.events.confirmed.is_public.scheduled_on(day).order(:start_time).to_a
@@ -69,6 +67,16 @@ class Public::ScheduleController < ApplicationController
 
   def maybe_authenticate_user!
     authenticate_user! unless @conference.schedule_public
+  end
+
+  def default_day
+    now = Time.use_zone(@conference.timezone) { Time.zone.now }
+
+    first_day = @conference.days.first
+    current_day = @conference.days.find_by('start_date <= ? and ? <= end_date', now, now)
+    next_day = @conference.days.find_by('start_date <= ? and ? <= end_date', now + 12.hours, now + 12.hours)
+
+    current_day || next_day || first_day
   end
 
   def matches?(text, term)
