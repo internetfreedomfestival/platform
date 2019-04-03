@@ -8,7 +8,6 @@
     %meta{ :"http-equiv" => "content-type", content: "text/html; charset=utf-8" }
     %title= title
     = stylesheet_link_tag 'public_schedule'
-    = stylesheet_link_tag public_schedule_style_path(format: :css), media: "all"
     = stylesheet_link_tag 'public_schedule_print', media: 'print'
   %body
     #wrapper
@@ -19,7 +18,7 @@
         %ul
           - unless feedback_page?
             %li{class: selected(/schedule$/)}
-              = link_to t('public.schedule.nav.index'), public_schedule_index_path
+              = link_to t('public.schedule.nav.index'), public_schedule_path
             - @conference.days.each_with_index do |day, index|
               %li{class: day_selected(index + 1)}
                 %a{href: public_schedule_path(day: index + 1)}

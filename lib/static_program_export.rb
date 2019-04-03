@@ -99,7 +99,7 @@ class StaticProgramExport
     [
       #{ source: 'speakers', target: 'speakers.html' },
       #{ source: 'speakers.json', target: 'speakers.json' },
-      { source: 'schedule/style.css', target: 'style.css' }
+      #{ source: 'schedule/style.css', target: 'style.css' }
     ]
   end
 

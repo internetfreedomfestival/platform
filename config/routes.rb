@@ -16,16 +16,9 @@ Frab::Application.routes.draw do
 
     scope path: '/:conference_acronym' do
       namespace :public do
-        get '/schedule' => 'schedule#index', as: 'schedule_index'
-        get '/schedule/style' => 'schedule#style', as: 'schedule_style'
+        get '/schedule' => 'schedule#index', as: 'schedule'
         get '/schedule/custom' => 'schedule#custom', as: 'custom'
         get '/schedule/custom/:id' => 'schedule#custom_show', as: 'custom_show'
-        get '/schedule/:day' => 'schedule#day', as: 'schedule'
-        get '/events' => 'schedule#events', as: 'events'
-        get '/events/:id' => 'schedule#event', as: 'event'
-        #get '/speakers' => 'schedule#speakers', as: 'speakers'
-        #get '/speakers/:id' => 'schedule#speaker', as: 'speaker'
-        #get '/qrcode' => 'schedule#qrcode', as: 'qrcode'
 
         resources :events do
           resource :feedback, controller: :feedback

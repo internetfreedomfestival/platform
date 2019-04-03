@@ -6,12 +6,6 @@ class Public::ScheduleController < ApplicationController
     redirect_to public_custom_path
   end
 
-  def style
-    respond_to do |format|
-      format.css
-    end
-  end
-
   def custom
     @all_days = @conference.days
     @themes = Event::TYPES
@@ -63,35 +57,6 @@ class Public::ScheduleController < ApplicationController
     @goal = @event.subtitle
     @goal = 'Not specified' if @goal.blank?
     @day_id = @event.conference.days.find { |day| @event.start_time >= day.start_date && @event.start_time <= day.end_date }&.id
-  end
-
-  def day
-    redirect_to public_custom_path
-  end
-
-  def events
-    redirect_to public_custom_path
-  end
-
-  def event
-    redirect_to public_custom_path
-  end
-
-  def speakers
-    @speakers = Person.publicly_speaking_at(@conference.include_subs).confirmed(@conference.include_subs).order(:public_name, :first_name, :last_name)
-    respond_to do |format|
-      format.html
-      format.json
-      format.xls { render file: 'public/schedule/speakers.xls.erb', content_type: 'application/xls' }
-    end
-  end
-
-  def speaker
-    @speaker = Person.publicly_speaking_at(@conference.include_subs).confirmed(@conference.include_subs).find(params[:id])
-  end
-
-  def qrcode
-    @qr = RQRCode::QRCode.new(public_schedule_index_url(format: :xml), size: 8, level: :h)
   end
 
   private
