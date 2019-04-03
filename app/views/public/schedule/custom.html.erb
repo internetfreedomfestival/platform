@@ -318,6 +318,53 @@
       padding-left: 10px !important;
     }
 
+    .search_form {
+      position: relative;
+      margin-bottom: 10px;
+      font-size: 15px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      width: 48%;
+    }
+
+    .search_input {
+      background: rgba(96, 96, 239, 0.1);
+      border: 2px solid #6060ef;
+      border-radius: 2px;
+      color: #6060ef;
+      padding: 10px;
+      margin-right: 10px;
+      width: 40%;
+      flex-grow: 2;
+    }
+
+    .search_button {
+      color: #6060ef;
+      border-color: #6060ef;
+      background-color: white;
+      border-radius: 2px;
+      opacity: 1;
+      border: 2px solid #6060ef;
+      padding: 10px 20px;
+      font-weight: 700;
+      margin-right: 5px;
+      text-decoration: none;
+    }
+
+    .search_button:hover {
+      color: white;
+      background-color: #6060ef;
+      text-decoration: none;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+
+    .search_message {
+      font-size: 18px;
+      color: #6060ef;
+    }
+
     @media only screen and (max-width: 980px) {
       .row {
         margin-left: 0px;
@@ -349,18 +396,29 @@
         margin-left: 0px;
         padding:16px;
       }
+
       .meditation_event_block {
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
         padding:16px;
       }
+
+      .meditation_event_block:hover {
+        width: 100% !important;
+      }
+
       .social_event_block {
         width: 100% !important;
         height: auto !important;
         margin-left: 0px;
         padding:16px;
       }
+
+      .social_event_block:hover {
+        width: 100% !important;
+      }
+
       .special_event_block {
         width: 100% !important;
         height: auto !important;
@@ -368,11 +426,19 @@
         padding:16px;
       }
 
+      .special_event_block:hover {
+        width: 100% !important;
+      }
+
       .session_info {
         width: 100%;
         margin-bottom: 2px;
         font-size: 14px;
         padding-left: 10px !important;
+      }
+
+      .search_form {
+        width: 100%;
       }
     }
 
@@ -466,6 +532,10 @@
         margin-top: 0px;
         max-width: 64%;
       }
+
+      .search_form {
+        width: 100%;
+      }
     }
 
     @media only screen and (max-width: 414px) {
@@ -556,6 +626,10 @@
         float: right;
         max-width: 50%;
       }
+
+      .search_form {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -589,169 +663,177 @@
           <p>Our <a target="_blank" href="https://internetfreedomfestival.org/wiki/index.php/Code_of_Conduct">Code of Conduct</a> applies to all the IFF activities. Please read it carefully.
           </p>
         </div>
-        <div class="venue_map"><p>Can't find a room? Check out the <a href="https://internetfreedomfestival.org/#venue-map" target="_blank">venue map here</a>.</p></div>
-        <h2 class="selected_day"><%= @day.nil? ? "" : @day.start_date.strftime("%A, %B %e %Y") %></h2>
+        <div class="venue_map">
+          <p>Can't find a room? Check out the <a href="https://internetfreedomfestival.org/#venue-map" target="_blank">venue map here</a>.</p>
+        </div>
+        <div class="venue_map">
+          <p>Wanna find a session? Search for it:</p>
+          <%= form_tag request.path, method: :get, id: 'search_form', class: 'search_form' do %>
+            <%= text_field_tag :terms, params[:terms], class: 'search_input' %>
+            <%= submit_tag "Search", name: "", class: 'search_button' %>
+            <%= link_to "Clear", request.path, class: 'search_button' %>
+          <% end %>
+        </div>
       </div>
     </div>
-    <div> <!-- Contains all events -->
-      <% @events_by_day_time.each do |time, events| %>
-        <div><!-- Show Day and TIME for each start time -->
-          <h5 class="time_slot_header"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %></h5>
+
+    <% if @events_by_day_and_time.values.all?(&:empty?) %>
+      <div class="row" style="margin-left: 0">
+        <h2 class="search_message">Sorry, but your search yielded no results.</h2>
+      </div>
+    <% end %>
+
+    <% @events_by_day_and_time.each do |day, events_by_time| %>
+      <% next if events_by_time.empty? %>
+      <div> <!-- Contains all events -->
+        <div class="row" style="margin-left: 0">
+          <h2 class="selected_day"><%= day.nil? ? "" : day.start_date.strftime("%A, %B %e %Y") %></h2>
         </div>
+        <% events_by_time.each do |time, events| %>
+          <div><!-- Show Day and TIME for each start time -->
+            <h5 class="time_slot_header"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= time.strftime("%A, %l:%M %p") %></h5>
+          </div>
 
-          <!-- If there is no items or nil show no events div -->
-          <% if @events_by_day_time[time].length < 1 || @events_by_day_time[time].nil? %>
-            <div>
-              <h5>There are no events for this day</h5>
-            </div>
+            <!-- If there is no items or nil show no events div -->
+            <% if events_by_time[time].length < 1 || events_by_time[time].nil? %>
+              <div>
+                <h5>There are no events for this day</h5>
+              </div>
 
-          <!-- If there is only one event for a time slot do NOT slice -->
-          <% elsif @events_by_day_time[time].length == 1 %>
-            <% @events_by_day_time[time].each do |event| %>
-              <% if event.public_type.nil? || event.public_type == "" %><!-- NOT special, social, or meditation-->
+            <!-- If there is only one event for a time slot do NOT slice -->
+            <% elsif events_by_time[time].length == 1 %>
+              <% events_by_time[time].each do |event| %>
+                <% if event.public_type.nil? || event.public_type == "" %><!-- NOT special, social, or meditation-->
 
+                  <div class="row">
+                    <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
+                      <div class="col-md-5 event_block">
+                        <div class="row">
+                          <h5 class="session_titles"><%= event.title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                            <% if event.time_slots > 4 %>
+                              (<%= event.time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <% if event.event_type && event.event_type.include?("Internet")%>
+                              IF: Present and Future</div>
+                            <% elsif event.event_type && event.event_type.include?("Journalism") %>
+                              Journalism, Media and Comms</div>
+                            <% elsif event.event_type %>
+                              <%= event.event_type %></div>
+                            <% end %>
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        </div>
+                      </div>
+                    <% end %> <!-- End link to event show-->
+                  </div><!-- End Row  -->
+
+                <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                  <div class="row">
+                    <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
+                      <div class="col-md-11 special_event_block">
+                        <div class="row">
+                          <h5 class="session_titles"><%= event.title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                            <% if event.time_slots > 4 %>
+                              (<%= event.time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        </div>
+                      </div>
+                    <% end %><!-- End of link to special event show -->
+                  </div><!-- End Row -->
+
+                <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT -->
+                  <div class="row">
+                    <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
+                      <div class="col-md-11 social_event_block">
+                        <div class="row">
+                          <h5 class="session_titles"><%= event.title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                            <% if event.time_slots > 4 %>
+                              (<%= event.time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        </div>
+                      </div>
+                    <% end %> <!-- End of link to social event show -->
+                  </div><!-- End Row-->
+
+                <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
+                  <div class="row">
+                    <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
+                      <div class="col-md-11 meditation_event_block">
+                        <div class="row">
+                          <h5 class="session_titles"><%= event.title %></h5>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
+                            <% if event.time_slots > 4 %>
+                              (<%= event.time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        </div>
+                      </div>
+                    <% end %><!-- End of link to meditation event show -->
+                  </div><!-- End Row-->
+                <% end %><!--End Conditionals for public_type for one event/time slot -->
+              <% end %><!-- End loop -->
+
+
+            <% else %><!-- If more than one event for a time slot, slice for 2 column effect -->
+              <% events_by_time[time].each_slice(2) do |events| %>
                 <div class="row">
-                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
-                    <div class="col-md-5 event_block">
-                      <div class="row">
-                        <h5 class="session_titles"><%= event.title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
-                          <% if event.time_slots > 4 %>
-                            (<%= event.time_slots / 4.0 %>h)
-                          <% end %>
+                  <% if events[0].public_type.nil? || events[0].public_type == ""%><!-- NOT social, special, meditation -->
+                    <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
+                      <div class="col-md-5 event_block">
+                        <div class="row">
+                            <h5 class="session_titles"><%= events[0].title %></h5>
                         </div>
-                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                          <% if event.event_type && event.event_type.include?("Internet")%>
-                            IF: Present and Future</div>
-                          <% elsif event.event_type && event.event_type.include?("Journalism") %>
-                            Journalism, Media and Comms</div>
-                          <% elsif event.event_type %>
-                            <%= event.event_type %></div>
-                          <% end %>
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                            <% if events[0].time_slots > 4 %>
+                              (<%= events[0].time_slots / 4.0 %>h)
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <% if events[0].event_type && events[0].event_type.include?("Internet")%>
+                              IF: Present and Future
+                            <% elsif events[0].event_type && events[0].event_type.include?("Journalism") %>
+                              Journalism, Media and Comms
+                            <% elsif events[0].event_type %>
+                              <%= events[0].event_type %>
+                            <% end %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  <% end %> <!-- End link to event show-->
-                </div><!-- End Row  -->
+                    <% end %>
 
-              <% elsif event.public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
-                <div class="row">
-                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
-                    <div class="col-md-11 special_event_block">
-                      <div class="row">
-                        <h5 class="session_titles"><%= event.title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
-                          <% if event.time_slots > 4 %>
-                            (<%= event.time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
-                      </div>
-                    </div>
-                  <% end %><!-- End of link to special event show -->
-                </div><!-- End Row -->
-
-              <% elsif event.public_type == "social" %> <!-- IT IS a SOCIAL EVENT -->
-                <div class="row">
-                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
-                    <div class="col-md-11 social_event_block">
-                      <div class="row">
-                        <h5 class="session_titles"><%= event.title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
-                          <% if event.time_slots > 4 %>
-                            (<%= event.time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
-                      </div>
-                    </div>
-                  <% end %> <!-- End of link to social event show -->
-                </div><!-- End Row-->
-
-              <% elsif event.public_type == "meditation" %> <!-- IT IS a MEDITAION EVENT -->
-                <div class="row">
-                  <%= link_to public_custom_show_path(event), class: "no_link_effect" do %>
-                    <div class="col-md-11 meditation_event_block">
-                      <div class="row">
-                        <h5 class="session_titles"><%= event.title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= event.start_time.strftime("%I:%M") %> - <%= event.end_time.strftime("%I:%M%p") %>
-                          <% if event.time_slots > 4 %>
-                            (<%= event.time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                        <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= event.room.name %></div>
-                      </div>
-                    </div>
-                  <% end %><!-- End of link to meditation event show -->
-                </div><!-- End Row-->
-              <% end %><!--End Conditionals for public_type for one event/time slot -->
-            <% end %><!-- End loop -->
-
-
-          <% else %><!-- If more than one event for a time slot, slice for 2 column effect -->
-            <% @events_by_day_time[time].each_slice(2) do |events| %>
-              <div class="row">
-                <% if events[0].public_type.nil? || events[0].public_type == ""%><!-- NOT social, special, meditation -->
-                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
-                    <div class="col-md-5 event_block">
-                      <div class="row">
-                          <h5 class="session_titles"><%= events[0].title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
-                          <% if events[0].time_slots > 4 %>
-                            (<%= events[0].time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                          <% if events[0].event_type && events[0].event_type.include?("Internet")%>
-                            IF: Present and Future
-                          <% elsif events[0].event_type && events[0].event_type.include?("Journalism") %>
-                            Journalism, Media and Comms
-                          <% elsif events[0].event_type %>
-                            <%= events[0].event_type %>
-                          <% end %>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-
-                <% elsif events[0].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
-                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
-                    <div class="col-md-5 special_event_block">
-                      <div class="row">
-                          <h5 class="session_titles"><%= events[0].title %></h5>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
-                          <% if events[0].time_slots > 4 %>
-                            (<%= events[0].time_slots / 4.0 %>h)
-                          <% end %>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
-                      </div>
-                    </div>
-                  <% end %>
-
-                <% elsif events[0].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
-                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
-                      <div class="col-md-5 social_event_block">
+                  <% elsif events[0].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                    <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
+                      <div class="col-md-5 special_event_block">
                         <div class="row">
                             <h5 class="session_titles"><%= events[0].title %></h5>
                         </div>
@@ -766,129 +848,150 @@
                           <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
                         </div>
                       </div>
-                  <% end %>
+                    <% end %>
 
-                <% elsif events[0].public_type == "meditation" %><!--  IS MEDITATION EVENT -->
-                  <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
-                      <div class="col-md-11 meditation_event_block">
-                        <div class="row">
-                            <h5 class="session_titles"><%= events[0].title %></h5>
+                  <% elsif events[0].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+                    <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
+                        <div class="col-md-5 social_event_block">
+                          <div class="row">
+                              <h5 class="session_titles"><%= events[0].title %></h5>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                              <% if events[0].time_slots > 4 %>
+                                (<%= events[0].time_slots / 4.0 %>h)
+                              <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                          </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-2"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
-                            <% if events[0].time_slots > 4 %>
-                              (<%= events[0].time_slots / 4.0 %>h)
+                    <% end %>
+
+                  <% elsif events[0].public_type == "meditation" %><!--  IS MEDITATION EVENT -->
+                    <%= link_to public_custom_show_path(events[0]), class: "no_link_effect" do %>
+                        <div class="col-md-11 meditation_event_block">
+                          <div class="row">
+                              <h5 class="session_titles"><%= events[0].title %></h5>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[0].start_time.strftime("%I:%M") %> - <%= events[0].end_time.strftime("%I:%M%p") %>
+                              <% if events[0].time_slots > 4 %>
+                                (<%= events[0].time_slots / 4.0 %>h)
+                              <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
+                          </div>
+                        </div>
+                    <% end %>
+                  <% end %><!-- Ends conditional for first event of multiple events-->
+
+
+                  <% if events[1] %><!-- Make sure there is a second event -->
+                    <% if events[1].public_type.nil? || events[1].public_type == "" %><!-- NOT social, special, meditation -->
+                      <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
+                        <div class="col-md-5 event_block">
+                          <div class="row">
+                            <h5 class="session_titles"> <%= events[1].title %></h5>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                            <% if events[1].time_slots > 4 %>
+                              (<%= events[1].time_slots / 4.0 %>h)
                             <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                              <% if events[1].event_type && events[1].event_type.include?("Internet")%>
+                                IF: Present and Future
+                              <% elsif events[1].event_type && events[1].event_type.include?("Journalism") %>
+                                Journalism, Media and Comms
+                              <% elsif events[1].event_type %>
+                                <%= events[1].event_type %>
+                              <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %>
+                            </div>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-2"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[0].room.name %></div>
-                        </div>
-                      </div>
-                  <% end %>
-                <% end %><!-- Ends conditional for first event of multiple events-->
+                      <% end %>
 
-
-                <% if events[1] %><!-- Make sure there is a second event -->
-                  <% if events[1].public_type.nil? || events[1].public_type == "" %><!-- NOT social, special, meditation -->
-                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
-                      <div class="col-md-5 event_block">
-                        <div class="row">
-                          <h5 class="session_titles"> <%= events[1].title %></h5>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
-                          <% if events[1].time_slots > 4 %>
-                            (<%= events[1].time_slots / 4.0 %>h)
-                          <% end %>
+                    <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
+                      <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
+                        <div class="col-md-5 special_event_block">
+                          <div class="row">
+                            <h5 class="session_titles"> <%= events[1].title %></h5>
                           </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <% if events[1].event_type && events[1].event_type.include?("Internet")%>
-                              IF: Present and Future
-                            <% elsif events[1].event_type && events[1].event_type.include?("Journalism") %>
-                              Journalism, Media and Comms
-                            <% elsif events[1].event_type %>
-                              <%= events[1].event_type %>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                            <% if events[1].time_slots > 4 %>
+                              (<%= events[1].time_slots / 4.0 %>h)
                             <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %>
+                      <% end %>
+
+                    <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
+
+                      <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
+                        <div class="col-md-5 social_event_block">
+                          <div class="row">
+                            <h5 class="session_titles"> <%= events[1].title %></h5>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                            <% if events[1].time_slots > 4 %>
+                              (<%= events[1].time_slots / 4.0 %>h)
+                            <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                           </div>
                         </div>
-                      </div>
-                    <% end %>
+                      <% end %>
 
-                  <% elsif events[1].public_type == "special" %><!--  IT IS a SPECIAL EVENT -->
-                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
-                      <div class="col-md-5 special_event_block">
-                        <div class="row">
-                          <h5 class="session_titles"> <%= events[1].title %></h5>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
-                          <% if events[1].time_slots > 4 %>
-                            (<%= events[1].time_slots / 4.0 %>h)
-                          <% end %>
+                    <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
+                      <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
+                        <div class="col-md-5 meditation_event_block">
+                          <div class="row">
+                            <h5 class="session_titles"> <%= events[1].title %></h5>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
+                            <% if events[1].time_slots > 4 %>
+                              (<%= events[1].time_slots / 4.0 %>h)
+                            <% end %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
-                        </div>
-                      </div>
-                    <% end %>
-
-                  <% elsif events[1].public_type == "social" %><!--  IT IS a SOCIAL EVENT -->
-
-                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
-                      <div class="col-md-5 social_event_block">
-                        <div class="row">
-                          <h5 class="session_titles"> <%= events[1].title %></h5>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
-                          <% if events[1].time_slots > 4 %>
-                            (<%= events[1].time_slots / 4.0 %>h)
-                          <% end %>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
-                        </div>
-                      </div>
-                    <% end %>
-
-                  <% elsif events[1].public_type == "meditation" %><!--  IT IS a MEDITATION EVENT -->
-                    <%= link_to public_custom_show_path(events[1]), class: "no_link_effect" do %>
-                      <div class="col-md-5 meditation_event_block">
-                        <div class="row">
-                          <h5 class="session_titles"> <%= events[1].title %></h5>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-clock-o" aria-hidden="true"></i> <%= events[1].start_time.strftime("%I:%M") %> - <%= events[1].end_time.strftime("%I:%M%p") %>
-                          <% if events[1].time_slots > 4 %>
-                            (<%= events[1].time_slots / 4.0 %>h)
-                          <% end %>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 session_info"><i class="fa fa-map-marker" aria-hidden="true"></i> <%= events[1].room.name %></div>
-                        </div>
-                      </div>
-                    <% end %>
-                  <% end %><!-- Ends conditional for public type for second event -->
+                      <% end %>
+                    <% end %><!-- Ends conditional for public type for second event -->
 
 
-                <% else %><!-- The is NOT a second event so add empty div-->
-                  <div class='col-md-6'></div>
-                <% end %><!-- Ends conditional to check if second event -->
-              </div><!-- End Row -->
-            <% end %><!-- Ends slice 2 loop -->
-          <% end %><!-- Ends check for 0, 1, 2 events per time-->
-      <% end %><!-- End of Events -->
-    </div>
+                  <% else %><!-- The is NOT a second event so add empty div-->
+                    <div class='col-md-6'></div>
+                  <% end %><!-- Ends conditional to check if second event -->
+                </div><!-- End Row -->
+              <% end %><!-- Ends slice 2 loop -->
+            <% end %><!-- Ends check for 0, 1, 2 events per time-->
+        <% end %><!-- End of Events -->
+      </div>
+    <% end %>
+
   </div><!-- Ends container div -->
   <div id="bottom-banner">
     <p id="bottom-banner-text"><i aria-hidden="true" class="fa fa-twitter"></i> <a href="https://twitter.com/internetff/" target="_blank">@InternetFF</a> | #InternetFF</p>

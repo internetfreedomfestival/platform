@@ -7,36 +7,42 @@ class Public::ScheduleController < ApplicationController
   end
 
   def custom
+    search_terms = params[:terms]&.strip
+    day_id = params[:day]
+
     @all_days = @conference.days
-    @themes = Event::TYPES
-    # Select first day if no button clicked
-    if params.keys.include?("day")
-      @day = @conference.days.find_by(id: params[:day])
-    else
-      @day = @conference.days.first
-    end
 
-    setup_day_ivars(@day)
+    days = [@all_days.first]
+    days = [@all_days.find_by(id: day_id) || @all_days.first] if day_id
+    days = @all_days if search_terms
 
-    @days_events = []
-    # Get Events for the day
-    @events.each do |rooms, events|
-      events.each do |event|
-        @days_events << event
+    @events_by_day_and_time = {}
+
+    all_rooms = @conference.rooms_including_subs
+    all_events = {}
+
+    days.each do |day|
+      day_events = []
+      all_rooms.each do |room|
+        day_events += room.events.confirmed.is_public.scheduled_on(day).order(:start_time).to_a
       end
-    end
-    # Sort events/day BY start time
-    @days_events.sort! {|a,b| a.start_time <=> b.start_time}
-    # Sort events/day/start time BY theme
-    @themed_days = Hash.new([])
-    @days_events.each do |event|
-      @themed_days[event.event_type] += [event]
+      all_events[day] = day_events
     end
 
-    # arrange days by time
-    @events_by_day_time = Hash.new { |k,v| k[v] = [] }
-    @days_events.each do |event|
-      @events_by_day_time[event.start_time].push(event) unless event.public_type == 'private'
+    all_events.each do |day, events|
+      # Filter events
+      filter!(events, search_terms) if search_terms
+
+      # Sort events/day by start time
+      events.sort! {|a, b| a.start_time <=> b.start_time}
+
+      # arrange days by time
+      events_by_day_time = Hash.new { |k,v| k[v] = [] }
+      events.each do |event|
+        events_by_day_time[event.start_time].push(event) unless event.public_type == 'private'
+      end
+
+      @events_by_day_and_time[day] = events_by_day_time
     end
   end
 
@@ -65,18 +71,17 @@ class Public::ScheduleController < ApplicationController
     authenticate_user! unless @conference.schedule_public
   end
 
-  def setup_day_ivars(day)
-    all_rooms = @conference.rooms_including_subs
-    @rooms = []
-    @events = {}
-    @skip_row = {}
-    all_rooms.each do |room|
-      events = room.events.confirmed.is_public.scheduled_on(day).order(:start_time).to_a
-      # Removed .no_conlicts from the above string to escape "Person availabilities model"
-      next if events.empty?
-      @events[room] = events
-      @skip_row[room] = 0
-      @rooms << room
+  def matches?(text, term)
+    text =~ /#{Regexp.escape(term)}/i
+  end
+
+  def filter!(events, terms)
+    terms.split.each do |term|
+      events.select! do |event|
+        matches?(event.title, term) ||
+        matches?(event.event_type, term) ||
+        matches?(event.room.name, term)
+      end
     end
   end
 end
