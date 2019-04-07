@@ -29,7 +29,7 @@ class CfpFormTest < Capybara::Rails::TestCase
 
     with_cfp_disabled do
       visit "/#{@conference.acronym}/cfp"
-      assert_text "The #{@conference.alt_title} Global Call for Proposals is now closed"
+      assert_text /The #{@conference.alt_title}( Global)? Call for Proposals is now closed/
     end
 
     with_cfp_enabled do

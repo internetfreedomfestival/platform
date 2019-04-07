@@ -62,7 +62,10 @@
             %p We have implemented a request-based IFF ticket system to provide a safer and more diverse space, and meet the growing demand.
             %p{style: "font-weight: bold;"} You have been invited to claim an IFF Ticket!
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-              = action_button "success", "Claim IFF Ticket", ticketing_form_path(id: @invitation.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
+              - if @conference.in_the_past?
+                = action_button "", "Claim IFF Ticket", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+              - else
+                = action_button "success", "Claim IFF Ticket", ticketing_form_path(id: @invitation.id, conference_acronym: @conference.acronym), :style => "margin: 10px;"
           - elsif @attendance_status&.requested?
             %p We have implemented a request-based IFF ticket system to provide a safer and more diverse space, and meet the growing demand.
             %p Once your request is reviewed, you will receive an email with instructions on how to claim your #{@conference.alt_title} Ticket.
@@ -103,7 +106,10 @@
               invites remaining.
             = text_field_tag(:email, '', placeholder: 'email')
             %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
-              = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
+              - if @conference.in_the_past?
+                = action_button "", "Send", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: 'disabled'
+              - else
+                = submit_tag('Send', class: "btn success", style: 'margin: 10px;')
 
   - if @person.late_event_submit
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
@@ -116,7 +122,7 @@
             = action_button "primary", "Submit a Session", new_cfp_event_path(user: @user, conference_acronym: @conference.acronym), style: "margin: 10px;"
 
 
-  - if FeatureToggle.cfp_enabled? and !@is_old_account
+  - if FeatureToggle.cfp_enabled? and !@is_old_account and !@conference.in_the_past?
     .span16{style: "border-top: 2px solid; margin-bottom: 20px;"}
     .row
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
@@ -135,7 +141,7 @@
       .span7{style: "margin-bottom: 30px; margin-left: 36px;"}
         %div{style: "margin:10px;"}
           %h3 Submit a Session for the #{@conference.alt_title}
-          %p{style: "font-weight: bold;"} The #{@conference.alt_title} Global Call for Proposals is now closed. Thank you all!
+          %p{style: "font-weight: bold;"} The #{@conference.alt_title} Call for Proposals is now closed. Thank you all!
           %p{style: "margin-top: 25px; border-top: solid 2px grey; background-color: #f2f2f2; height: 50px;"}
             = action_button "", "Submit a Session", '#', style: "margin: 10px; background: grey; color: white; font-weight: 100", disabled: "disabled"
 
@@ -260,11 +266,11 @@
       /%b= l(@conference.call_for_participation.end_date)
       - if cfp_hard_deadline_over?
         %p=t("cfp.hard_deadline_over")
-      - elsif @person.events_in(@conference).size > 0 and not @conference.in_the_past
+      - elsif @person.events_in(@conference).size > 0 and not @conference.in_the_past?
         - if @person.availabilities_in(@conference).count == 0
           .clear
       - else
-        - unless @conference.in_the_past
+        - unless @conference.in_the_past?
           /%p=t("cfp.not_forget_personal_details")
 
           -# --------------------------------------------------------------------------------
