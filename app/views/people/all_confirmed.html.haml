@@ -15,7 +15,7 @@
     %li= link_to "Volunteers", volunteers_people_path
     %li= link_to "Confirmed Speakers", confirmed_speakers_people_path
 
-  %h4 There are #{@holds_ticket} people holding a ticket, #{@invited} people who haven't claimed their ticket yet, #{@requested} people waiting for an invitation, #{@on_hold} people on hold, and #{@rejected} people rejected for the #{@conference.title}.
+  %h4 There are #{number_with_delimiter(@holds_ticket)} people holding a ticket, #{number_with_delimiter(@invited)} people who haven't claimed their ticket yet, #{number_with_delimiter(@requested)} people waiting for an invitation, #{number_with_delimiter(@on_hold)} people on hold, and #{number_with_delimiter(@rejected)} people rejected for the #{@conference.title}.
 
   %br
   %br

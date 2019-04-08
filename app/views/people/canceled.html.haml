@@ -16,7 +16,7 @@
     -# %li= link_to "Waitlist", waitlisted_people_path
     -# %li.active= link_to "Canceled", canceled_people_path
 
-  %h4 There are #{@people.count} total people who canceled #{@conference.title} their attendance.
+  %h4 There are #{number_with_delimiter(@people.count)} total people who canceled #{@conference.title} their attendance.
 
   .pull-right
     - if can? :administrate, Person

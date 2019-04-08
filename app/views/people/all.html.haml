@@ -18,7 +18,7 @@
     -# %li= link_to "Canceled", canceled_people_path
     /%li= link_to "This conference", people_path
 
-  %h4 There are #{@people.count} total people registered in the IFF Platform.
+  %h4 There are #{number_with_delimiter(@people.count)} total people registered in the IFF Platform.
 
   .pull-right
     - if can? :administrate, Person

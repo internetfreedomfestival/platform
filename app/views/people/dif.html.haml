@@ -17,7 +17,7 @@
     -# %li= link_to "Canceled", canceled_people_path
     /%li= link_to "This conference", people_path
 
-  %h4 There are #{@submissions.count} DIF applications for the #{@conference.title}.
+  %h4 There are #{number_with_delimiter(@submissions.count)} DIF applications for the #{@conference.title}.
 
   .pull-right
     - if can? :administrate, Person

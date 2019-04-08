@@ -16,7 +16,7 @@
     %li= link_to "Waitlist", waitlisted_people_path
     %li= link_to "Canceled", canceled_people_path
 
-  %h4 There are #{@people.count} total people who have submitted an event proposal for the #{@conference.title}.
+  %h4 There are #{number_with_delimiter(@people.count)} total people who have submitted an event proposal for the #{@conference.title}.
 
   - if params[:term].blank? and @people.all.empty?
     .row
