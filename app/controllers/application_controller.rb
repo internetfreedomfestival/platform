@@ -116,4 +116,50 @@ class ApplicationController < ActionController::Base
     Raven.user_context(id: session[:current_user_id])
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
+
+  def stream_csv(relation, conference: nil, filename: nil)
+    csv_options = {}
+
+    enum = enum_csv_for(relation, conference, csv_options)
+
+    stream_data enum, type: 'text/csv', filename: filename
+  end
+
+  def stream_xls(relation, conference: nil, filename: nil)
+    csv_options = {col_sep: "\t"}
+
+    enum = enum_csv_for(relation, conference, csv_options)
+
+    stream_data enum, type: 'application/xls', filename: filename
+  end
+
+  private
+
+  def enum_csv_for(relation, conference, csv_options)
+    headers = -> (record) { record.public_send(:csv_header, *[conference, csv_options].reject(&:blank?)) }
+    values = -> (record) { record.public_send(:to_csv, *[conference, csv_options].reject(&:blank?)) }
+
+    Enumerator.new do |rows|
+      rows << headers.(relation.first)
+      relation.find_each { |record| rows << values.(record) }
+    end
+  end
+
+  def stream_data(enum, http_options = {})
+    type = http_options[:type] || 'application/octet-stream'
+    filename = http_options[:filename]
+    disposition = http_options[:disposition] == 'inline' ? 'inline' : 'attachment'
+    status = http_options[:status] || 200
+
+    headers['Content-Type'] = type
+    headers['Content-Disposition'] = disposition
+    headers['Content-Disposition'] += "; filename=\"#{filename}\"" if filename.present?
+    headers['X-Accel-Buffering'] = 'no'
+    headers['Cache-Control'] = 'no-cache'
+    headers.delete('Content-Length')
+
+    self.response_body = enum
+
+    response.status = status
+  end
 end

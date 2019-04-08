@@ -621,7 +621,24 @@ class Person < ActiveRecord::Base
     FeatureToggle.user_invites_enabled? && Invite.sharing_allowed_for?(self, conference)
   end
 
-  def serialize(conference)
+  def to_csv(conference = Conference.current, options = {})
+    values = serialize_for(conference).values
+    CSV.generate_line(values, options)
+  end
+
+  def csv_header(conference = Conference.current, options = {})
+    options = options.merge(headers: true)
+    headers = serialize_for(conference).keys
+    CSV.generate_line(headers, options)
+  end
+
+  private
+
+  def nilify_empty
+    self.gender = nil if gender and gender.empty?
+  end
+
+  def serialize_for(conference)
     attendance_status = attendance_statuses.find_by(conference: conference)
     ticket = tickets.find_by(conference: conference)
     invite = Invite.find_by(conference: conference, email: email.downcase)
@@ -656,23 +673,5 @@ class Person < ActiveRecord::Base
       'Invite to Mattermost' => invitation_to_mattermost? ? 'Yes' : 'No',
       'Volunteeering Interest' => ticket&.interested_in_volunteer? ? 'Yes' : 'No'
     }
-  end
-
-  def self.to_csv(conference, options = {})
-    options = options.merge(headers: true)
-
-    CSV.generate(options) do |csv|
-      csv << all.first.serialize(conference).keys
-
-      all.find_each do |person|
-        csv << person.serialize(conference)
-      end
-    end
-  end
-
-  private
-
-  def nilify_empty
-    self.gender = nil if gender and gender.empty?
   end
 end

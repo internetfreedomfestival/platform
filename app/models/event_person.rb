@@ -97,6 +97,19 @@ class EventPerson < ActiveRecord::Base
     "#{model_name.human}: #{self.person.full_name} (#{self.event_role})"
   end
 
+  def to_csv(options = {})
+    values = serialize.values
+    CSV.generate_line(values, options)
+  end
+
+  def csv_header(options = {})
+    options = options.merge(headers: true)
+    headers = serialize.keys
+    CSV.generate_line(headers, options)
+  end
+
+  private
+
   def serialize
     recipient = event.recipient_travel_stipend.blank? ? person : Person.find_by(email: event.recipient_travel_stipend)
 
@@ -115,17 +128,5 @@ class EventPerson < ActiveRecord::Base
       'Past Travel Assistance' => event.past_travel_assistance.reject(&:blank?).join("\n"),
       'DIF Status' => event.dif_status
     }
-  end
-
-  def self.to_csv(options = {})
-    options = options.merge(headers: true)
-
-    CSV.generate(options) do |csv|
-      csv << all.first.serialize.keys
-
-      all.each do |event_person|
-        csv << event_person.serialize
-      end
-    end
   end
 end

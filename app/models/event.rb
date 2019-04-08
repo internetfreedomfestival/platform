@@ -353,58 +353,6 @@ class Event < ActiveRecord::Base
     possible
   end
 
-  def serialize
-    submitter_ticket = Ticket.find_by(conference: conference, person: submitter)
-
-    {
-      'Event ID' => id,
-      'State' => state,
-      'Title' => title,
-      'Subtitle' => subtitle,
-      'Theme' => event_type,
-      'Description' => description,
-      'Target Audience' => target_audience,
-      'Skill Level' => skill_level,
-      'Presenter' => submitter.email,
-      'Presenter Public Name' => submitter_ticket&.public_name,
-      'Presenter Gender' => submitter_ticket&.gender_pronoun,
-      'Presenter Country' => submitter.country_of_origin,
-      'Presenter Professional Background' => submitter.professional_background.reject(&:blank?).join("\n"),
-      'Presenter Before' => iff_before.reject(&:blank?).join("\n"),
-      'Presenter Confirmed' => event_people.find_by(event_role: :submitter).role_state,
-      'Other Presenters' => other_presenters.split(',').join("\n"),
-      'Other Presenters All Confirmed' => event_people.where(event_role: :collaborator).all? { |ep| ep.role_state == 'confirmed' } ? 'Yes' : 'No',
-      'Desired Outcome' => desired_outcome,
-      'Projector Needed' => projector ? 'Yes' : 'No',
-      'Track ID' => track&.id,
-      'Track Name' => track&.name,
-      'Time Slots' => time_slots,
-      'Start Time' => start_time,
-      'Room ID' => room&.id,
-      'Room Name' => room&.name,
-      'Travel Assistance' => travel_assistance ? 'Yes' : 'No',
-      'Travel Assistance Recipient' => recipient_travel_stipend,
-      'Travel Assistance Before' => past_travel_assistance.reject(&:blank?).join("\n"),
-      'Travel Assistance Needs' => travel_support.reject(&:blank?).join("\n"),
-      'Travel Assistance Underrepresented Group' => group,
-      'Travel Assistance Status' => dif_status,
-      'Average Rating' => average_rating ? '%.2f' % average_rating : nil,
-      'Comments' => comments.reject(&:blank?).join("\n\n")
-    }
-  end
-
-  def self.to_csv(options = {})
-    options = options.merge(headers: true)
-
-    CSV.generate(options) do |csv|
-      csv << all.first.serialize.keys
-
-      all.find_each do |event|
-        csv << event.serialize
-      end
-    end
-  end
-
   def comments
     get_comments(id)
   end
@@ -462,6 +410,17 @@ class Event < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def to_csv(options = {})
+    values = serialize.values
+    CSV.generate_line(values, options)
+  end
+
+  def csv_header(options = {})
+    options = options.merge(headers: true)
+    headers = serialize.keys
+    CSV.generate_line(headers, options)
   end
 
   private
@@ -523,5 +482,45 @@ class Event < ActiveRecord::Base
 
   def special_event?
     public_type == 'special'
+  end
+
+  def serialize
+    submitter_ticket = Ticket.find_by(conference: conference, person: submitter)
+
+    {
+      'Event ID' => id,
+      'State' => state,
+      'Title' => title,
+      'Subtitle' => subtitle,
+      'Theme' => event_type,
+      'Description' => description,
+      'Target Audience' => target_audience,
+      'Skill Level' => skill_level,
+      'Presenter' => submitter.email,
+      'Presenter Public Name' => submitter_ticket&.public_name,
+      'Presenter Gender' => submitter_ticket&.gender_pronoun,
+      'Presenter Country' => submitter.country_of_origin,
+      'Presenter Professional Background' => submitter.professional_background.reject(&:blank?).join("\n"),
+      'Presenter Before' => iff_before.reject(&:blank?).join("\n"),
+      'Presenter Confirmed' => event_people.find_by(event_role: :submitter).role_state,
+      'Other Presenters' => other_presenters.split(',').join("\n"),
+      'Other Presenters All Confirmed' => event_people.where(event_role: :collaborator).all? { |ep| ep.role_state == 'confirmed' } ? 'Yes' : 'No',
+      'Desired Outcome' => desired_outcome,
+      'Projector Needed' => projector ? 'Yes' : 'No',
+      'Track ID' => track&.id,
+      'Track Name' => track&.name,
+      'Time Slots' => time_slots,
+      'Start Time' => start_time,
+      'Room ID' => room&.id,
+      'Room Name' => room&.name,
+      'Travel Assistance' => travel_assistance ? 'Yes' : 'No',
+      'Travel Assistance Recipient' => recipient_travel_stipend,
+      'Travel Assistance Before' => past_travel_assistance.reject(&:blank?).join("\n"),
+      'Travel Assistance Needs' => travel_support.reject(&:blank?).join("\n"),
+      'Travel Assistance Underrepresented Group' => group,
+      'Travel Assistance Status' => dif_status,
+      'Average Rating' => average_rating ? '%.2f' % average_rating : nil,
+      'Comments' => comments.reject(&:blank?).join("\n\n")
+    }
   end
 end

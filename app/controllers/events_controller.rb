@@ -16,8 +16,8 @@ class EventsController < ApplicationController
       }
       format.xml  { render xml: @events }
       format.json { render json: @events }
-      format.csv  { send_data @events.to_csv, filename: "events-#{@conference.acronym}-#{Date.today}.csv" }
-      format.xls  { send_data @events.to_csv(col_sep: "\t"), filename: "events-#{@conference.acronym}-#{Date.today}.xls" }
+      format.csv  { stream_csv @events, filename: "events-#{@conference.acronym}-#{Date.today}.csv" }
+      format.xls  { stream_xls @events, filename: "events-#{@conference.acronym}-#{Date.today}.xls" }
     end
   end
 
