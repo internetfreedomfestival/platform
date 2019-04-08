@@ -486,10 +486,12 @@ class Person < ActiveRecord::Base
   end
 
   def full_name
-    if first_name.blank? or last_name.blank?
-      public_name
+    if first_name.blank?
+      'N/A'
+    elsif last_name.blank?
+      first_name.strip
     else
-      "#{first_name} #{last_name}"
+      "#{first_name.strip} #{last_name.strip}"
     end
   end
 

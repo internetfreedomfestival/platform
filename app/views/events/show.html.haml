@@ -28,10 +28,10 @@
     %h1 Event
     %h2 #{@event.title}
   %ul.tabs
-    %li.active= link_to Event.model_name.human, @event
-    %li= link_to Person.model_name.human, people_event_path(@event)
-    %li= link_to EventRating.model_name.human, event_event_rating_path(@event)
-    %li= link_to EventFeedback.model_name.human, event_event_feedbacks_path(@event)
+    %li.active= link_to "Event Details", @event
+    %li= link_to "People", people_event_path(@event)
+    %li= link_to "Ratings", event_event_rating_path(@event)
+    %li= link_to "Feedback", event_event_feedbacks_path(@event)
   .row
     .span16
       - @event.conflicts.each do |conflict|
@@ -50,7 +50,7 @@
         = @event.track_name
       %p
         %b= "Other Presenters:"
-        = @event.other_presenters
+        = @event.other_presenters.split(',').join(', ')
       %p
         %b= "Theme:"
         = @event.event_type
@@ -91,8 +91,8 @@
         %b Average audience feedback:
         = number_with_precision @event.average_feedback, precision: 1
     .span6
-      %h2= EventPerson.model_name.human(count: 2)
-      %p= @event.speakers.map{ |p| link_to p.public_name, p}.join(", ").html_safe
+      %h2= "People:"
+      %p= @event.speakers.map{ |p| link_to p.full_name || 'N/A', p}.join(", ").html_safe
       %p
         %b Contact phone number:
         = @event.phone_number
