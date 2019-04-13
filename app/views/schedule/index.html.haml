@@ -73,10 +73,16 @@
               Add event at
               %span#current-time &nbsp;
           .modal-body
-            %p
-              = form_tag schedule_update_track_path, id: "update-track" do
+            = form_tag schedule_update_unscheduled_path, id: "update-unscheduled" do
+              %p
                 = label_tag "track_select", "Filter by track"
+                &nbsp;
                 = select_tag "track_select", content_tag(:option, "All", selected: true) + options_from_collection_for_select(@conference.tracks, :id, :name)
+              %p
+                = label_tag "theme_select", "Filter by theme"
+                &nbsp;
+                = select_tag "theme_select", content_tag(:option, "All", selected: true) + options_from_collection_for_select(@conference.events.map(&:event_type).uniq, :itself, :itself)
+            %br
             %p
               %ul#unscheduled-events
                 = render 'unscheduled_events'

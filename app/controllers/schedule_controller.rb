@@ -12,13 +12,19 @@ class ScheduleController < ApplicationController
     @unscheduled_events = @conference.events.accepted.includes([:track, :room, :conflicts]).unscheduled.order(:title)
   end
 
-  def update_track
+  def update_unscheduled
     authorize! :crud, Event
-    if params[:track_id] and params[:track_id] =~ /\d+/
-      @unscheduled_events = @conference.events.accepted.unscheduled.where(track_id: params[:track_id])
-    else
-      @unscheduled_events = @conference.events.accepted.unscheduled
+
+    @unscheduled_events = @conference.events.accepted.unscheduled.order(:title)
+
+    if params[:track_id] && params[:track_id] =~ /\d+/
+      @unscheduled_events = @unscheduled_events.where(track_id: params[:track_id])
     end
+
+    if params[:event_type] && params[:event_type] != 'All'
+      @unscheduled_events = @unscheduled_events.where(event_type: params[:event_type])
+    end
+
     render partial: 'unscheduled_events'
   end
 

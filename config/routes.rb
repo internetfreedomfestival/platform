@@ -69,7 +69,7 @@ Frab::Application.routes.draw do
 
       post '/schedule.pdf' => 'schedule#custom_pdf', as: 'schedule_custom_pdf', defaults: { format: :pdf }
       get '/schedule' => 'schedule#index', as: 'schedule'
-      get '/schedule/update_track' => 'schedule#update_track', as: 'schedule_update_track'
+      get '/schedule/update_unscheduled' => 'schedule#update_unscheduled', as: 'schedule_update_unscheduled'
       put '/schedule/update_event' => 'schedule#update_event', as: 'schedule_update_event'
       get '/schedule/new_pdf' => 'schedule#new_pdf', as: 'new_schedule_pdf'
       get '/schedule/html_exports' => 'schedule#html_exports'
