@@ -1,23 +1,10 @@
 ARG appdir=/app
 
-FROM ruby:2.3.1-slim
+FROM ruby:2.5.1
 
 RUN set -ex \
-    && echo "deb http://deb.debian.org/debian jessie main\ndeb http://security.debian.org jessie/updates main" > /etc/apt/sources.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-           build-essential \
-           curl \
-           file \
-           git \
-           gnupg \
-           imagemagick \
-           libmysqlclient-dev \
-           libpq-dev \
-           libsqlite3-dev \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
+    && apt-get install -f -y --no-install-recommends \
            nodejs \
     && rm -rf /var/lib/apt/lists/*
 
